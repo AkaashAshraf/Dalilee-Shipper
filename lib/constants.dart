@@ -1,0 +1,12 @@
+import 'package:flutter/material.dart';
+
+const primaryColor = Color(0xFF00A1E1);
+const whiteColor = Color(0xFFFFFFFF);
+const bgColor = Color(0xFFF8F8F8);
+const text1Color = Color(0xFF61656A);
+const textBlueColor = Color(0xFF00A1E1);
+const textRedColor = Color(0xFFD32F2F);
+const cardColor = Color(0xFFF6F6F6);
+
+String like = "https://shaheen-test2.dalilee.om/api/v1/store";
+String image = "https://shaheen-test2.dalilee.om/storage/uploads/branches/";
