@@ -55,9 +55,13 @@ class MainDash extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Get.to(() =>
-                      controller.allShipemet.isEmpty
-                          ? MainCardBodyView(controller: EmptyState(label: 'No data',), title: "Shipmenet")
+                  Get.to(
+                      () => controller.allShipemet.isEmpty
+                          ? MainCardBodyView(
+                              controller: EmptyState(
+                                label: 'No data',
+                              ),
+                              title: "Shipmenet")
                           : MainCardBodyView(
                               title: 'All Shipmenet',
                               controller: ListView.separated(
@@ -81,6 +85,8 @@ class MainDash extends StatelessWidget {
                                       shipmentCost: controller
                                               .allShipemet[i].shippingPrice ??
                                           "0.00",
+                                      orderNumber:
+                                          controller.allShipemet[i].orderNo,
                                       totalCharges:
                                           '${double.parse(controller.allShipemet[i].shippingPrice.toString()) + double.parse(controller.allShipemet[i].cod.toString())}',
                                       stutaus: controller
@@ -98,19 +104,21 @@ class MainDash extends StatelessWidget {
                                           1,
                                       isOpen: controller.allShipemet[i].isOpen,
                                       onPressedShowMore: () {
-                                         if (controller.allShipemet[i].isOpen == false) {
-                                    controller.allShipemet.forEach(
-                                        (element) => element.isOpen = false);
-                                    controller.allShipemet[i].isOpen =
-                                       ! controller.allShipemet[i].isOpen;
-                                         x.update();
-                                  } else {
-                                    print('-------------');
-                                    controller.allShipemet[i].isOpen = false;
-                                    x.update();
-                                  }
-                                 
-                                      
+                                        if (controller.allShipemet[i].isOpen ==
+                                            false) {
+                                          controller.allShipemet.forEach(
+                                              (element) =>
+                                                  element.isOpen = false);
+                                          controller.allShipemet[i].isOpen =
+                                              !controller.allShipemet[i].isOpen;
+                                          x.update();
+                                        } else {
+                                          print('-------------');
+                                          controller.allShipemet[i].isOpen =
+                                              false;
+                                          x.update();
+                                        }
+
                                         print(controller.allShipemet[i].isOpen
                                             .toString());
                                       },
@@ -142,9 +150,13 @@ class MainDash extends StatelessWidget {
                   _buildsmallbox(
                     InkWell(
                       onTap: () {
-                        Get.to(() =>
-                            controller.deliverShipemet.isEmpty
-                                ? MainCardBodyView(controller: EmptyState(label: 'No data',), title: "Delivered Shipmenet")
+                        Get.to(
+                            () => controller.deliverShipemet.isEmpty
+                                ? MainCardBodyView(
+                                    controller: EmptyState(
+                                      label: 'No data',
+                                    ),
+                                    title: "Delivered Shipmenet")
                                 : MainCardBodyView(
                                     title: 'Delivered Shipmenet',
                                     controller: ListView.separated(
@@ -200,19 +212,25 @@ class MainDash extends StatelessWidget {
                                             isOpen: controller
                                                 .deliverShipemet[i].isOpen,
                                             onPressedShowMore: () {
-                                                 if (controller.deliverShipemet[i].isOpen == false) {
-                                    controller.deliverShipemet.forEach(
-                                        (element) => element.isOpen = false);
-                                    controller.deliverShipemet[i].isOpen =
-                                       ! controller.deliverShipemet[i].isOpen;
-                                         x.update();
-                                  } else {
-                                    print('-------------');
-                                    controller.deliverShipemet[i].isOpen = false;
-                                    x.update();
-                                  }
-                                 
-                                              
+                                              if (controller.deliverShipemet[i]
+                                                      .isOpen ==
+                                                  false) {
+                                                controller.deliverShipemet
+                                                    .forEach((element) =>
+                                                        element.isOpen = false);
+                                                controller.deliverShipemet[i]
+                                                        .isOpen =
+                                                    !controller
+                                                        .deliverShipemet[i]
+                                                        .isOpen;
+                                                x.update();
+                                              } else {
+                                                print('-------------');
+                                                controller.deliverShipemet[i]
+                                                    .isOpen = false;
+                                                x.update();
+                                              }
+
                                               print(controller
                                                   .deliverShipemet[i].isOpen
                                                   .toString());
@@ -238,41 +256,53 @@ class MainDash extends StatelessWidget {
                   _buildsmallbox(
                     InkWell(
                       onTap: () {
-                        Get.to(() =>
-                           controller.tobePickup.isEmpty
-                          ? MainCardBodyView(controller: EmptyState(label: 'No data',), title: "To Be Pickup")
-                          : MainCardBodyView(
-                              title: "To Be Pickup",
-                              controller: ListView.separated(
-                                separatorBuilder: (context, i) =>
-                                    const SizedBox(height: 15),
-                                itemCount: controller.tobePickup.length,
-                                padding: const EdgeInsets.only(
-                                    left: 15, right: 15, bottom: 10, top: 5),
-                                itemBuilder: (context, i) {
-                                  return AllPickupBody(
-                                    cod: "${controller.tobePickup[i].cop??0}",
-                                    name: "${controller.tobePickup[i].driver?? "undefined"}",
-                                    qty: "${controller.tobePickup[i].quantity??0}",
-                                    date: "${controller.tobePickup[i].date??"dd-mm-yyyy"}",
-                                    id: "${controller.tobePickup[i].id??00}",
-                                    onPressed: () {
-                                      // controllerClass.makePhoneCall(
-                                      //     "${controllerClass.allPickup[i]!.driveMobile}");
-                                    },
-                                    status: controller.tobePickup[i].status??'',
-                                  );
-                                },
-                              ),
-                            ),
+                        Get.to(
+                            () => controller.tobePickup.isEmpty
+                                ? MainCardBodyView(
+                                    controller: EmptyState(
+                                      label: 'No data',
+                                    ),
+                                    title: "To Be Pickup")
+                                : MainCardBodyView(
+                                    title: "To Be Pickup",
+                                    controller: ListView.separated(
+                                      separatorBuilder: (context, i) =>
+                                          const SizedBox(height: 15),
+                                      itemCount: controller.tobePickup.length,
+                                      padding: const EdgeInsets.only(
+                                          left: 15,
+                                          right: 15,
+                                          bottom: 10,
+                                          top: 5),
+                                      itemBuilder: (context, i) {
+                                        return AllPickupBody(
+                                          cod:
+                                              "${controller.tobePickup[i].cop ?? 0}",
+                                          name:
+                                              "${controller.tobePickup[i].driver ?? "undefined"}",
+                                          qty:
+                                              "${controller.tobePickup[i].quantity ?? 0}",
+                                          date:
+                                              "${controller.tobePickup[i].date ?? "dd-mm-yyyy"}",
+                                          id: "${controller.tobePickup[i].id ?? 00}",
+                                          onPressed: () {
+                                            // controllerClass.makePhoneCall(
+                                            //     "${controllerClass.allPickup[i]!.driveMobile}");
+                                          },
+                                          status:
+                                              controller.tobePickup[i].status ??
+                                                  '',
+                                        );
+                                      },
+                                    ),
+                                  ),
                             transition: Transition.downToUp,
                             duration: const Duration(milliseconds: 400));
                       },
                       child: _InsideSmallBox(
                         image: 'assets/images/tobepickup.png',
                         title: 'To Be\nPickup',
-                        numbers:
-                            ' ${controller.toBePickupNumber}',
+                        numbers: ' ${controller.toBePickupNumber}',
                       ),
                     ),
                   ),
@@ -285,80 +315,104 @@ class MainDash extends StatelessWidget {
                 children: [
                   _buildsmallbox(
                     InkWell(
-                      onTap: (){
-                        
-                            Get.to(() =>
-                      controller.tobeDelShipemet.isEmpty
-                          ? MainCardBodyView(controller: EmptyState(label: 'No data',), title: "To Be Delivered")
-                          : MainCardBodyView(
-                              title: 'To Be Deliver',
-                              controller: ListView.separated(
-                                separatorBuilder: (context, i) =>
-                                    const SizedBox(height: 15),
-                                itemCount: controller.tobeDelShipemet.length,
-                                padding: const EdgeInsets.only(
-                                    left: 15, right: 15, bottom: 10, top: 5),
-                                itemBuilder: (context, i) {
-                                  return GetBuilder<DashbordController>(
-                                    builder: (x) => CardBody(
-                                      orderId:
-                                          controller.tobeDelShipemet[i].orderId ??
-                                              00,
-                                      number: controller.tobeDelShipemet[i].phone ??
-                                          "+968",
-                                      cod: controller.tobeDelShipemet[i].cod ??
-                                          "0.00",
-                                      cop: controller.tobeDelShipemet[i].cop ??
-                                          "0.00",
-                                      shipmentCost: controller
-                                              .tobeDelShipemet[i].shippingPrice ??
-                                          "0.00",
-                                      totalCharges:
-                                          '${double.parse(controller.tobeDelShipemet[i].shippingPrice.toString()) + double.parse(controller.tobeDelShipemet[i].cod.toString())}',
-                                      stutaus: controller
-                                          .tobeDelShipemet[i].orderActivities,
-                                      icon: controller.toBeDelvList
-                                          .map((element) =>
-                                              element.icon.toString())
-                                          .toList(),
-                                      ref: controller.tobeDelShipemet[i].refId ?? 0,
-                                      weight:
-                                          controller.tobeDelShipemet[i].weight ??
-                                              0.00,
-                                      currentStep: controller
-                                              .tobeDelShipemet[i].currentStatus ??
-                                          1,
-                                      isOpen: controller.tobeDelShipemet[i].isOpen,
-                                      onPressedShowMore: () {
-                                           if (controller.tobeDelShipemet[i].isOpen == false) {
-                                    controller.tobeDelShipemet.forEach(
-                                        (element) => element.isOpen = false);
-                                    controller.tobeDelShipemet[i].isOpen =
-                                       ! controller.tobeDelShipemet[i].isOpen;
-                                         x.update();
-                                  } else {
-                                    print('-------------');
-                                    controller.tobeDelShipemet[i].isOpen = false;
-                                    x.update();
-                                  }
-                                        
-                                        print(controller.tobeDelShipemet[i].isOpen
-                                            .toString());
+                      onTap: () {
+                        Get.to(
+                            () => controller.tobeDelShipemet.isEmpty
+                                ? MainCardBodyView(
+                                    controller: EmptyState(
+                                      label: 'No data',
+                                    ),
+                                    title: "To Be Delivered")
+                                : MainCardBodyView(
+                                    title: 'To Be Deliver',
+                                    controller: ListView.separated(
+                                      separatorBuilder: (context, i) =>
+                                          const SizedBox(height: 15),
+                                      itemCount:
+                                          controller.tobeDelShipemet.length,
+                                      padding: const EdgeInsets.only(
+                                          left: 15,
+                                          right: 15,
+                                          bottom: 10,
+                                          top: 5),
+                                      itemBuilder: (context, i) {
+                                        return GetBuilder<DashbordController>(
+                                          builder: (x) => CardBody(
+                                            orderId: controller
+                                                    .tobeDelShipemet[i]
+                                                    .orderId ??
+                                                00,
+                                            number: controller
+                                                    .tobeDelShipemet[i].phone ??
+                                                "+968",
+                                            cod: controller
+                                                    .tobeDelShipemet[i].cod ??
+                                                "0.00",
+                                            cop: controller
+                                                    .tobeDelShipemet[i].cop ??
+                                                "0.00",
+                                            shipmentCost: controller
+                                                    .tobeDelShipemet[i]
+                                                    .shippingPrice ??
+                                                "0.00",
+                                            totalCharges:
+                                                '${double.parse(controller.tobeDelShipemet[i].shippingPrice.toString()) + double.parse(controller.tobeDelShipemet[i].cod.toString())}',
+                                            stutaus: controller
+                                                .tobeDelShipemet[i]
+                                                .orderActivities,
+                                            icon: controller.toBeDelvList
+                                                .map((element) =>
+                                                    element.icon.toString())
+                                                .toList(),
+                                            ref: controller
+                                                    .tobeDelShipemet[i].refId ??
+                                                0,
+                                            weight: controller
+                                                    .tobeDelShipemet[i]
+                                                    .weight ??
+                                                0.00,
+                                            currentStep: controller
+                                                    .tobeDelShipemet[i]
+                                                    .currentStatus ??
+                                                1,
+                                            isOpen: controller
+                                                .tobeDelShipemet[i].isOpen,
+                                            onPressedShowMore: () {
+                                              if (controller.tobeDelShipemet[i]
+                                                      .isOpen ==
+                                                  false) {
+                                                controller.tobeDelShipemet
+                                                    .forEach((element) =>
+                                                        element.isOpen = false);
+                                                controller.tobeDelShipemet[i]
+                                                        .isOpen =
+                                                    !controller
+                                                        .tobeDelShipemet[i]
+                                                        .isOpen;
+                                                x.update();
+                                              } else {
+                                                print('-------------');
+                                                controller.tobeDelShipemet[i]
+                                                    .isOpen = false;
+                                                x.update();
+                                              }
+
+                                              print(controller
+                                                  .tobeDelShipemet[i].isOpen
+                                                  .toString());
+                                            },
+                                          ),
+                                        );
                                       },
                                     ),
-                                  );
-                                },
-                              ),
-                            ),
-                      transition: Transition.downToUp,
-                      duration: const Duration(milliseconds: 400));
-              
+                                  ),
+                            transition: Transition.downToUp,
+                            duration: const Duration(milliseconds: 400));
                       },
                       child: _InsideSmallBox(
                         image: 'assets/images/tobedelivered.png',
                         title: 'To Be\nDelivered',
-                        numbers:
-                            '${controller.toBeDelShipmentNumber.value }',
+                        numbers: '${controller.toBeDelShipmentNumber.value}',
                       ),
                     ),
                   ),
@@ -369,75 +423,99 @@ class MainDash extends StatelessWidget {
                     InkWell(
                       onTap: () {
                         controller.returnShipemet.isEmpty
-                            ? Get.to(() =>MainCardBodyView(controller: EmptyState(label: 'No data',), title: "Return Shipmenet"))
-                            : Get.to(() =>MainCardBodyView(
-                                title: 'Return Shipmenet',
-                                controller: ListView.separated(
-                                  separatorBuilder: (context, i) =>
-                                      const SizedBox(height: 15),
-                                  itemCount: controller.returnShipemet.length,
-                                  padding: const EdgeInsets.only(
-                                      left: 15, right: 15, bottom: 10, top: 5),
-                                  itemBuilder: (context, i) {
-                                    return GetBuilder<DashbordController>(
-                                      builder: (x) => CardBody(
-                                        orderId: controller
-                                                .returnShipemet[i].orderId ??
-                                            00,
-                                        number: controller
-                                                .returnShipemet[i].phone ??
-                                            "+968",
-                                        cod: controller.returnShipemet[i].cod ??
-                                            "0.00",
-                                        cop: controller.returnShipemet[i].cop ??
-                                            "0.00",
-                                        shipmentCost: controller
-                                                .returnShipemet[i]
-                                                .shippingPrice ??
-                                            "0.00",
-                                        totalCharges:
-                                            '${double.parse(controller.returnShipemet[i].shippingPrice.toString()) + double.parse(controller.returnShipemet[i].cod.toString())}',
-                                        stutaus: controller
-                                            .returnShipemet[i].orderActivities,
-                                        icon: controller.returnList
-                                            .map((element) =>
-                                                element.icon.toString())
-                                            .toList(),
-                                        ref: controller
-                                                .returnShipemet[i].refId ??
-                                            0,
-                                        weight: controller
-                                                .returnShipemet[i].weight ??
-                                            0.00,
-                                        currentStep: controller
-                                                .returnShipemet[i]
-                                                .currentStatus ??
-                                            1,
-                                        isOpen:
-                                            controller.returnShipemet[i].isOpen,
-                                        onPressedShowMore: () {
-                                           if (controller.returnShipemet[i].isOpen == false) {
-                                    controller.returnShipemet.forEach(
-                                        (element) => element.isOpen = false);
-                                    controller.returnShipemet[i].isOpen =
-                                       ! controller.returnShipemet[i].isOpen;
-                                         x.update();
-                                  } else {
-                                    print('-------------');
-                                    controller.returnShipemet[i].isOpen = false;
-                                    x.update();
-                                  }
-                                        
-                                          print(controller
-                                              .returnShipemet[i].isOpen
-                                              .toString());
+                            ? Get.to(() => MainCardBodyView(
+                                controller: EmptyState(
+                                  label: 'No data',
+                                ),
+                                title: "Return Shipmenet"))
+                            : Get.to(
+                                () => MainCardBodyView(
+                                      title: 'Return Shipmenet',
+                                      controller: ListView.separated(
+                                        separatorBuilder: (context, i) =>
+                                            const SizedBox(height: 15),
+                                        itemCount:
+                                            controller.returnShipemet.length,
+                                        padding: const EdgeInsets.only(
+                                            left: 15,
+                                            right: 15,
+                                            bottom: 10,
+                                            top: 5),
+                                        itemBuilder: (context, i) {
+                                          return GetBuilder<DashbordController>(
+                                            builder: (x) => CardBody(
+                                              orderId: controller
+                                                      .returnShipemet[i]
+                                                      .orderId ??
+                                                  00,
+                                              number: controller
+                                                      .returnShipemet[i]
+                                                      .phone ??
+                                                  "+968",
+                                              cod: controller
+                                                      .returnShipemet[i].cod ??
+                                                  "0.00",
+                                              cop: controller
+                                                      .returnShipemet[i].cop ??
+                                                  "0.00",
+                                              shipmentCost: controller
+                                                      .returnShipemet[i]
+                                                      .shippingPrice ??
+                                                  "0.00",
+                                              totalCharges:
+                                                  '${double.parse(controller.returnShipemet[i].shippingPrice.toString()) + double.parse(controller.returnShipemet[i].cod.toString())}',
+                                              stutaus: controller
+                                                  .returnShipemet[i]
+                                                  .orderActivities,
+                                              icon: controller.returnList
+                                                  .map((element) =>
+                                                      element.icon.toString())
+                                                  .toList(),
+                                              ref: controller.returnShipemet[i]
+                                                      .refId ??
+                                                  0,
+                                              weight: controller
+                                                      .returnShipemet[i]
+                                                      .weight ??
+                                                  0.00,
+                                              currentStep: controller
+                                                      .returnShipemet[i]
+                                                      .currentStatus ??
+                                                  1,
+                                              isOpen: controller
+                                                  .returnShipemet[i].isOpen,
+                                              onPressedShowMore: () {
+                                                if (controller.returnShipemet[i]
+                                                        .isOpen ==
+                                                    false) {
+                                                  controller.returnShipemet
+                                                      .forEach((element) =>
+                                                          element.isOpen =
+                                                              false);
+                                                  controller.returnShipemet[i]
+                                                          .isOpen =
+                                                      !controller
+                                                          .returnShipemet[i]
+                                                          .isOpen;
+                                                  x.update();
+                                                } else {
+                                                  print('-------------');
+                                                  controller.returnShipemet[i]
+                                                      .isOpen = false;
+                                                  x.update();
+                                                }
+
+                                                print(controller
+                                                    .returnShipemet[i].isOpen
+                                                    .toString());
+                                              },
+                                            ),
+                                          );
                                         },
                                       ),
-                                    );
-                                  },
-                                ),
-                              ), transition: Transition.downToUp,
-                            duration: const Duration(milliseconds: 400));
+                                    ),
+                                transition: Transition.downToUp,
+                                duration: const Duration(milliseconds: 400));
                       },
                       child: _InsideSmallBox(
                         image: 'assets/images/returnshipment.png',
@@ -456,80 +534,102 @@ class MainDash extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       controller.cancellShipemet.isEmpty
-                          ? Get.to(() =>MainCardBodyView(controller: EmptyState(label: 'No data',), title: "Cancell Shipmenet"))
-                          : Get.to(() =>MainCardBodyView(
-                              title: 'Cancell Shipmenet',
-                              controller: ListView.separated(
-                                separatorBuilder: (context, i) =>
-                                    const SizedBox(height: 15),
-                                itemCount: controller.cancellShipemet.length,
-                                padding: const EdgeInsets.only(
-                                    left: 15, right: 15, bottom: 10, top: 5),
-                                itemBuilder: (context, i) {
-                                  return GetBuilder<DashbordController>(
-                                    builder: (x) => CardBody(
-                                      orderId: controller
-                                              .cancellShipemet[i].orderId ??
-                                          "00",
-                                      number:
-                                          controller.cancellShipemet[i].phone ??
-                                              "+968",
-                                      cod: controller.cancellShipemet[i].cod ??
-                                          "0.00",
-                                      cop: controller.cancellShipemet[i].cop ??
-                                          "0.00",
-                                      shipmentCost: controller
-                                              .cancellShipemet[i]
-                                              .shippingPrice ??
-                                          "0.00",
-                                      totalCharges:
-                                          '${double.parse(controller.cancellShipemet[i].shippingPrice.toString()) + double.parse(controller.cancellShipemet[i].cod.toString())}',
-                                      stutaus: controller
-                                          .cancellShipemet[i].orderActivities,
-                                      icon: controller.cancellList
-                                          .map((element) =>
-                                              element.icon.toString())
-                                          .toList(),
-                                      ref:
-                                          controller.cancellShipemet[i].refId ??
-                                              0,
-                                      weight: controller
-                                              .cancellShipemet[i].weight ??
-                                          0.00,
-                                      currentStep: controller.cancellShipemet[i]
-                                              .currentStatus ??
-                                          1,
-                                      isOpen:
-                                          controller.cancellShipemet[i].isOpen,
-                                      onPressedShowMore: () {
-                                          if (controller.cancellShipemet[i].isOpen == false) {
-                                    controller.cancellShipemet.forEach(
-                                        (element) => element.isOpen = false);
-                                    controller.cancellShipemet[i].isOpen =
-                                       ! controller.cancellShipemet[i].isOpen;
-                                         x.update();
-                                  } else {
-                                    print('-------------');
-                                    controller.cancellShipemet[i].isOpen = false;
-                                    x.update();
-                                  }
-                                   
-                                        print(controller
-                                            .cancellShipemet[i].isOpen
-                                            .toString());
+                          ? Get.to(() => MainCardBodyView(
+                              controller: EmptyState(
+                                label: 'No data',
+                              ),
+                              title: "Cancell Shipmenet"))
+                          : Get.to(
+                              () => MainCardBodyView(
+                                    title: 'Cancell Shipmenet',
+                                    controller: ListView.separated(
+                                      separatorBuilder: (context, i) =>
+                                          const SizedBox(height: 15),
+                                      itemCount:
+                                          controller.cancellShipemet.length,
+                                      padding: const EdgeInsets.only(
+                                          left: 15,
+                                          right: 15,
+                                          bottom: 10,
+                                          top: 5),
+                                      itemBuilder: (context, i) {
+                                        return GetBuilder<DashbordController>(
+                                          builder: (x) => CardBody(
+                                            orderId: controller
+                                                    .cancellShipemet[i]
+                                                    .orderId ??
+                                                "00",
+                                            number: controller
+                                                    .cancellShipemet[i].phone ??
+                                                "+968",
+                                            cod: controller
+                                                    .cancellShipemet[i].cod ??
+                                                "0.00",
+                                            cop: controller
+                                                    .cancellShipemet[i].cop ??
+                                                "0.00",
+                                            shipmentCost: controller
+                                                    .cancellShipemet[i]
+                                                    .shippingPrice ??
+                                                "0.00",
+                                            totalCharges:
+                                                '${double.parse(controller.cancellShipemet[i].shippingPrice.toString()) + double.parse(controller.cancellShipemet[i].cod.toString())}',
+                                            stutaus: controller
+                                                .cancellShipemet[i]
+                                                .orderActivities,
+                                            icon: controller.cancellList
+                                                .map((element) =>
+                                                    element.icon.toString())
+                                                .toList(),
+                                            ref: controller
+                                                    .cancellShipemet[i].refId ??
+                                                0,
+                                            weight: controller
+                                                    .cancellShipemet[i]
+                                                    .weight ??
+                                                0.00,
+                                            currentStep: controller
+                                                    .cancellShipemet[i]
+                                                    .currentStatus ??
+                                                1,
+                                            isOpen: controller
+                                                .cancellShipemet[i].isOpen,
+                                            onPressedShowMore: () {
+                                              if (controller.cancellShipemet[i]
+                                                      .isOpen ==
+                                                  false) {
+                                                controller.cancellShipemet
+                                                    .forEach((element) =>
+                                                        element.isOpen = false);
+                                                controller.cancellShipemet[i]
+                                                        .isOpen =
+                                                    !controller
+                                                        .cancellShipemet[i]
+                                                        .isOpen;
+                                                x.update();
+                                              } else {
+                                                print('-------------');
+                                                controller.cancellShipemet[i]
+                                                    .isOpen = false;
+                                                x.update();
+                                              }
+
+                                              print(controller
+                                                  .cancellShipemet[i].isOpen
+                                                  .toString());
+                                            },
+                                          ),
+                                        );
                                       },
                                     ),
-                                  );
-                                },
-                              ),
-                            ), transition: Transition.downToUp,
-                            duration: const Duration(milliseconds: 400));
+                                  ),
+                              transition: Transition.downToUp,
+                              duration: const Duration(milliseconds: 400));
                     },
                     child: _InsideShape(
                       image: 'assets/images/cancell.png',
                       title: 'Cancelled Shipments',
-                      numbers:
-                          '${controller.cancellShipmentNumber.value}',
+                      numbers: '${controller.cancellShipmentNumber.value}',
                     ),
                   ),
                   0.0,

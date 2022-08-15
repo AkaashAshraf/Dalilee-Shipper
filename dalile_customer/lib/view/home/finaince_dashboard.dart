@@ -15,132 +15,126 @@ class FinanceDash extends StatelessWidget {
       color: bgColor,
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       child: Obx(
-        () => Column(
-          
-            children: [
-              controller.isLoadingf.value
-                  ? WaiteImage()
-                  : MaterialButton(
-                      onPressed: () {
-                        controller.fetchAllShipemetData();
-    controller.fetchDeliverShipemetData();
-    controller.fetchRetrunShipemetData();
-    controller.fetchcancellShipemetData();
-    controller.fetchToBeDeliveredShipemetData();
-    controller.fetchToBePickupData();
-    controller.fetchFinanceDashbordData();
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          CustomText(
-                            text: 'Updated data ',
-                            color: Colors.grey,
-                            alignment: Alignment.center,
-                            size: 12,
-                          ),
-                          Icon(
-                            Icons.refresh,
-                            color: Colors.grey,
-                          ),
-                        ],
+        () => Column(children: [
+          controller.isLoadingf.value
+              ? WaiteImage()
+              : MaterialButton(
+                  onPressed: () {
+                    controller.fetchAllShipemetData();
+                    controller.fetchDeliverShipemetData();
+                    controller.fetchRetrunShipemetData();
+                    controller.fetchcancellShipemetData();
+                    controller.fetchToBeDeliveredShipemetData();
+                    controller.fetchToBePickupData();
+                    controller.fetchFinanceDashbordData();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      CustomText(
+                        text: 'Updated data ',
+                        color: Colors.grey,
+                        alignment: Alignment.center,
+                        size: 12,
                       ),
-                    ),
-              SizedBox(
-                height: 5,
+                      Icon(
+                        Icons.refresh,
+                        color: Colors.grey,
+                      ),
+                    ],
+                  ),
+                ),
+          SizedBox(
+            height: 5,
+          ),
+          buildCard(
+              context,
+              _InsideShape(
+                subtitle: '',
+                image: Icon(
+                  Icons.account_balance_wallet_outlined,
+                  color: whiteColor,
+                  size: 50,
+                ),
+                title: 'Total Orders',
+                numbers: '${controller.dashData.value.totalOrders ?? "0 OMR"}',
               ),
-              buildCard(
-                  context,
-                  _InsideShape(
-                    subtitle: '',
-                    image: Icon(
-  Icons.account_balance_wallet_outlined,
-  color: whiteColor,
-  size: 50,
-),
-                    title: 'Total Orders',
-                    numbers:
-                        '${controller.dashData.value.totalOrders ?? "0 OMR"}',
-                  ),
-                  15.0,
-                  15.0,
-                  0.0,
-                  0.0),
-                     const SizedBox(
-                height: 10,
+              15.0,
+              15.0,
+              0.0,
+              0.0),
+          const SizedBox(
+            height: 10,
+          ),
+          buildCard(
+            context,
+            _InsideShape(
+              subtitle: '',
+              image: Icon(
+                Icons.paid_outlined,
+                color: whiteColor,
+                size: 50,
               ),
-                    buildCard(
-                  context,
-                  _InsideShape(
-                    subtitle: '',
-                    image: Icon(
-  Icons.paid_outlined,
-  color: whiteColor,
-  size: 50,
-),
-                    title: 'Total to be Paid',
-                    numbers:
-                        '${controller.dashData.value.totalToBePaid ?? "0 OMR"}',
-                  ),
-                  15.0,
-                  15.0,
-                   15.0,
-                  15.0,),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  _buildsmallbox(
-                    _InsideSmallBox(
-                      image: 'assets/images/delivered.png',
-                      title: 'Total collected',
-                      numbers:
-                          '${controller.dashData.value.totalToBeCollected ?? "0"}',
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  _buildsmallbox(
-                    _InsideSmallBox(
-                      image: 'assets/images/tobepickup.png',
-                      title: 'COD Pending',
-                      numbers:
-                          '${controller.dashData.value.codPending ?? "0"}',
-                    ),
-                  ),
-                ],
+              title: 'Total to be Paid',
+              numbers: '${controller.dashData.value.totalToBePaid ?? "0 OMR"}',
+            ),
+            15.0,
+            15.0,
+            15.0,
+            15.0,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              _buildsmallbox(
+                _InsideSmallBox(
+                  image: 'assets/images/delivered.png',
+                  title: 'Total collected',
+                  numbers:
+                      '${controller.dashData.value.totalToBeCollected ?? "0"}',
+                ),
               ),
               const SizedBox(
-                height: 10,
+                width: 5,
               ),
-                   Row(
-                children: [
-                  _buildsmallbox(
-                    _InsideSmallBox(
-                      image: 'assets/images/delivered.png',
-                      title: 'Total with Driver',
-                      numbers:
-                          '${controller.dashData.value.totalWithDrivers ?? "0"}',
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  _buildsmallbox(
-                    _InsideSmallBox(
-                      image: 'assets/images/tobepickup.png',
-                      title: 'Total Returned',
-                      numbers:
-                          '${controller.dashData.value.totalReturned ?? "0"}',
-                    ),
-                  ),
-                ],
+              _buildsmallbox(
+                _InsideSmallBox(
+                  image: 'assets/images/tobepickup.png',
+                  title: 'COD Pending',
+                  numbers: '${controller.dashData.value.codPending ?? "0"}',
+                ),
               ),
-         
-            ]),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              _buildsmallbox(
+                _InsideSmallBox(
+                  image: 'assets/images/delivered.png',
+                  title: 'Total with Driver',
+                  numbers:
+                      '${controller.dashData.value.totalWithDrivers ?? "0"}',
+                ),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              _buildsmallbox(
+                _InsideSmallBox(
+                  image: 'assets/images/tobepickup.png',
+                  title: 'Total Returned',
+                  numbers: '${controller.dashData.value.totalReturned ?? "0"}',
+                ),
+              ),
+            ],
+          ),
+        ]),
       ),
     );
   }
@@ -172,7 +166,7 @@ Widget buildCard(BuildContext context, Widget child, a, b, c, d) {
         bottomRight: Radius.circular(d),
       ),
     ),
-    padding: const EdgeInsets.symmetric(vertical:15,horizontal: 20),
+    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
     child: child,
   );
 }
@@ -195,18 +189,19 @@ class _InsideSmallBox extends StatelessWidget {
           color: whiteColor,
           size: 14,
         ),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-           
             Image.asset(
               image,
               height: 30,
               width: 30,
-           //   fit: BoxFit.contain,
+              //   fit: BoxFit.contain,
             ),
-             CustomText(
+            CustomText(
               text: numbers,
               color: whiteColor,
               size: 14,
@@ -223,9 +218,10 @@ class _InsideShape extends StatelessWidget {
       {Key? key,
       required this.image,
       required this.title,
-      required this.numbers,required this.subtitle})
+      required this.numbers,
+      required this.subtitle})
       : super(key: key);
-  final String  title, numbers,subtitle;
+  final String title, numbers, subtitle;
   final Widget image;
   @override
   Widget build(BuildContext context) {
@@ -242,14 +238,18 @@ class _InsideShape extends StatelessWidget {
               size: 14,
               fontWeight: FontWeight.w500,
             ),
-             SizedBox(height: 10,),
-              CustomText(
+            SizedBox(
+              height: 10,
+            ),
+            CustomText(
               text: subtitle,
-              color:Colors.grey.shade200,
+              color: Colors.grey.shade200,
               size: 13,
               fontWeight: FontWeight.w400,
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             CustomText(
               text: numbers,
               color: Colors.grey.shade200,

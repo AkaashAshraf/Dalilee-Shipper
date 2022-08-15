@@ -14,10 +14,10 @@ class AuthController {
       dynamic resLogin = json.decode(fromString!.toString()) ?? null;
 
       dynamic tokenLo = resLogin['data']["access_token"] ?? null;
-     
+
       if (tokenLo != null) {
         _isLogin = true;
-        
+
         return;
       } else {
         _isLogin = false;
@@ -25,7 +25,6 @@ class AuthController {
 
       return;
     } catch (e) {
-     
       _isLogin = false;
       return;
     }

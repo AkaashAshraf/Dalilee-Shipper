@@ -93,7 +93,6 @@ class OfficesView extends StatelessWidget {
         ),
         onTap: (x) {
           _model.duringMap();
-         
         },
       );
 

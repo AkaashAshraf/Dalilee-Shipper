@@ -111,17 +111,16 @@ class _GMapState extends State<GMap> {
 
   _apiData() async {
     Get.dialog(
-      Center(
-          child: Container(
-              margin: EdgeInsets.all(5),
-              height: 70,
-              width: 70,
-              decoration: BoxDecoration(
-                  color: bgColor, borderRadius: BorderRadius.circular(90)),
-              child: const WaiteImage())),
-      barrierColor: Colors.transparent,
-      barrierDismissible: false,
-    );
+        Center(
+            child: Container(
+                margin: EdgeInsets.all(5),
+                height: 70,
+                width: 70,
+                decoration: BoxDecoration(
+                    color: bgColor, borderRadius: BorderRadius.circular(90)),
+                child: const WaiteImage())),
+        barrierColor: Colors.transparent,
+        barrierDismissible: true);
     try {
       await PickupApi.fetchlocationData(
               lat.text.toString(), long.text.toString())
@@ -140,7 +139,14 @@ class _GMapState extends State<GMap> {
         }
       }).whenComplete(() {
         Get.put(PickupController()).fetchAllPickupData();
+        // var temp = Get.find<PickupController>;
+        // Navigator.pop(context);
+
         Get.put(PickupController()).fetchTodayPickupData();
+        Navigator.pop(context);
+        Navigator.pop(context);
+        // Navigator.pop(context);
+        // Navigator.pop(context);
       });
     } finally {
       what3WordApi(
@@ -212,7 +218,6 @@ class _GMapState extends State<GMap> {
                     // notify map is moving
                     mapPickerController.mapMoving!();
                     textController.text = "checking ...";
-                   
                   },
                   onCameraMove: (cameraPosition) {
                     myplace = cameraPosition;
@@ -221,7 +226,6 @@ class _GMapState extends State<GMap> {
                     mapPickerController.mapFinishedMoving!();
                     lat.text = myplace.target.latitude.toString();
                     long.text = myplace.target.longitude.toString();
-                    
                   }),
             ),
             Positioned(

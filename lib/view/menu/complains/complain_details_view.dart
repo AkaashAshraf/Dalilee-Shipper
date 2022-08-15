@@ -272,7 +272,8 @@ class ComplainDetails extends StatelessWidget {
                                           GestureDetector(
                                             onTap: () async {
                                               print("------------");
-                                              final url ="https://shaheen-test2.dalilee.om/${_controller.ticketDetailsData.value.comments![i].files[x]}";
+                                              final url =
+                                                  "https://shaheen-test2.dalilee.om/${_controller.ticketDetailsData.value.comments![i].files[x]}";
                                               await launch(url);
                                             },
                                             child: CustomText(

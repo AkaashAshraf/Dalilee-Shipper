@@ -10,10 +10,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dalile_customer/view/widget/empty.dart';
 
-class InShipments extends StatelessWidget {
+class InShipments extends StatefulWidget {
   InShipments({Key? key}) : super(key: key);
 
+  @override
+  State<InShipments> createState() => _InShipmentsState();
+}
+
+class _InShipmentsState extends State<InShipments> {
   final controller = Get.put(ShipmentViewModel(), permanent: true);
+  @override
+
+  // TODO: implement initState
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -27,7 +36,7 @@ class InShipments extends StatelessWidget {
               height: 35,
               child: MaterialButton(
                 onPressed: () {
-                  controller.fetchShipemetData();
+                  controller.fetchShipemetData(isRefresh: true);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -70,48 +79,53 @@ class InShipments extends StatelessWidget {
             Expanded(
               flex: 12,
               child: controller.searchResult.isNotEmpty
-                  ? ListView.separated(
-                      controller: controller.controller,
-                      separatorBuilder: (context, i) =>
-                          const SizedBox(height: 15),
-                      itemCount: controller.searchResult.length,
-                      padding: const EdgeInsets.only(
-                          left: 15, right: 15, bottom: 10, top: 5),
-                      itemBuilder: (context, i) {
-                        return GetBuilder<ShipmentViewModel>(
-                          builder: (x) => CardBody(
-                            orderId:
-                                controller.searchResult[i]!.orderId ?? "00",
-                            number: controller.searchResult[i]!.phone ?? "+968",
-                            cod: controller.searchResult[i]!.cod ?? "0.00",
-                            cop: controller.searchResult[i]!.cop ?? "0.00",
-                            shipmentCost:
-                                controller.searchResult[i]!.shippingPrice ??
-                                    "0.00",
-                            totalCharges:
-                                '${double.parse(controller.searchResult[i]!.shippingPrice.toString()) + double.parse(controller.searchResult[i]!.cod.toString())}',
-                            stutaus:
-                                controller.searchResult[i]!.orderActivities,
-                            icon: controller.shipList
-                                .map((element) => element.icon.toString())
-                                .toList(),
-                            ref: controller.searchResult[i]!.refId ?? "0",
-                            weight:
-                                controller.searchResult[i]!.weight ?? "0.00",
-                            currentStep:
-                                controller.searchResult[i]!.currentStatus ?? 1,
-                            isOpen: controller.searchResult[i]!.isOpen,
-                            onPressedShowMore: () {
-                              controller.searchResult[i]!.isOpen =
-                                  !controller.searchResult[i]!.isOpen;
-                              x.update();
-                              print(controller.searchResult[i]!.isOpen
-                                  .toString());
-                            },
-                          ),
-                        );
-                      },
-                    )
+                  ? GetX<ShipmentViewModel>(builder: (_controller) {
+                      return ListView.separated(
+                        controller: controller.controller,
+                        separatorBuilder: (context, i) =>
+                            const SizedBox(height: 15),
+                        itemCount: controller.searchResult.length,
+                        padding: const EdgeInsets.only(
+                            left: 15, right: 15, bottom: 10, top: 5),
+                        itemBuilder: (context, i) {
+                          return GetBuilder<ShipmentViewModel>(
+                            builder: (x) => CardBody(
+                              orderId:
+                                  controller.searchResult[i]!.orderId ?? "00",
+                              number:
+                                  controller.searchResult[i]!.phone ?? "+968",
+                              cod: controller.searchResult[i]!.cod ?? "0.00",
+                              cop: controller.searchResult[i]!.cop ?? "0.00",
+                              orderNumber: controller.searchResult[i]!.orderNo,
+                              shipmentCost:
+                                  controller.searchResult[i]!.shippingPrice ??
+                                      "0.00",
+                              totalCharges:
+                                  '${double.parse(controller.searchResult[i]!.shippingPrice.toString()) + double.parse(controller.searchResult[i]!.cod.toString())}',
+                              stutaus:
+                                  controller.searchResult[i]!.orderActivities,
+                              icon: controller.shipList
+                                  .map((element) => element.icon.toString())
+                                  .toList(),
+                              ref: controller.searchResult[i]!.refId ?? "0",
+                              weight:
+                                  controller.searchResult[i]!.weight ?? "0.00",
+                              currentStep:
+                                  controller.searchResult[i]!.currentStatus ??
+                                      1,
+                              isOpen: controller.searchResult[i]!.isOpen,
+                              onPressedShowMore: () {
+                                controller.searchResult[i]!.isOpen =
+                                    !controller.searchResult[i]!.isOpen;
+                                x.update();
+                                print(controller.searchResult[i]!.isOpen
+                                    .toString());
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    })
                   : controller.searchResult.isEmpty &&
                           controller.searchConter.text.isNotEmpty
                       ? Column(
@@ -144,7 +158,7 @@ class InShipments extends StatelessWidget {
                           ],
                         )
                       : ListView.separated(
-                         controller: controller.controller,
+                          controller: controller.controller,
                           separatorBuilder: (context, i) =>
                               const SizedBox(height: 15),
                           itemCount: controller.inList.length,
@@ -163,6 +177,7 @@ class InShipments extends StatelessWidget {
                                 totalCharges:
                                     '${double.parse(controller.inList[i]!.shippingPrice.toString()) + double.parse(controller.inList[i]!.cod.toString())}',
                                 stutaus: controller.inList[i]!.orderActivities,
+                                orderNumber: controller.inList[i]!.orderNo,
                                 icon: controller.shipList
                                     .map((element) => element.icon.toString())
                                     .toList(),
@@ -178,14 +193,13 @@ class InShipments extends StatelessWidget {
                                         (element) => element!.isOpen = false);
                                     controller.inList[i]!.isOpen =
                                         !controller.inList[i]!.isOpen;
-                                         x.update();
+                                    x.update();
                                   } else {
                                     print('-------------');
                                     controller.inList[i]!.isOpen = false;
                                     x.update();
                                   }
 
-                                 
                                   print(
                                       controller.inList[i]!.isOpen.toString());
                                 },
@@ -201,11 +215,11 @@ class InShipments extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const EmptyState(
-            label: 'no Data ',
+            label: 'no Data',
           ),
           MaterialButton(
             onPressed: () {
-              controller.fetchShipemetData();
+              controller.fetchShipemetData(isRefresh: true);
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -249,15 +263,14 @@ class OutShipments extends StatelessWidget {
               height: 35,
               child: MaterialButton(
                 onPressed: () {
-                  controller.fetchOutShipemetData();
-                  print("ok");
+                  controller.fetchOutShipemetData(isRefresh: true);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: const [
                     CustomText(
-                      text: 'Updated data ',
+                      text: 'Updated data',
                       color: Colors.grey,
                       alignment: Alignment.center,
                       size: 11,
@@ -294,7 +307,6 @@ class OutShipments extends StatelessWidget {
               flex: 12,
               child: controller.searchResult.isNotEmpty
                   ? ListView.separated(
-                    
                       separatorBuilder: (context, i) =>
                           const SizedBox(height: 15),
                       itemCount: controller.searchResult.length,
@@ -307,6 +319,7 @@ class OutShipments extends StatelessWidget {
                                 controller.searchResult[i]!.orderId ?? "00",
                             number: controller.searchResult[i]!.phone ?? "+968",
                             cod: controller.searchResult[i]!.cod ?? "0.00",
+                            orderNumber: controller.searchResult[i]!.orderNo,
                             cop: controller.searchResult[i]!.cop ?? "0.00",
                             shipmentCost:
                                 controller.searchResult[i]!.shippingPrice ??
@@ -328,14 +341,14 @@ class OutShipments extends StatelessWidget {
                               controller.searchResult[i]!.isOpen =
                                   !controller.searchResult[i]!.isOpen;
                               x.update();
-                              print(controller.searchResult[i]!.isOpen.toString());
+                              print(controller.searchResult[i]!.isOpen
+                                  .toString());
                             },
                           ),
                         );
                       },
                     )
-
-                    : controller.searchResult.isEmpty &&
+                  : controller.searchResult.isEmpty &&
                           controller.searchConter.text.isNotEmpty
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -367,9 +380,8 @@ class OutShipments extends StatelessWidget {
                             ),
                           ],
                         )
-                      
-                  : ListView.separated(
-                    controller: controller.controller,
+                      : ListView.separated(
+                          controller: controller.controller,
                           separatorBuilder: (context, i) =>
                               const SizedBox(height: 15),
                           itemCount: controller.outList.length,
@@ -382,6 +394,7 @@ class OutShipments extends StatelessWidget {
                                 number: controller.outList[i]!.phone ?? "+968",
                                 cod: controller.outList[i]!.cod ?? "0.00",
                                 cop: controller.outList[i]!.cop ?? "0.00",
+                                orderNumber: controller.outList[i]!.orderNo,
                                 shipmentCost:
                                     controller.outList[i]!.shippingPrice ??
                                         "0.00",
@@ -397,18 +410,18 @@ class OutShipments extends StatelessWidget {
                                     controller.outList[i]!.currentStatus ?? 1,
                                 isOpen: controller.outList[i]!.isOpen,
                                 onPressedShowMore: () {
-                                   if (controller.outList[i]!.isOpen == false) {
+                                  if (controller.outList[i]!.isOpen == false) {
                                     controller.outList.forEach(
                                         (element) => element!.isOpen = false);
                                     controller.outList[i]!.isOpen =
                                         !controller.outList[i]!.isOpen;
-                                         x.update();
+                                    x.update();
                                   } else {
                                     print('-------------');
                                     controller.outList[i]!.isOpen = false;
                                     x.update();
                                   }
-                                 
+
                                   print(
                                       controller.outList[i]!.isOpen.toString());
                                 },

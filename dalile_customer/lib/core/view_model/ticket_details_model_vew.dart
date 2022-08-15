@@ -80,7 +80,7 @@ class TicketDetailsController extends GetxController {
     try {
       print('--------------->${ticketDetailsData.value.id.toString()}');
       bool? data = await ComplainApi.fetchCreateCommentData(
-          ticketDetailsData.value.id.toString(), bodytext.text, itemsImages);
+          ticketDetailsData.value.id.toString(), bodytext.text, []);
 
       if (data == true) {
         if (Get.isBottomSheetOpen == true) {

@@ -3,6 +3,7 @@
 //     final outAndInShipmentModel = outAndInShipmentModelFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:ffi';
 
 OutAndInShipmentModel outAndInShipmentModelFromJson(String str) =>
     OutAndInShipmentModel.fromJson(json.decode(str));
@@ -35,9 +36,11 @@ class Data {
   Data({
     this.requests,
     this.trackingStatuses,
+    this.total_requests,
   });
 
   List<Request>? requests;
+  int? total_requests;
   List<TrackingStatus>? trackingStatuses;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -45,9 +48,11 @@ class Data {
             json["requests"].map((x) => Request.fromJson(x))),
         trackingStatuses: List<TrackingStatus>.from(
             json["tracking_statuses"].map((x) => TrackingStatus.fromJson(x))),
+        total_requests: json["total_requests"],
       );
 
   Map<String, dynamic> toJson() => {
+        "total_requests": total_requests,
         "requests": List<dynamic>.from(requests!.map((x) => x.toJson())),
         "tracking_statuses":
             List<dynamic>.from(trackingStatuses!.map((x) => x.toJson())),
@@ -55,20 +60,19 @@ class Data {
 }
 
 class Request {
-  Request({
-    this.orderId,
-    this.orderNo,
-    this.refId,
-    this.cop,
-    this.customerNo,
-    this.weight,
-    this.phone,
-    this.shippingPrice,
-    this.cod,
-    this.currentStatus,
-    this.orderActivities,
-    required this.isOpen
-  });
+  Request(
+      {this.orderId,
+      this.orderNo,
+      this.refId,
+      this.cop,
+      this.customerNo,
+      this.weight,
+      this.phone,
+      this.shippingPrice,
+      this.cod,
+      this.currentStatus,
+      this.orderActivities,
+      required this.isOpen});
   bool isOpen;
   dynamic orderId;
   dynamic orderNo;
@@ -83,7 +87,7 @@ class Request {
   List<OrderActivity>? orderActivities;
 
   factory Request.fromJson(Map<dynamic, dynamic> json) => Request(
-    isOpen : false,
+        isOpen: false,
         orderId: json["order_id"],
         orderNo: json["order_no"],
         refId: json["ref_id"] == null ? null : json["ref_id"],

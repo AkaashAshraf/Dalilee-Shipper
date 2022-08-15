@@ -9,8 +9,7 @@ import 'package:get/get.dart';
 
 class LoginView extends StatelessWidget {
   LoginView({Key? key}) : super(key: key);
-  final LoginController _controller =
-      Get.put(LoginController());
+  final LoginController _controller = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,31 +22,30 @@ class LoginView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-              const  SizedBox(
+                const SizedBox(
                   height: 80,
                 ),
-               
                 Image.asset(
                   "assets/images/dalilees.png",
                   fit: BoxFit.contain,
                   height: 220,
                   width: 220,
                 ),
-              const  SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-               const CustomText(
+                const CustomText(
                   text: 'WELCOME TO DALILEE APP',
                   color: primaryColor,
                   fontWeight: FontWeight.bold,
                   alignment: Alignment.center,
                   size: 15,
                 ),
-               const SizedBox(
+                const SizedBox(
                   height: 35,
                 ),
                 Padding(
-                  padding:const EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: MyInput(
                     controller: _controller.phoneNumber,
                     validator: (x) => _controller.mobileVild(x),
@@ -59,18 +57,17 @@ class LoginView extends StatelessWidget {
                     ),
                   ),
                 ),
-               const SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 SizedBox(
                   height: 45,
-                  width: MediaQuery.of(context).size.width*0.8,
+                  width: MediaQuery.of(context).size.width * 0.8,
                   child: _controller.isLoading.value
                       ? const WaiteImage()
                       : CustomButtom(
                           text: 'login',
                           onPressed: () {
-                            
                             _controller.getDeviceDetails();
                             _controller.valid();
                           },

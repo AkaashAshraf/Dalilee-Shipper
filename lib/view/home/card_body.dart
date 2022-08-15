@@ -20,8 +20,10 @@ class CardBody extends StatelessWidget {
       this.stutaus,
       this.totalCharges,
       this.weight,
+      this.orderNumber,
       required this.currentStep,
-      required this.onPressedShowMore,required this.isOpen})
+      required this.onPressedShowMore,
+      required this.isOpen})
       : super(key: key);
 
   final dynamic orderId,
@@ -29,6 +31,7 @@ class CardBody extends StatelessWidget {
       number,
       cop,
       weight,
+      orderNumber,
       shipmentCost,
       totalCharges,
       cod;
@@ -38,7 +41,7 @@ class CardBody extends StatelessWidget {
   final bool isOpen;
   final List<String> icon;
   final void Function()? onPressedShowMore;
- 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -60,7 +63,7 @@ class CardBody extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: 'Order ID : $orderId',
+                  text: 'Order # : $orderNumber',
                   color: primaryColor,
                   size: 18,
                   fontWeight: FontWeight.bold,
@@ -82,22 +85,23 @@ class CardBody extends StatelessWidget {
                       width: 10,
                     ),
                     InkWell(
-                      onTap: (){
-                             Get.defaultDialog(
-                    title: 'PDF File',
-                    titlePadding: const EdgeInsets.all(15),
-                    contentPadding: const EdgeInsets.all(5),
-                    middleText: 'Are you sure to download pdf file?',
-                    textCancel: 'Cancel',
-                    textConfirm: 'Ok',
-                    buttonColor: primaryColor,
-                    confirmTextColor: Colors.white,
-                    cancelTextColor: Colors.black,
-                    radius: 10,
-                    backgroundColor: whiteColor,
-                    onConfirm: () {
-                      Get.put(ShipmentViewModel()).launchPDF("$orderId");
-                    });
+                      onTap: () {
+                        Get.defaultDialog(
+                            title: 'PDF File',
+                            titlePadding: const EdgeInsets.all(15),
+                            contentPadding: const EdgeInsets.all(5),
+                            middleText: 'Are you sure to download pdf file?',
+                            textCancel: 'Cancel',
+                            textConfirm: 'Ok',
+                            buttonColor: primaryColor,
+                            confirmTextColor: Colors.white,
+                            cancelTextColor: Colors.black,
+                            radius: 10,
+                            backgroundColor: whiteColor,
+                            onConfirm: () {
+                              Get.put(ShipmentViewModel())
+                                  .launchPDF("$orderId");
+                            });
                       },
                       child: Image.asset(
                         'assets/images/pdf.png',
@@ -111,8 +115,8 @@ class CardBody extends StatelessWidget {
                     InkWell(
                       onTap: () {
                         Get.put(ComplainController()).fetchTypeComplainData();
-                        Get.put(ShipmentViewModel())
-                            .menuAlert(context, number ?? "000", orderId ?? "0");
+                        Get.put(ShipmentViewModel()).menuAlert(
+                            context, number ?? "000", orderId ?? "0");
                       },
                       child: const Icon(
                         Icons.more_vert,
@@ -167,36 +171,36 @@ class CardBody extends StatelessWidget {
           ),
           if (isOpen) _buildPayment(context),
           MaterialButton(
-              onPressed: onPressedShowMore,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomText(
-                    text: 'Show More Details',
-                    color: textRedColor,
-                    size: 11,
-                    alignment: Alignment.centerRight,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  isOpen? Transform.rotate(
-                    angle: 3.14, 
-                    child: const Icon(
-                      Icons.arrow_drop_down_circle_outlined,
-                      color: textRedColor,
-                      size: 15,
-                    ),
-                  ):
-                   Icon(
-                      Icons.arrow_drop_down_circle_outlined,
-                      color: textRedColor,
-                      size: 15,
-                    ),
-                 
-                ],
-              ),
-            )
+            onPressed: onPressedShowMore,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomText(
+                  text: 'Show More Details',
+                  color: textRedColor,
+                  size: 11,
+                  alignment: Alignment.centerRight,
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                isOpen
+                    ? Transform.rotate(
+                        angle: 3.14,
+                        child: const Icon(
+                          Icons.arrow_drop_down_circle_outlined,
+                          color: textRedColor,
+                          size: 15,
+                        ),
+                      )
+                    : Icon(
+                        Icons.arrow_drop_down_circle_outlined,
+                        color: textRedColor,
+                        size: 15,
+                      ),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -219,7 +223,8 @@ class CardBody extends StatelessWidget {
                   endChild: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: CustomText(
-                      text: ' ${stutaus![q].updatedAt}',
+                      text: ' ${stutaus![q].externalText} at ' +
+                          stutaus![q].updatedAt,
                       alignment: Alignment.centerLeft,
                     ),
                   ),
@@ -232,7 +237,8 @@ class CardBody extends StatelessWidget {
                 ),
               ),
             _rowWithnameline('Payment Summary'),
-            _buildRowDown(text1Color, 12, 'Shipping Cost ', '$shipmentCost OMR'),
+            _buildRowDown(
+                text1Color, 12, 'Shipping Cost ', '$shipmentCost OMR'),
             _buildRowDown(text1Color, 12, 'COD ', '$cod OMR'),
             _buildRowDown(
                 primaryColor, 13, 'Total Charges ', ' $totalCharges OMR'),

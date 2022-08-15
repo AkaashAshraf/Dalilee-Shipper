@@ -21,6 +21,13 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class ShipmentViewModel extends GetxController {
   bool isOpen = false;
+  RxBool inLoadMore = false.obs;
+  RxBool outLoadMore = false.obs;
+
+  RxInt in_limit = 0.obs;
+  RxInt out_limit = 0.obs;
+  RxInt total_in = 0.obs;
+  RxInt total_out = 0.obs;
 
   isOpenFuncjation(i) {
     update();
@@ -37,6 +44,13 @@ class ShipmentViewModel extends GetxController {
       isSDown = true;
       update();
     }
+    if (controller.position.extentAfter > 10 &&
+        total_out.value > out_limit.value) {
+      if (inLoadMore.value) return;
+      inLoadMore.value = true;
+
+      fetchOutShipemetData(isRefresh: false);
+    } //load more
   }
 
   List<NameWithIcon> callList = [
@@ -48,7 +62,6 @@ class ShipmentViewModel extends GetxController {
   ];
   List<NameWithIcon> menuList = [
     NameWithIcon(icon: Icons.info_outlined, name: 'Ticket'),
-   
   ];
 
   callAlert(context, number) {
@@ -116,16 +129,13 @@ class ShipmentViewModel extends GetxController {
       var pdf =
           await FinanceApi.fetchPDFCloseData(id).whenComplete(() => Get.back());
       if (pdf != null) {
-      
         var url = pdf;
         await launch(url);
       } else {
         Get.snackbar('Filed', "This Id can't be launch $id",
             colorText: whiteColor);
       }
-    } finally {
-    
-    }
+    } finally {}
   }
 
   menuAlert(context, number, orderN) {
@@ -153,7 +163,7 @@ class ShipmentViewModel extends GetxController {
                       color: Colors.black,
                     ),
                     onTap: () {
-                   //   Get.put(ComplainController()).fetchTypeComplainData();
+                      //   Get.put(ComplainController()).fetchTypeComplainData();
                       Get.put(ComplainController()).typeID.clear();
                       Get.put(ComplainController()).typeName.clear();
                       Get.put(ComplainController()).orderID.clear();
@@ -193,12 +203,11 @@ class ShipmentViewModel extends GetxController {
   }
 
   Future<void> makePhoneCall(String phoneNumber) async {
-     Uri launchUri = Uri(
+    Uri launchUri = Uri(
       scheme: 'tel',
       path: phoneNumber,
     );
     await launchUrl(launchUri);
-  
   }
 
 //----------API-------------------
@@ -206,7 +215,7 @@ class ShipmentViewModel extends GetxController {
   @override
   void onInit() {
     fetchOutShipemetData();
-    fetchShipemetData();
+    fetchShipemetData(isRefresh: true);
     controller.addListener(listenScrolling);
     super.onInit();
   }
@@ -223,19 +232,27 @@ class ShipmentViewModel extends GetxController {
   List<TrackingStatus> shipList = [];
   List<TrackingStatus> outshipList = [];
 
-  void fetchShipemetData() async {
+  void fetchShipemetData({isRefresh: false}) async {
     try {
+      if (isRefresh) {
+        in_limit.value = 0;
+      } else
+        in_limit.value += 10;
       isLoadingIN(true);
 
-      var outInData = await ShipmentApi.fetchShipemetData("receive");
+      var outInData = await ShipmentApi.fetchShipemetData("in",
+          limit: in_limit.value.toString());
       if (outInData != null) {
-        inList.value = outInData.requests!.reversed.toList();
+        if (isRefresh)
+          inList.value = outInData.requests!.toList();
+        else
+          inList.value += outInData.requests!.toList();
+
         shipList = outInData.trackingStatuses!;
       } else {
-         if (!Get.isSnackbarOpen) {
-           Get.snackbar('Filed', ShipmentApi.mass);
-         }
-       
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar('Filed', ShipmentApi.mass);
+        }
       }
     } finally {
       if (ShipmentApi.checkAuth == true) {
@@ -246,28 +263,39 @@ class ShipmentViewModel extends GetxController {
     }
   }
 
-  void fetchOutShipemetData() async {
+  void fetchOutShipemetData({isRefresh: false}) async {
     try {
-      isLoadingOut(true);
+      // if (isLoadingOut.value || outLoadMore.value) return;
 
-      var outData = await ShipmentApi.fetchShipemetData("sent");
+      if (isRefresh) {
+        out_limit.value = 0;
+      } else
+        out_limit.value += 10;
+      if (out_limit.value == 0) isLoadingOut(true);
+
+      var outData = await ShipmentApi.fetchShipemetData("out",
+          limit: out_limit.value.toString());
       if (outData != null) {
-        outList.value = outData.requests!.reversed.toList();
+        if (isRefresh)
+          outList.value = outData.requests!.toList();
+        else
+          outList.value += outData.requests!.toList();
+
+        total_out.value = outData.total_requests!;
         outshipList = outData.trackingStatuses!;
         if (outList.length > 0) {}
       } else {
-          if (!Get.isSnackbarOpen) {
-           Get.snackbar('Filed', ShipmentApi.mass);
-         }
-        
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar('Filed', ShipmentApi.mass);
+        }
       }
     } finally {
-     if (ShipmentApi.checkAuth == true) {
+      if (ShipmentApi.checkAuth == true) {
         Get.offAll(() => LoginView());
         ShipmentApi.checkAuth = false;
       }
       isLoadingOut(false);
-     
+      inLoadMore.value = false;
     }
   }
 
@@ -287,7 +315,6 @@ class ShipmentViewModel extends GetxController {
       if (out.orderId!.toString().toLowerCase().contains(text.toLowerCase())) {
         searchResult.add(out);
       }
-     
     }
   }
 
@@ -302,7 +329,6 @@ class ShipmentViewModel extends GetxController {
       if (out.orderId!.toString().toLowerCase().contains(text.toLowerCase())) {
         searchResult.add(out);
       }
-    
     }
   }
 
@@ -375,9 +401,8 @@ class ShowCreateComplain2 extends StatelessWidget {
               height: 10,
             ),
             CustomFormFiled(
-              select: _model.typeName.text.isNotEmpty
-                  ? _model.typeName.text
-                  : null,
+              select:
+                  _model.typeName.text.isNotEmpty ? _model.typeName.text : null,
               hint: 'Ticket Type',
               // select: controller.bankName.text,
               text: 'Select Ticket Type',
@@ -387,7 +412,6 @@ class ShowCreateComplain2 extends StatelessWidget {
                   if (_model.typeData[i].name == val) {
                     _model.typeID.text = _model.typeData[i].id.toString();
                     _model.typeName.text = _model.typeData[i].name.toString();
-
                   }
                 }
                 return null;

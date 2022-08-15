@@ -3,7 +3,8 @@ import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class MainCardBodyView extends StatelessWidget {
-  MainCardBodyView({Key? key, required this.controller, this.onUplod,required this.title})
+  MainCardBodyView(
+      {Key? key, required this.controller, this.onUplod, required this.title})
       : super(key: key);
   final String title;
   final Widget controller;
@@ -29,7 +30,7 @@ class MainCardBodyView extends StatelessWidget {
       toolbarHeight: 70,
       backgroundColor: primaryColor,
       foregroundColor: whiteColor,
-      title:  CustomText(
+      title: CustomText(
           text: title,
           color: whiteColor,
           size: 18,

@@ -1,4 +1,4 @@
-package com.example.dalile_customer
+package thiqatech.dalilee.shipper
 
 import io.flutter.embedding.android.FlutterActivity
 

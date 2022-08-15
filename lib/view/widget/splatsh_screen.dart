@@ -1,4 +1,3 @@
-
 import 'package:dalile_customer/core/server/auth.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
 import 'package:dalile_customer/view/widget/controller_view.dart';
@@ -18,42 +17,33 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     loginControlfff();
     super.initState();
-  
-    
   }
 
   loginControlfff() async {
-     await AuthController.isLoginUser().whenComplete(() {
-    
-    if (AuthController.isL == false) {
-      
-  setState(() {
-      status = false;
-  });
-    
-    } else{
- setState(() {
-       status = true;
-     });
-    }
-    
-      }); 
-   
-    
-
+    await AuthController.isLoginUser().whenComplete(() {
+      if (AuthController.isL == false) {
+        setState(() {
+          status = false;
+        });
+      } else {
+        setState(() {
+          status = true;
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-         print(status.toString());
+    print(status.toString());
     return AnimatedSplashScreen(
         splashIconSize: 250,
         splash: Image.asset(
-           "assets/images/dalilees.png",
+          "assets/images/dalilees.png",
           height: 300,
           width: 250,
         ),
-        nextScreen:status? ControllerView():LoginView(),
+        nextScreen: status ? ControllerView() : LoginView(),
         splashTransition: SplashTransition.fadeTransition,
         backgroundColor: Colors.white);
   }

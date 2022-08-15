@@ -180,8 +180,8 @@ class _CalculateViewState extends State<CalculateView> {
     return Column(
       children: [
         const Padding(
-          padding:  EdgeInsets.only(left: 5),
-          child:  CustomText(
+          padding: EdgeInsets.only(left: 5),
+          child: CustomText(
             text: 'Shipping Type',
             fontWeight: FontWeight.w400,
             size: 13,
@@ -259,8 +259,8 @@ class _CalculateViewState extends State<CalculateView> {
     return Column(
       children: [
         const Padding(
-          padding:  EdgeInsets.only(left: 5),
-          child:  CustomText(
+          padding: EdgeInsets.only(left: 5),
+          child: CustomText(
             text: 'Shipping Type',
             fontWeight: FontWeight.w400,
             size: 13,
@@ -408,7 +408,7 @@ class _CalculateViewState extends State<CalculateView> {
       children: [
         const Padding(
           padding: EdgeInsets.only(left: 5),
-          child:  CustomText(
+          child: CustomText(
             text: 'Shipping Type',
             fontWeight: FontWeight.w400,
             size: 13,
@@ -513,14 +513,14 @@ class ComplatedScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: Row(
-              children:const [
-                 Icon(
+              children: const [
+                Icon(
                   Icons.info_outline_rounded,
                   color: textRedColor,
                   size: 17,
                 ),
-                 SizedBox(width: 5),
-                 CustomText(
+                SizedBox(width: 5),
+                CustomText(
                   text: 'Rate is based on cash rate in Oman Currency',
                   color: textRedColor,
                   size: 10,
@@ -626,7 +626,7 @@ class ComplatedScreen extends StatelessWidget {
       width: 70,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        children:const [
+        children: const [
           CustomText(
             text: 'Change',
             alignment: Alignment.centerLeft,
@@ -634,10 +634,10 @@ class ComplatedScreen extends StatelessWidget {
             size: 10,
             fontWeight: FontWeight.w500,
           ),
-           SizedBox(
+          SizedBox(
             width: 5,
           ),
-           Icon(
+          Icon(
             Icons.border_color_outlined,
             color: textRedColor,
             size: 15,

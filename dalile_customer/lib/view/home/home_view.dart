@@ -8,51 +8,50 @@ import 'package:get/get.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({Key? key}) : super(key: key);
- final controller = Get.put(DashbordController());
- 
+  final controller = Get.put(DashbordController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primaryColor,
-      appBar: AppBar(
-        elevation: 0,
-        toolbarHeight: 70,
         backgroundColor: primaryColor,
-        foregroundColor: whiteColor,
-        title: const CustomText(
-          text: 'DASHBOARD',
-          color: whiteColor,
-          size: 18,
-          alignment: Alignment.center,
+        appBar: AppBar(
+          elevation: 0,
+          toolbarHeight: 70,
+          backgroundColor: primaryColor,
+          foregroundColor: whiteColor,
+          title: const CustomText(
+            text: 'DASHBOARD',
+            color: whiteColor,
+            size: 18,
+            alignment: Alignment.center,
+          ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      body:DefaultTabController(
-        length: 2,
-        child: NestedScrollView(
-          headerSliverBuilder: (context, headerSliverBuilder) => [
-            SliverAppBar(
-              toolbarHeight: 10,
-              elevation: 0,
-              backgroundColor: whiteColor,
-              bottom: _tabBarIndicatorShape(),
-            ),
-          ],
-          body:TabBarView(
-              
+        body: DefaultTabController(
+          length: 2,
+          child: NestedScrollView(
+            headerSliverBuilder: (context, headerSliverBuilder) => [
+              SliverAppBar(
+                toolbarHeight: 10,
+                elevation: 0,
+                backgroundColor: whiteColor,
+                bottom: _tabBarIndicatorShape(),
+              ),
+            ],
+            body: TabBarView(
               children: [
-             MainDash(controller: controller,),
-             FinanceDash(controller:controller)
-               // const RequestPickup()
+                MainDash(
+                  controller: controller,
+                ),
+                FinanceDash(controller: controller)
+                // const RequestPickup()
               ],
             ),
-           ),
-    )
-    );
-    
-    }
-     _tabBarIndicatorShape() => TabBar(
-      
+          ),
+        ));
+  }
+
+  _tabBarIndicatorShape() => TabBar(
         indicatorWeight: 0.0,
         tabs: _tabTwoParameters(),
         labelColor: whiteColor,
@@ -90,5 +89,4 @@ class HomeView extends StatelessWidget {
         //   text: "Request Pickup",
         // ),
       ];
-
-  }
+}

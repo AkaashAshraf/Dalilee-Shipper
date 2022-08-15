@@ -34,7 +34,7 @@ class EnquiryFinanceController extends GetxController {
       }
     } finally {
       print('finally');
-  if (FinanceApi.checkAuth == true) {
+      if (FinanceApi.checkAuth == true) {
         Get.offAll(() => LoginView());
         FinanceApi.checkAuth = false;
       }
@@ -105,7 +105,8 @@ class EnquiryFinanceController extends GetxController {
     isAddwiting = true;
     update();
     try {
-      dynamic enquriyAdd = await FinanceApi.fetchAddEnquiryData(catListId.text, subcatListId.text, decConteroller)
+      dynamic enquriyAdd = await FinanceApi.fetchAddEnquiryData(
+              catListId.text, subcatListId.text, decConteroller)
           .whenComplete(() {
         isAddwiting = false;
         Get.back();
