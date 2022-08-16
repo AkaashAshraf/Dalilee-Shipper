@@ -174,8 +174,7 @@ class OficesListView extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 5),
                                 const CustomText(
-                                  text:
-                                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas venenatis sit feugiat a. Sed luctus mattis sed sed pellentesque donec.',
+                                  text: '',
                                   color: text1Color,
                                   fontWeight: FontWeight.w400,
                                   size: 12,
@@ -365,13 +364,12 @@ class OficesListView extends StatelessWidget {
                                       ],
                                     ),
                                     const SizedBox(height: 5),
-                                    const CustomText(
-                                      text:
-                                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas venenatis sit feugiat a. Sed luctus mattis sed sed pellentesque donec.',
-                                      color: text1Color,
-                                      fontWeight: FontWeight.w400,
-                                      size: 12,
-                                    ),
+                                    // const CustomText(
+                                    //   text: '',
+                                    //   color: text1Color,
+                                    //   fontWeight: FontWeight.w400,
+                                    //   size: 12,
+                                    // ),
                                   ],
                                 ),
                               ),
@@ -385,7 +383,7 @@ class OficesListView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const EmptyState(
-                label: 'no Data ',
+                label: 'No Data ',
               ),
               MaterialButton(
                 onPressed: () {

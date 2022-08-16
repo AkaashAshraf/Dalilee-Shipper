@@ -1,4 +1,3 @@
-
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/view/calculable_view.dart';
 import 'package:dalile_customer/view/home/home_view.dart';
@@ -74,7 +73,7 @@ class HomeViewModel extends GetxController {
                                     context, () {
                                   Get.back();
                                   _screen = const MenuPageView();
-                                  _screenMenu =  OfficesView();
+                                  _screenMenu = OfficesView();
                                   update();
                                 }),
                                 // dlv
@@ -91,7 +90,7 @@ class HomeViewModel extends GetxController {
                                     "Ticket", context, () {
                                   Get.back();
                                   _screen = const MenuPageView();
-                                  _screenMenu =  ComplainView();
+                                  _screenMenu = ComplainView();
                                   update();
                                 }),
                               ],
@@ -130,9 +129,9 @@ class HomeViewModel extends GetxController {
 
                                         prefs.remove("loginData");
                                         prefs.remove("token");
-                                        
+                                        prefs.clear();
+                                        Get.deleteAll();
 
-     
                                         Get.offAll(() => LoginView());
                                       });
                                 }),

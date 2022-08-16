@@ -53,8 +53,8 @@ abstract class FinanceApi {
     return null;
   }
 
-  static Future<ViewOrderData?> fetchViewOrdersData() async {
-    var url = "$like/runsheet/open-finance-orders";
+  static Future<ViewOrderData?> fetchViewOrdersData({limit: '0'}) async {
+    var url = "$like/runsheet/open-finance-orders?offset=${limit}";
     final prefs = await SharedPreferences.getInstance();
 
     dynamic fromString = prefs.getString('loginData') ?? '';
@@ -129,7 +129,8 @@ abstract class FinanceApi {
 
     dynamic _id = resLogin['data']["store"]["user_id"] ?? '';
 
-    var url = "https://shaheen-test2.dalilee.om/api/inquiry/customer/listing/$_id";
+    var url = base_url + "/inquiry/customer/listing/$_id";
+    // "https://shaheen-test2.dalilee.om/api/inquiry/customer/listing/$_id";
     try {
       var response = await http.get(
         Uri.parse(url),
@@ -151,7 +152,7 @@ abstract class FinanceApi {
         return null;
       } else {
         var err = json.decode(response.body);
-        mass = '${err["message"]}';
+        mass = '${err["message"]}' + response.statusCode.toString();
         return null;
       }
     } catch (e) {
@@ -268,8 +269,8 @@ abstract class FinanceApi {
   }
 
   static Future<List<CatList>?> fetchCatList() async {
-    var _url =
-        "https://shaheen-test2.dalilee.om/api/inquiry/main-category/listing";
+    var _url = base_url + '/inquiry/main-category/listing';
+    // "https://shaheen-test2.dalilee.om/api/inquiry/main-category/listing";
     final prefs = await SharedPreferences.getInstance();
 
     dynamic fromString = prefs.getString('loginData') ?? '';
@@ -302,8 +303,8 @@ abstract class FinanceApi {
   }
 
   static Future<List<SubCatList>?> fetchSubCatList(id) async {
-    var _url =
-        "https://shaheen-test2.dalilee.om/api/inquiry/sub-category/listing";
+    var _url = base_url + '/inquiry/sub-category/listing';
+    // "https://shaheen-test2.dalilee.om/api/inquiry/sub-category/listing";
     final prefs = await SharedPreferences.getInstance();
 
     dynamic fromString = prefs.getString('loginData') ?? '';
@@ -362,8 +363,8 @@ abstract class FinanceApi {
     dynamic resLogin = json.decode(fromString!.toString());
     dynamic tokenLo = resLogin['data']["access_token"] ?? '';
 
-    var _url =
-        "https://shaheen-test2.dalilee.om/api/inquiry/customre-inquiry/create";
+    var _url = base_url + '/inquiry/customre-inquiry/create';
+    // "https://shaheen-test2.dalilee.om/api/inquiry/customre-inquiry/create";
 
     try {
       var response = await http.post(Uri.parse(_url), headers: {

@@ -61,9 +61,9 @@ class MainDash extends StatelessWidget {
                               controller: EmptyState(
                                 label: 'No data',
                               ),
-                              title: "Shipmenet")
+                              title: "Shipments")
                           : MainCardBodyView(
-                              title: 'All Shipmenet',
+                              title: 'All Shipments',
                               controller: ListView.separated(
                                 separatorBuilder: (context, i) =>
                                     const SizedBox(height: 15),

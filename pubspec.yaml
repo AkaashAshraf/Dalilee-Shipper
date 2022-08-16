@@ -64,6 +64,8 @@ dependencies:
   open_file: ^3.2.1
   permission_handler: ^8.0.0+2
   pull_to_refresh: ^2.0.0
+  loadmore: ^2.0.1
+  launch_review: ^3.0.1
 
 dev_dependencies:
   flutter_test:

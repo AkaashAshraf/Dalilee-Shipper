@@ -205,8 +205,8 @@ class _MainDashState extends State<MainDash> {
         } //delived
       case Status.TO_BE_PICKUP:
         {
-          var res = await widget.controller
-              .fetchToBeDeliveredShipemetData(isRefresh: true);
+          var res =
+              await widget.controller.fetchToBePickupData(isRefresh: true);
           to_be_pickupShipmentRefresh_Controller.refreshCompleted();
           break;
         } //to be pickup
@@ -328,7 +328,7 @@ class _MainDashState extends State<MainDash> {
                                                   ? MediaQuery.of(context)
                                                           .size
                                                           .height *
-                                                      0.78
+                                                      0.75
                                                   : MediaQuery.of(context)
                                                           .size
                                                           .height *

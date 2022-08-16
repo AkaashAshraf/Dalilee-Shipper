@@ -7,6 +7,7 @@ import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/my_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:launch_review/launch_review.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -42,13 +43,13 @@ class ProfileView extends StatelessWidget {
             // _buildRows("Profile", Icons.account_circle_outlined, () {
             //   Get.to(() => const EditProfile());
             // }),
-           
-            const SizedBox(
-              height: 20,
-            ),
-            _buildRows("Manage Address", Icons.location_on_outlined, () {
-              Get.to(() => const ManageAddressView());
-            }),
+
+            // const SizedBox(
+            //   height: 20,
+            // ),
+            // _buildRows("Manage Address", Icons.location_on_outlined, () {
+            //   Get.to(() => const ManageAddressView());
+            // }),
             const SizedBox(
               height: 20,
             ),
@@ -63,108 +64,112 @@ class ProfileView extends StatelessWidget {
               height: 20,
             ),
             _buildRows("Rating", Icons.star_outlined, () {
-              showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                  scrollable: true,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5.0),
-                    ),
-                  ),
-                  content: Builder(builder: (context) {
-                    return Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const CustomText(
-                              text: 'Rate The App',
-                              alignment: Alignment.topLeft,
-                              color: primaryColor,
-                              size: 15,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10.0),
-                              child: IconButton(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                icon: const Icon(
-                                  Icons.clear_outlined,
-                                  size: 22,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const CustomText(
-                          text: "Do you like Dalilee Customer App ?",
-                          alignment: Alignment.topCenter,
-                          size: 10,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const CustomText(
-                          text: "Rate your experience",
-                          alignment: Alignment.topCenter,
-                          size: 14,
-                          color: primaryColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        StarRating(
-                          color: Colors.orangeAccent,
-                          starCount: 5,
-                          rating: 3.5,
-                          onRatingChanged: (c) {},
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const CustomFormFiledAreaWithTitle(
-                            text: 'Leave us your comment',
-                            hintText: 'Please leave your comment heres'),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        CustomButtom(
-                          text: 'Submit',
-                          onPressed: () {},
-                        ),
-                      ],
-                    );
-                  }),
-                ),
-              );
+              LaunchReview.launch(
+                  androidAppId: "thiqatech.dalilee.shipper_app",
+                  iOSAppId: "1633078775");
+              // showDialog(
+              //   context: context,
+              //   builder: (_) => AlertDialog(
+              //     scrollable: true,
+              //     shape: const RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.all(
+              //         Radius.circular(5.0),
+              //       ),
+              //     ),
+              //     content: Builder(builder: (context) {
+              //       return Column(
+              //         children: [
+              //           Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //             children: [
+              //               const CustomText(
+              //                 text: 'Rate The App',
+              //                 alignment: Alignment.topLeft,
+              //                 color: primaryColor,
+              //                 size: 15,
+              //                 fontWeight: FontWeight.w500,
+              //               ),
+              //               Padding(
+              //                 padding: const EdgeInsets.only(left: 10.0),
+              //                 child: IconButton(
+              //                   onPressed: () {
+              //                     Get.back();
+              //                   },
+              //                   icon: const Icon(
+              //                     Icons.clear_outlined,
+              //                     size: 22,
+              //                   ),
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //           const SizedBox(
+              //             height: 10,
+              //           ),
+              //           const CustomText(
+              //             text: "Do you like Dalilee Customer App ?",
+              //             alignment: Alignment.topCenter,
+              //             size: 10,
+              //             fontWeight: FontWeight.bold,
+              //           ),
+              //           const SizedBox(
+              //             height: 10,
+              //           ),
+              //           const CustomText(
+              //             text: "Rate your experience",
+              //             alignment: Alignment.topCenter,
+              //             size: 14,
+              //             color: primaryColor,
+              //             fontWeight: FontWeight.w500,
+              //           ),
+              //           const SizedBox(
+              //             height: 5,
+              //           ),
+              //           StarRating(
+              //             color: Colors.orangeAccent,
+              //             starCount: 5,
+              //             rating: 3.5,
+              //             onRatingChanged: (c) {},
+              //           ),
+              //           const SizedBox(
+              //             height: 10,
+              //           ),
+              //           const CustomFormFiledAreaWithTitle(
+              //               text: 'Leave us your comment',
+              //               hintText: 'Please leave your comment heres'),
+              //           const SizedBox(
+              //             height: 20,
+              //           ),
+              //           CustomButtom(
+              //             text: 'Submit',
+              //             onPressed: () {},
+              //           ),
+              //         ],
+              //       );
+              //     }),
+              //   ),
+              // );
             }),
             const SizedBox(
               height: 20,
             ),
-            _buildRows("Language", Icons.language, () {
-              showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                  scrollable: true,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5.0),
-                    ),
-                  ),
-                  content: Builder(builder: (context) {
-                    return const _Showlung();
-                  }),
-                ),
-              );
-            }),
+            // _buildRows("Language", Icons.language, () {
+            //   showDialog(
+            //     context: context,
+            //     builder: (_) => AlertDialog(
+            //       scrollable: true,
+            //       shape: const RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.all(
+            //           Radius.circular(5.0),
+            //         ),
+            //       ),
+            //       content: Builder(builder: (context) {
+            //         return const _Showlung();
+            //       }),
+            //     ),
+            //   );
+            // }),
+
             const Spacer(),
           ],
         ),

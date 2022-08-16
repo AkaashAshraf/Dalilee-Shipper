@@ -13,6 +13,7 @@ const cardColor = Color(0xFFF6F6F6);
 // String like = "https://shaheen-test2.dalilee.om/api/v1/store";test 2
 // String image = "https://shaheen-test2.dalilee.om/storage/uploads/branches/";test 2
 
-String like = "https://shaheen-oman.dalilee.om/api/v1/store"; // live
+String base_url = "https://shaheen-oman.dalilee.om/api"; // live
+String like = base_url + '/v1/store';
 String image =
     "https://shaheen-oman.dalilee.om/storage/uploads/branches/"; // live

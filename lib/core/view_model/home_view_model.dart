@@ -1,4 +1,3 @@
-
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/view/calculable_view.dart';
 import 'package:dalile_customer/view/home/home_view.dart';
@@ -74,7 +73,7 @@ class HomeViewModel extends GetxController {
                                     context, () {
                                   Get.back();
                                   _screen = const MenuPageView();
-                                  _screenMenu =  OfficesView();
+                                  _screenMenu = OfficesView();
                                   update();
                                 }),
                                 // dlv
@@ -91,7 +90,7 @@ class HomeViewModel extends GetxController {
                                     "Ticket", context, () {
                                   Get.back();
                                   _screen = const MenuPageView();
-                                  _screenMenu =  ComplainView();
+                                  _screenMenu = ComplainView();
                                   update();
                                 }),
                               ],
@@ -116,7 +115,7 @@ class HomeViewModel extends GetxController {
                                       title: 'Sgin Out',
                                       titlePadding: const EdgeInsets.all(15),
                                       contentPadding: const EdgeInsets.all(5),
-                                      middleText: 'Are you want to sginOut ?',
+                                      middleText: 'Are you want to sign out ?',
                                       textCancel: 'Cancel',
                                       textConfirm: 'Ok',
                                       buttonColor: primaryColor,
@@ -130,9 +129,8 @@ class HomeViewModel extends GetxController {
 
                                         prefs.remove("loginData");
                                         prefs.remove("token");
-                                        
-
-     
+                                        prefs.clear();
+                                        Get.deleteAll();
                                         Get.offAll(() => LoginView());
                                       });
                                 }),

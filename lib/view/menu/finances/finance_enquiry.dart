@@ -155,8 +155,7 @@ class FinanceEnquiry extends StatelessWidget {
                                           children: [
                                             Flexible(
                                               child: CustomText(
-                                                text:
-                                                    'Created At : $_date',
+                                                text: 'Created At : $_date',
                                                 fontWeight: FontWeight.w400,
                                               ),
                                             ),
@@ -231,7 +230,7 @@ class FinanceEnquiry extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const EmptyState(
-                            label: 'No Data ',
+                            label: 'No Data',
                           ),
                           MaterialButton(
                             onPressed: () {

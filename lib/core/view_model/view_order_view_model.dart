@@ -18,35 +18,46 @@ class ViewOrderController extends GetxController {
     super.onInit();
   }
 
-  var isLoading = false.obs;
+  var isLoading = true.obs;
+  RxBool loadMore = false.obs;
 
   RxList<Order> viewOrderData = <Order>[].obs;
+  RxInt limit = 0.obs;
+  RxInt total_orders = 0.obs;
+
   RxList<TrackingStatus> viewOrderList = <TrackingStatus>[].obs;
 
-  void fetchViewOrderData() async {
+  fetchViewOrderData({isRefresh: false}) async {
     try {
-      isLoading(true);
-      var viewOrder = await FinanceApi.fetchViewOrdersData();
+      if (isRefresh) {
+        limit.value = 0;
+        // isLoading(true);
+        loadMore.value = false;
+      } else {
+        loadMore.value = true;
+      }
+      var viewOrder = await FinanceApi.fetchViewOrdersData(limit: limit);
       if (viewOrder != null) {
-        viewOrderData.value = viewOrder.orders!;
+        total_orders.value = viewOrder.totalOrders!;
+        if (isRefresh)
+          viewOrderData.value = viewOrder.orders!;
+        else
+          viewOrderData.value += viewOrder.orders!;
+
         viewOrderList.value = viewOrder.trackingStatuses!;
-      
       } else {
         if (FinanceApi.mass.isEmpty) {
-            if (!Get.isSnackbarOpen) {
-              Get.snackbar('Filed', "please try agian later");
-         }
-       
+          if (!Get.isSnackbarOpen) {
+            Get.snackbar('Filed', "please try agian later");
+          }
         }
-           if (!Get.isSnackbarOpen) {
-             Get.snackbar('Filed', FinanceApi.mass);
-         }
-         
-       
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar('Filed', FinanceApi.mass);
+        }
       }
     } finally {
-    
       isLoading(false);
+      loadMore(false);
     }
   }
 
@@ -222,5 +233,4 @@ class ViewOrderController extends GetxController {
       ),
     );
   }
-
 }

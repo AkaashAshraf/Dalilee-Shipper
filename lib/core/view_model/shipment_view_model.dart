@@ -35,6 +35,10 @@ class ShipmentViewModel extends GetxController {
 
   final controller = ScrollController();
   bool isSDown = false;
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   void listenScrolling() {
     if (controller.position.maxScrollExtent / 2 > controller.position.pixels) {

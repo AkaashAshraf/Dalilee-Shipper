@@ -30,14 +30,14 @@ class OpendedView extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
-                          children:const [
-                             CustomText(
+                          children: const [
+                            CustomText(
                               text: 'Updated data ',
                               color: Colors.grey,
                               alignment: Alignment.center,
                               size: 10,
                             ),
-                             Icon(
+                            Icon(
                               Icons.refresh,
                               color: Colors.grey,
                             ),
@@ -45,8 +45,7 @@ class OpendedView extends StatelessWidget {
                         ),
                       )
                     : const Padding(
-                        padding:  EdgeInsets.all(5),
-                        child: WaiteImage()),
+                        padding: EdgeInsets.all(5), child: WaiteImage()),
                 Container(
                   constraints: const BoxConstraints(
                     minHeight: 250,
@@ -133,7 +132,7 @@ class OpendedView extends StatelessWidget {
                   height: 25,
                 ),
                 CustomButtom(
-                  text: 'View Order',
+                  text: 'View Orders',
                   onPressed: () {
                     Get.to(() => ViewOrderView(),
                         transition: Transition.downToUp,

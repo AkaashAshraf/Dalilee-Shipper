@@ -33,20 +33,24 @@ class OrderViewListModel {
 
 class ViewOrderData {
   ViewOrderData({
+    this.totalOrders,
     this.orders,
     this.trackingStatuses,
   });
+  int? totalOrders;
 
   List<Order>? orders;
   List<TrackingStatus>? trackingStatuses;
 
   factory ViewOrderData.fromJson(Map<String, dynamic> json) => ViewOrderData(
+        totalOrders: json["total_orders"],
         orders: List<Order>.from(json["orders"].map((x) => Order.fromJson(x))),
         trackingStatuses: List<TrackingStatus>.from(
             json["tracking_statuses"].map((x) => TrackingStatus.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
+        "total_orders": totalOrders,
         "orders": List<dynamic>.from(orders!.map((x) => x.toJson())),
         "tracking_statuses":
             List<dynamic>.from(trackingStatuses!.map((x) => x.toJson())),
@@ -56,6 +60,7 @@ class ViewOrderData {
 class Order {
   Order({
     this.orderId,
+    this.orderNo,
     this.refId,
     this.cop,
     this.customerNo,
@@ -69,6 +74,8 @@ class Order {
   });
 
   dynamic orderId;
+  dynamic orderNo;
+
   dynamic refId;
   dynamic cop;
   dynamic customerNo;
@@ -83,6 +90,7 @@ class Order {
   factory Order.fromJson(Map<String, dynamic> json) => Order(
         isOpen: false,
         orderId: json["order_id"],
+        orderNo: json["order_no"],
         refId: json["ref_id"],
         cop: json["cop"],
         customerNo: json["customer_no"],
@@ -97,6 +105,7 @@ class Order {
 
   Map<String, dynamic> toJson() => {
         "order_id": orderId,
+        "order_no": orderNo,
         "ref_id": refId,
         "cop": cop,
         "customer_no": customerNo,
