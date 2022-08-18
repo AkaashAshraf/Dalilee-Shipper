@@ -6,6 +6,7 @@ import 'package:dalile_customer/view/widget/my_input.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginView extends StatelessWidget {
   LoginView({Key? key}) : super(key: key);
@@ -60,6 +61,68 @@ class LoginView extends StatelessWidget {
                 const SizedBox(
                   height: 30,
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Checkbox(
+                      value: _controller.isAgree.value,
+                      onChanged: (value) {
+                        _controller.isAgree.value = value!;
+                      },
+                    ), //Che
+
+                    // const Text(
+                    //   'By clicking login I am agree with terms & conditions ',
+                    //   textAlign: TextAlign.left,
+                    //   style: TextStyle(
+                    //     fontWeight: FontWeight.w400,
+                    //   ),
+                    //   maxLines: 4,
+                    // ),
+                    Container(
+                      padding: const EdgeInsets.all(10.0),
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: new Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () async {
+                              if (await canLaunch(terms_url))
+                                await launch(terms_url);
+                            },
+                            child: RichText(
+                              text: TextSpan(children: <TextSpan>[
+                                TextSpan(
+                                    text: "by clicking login I am agree with",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 15)),
+                                TextSpan(
+                                    text: " terms & conditions",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontStyle: FontStyle.italic,
+                                        fontWeight: FontWeight.w600)),
+                              ]),
+                            ),
+                          ),
+                          // new Text('By clicking login I am agree with',
+                          //     textAlign: TextAlign.left),
+                          // new Text(' terms & conditions',
+                          //     textAlign: TextAlign.left)
+                        ],
+                      ),
+                    )
+                    // Text('',
+                    //     style: TextStyle(
+                    //         fontStyle: FontStyle.italic,
+                    //         fontWeight: FontWeight.w600)),
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
                 SizedBox(
                   height: 45,
                   width: MediaQuery.of(context).size.width * 0.8,
@@ -67,11 +130,15 @@ class LoginView extends StatelessWidget {
                       ? const WaiteImage()
                       : CustomButtom(
                           text: 'login',
-                          onPressed: () {
-                            _controller.getDeviceDetails();
-                            _controller.valid();
-                          },
-                        ),
+                          backgroundColor: _controller.isAgree.value
+                              ? primaryColor
+                              : Colors.grey,
+                          onPressed: _controller.isAgree.value
+                              ? () {
+                                  _controller.getDeviceDetails();
+                                  _controller.valid();
+                                }
+                              : null),
                 ),
               ],
             ),

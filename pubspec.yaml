@@ -66,6 +66,8 @@ dependencies:
   pull_to_refresh: ^2.0.0
   loadmore: ^2.0.1
   launch_review: ^3.0.1
+  webview_flutter: ^3.0.4
+  flutter_inappwebview: ^5.4.3+7
 
 dev_dependencies:
   flutter_test:

@@ -13,6 +13,8 @@ import 'package:sms_autofill/sms_autofill.dart';
 
 class LoginController extends GetxController {
   RxBool isLoading = false.obs;
+  RxBool isAgree = false.obs;
+
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
   TextEditingController phoneNumber = TextEditingController();
   // ignore: prefer_typing_uninitialized_variables
@@ -24,25 +26,22 @@ class LoginController extends GetxController {
       if (data != null) {
         if (data["message"] == "OK") {
           code = await SmsAutoFill().getAppSignature;
-         
+
           Get.to(() => const OTPView());
           Get.snackbar('Send OTP', "OTP Sent Successfully",
               backgroundColor: primaryColor.withOpacity(0.6),
               colorText: whiteColor);
         } else {
-           if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', LoginAPi.mass);
-        }
-         
+          if (!Get.isSnackbarOpen) {
+            Get.snackbar('Filed', LoginAPi.mass);
+          }
         }
       } else {
-           if (!Get.isSnackbarOpen) {
+        if (!Get.isSnackbarOpen) {
           Get.snackbar('Filed', LoginAPi.mass);
         }
-       
       }
     } finally {
-     
       isLoading(false);
     }
   }
@@ -63,18 +62,14 @@ class LoginController extends GetxController {
           Get.offAll(() => ControllerView());
         }
       } else {
-          if (!Get.isSnackbarOpen) {
-           Get.snackbar('Filed', LoginAPi.mass);
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar('Filed', LoginAPi.mass);
         }
-     
       }
     } finally {
-     
       isLoading(false);
     }
   }
-
-
 
   valid() async {
     if (globalKey.currentState!.validate()) {
@@ -110,10 +105,6 @@ class LoginController extends GetxController {
         // deviceVersion = data.systemVersion;
         identifier.value = data.identifierForVendor; //UUID for iOS
       }
-    } on PlatformException {
-
-    }
-
-   
+    } on PlatformException {}
   }
 }

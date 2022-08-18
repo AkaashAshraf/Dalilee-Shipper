@@ -1,10 +1,16 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+
 class CustomButtom extends StatelessWidget {
   final Function()? onPressed;
   final String text;
-  const CustomButtom({Key? key, required this.text, this.onPressed})
+  final Color backgroundColor;
+  const CustomButtom(
+      {Key? key,
+      required this.text,
+      this.onPressed,
+      this.backgroundColor: primaryColor})
       : super(key: key);
 
   @override
@@ -12,7 +18,7 @@ class CustomButtom extends StatelessWidget {
     return NeumorphicButton(
       onPressed: onPressed,
       style: NeumorphicStyle(
-        color: primaryColor,
+        color: backgroundColor,
         shape: NeumorphicShape.flat,
         boxShape: NeumorphicBoxShape.beveled(BorderRadius.circular(10)),
       ),
