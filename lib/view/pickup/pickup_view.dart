@@ -63,7 +63,8 @@ class PickupView extends StatelessWidget {
                 ),
                 label: 'Pick by what3words',
                 onTap: () {
-                  Get.dialog(What3WordsView(), barrierColor: Colors.transparent);
+                  Get.dialog(What3WordsView(),
+                      barrierColor: Colors.transparent);
                 }),
           ]),
       appBar: AppBar(

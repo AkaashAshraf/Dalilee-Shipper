@@ -1,7 +1,9 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/dashbord_model_view.dart';
+import 'package:dalile_customer/view/home/FinanceListings/FinanceListing.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
-import 'package:dalile_customer/view/widget/waiting.dart';
+import 'package:dalile_customer/core/view_model/financeListingController.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -62,43 +64,57 @@ class _FinanceDashState extends State<FinanceDash> {
             // SizedBox(
             //   height: 5,
             // ),
-            buildCard(
+            GestureDetector(
+              onTap: () {
+                Get.to(FinanceDasboradListing(
+                    title: "All Orders", type: Status.ALL));
+              },
+              child: buildCard(
+                  context,
+                  _InsideShape(
+                    subtitle: '',
+                    image: Icon(
+                      Icons.account_balance_wallet_outlined,
+                      color: whiteColor,
+                      size: 50,
+                    ),
+                    // title: 'Total Orders',
+                    title: 'Total Orders Amount',
+                    numbers:
+                        '${widget.controller.dashData.value.totalAmount.toString() + " OMR"}',
+                  ),
+                  15.0,
+                  15.0,
+                  0.0,
+                  0.0),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.to(FinanceDasboradListing(
+                    title: "Paid Orders", type: Status.PAID));
+              },
+              child: buildCard(
                 context,
                 _InsideShape(
                   subtitle: '',
                   image: Icon(
-                    Icons.account_balance_wallet_outlined,
+                    Icons.paid_outlined,
                     color: whiteColor,
                     size: 50,
                   ),
-                  title: 'Total Orders',
+                  // title: 'Total to be Paid',
+                  title: 'Paid Amount',
                   numbers:
-                      '${widget.controller.dashData.value.totalOrders ?? "0 OMR"}',
+                      '${widget.controller.dashData.value.paid.toString() + " OMR"}',
                 ),
                 15.0,
                 15.0,
-                0.0,
-                0.0),
-            const SizedBox(
-              height: 10,
-            ),
-            buildCard(
-              context,
-              _InsideShape(
-                subtitle: '',
-                image: Icon(
-                  Icons.paid_outlined,
-                  color: whiteColor,
-                  size: 50,
-                ),
-                title: 'Total to be Paid',
-                numbers:
-                    '${widget.controller.dashData.value.totalToBePaid ?? "0 OMR"}',
+                15.0,
+                15.0,
               ),
-              15.0,
-              15.0,
-              15.0,
-              15.0,
             ),
             const SizedBox(
               height: 10,
@@ -106,24 +122,34 @@ class _FinanceDashState extends State<FinanceDash> {
             Row(
               children: [
                 _buildsmallbox(
-                  _InsideSmallBox(
-                    image: 'assets/images/delivered.png',
-                    title: 'Total collected',
-                    numbers:
-                        '${widget.controller.dashData.value.totalToBeCollected ?? "0"}',
-                  ),
-                ),
+                    _InsideSmallBox(
+                      image: 'assets/images/delivered.png',
+                      // title: 'Total collected',
+                      title: 'COD Pending',
+
+                      numbers:
+                          '${widget.controller.dashData.value.codPending.toString() + " OMR"}',
+                    ), () {
+                  Get.to(FinanceDasboradListing(
+                      title: "COD Pending", type: Status.COD_PENDING));
+                }),
                 const SizedBox(
                   width: 5,
                 ),
                 _buildsmallbox(
-                  _InsideSmallBox(
-                    image: 'assets/images/tobepickup.png',
-                    title: 'COD Pending',
-                    numbers:
-                        '${widget.controller.dashData.value.codPending ?? "0"}',
-                  ),
-                ),
+                    _InsideSmallBox(
+                      image: 'assets/images/tobepickup.png',
+                      // title: 'COD Pending',
+                      title: 'Ready To Pay',
+
+                      numbers:
+                          '${widget.controller.dashData.value.readyToPay.toString() + " OMR"}',
+                    ), () {
+                  Get.to(FinanceDasboradListing(
+                    title: "Ready To Pay",
+                    type: Status.READY_TO_PAY,
+                  ));
+                }),
               ],
             ),
             const SizedBox(
@@ -132,24 +158,36 @@ class _FinanceDashState extends State<FinanceDash> {
             Row(
               children: [
                 _buildsmallbox(
-                  _InsideSmallBox(
-                    image: 'assets/images/delivered.png',
-                    title: 'Total with Driver',
-                    numbers:
-                        '${widget.controller.dashData.value.totalWithDrivers ?? "0"}',
-                  ),
-                ),
+                    _InsideSmallBox(
+                      image: 'assets/images/delivered.png',
+                      title: 'COD with Drivers',
+                      // title: 'Total with Driver',
+
+                      numbers:
+                          '${widget.controller.dashData.value.codWithDrivers.toString() + " OMR"}',
+                    ), () {
+                  Get.to(FinanceDasboradListing(
+                    title: "COD with Drivers",
+                    type: Status.COD_WITH_DRIVERS,
+                  ));
+                }),
                 const SizedBox(
                   width: 5,
                 ),
                 _buildsmallbox(
-                  _InsideSmallBox(
-                    image: 'assets/images/tobepickup.png',
-                    title: 'Total Returned',
-                    numbers:
-                        '${widget.controller.dashData.value.totalReturned ?? "0"}',
-                  ),
-                ),
+                    _InsideSmallBox(
+                      image: 'assets/images/tobepickup.png',
+                      title: 'COD Return',
+                      // title: 'Total Returned',
+
+                      numbers:
+                          '${widget.controller.dashData.value.codReturned.toString() + " OMR"}',
+                    ), () {
+                  Get.to(FinanceDasboradListing(
+                    title: "COD Return",
+                    type: Status.COD_RETURN,
+                  ));
+                }),
               ],
             ),
           ]),
@@ -159,16 +197,19 @@ class _FinanceDashState extends State<FinanceDash> {
   }
 }
 
-Expanded _buildsmallbox(Widget child) {
+Expanded _buildsmallbox(Widget child, dynamic onTap) {
   return Expanded(
-    child: Container(
-        height: 105,
-        decoration: BoxDecoration(
-          color: primaryColor,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        padding: const EdgeInsets.all(17),
-        child: child),
+    child: GestureDetector(
+      onTap: onTap,
+      child: Container(
+          height: 105,
+          decoration: BoxDecoration(
+            color: primaryColor,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          padding: const EdgeInsets.all(17),
+          child: child),
+    ),
   );
 }
 

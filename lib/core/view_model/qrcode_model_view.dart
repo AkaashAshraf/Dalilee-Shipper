@@ -12,8 +12,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
 class QrCodeController extends GetxController {
   RxString cdeQR = ''.obs;
   RxString loat = ''.obs;
@@ -42,7 +40,6 @@ class QrCodeController extends GetxController {
   Future<void> scanQR(context) async {
     String barcodeScanRes;
 
-  
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.QR);
@@ -59,8 +56,10 @@ class QrCodeController extends GetxController {
   }
 
   Future<void> _apiCallAdd(context) async {
-    var _url =
-        "https://shaheen-test2.dalilee.om/api/v1/sales/create-pickup-by-qr";
+    // var _url =
+    //     "https://shaheen-test2.dalilee.om/api/v1/sales/create-pickup-by-qr";
+
+    var _url = "$base_url/v1/sales/create-pickup-by-qr";
     try {
       final prefs = await SharedPreferences.getInstance();
 
@@ -91,18 +90,14 @@ class QrCodeController extends GetxController {
                 des: "location picked successfully",
                 icon: Icons.priority_high_outlined,
               );
-            }); Get.put(PickupController()).fetchTodayPickupData();
-                    Get.put(PickupController()).fetchAllPickupData();
-                    print('------------------->done');
-           
-      }else{
-        Get.snackbar("Failed",
-              "please check QRCode try again",
-              backgroundColor: Colors.red, colorText: whiteColor);
+            });
+        Get.put(PickupController()).fetchTodayPickupData();
+        Get.put(PickupController()).fetchAllPickupData();
+      } else {
+        Get.snackbar("Failed", "please check QRCode try again",
+            backgroundColor: Colors.red, colorText: whiteColor);
       }
-
     } catch (e) {
-      print('----------------->$e');
     } finally {}
   }
 }

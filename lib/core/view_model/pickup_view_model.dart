@@ -53,7 +53,6 @@ class PickupController extends GetxController {
     regionID = null;
     for (int i = 0; i < wilayaList.length; i++) {
       if (wilayaList[i]!.name == value) {
-      
         wCont.text = value;
         wilayaID = wilayaList[i]!.id;
         fetchRegionData(wilayaList[i]!.id);
@@ -64,10 +63,8 @@ class PickupController extends GetxController {
   }
 
   regionVal(value) {
-   
     for (int i = 0; i < regionList.length; i++) {
       if (regionList[i]!.name == value) {
-     
         regionID = regionList[i]!.id;
         rCont.text = value;
       }
@@ -111,15 +108,13 @@ class PickupController extends GetxController {
       var pickup = await PickupApi.fetchAllPickupData("");
       if (pickup != null) {
         allPickup.value = pickup.references!.reversed.toList();
-      
       } else {
-           if (!Get.isSnackbarOpen) {
-           Get.snackbar('Filed', PickupApi.mass);
-         }
-       
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar('Filed', PickupApi.mass);
+        }
       }
     } finally {
-       if (PickupApi.checkAuth == true) {
+      if (PickupApi.checkAuth == true) {
         Get.offAll(() => LoginView());
         PickupApi.checkAuth = false;
       }
@@ -133,7 +128,6 @@ class PickupController extends GetxController {
         Get.dialog(const WaiteImage(),
             barrierColor: Colors.transparent, barrierDismissible: false);
 
-       
         bool? postRequst =
             await PickupApi.fetchPostRequestPickupData(1, wilayaID, regionID);
         Get.back();
@@ -150,10 +144,9 @@ class PickupController extends GetxController {
                 );
               });
         } else {
-            if (!Get.isSnackbarOpen) {
+          if (!Get.isSnackbarOpen) {
             Get.snackbar('Filed', PickupApi.mass);
-         }
-       
+          }
         }
       }
     } finally {
@@ -162,8 +155,6 @@ class PickupController extends GetxController {
       wCont.clear();
       wilayaID = null;
       regionID = null;
-
-    
     }
   }
 
@@ -175,14 +166,11 @@ class PickupController extends GetxController {
       if (pickupToday != null) {
         today.value = pickupToday.references!.reversed.toList();
       } else {
-            if (!Get.isSnackbarOpen) {
-           Get.snackbar('Filed', PickupApi.mass);
-         }
-      
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar('Filed', PickupApi.mass);
+        }
       }
     } finally {
-    
-
       isLoadingToday(false);
     }
   }
@@ -196,14 +184,11 @@ class PickupController extends GetxController {
       if (data != null) {
         pickupDetailsList.value = data.data!.orders!;
       } else {
-          if (!Get.isSnackbarOpen) {
-           Get.snackbar('Filed', PickupApi.mass);
-         }
-      
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar('Filed', PickupApi.mass);
+        }
       }
     } finally {
-     
-
       isLoadingToday(false);
     }
   }
@@ -216,13 +201,11 @@ class PickupController extends GetxController {
       if (muhafaza != null) {
         muhafazaList.value = muhafaza.data!.governates!;
       } else {
-          if (!Get.isSnackbarOpen) {
-           Get.snackbar('Filed', PickupApi.mass);
-         }
-      
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar('Filed', PickupApi.mass);
+        }
       }
     } finally {
-    
       isLoadingToday(false);
     }
   }
@@ -238,10 +221,9 @@ class PickupController extends GetxController {
       if (waliaya != null) {
         wilayaList.value = waliaya.data.wilayaOMs!;
       } else {
-          if (!Get.isSnackbarOpen) {
-             Get.snackbar('Error', PickupApi.mass);
-         }
-     
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar('Error', PickupApi.mass);
+        }
       }
     } finally {}
   }
@@ -257,10 +239,9 @@ class PickupController extends GetxController {
       if (region != null) {
         regionList.value = region.data!.areaRegions!;
       } else {
-         if (!Get.isSnackbarOpen) {
-             Get.snackbar('Error', PickupApi.mass);
-         }
-      
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar('Error', PickupApi.mass);
+        }
       }
     } finally {}
   }

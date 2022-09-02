@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:isolate';
+import 'dart:ui';
 
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/server/finance_api.dart';
@@ -15,7 +17,10 @@ import 'package:dalile_customer/view/widget/my_input.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -66,6 +71,14 @@ class ShipmentViewModel extends GetxController {
   ];
   List<NameWithIcon> menuList = [
     NameWithIcon(icon: Icons.info_outlined, name: 'Ticket'),
+    NameWithIcon(icon: Icons.picture_as_pdf_outlined, name: 'Download Pdf'),
+    NameWithIcon(icon: Icons.download_done_outlined, name: 'Download Csv'),
+    NameWithIcon(
+        icon: Icons.download_done_outlined, name: 'Download Pickup Image'),
+    NameWithIcon(
+        icon: Icons.download_done_outlined, name: 'Download Deliver Image'),
+    NameWithIcon(
+        icon: Icons.download_done_outlined, name: 'Download Undeliver Image'),
   ];
 
   callAlert(context, number) {
@@ -142,7 +155,26 @@ class ShipmentViewModel extends GetxController {
     } finally {}
   }
 
-  menuAlert(context, number, orderN) {
+  menuAlert(context, number, orderN) async {
+    FlutterDownloader.initialize();
+    void downloadCallback(String id, DownloadTaskStatus status, int progress) {
+      final SendPort send =
+          IsolateNameServer.lookupPortByName('downloader_send_port')!;
+      send.send([id, status, progress]);
+    }
+
+    final ReceivePort _port = ReceivePort();
+
+    _port.listen((dynamic data) {
+      String id = data[0];
+      DownloadTaskStatus status = data[1];
+      int progress = data[2];
+    });
+
+    // void _download(String url) async {
+
+    // }
+
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -166,15 +198,66 @@ class ShipmentViewModel extends GetxController {
                       menuList[index].icon,
                       color: Colors.black,
                     ),
-                    onTap: () {
+                    onTap: () async {
+                      // print(res);
                       //   Get.put(ComplainController()).fetchTypeComplainData();
-                      Get.put(ComplainController()).typeID.clear();
-                      Get.put(ComplainController()).typeName.clear();
-                      Get.put(ComplainController()).orderID.clear();
+                      // Get.put(ComplainController()).typeID.clear();
+                      // Get.put(ComplainController()).typeName.clear();
+                      // Get.put(ComplainController()).orderID.clear();
                       switch (index) {
                         case 0:
                           Get.back();
                           showD(context, orderN);
+                          break;
+                        case 1:
+                          try {
+                            FlutterDownloader.registerCallback(
+                                downloadCallback);
+
+                            // Directory appDocDir =
+                            //     await getApplicationDocumentsDirectory();
+                            // String appDocPath = appDocDir.path;
+                            var url =
+                                'https://shaheen-oman.dalilee.om/storage/uploads/store/shipments/2022/Aug/shipments1661714131.csv';
+
+                            final status = await Permission.storage.request();
+
+                            if (status.isGranted) {
+                              final externalDir =
+                                  await getExternalStorageDirectory();
+
+                              final id = await FlutterDownloader.enqueue(
+                                url: url,
+                                savedDir: externalDir!.path,
+                                showNotification: true,
+                                openFileFromNotification: true,
+                              );
+                            } else {
+                              print('Permission Denied');
+                            }
+                            // final taskId = await FlutterDownloader.enqueue(
+                            //   url:
+                            //       'https://shaheen-oman.dalilee.om/storage/uploads/store/shipments/2022/Aug/shipments1661714131.csv',
+                            //   headers: {}, // optional: header send with url (auth token etc)
+                            //   savedDir: appDocPath,
+                            //   showNotification:
+                            //       true, // show download progress in status bar (for Android)
+                            //   openFileFromNotification:
+                            //       true, // click on notification to open downloaded file (for Android)
+                            // );
+                            // print(appDocDir);
+
+                            // final Uri _url = Uri.parse(
+                            //     'https://shaheen-oman.dalilee.om/storage/uploads/store/shipments/2022/Aug/shipments1661714131.csv');
+                            // launchUrl(_url);
+                            // var res = await FinanceApi.download(
+                            //     url:
+                            //         "https://shaheen-oman.dalilee.om/storage/uploads/store/shipments/2022/Aug/shipments1661714131.csv");
+                            // print(res);
+                          } catch (r) {
+                            print(r);
+                          }
+                          Get.back();
                           break;
                       }
                     },

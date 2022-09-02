@@ -115,9 +115,42 @@ class HomeViewModel extends GetxController {
                                       title: 'Sgin Out',
                                       titlePadding: const EdgeInsets.all(15),
                                       contentPadding: const EdgeInsets.all(5),
-                                      middleText: 'Are you want to sign out ?',
+                                      middleText:
+                                          'Are you sure you want to sign out ?',
                                       textCancel: 'Cancel',
                                       textConfirm: 'Ok',
+                                      buttonColor: primaryColor,
+                                      confirmTextColor: Colors.white,
+                                      cancelTextColor: Colors.black,
+                                      radius: 10,
+                                      backgroundColor: whiteColor,
+                                      onConfirm: () async {
+                                        final prefs = await SharedPreferences
+                                            .getInstance();
+
+                                        prefs.remove("loginData");
+                                        prefs.remove("token");
+                                        prefs.clear();
+                                        Get.deleteAll();
+                                        Get.offAll(() => LoginView());
+                                      });
+                                }),
+                                buildMenu(
+                                    Icons.delete, "Delete Account", context,
+                                    () {
+                                  Get.defaultDialog(
+                                      title: 'Delete Account',
+                                      titlePadding: const EdgeInsets.symmetric(
+                                          horizontal: 25, vertical: 15),
+                                      contentPadding: const EdgeInsets.only(
+                                          left: 30,
+                                          right: 30,
+                                          top: 0,
+                                          bottom: 15),
+                                      middleText:
+                                          'Are you sure you want to delete your account ?',
+                                      textCancel: '  Cancel  ',
+                                      textConfirm: '  Delete  ',
                                       buttonColor: primaryColor,
                                       confirmTextColor: Colors.white,
                                       cancelTextColor: Colors.black,

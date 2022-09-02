@@ -1,6 +1,7 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // ignore: must_be_immutable
 class MyInput extends StatelessWidget {
@@ -14,9 +15,11 @@ class MyInput extends StatelessWidget {
       this.controller,
       this.keyboardType,
       this.validator,
+      this.limitCharacters: 100,
       this.onChanged})
       : super(key: key);
   final TextInputType? keyboardType;
+  final limitCharacters;
   final Widget? suffixIcon, prefix;
   final String? hintText, labelText;
   final String? initialValue;
@@ -28,6 +31,9 @@ class MyInput extends StatelessWidget {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.9,
       child: TextFormField(
+        inputFormatters: [
+          new LengthLimitingTextInputFormatter(limitCharacters),
+        ],
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         onChanged: onChanged,
@@ -85,6 +91,7 @@ class CustomFormFiledWithTitle extends StatelessWidget {
       this.validator,
       this.onChanged,
       this.onEditingComplete,
+      this.limitCharacters: 50,
       this.read = false})
       : super(key: key);
 
@@ -92,6 +99,7 @@ class CustomFormFiledWithTitle extends StatelessWidget {
 
   final TextInputType? keyboardType;
   final Widget? suffixIcon, prefix;
+  final limitCharacters;
   final String? hintText, labelText;
   final String? initialValue;
   final String? Function(String?)? validator;
@@ -109,12 +117,15 @@ class CustomFormFiledWithTitle extends StatelessWidget {
           color: text1Color,
           fontWeight: FontWeight.w400,
         ),
-      const  SizedBox(
+        const SizedBox(
           height: 12,
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.9,
           child: TextFormField(
+            inputFormatters: [
+              new LengthLimitingTextInputFormatter(limitCharacters),
+            ],
             autofocus: false,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             onEditingComplete: onEditingComplete,
@@ -124,15 +135,21 @@ class CustomFormFiledWithTitle extends StatelessWidget {
             initialValue: initialValue,
             keyboardType: keyboardType,
             validator: validator,
-            style:const TextStyle(
-              fontSize: 12,
-            ),
+            style: read == false
+                ? TextStyle(
+                    fontSize: 12,
+                    color: Colors.black,
+                  )
+                : TextStyle(
+                    fontSize: 12,
+                    color: Colors.blueGrey,
+                  ),
             decoration: InputDecoration(
               labelText: labelText,
               isDense: true,
               contentPadding: const EdgeInsets.all(15),
               hintText: hintText,
-              labelStyle:const TextStyle(color: text1Color, fontSize: 12),
+              labelStyle: const TextStyle(color: text1Color, fontSize: 12),
               hintStyle:
                   TextStyle(fontSize: 12, color: Colors.black.withOpacity(0.3)),
               focusedBorder: const OutlineInputBorder(
@@ -208,8 +225,8 @@ class CustomFormFiledAreaWithTitle extends StatelessWidget {
             initialValue: initialValue,
             keyboardType: keyboardType,
             validator: validator,
-            style:const TextStyle(
-              fontSize: 12 ,
+            style: const TextStyle(
+              fontSize: 12,
             ),
             maxLines: 10,
             minLines: 5,
@@ -217,7 +234,7 @@ class CustomFormFiledAreaWithTitle extends StatelessWidget {
               labelText: labelText,
               isDense: true,
               hintText: hintText,
-              labelStyle:const TextStyle(color: text1Color, fontSize: 12),
+              labelStyle: const TextStyle(color: text1Color, fontSize: 12),
               hintStyle:
                   TextStyle(fontSize: 12, color: Colors.black.withOpacity(0.3)),
               focusedBorder: const OutlineInputBorder(

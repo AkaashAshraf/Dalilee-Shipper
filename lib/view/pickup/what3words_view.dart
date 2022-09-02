@@ -15,19 +15,16 @@ class What3WordsView extends StatelessWidget {
       backgroundColor: Colors.grey.withOpacity(0.3),
       body: Center(
         child: Container(
-          
           width: Get.width * 0.8,
-        decoration: BoxDecoration(
-            color: whiteColor,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: primaryColor.withOpacity(0.1),
-                blurRadius: 4,
-                spreadRadius: 1
-              )
-            ]
-        ),
+          decoration: BoxDecoration(
+              color: whiteColor,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                    color: primaryColor.withOpacity(0.1),
+                    blurRadius: 4,
+                    spreadRadius: 1)
+              ]),
           child: GetBuilder<What3WordController>(
               init: What3WordController(),
               builder: (_data) {
@@ -57,8 +54,11 @@ class What3WordsView extends StatelessWidget {
                         padding: const EdgeInsets.all(30.0),
                         child: CustomFormFiledWithTitle(
                           controller: _data.twaController,
-                          validator: (val)=> val!.isEmpty?"please enter 3 word":!val.contains('.')?
-                          "should contains ( . )" : null,
+                          validator: (val) => val!.isEmpty
+                              ? "please enter 3 word"
+                              : !val.contains('.')
+                                  ? "should contains ( . )"
+                                  : null,
                           text: 'Enter what3words',
                           hintText: '/// limit.broom.flip',
                         ),
@@ -69,16 +69,17 @@ class What3WordsView extends StatelessWidget {
                         child: _data.isWaiting
                             ? WaiteImage()
                             : CustomButtom(
-                                text: "Pick",
+                                text: "Pick ",
                                 onPressed: () {
-                                  if(_data.formKeyG.currentState!.validate()){
+                                  if (_data.formKeyG.currentState!.validate()) {
                                     _data.chickWhat3Word(context);
                                   }
-                                  
                                 },
                               ),
                       ),
-                      SizedBox(height: 10,),
+                      SizedBox(
+                        height: 10,
+                      ),
                     ],
                   ),
                 );

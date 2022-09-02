@@ -45,22 +45,23 @@ class AllListPickup extends StatelessWidget {
               child: ListView.separated(
                 padding: const EdgeInsets.only(
                     left: 10, right: 10, bottom: 10, top: 5),
-                separatorBuilder: (context, i) =>const SizedBox(height: 16),
+                separatorBuilder: (context, i) => const SizedBox(height: 16),
                 itemCount: controllerClass.allPickup.length,
                 itemBuilder: (context, i) {
                   return AllPickupBody(
-                    cod: controllerClass.allPickup[i]!.cop??0,
-                    name: controllerClass.allPickup[i]!.driverName??"",
-                    qty: controllerClass.allPickup[i]!.totalOrders??"0",
-                    date: controllerClass.allPickup[i]!.collectionDate??"dd-mm-yyyy",
-                    
-                    id: controllerClass.allPickup[i]!.id??'',
-                      onPressed: () {
-                        print("--------------->${controllerClass.allPickup[i]!.driveMobile}");
-                        controllerClass.makePhoneCall(
-                            "${controllerClass.allPickup[i]!.driveMobile??"71793854"}");
-                      },
-                      status:controllerClass.allPickup[i]!.status??'' ,
+                    cod: controllerClass.allPickup[i]!.cop ?? 0,
+                    name: controllerClass.allPickup[i]!.driverName ?? "",
+                    qty: controllerClass.allPickup[i]!.totalOrders ?? "0",
+                    date: controllerClass.allPickup[i]!.collectionDate ??
+                        "dd-mm-yyyy",
+                    id: controllerClass.allPickup[i]!.id ?? '',
+                    onPressed: () {
+                      print(
+                          "--------------->${controllerClass.allPickup[i]!.driveMobile}");
+                      controllerClass.makePhoneCall(
+                          "${controllerClass.allPickup[i]!.driveMobile ?? "71793854"}");
+                    },
+                    status: controllerClass.allPickup[i]!.status ?? '',
                   );
                 },
               ),

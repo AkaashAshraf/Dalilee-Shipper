@@ -80,10 +80,10 @@ class LoginController extends GetxController {
   mobileVild(x) {
     if (x.isEmpty) {
       return "please enter your mobile number";
-    } else if (x.length > 15) {
+    } else if (x.length > 8) {
       return "number can not be bigger than 20";
-    } else if (x.length <= 6) {
-      return "number can not be smaller than 6";
+    } else if (x.length <= 7) {
+      return "number can not be smaller than 8";
     }
   }
 

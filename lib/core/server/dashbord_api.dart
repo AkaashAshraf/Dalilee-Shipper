@@ -6,6 +6,7 @@ import 'package:dalile_customer/model/cancelled_shipment.dart';
 import 'package:dalile_customer/model/delivered_shipment.dart';
 import 'package:dalile_customer/model/finance_dashbord.dart';
 import 'package:dalile_customer/model/main_dashboard.dart';
+import 'package:dalile_customer/model/ofd.dart';
 import 'package:dalile_customer/model/return_shipment.dart';
 import 'package:dalile_customer/model/to_be_delivered.dart';
 import 'package:dalile_customer/model/to_be_picku.dart';
@@ -170,10 +171,8 @@ abstract class DashboardApi {
     return null;
   }
 
-  static Future<ToBeDeliveredDashbordModel?> fetchTobeDeliveredData(
-      {limit: 0}) async {
-    var url =
-        "$like/dashboard/to-be-delivered?shipment_offset=${limit}&activity_offset=0";
+  static Future<OfdResponse?> fetchTobeDeliveredData({limit: 0}) async {
+    var url = "$like/dashboard/ofd-shipments?shipment_offset=$limit";
     final prefs = await SharedPreferences.getInstance();
 
     String token = prefs.getString('token') ?? '';
@@ -187,7 +186,7 @@ abstract class DashboardApi {
         },
       );
       if (response.statusCode == 200) {
-        var data = dashbordToBeDeliveredModelFromJson(response.body);
+        var data = ofdResponseFromJson(response.body);
 
         return data;
       } else if (response.statusCode == 401) {

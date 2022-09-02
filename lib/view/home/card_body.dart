@@ -20,6 +20,12 @@ class CardBody extends StatelessWidget {
       this.stutaus,
       this.totalCharges,
       this.weight,
+      this.Order_current_Status: "",
+      this.deleiver_image: "",
+      this.undeleiver_image: "",
+      this.cc: "0",
+      this.status_key: '',
+      this.customer_name: "",
       this.orderNumber,
       required this.currentStep,
       required this.onPressedShowMore,
@@ -30,10 +36,16 @@ class CardBody extends StatelessWidget {
       ref,
       number,
       cop,
+      status_key,
       weight,
       orderNumber,
       shipmentCost,
       totalCharges,
+      Order_current_Status,
+      deleiver_image,
+      undeleiver_image,
+      cc,
+      customer_name,
       cod;
 
   final List<dynamic>? stutaus;
@@ -52,7 +64,8 @@ class CardBody extends StatelessWidget {
             BoxShadow(
               spreadRadius: 1,
               blurRadius: 5,
-              color: primaryColor.withOpacity(0.2),
+              color: primaryColor.withOpacity(0.15),
+              offset: Offset(0.0, 4.0),
             ),
           ]),
       child: Column(
@@ -63,7 +76,7 @@ class CardBody extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: 'Order # : $orderNumber',
+                  text: '$orderNumber',
                   color: primaryColor,
                   size: 18,
                   fontWeight: FontWeight.bold,
@@ -99,24 +112,23 @@ class CardBody extends StatelessWidget {
                             radius: 10,
                             backgroundColor: whiteColor,
                             onConfirm: () {
-                              Get.put(ShipmentViewModel())
-                                  .launchPDF("$orderId");
+                              Get.put(ShipmentViewModel()).launchPDF("2574953");
                             });
                       },
-                      child: Image.asset(
-                        'assets/images/pdf.png',
-                        width: 23,
-                        height: 23,
+                      child: const Icon(
+                        Icons.remove_red_eye,
+                        color: primaryColor,
+                        size: 25,
                       ),
                     ),
                     const SizedBox(
                       width: 10,
                     ),
                     InkWell(
-                      onTap: () {
+                      onTap: () async {
                         Get.put(ComplainController()).fetchTypeComplainData();
-                        Get.put(ShipmentViewModel()).menuAlert(
-                            context, number ?? "000", orderId ?? "0");
+                        await Get.put(ShipmentViewModel()).menuAlert(
+                            context, number ?? "000", orderId ?? "2574953");
                       },
                       child: const Icon(
                         Icons.more_vert,
@@ -141,22 +153,42 @@ class CardBody extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 4,
-                  child: _buildRowText('Ref : $ref', 'Customer No : $number'),
+                  child: _buildRowText('Ref : $ref', 'Name : $customer_name'),
                 ),
                 const Spacer(
-                  flex: 2,
+                  flex: 1,
                 ),
                 Expanded(
                     flex: 3,
-                    child:
-                        _buildRowText('COP : $cop OMR', 'Weight : $weight KG')),
+                    child: _buildRowText('CC : $cc OMR', '# : $number ')),
               ],
             ),
           ),
+          // const SizedBox(
+          //   height: 5,
+          // ),
+          if (customer_name != "")
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0, right: 10, top: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Spacer(
+                    flex: 2,
+                  ),
+                ],
+              ),
+            ),
           const SizedBox(
             height: 5,
           ),
-          _rowWithnameline('Order Status'),
+          _rowWithnameline(
+              Order_current_Status,
+              status_key == 'return'
+                  ? Colors.red
+                  : status_key == 'F'
+                      ? Colors.orange
+                      : primaryColor),
           Padding(
             padding: const EdgeInsets.only(
               left: 15.0,
@@ -176,7 +208,7 @@ class CardBody extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomText(
-                  text: 'Show More Details',
+                  text: isOpen ? "Hide Details" : 'Show More Details',
                   color: textRedColor,
                   size: 11,
                   alignment: Alignment.centerRight,
@@ -213,7 +245,7 @@ class CardBody extends StatelessWidget {
         onTap: onPressedShowMore,
         child: Column(
           children: [
-            _rowWithnameline('Shipment Journey'),
+            _rowWithnameline('Shipment Journey', primaryColor),
             for (int q = 0; q < stutaus!.length; q++)
               Padding(
                 padding: const EdgeInsets.all(5),
@@ -236,7 +268,7 @@ class CardBody extends StatelessWidget {
                       const LineStyle(thickness: 1, color: primaryColor),
                 ),
               ),
-            _rowWithnameline('Payment Summary'),
+            _rowWithnameline('Payment Summary', primaryColor),
             _buildRowDown(
                 text1Color, 12, 'Shipping Cost ', '$shipmentCost OMR'),
             _buildRowDown(text1Color, 12, 'COD ', '$cod OMR'),
@@ -271,7 +303,7 @@ class CardBody extends StatelessWidget {
     );
   }
 
-  Row _rowWithnameline(String title) {
+  Row _rowWithnameline(String title, Color color) {
     return Row(
       children: [
         Expanded(
@@ -282,7 +314,7 @@ class CardBody extends StatelessWidget {
         ),
         CustomText(
           text: title,
-          color: primaryColor,
+          color: color,
           fontWeight: FontWeight.bold,
         ),
         Expanded(

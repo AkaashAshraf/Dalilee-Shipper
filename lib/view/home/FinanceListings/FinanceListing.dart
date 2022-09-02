@@ -1,0 +1,388 @@
+import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/core/view_model/financeListingController.dart';
+import 'package:dalile_customer/model/all_shipment.dart';
+import 'package:dalile_customer/view/home/card_body.dart';
+import 'package:dalile_customer/view/widget/custom_text.dart';
+import 'package:dalile_customer/view/widget/waiting.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/instance_manager.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+enum Status {
+  ALL,
+  PAID,
+  COD_PENDING,
+  READY_TO_PAY,
+  COD_WITH_DRIVERS,
+  COD_RETURN
+}
+
+class FinanceDasboradListing extends StatefulWidget {
+  FinanceDasboradListing(
+      {Key? key, this.onUplod, required this.title, required this.type})
+      : super(key: key);
+  final String title;
+  final Enum type;
+
+  final void Function()? onUplod;
+
+  @override
+  State<FinanceDasboradListing> createState() => _FinanceDasboradListingState();
+}
+
+class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
+  FinanceListingController controller = Get.put(FinanceListingController());
+  RefreshController refreshController = RefreshController(initialRefresh: true);
+  ScrollController? scrollController;
+
+  void _refresh({required type}) async {
+    switch (type) {
+      case Status.ALL:
+        {
+          await controller.getAllOrders(isRefresh: true);
+          refreshController.refreshCompleted();
+          break;
+        } //delived
+      case Status.PAID:
+        {
+          await controller.getPaidOrders(isRefresh: true);
+          refreshController.refreshCompleted();
+          break;
+        } //delived
+      case Status.COD_PENDING:
+        {
+          await controller.getCodPendingOrders(isRefresh: true);
+          refreshController.refreshCompleted();
+          break;
+        } //to be pickup
+      case Status.READY_TO_PAY:
+        {
+          await controller.getReadyToPayOrders(isRefresh: true);
+          refreshController.refreshCompleted();
+          break;
+        } //tp\o be delived
+      case Status.COD_WITH_DRIVERS:
+        {
+          await controller.getCodWithDriversOrders(isRefresh: true);
+          refreshController.refreshCompleted();
+          break;
+        } //to be delived
+      case Status.COD_RETURN:
+        {
+          await controller.getCodReturnOrders(isRefresh: true);
+          refreshController.refreshCompleted();
+          break;
+        } //CENCELLED_SHIPMENTS
+    } //switch
+  }
+
+  @override
+  void initState() {
+    scrollController = ScrollController()
+      ..addListener(() {
+        _loadMore(type: widget.type);
+      });
+    // controller.getAll_orders();
+
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController!.removeListener(() {
+      _loadMore(type: widget.type);
+
+      _loadMore(type: Status.COD_RETURN);
+    });
+
+    super.dispose();
+  }
+
+  _loadMore({required type}) {
+    // print(type);
+    switch (type) {
+      case Status.ALL:
+        {
+          if (controller.loadMoreAll.value) return;
+          if ((controller.limitAll.value < controller.totalAll.value) &&
+              scrollController!.position.extentAfter < 100.0) {
+            // bool isTop = scrollController!.position.pixels == 0;
+            controller.loadMoreAll.value = true;
+            controller.getAllOrders();
+          }
+          break;
+        } //ALL
+      case Status.PAID:
+        {
+          if (controller.loadMorePaid.value) return;
+          if ((controller.limitPaid.value < controller.totalPaid.value) &&
+              scrollController!.position.extentAfter < 100.0) {
+            // bool isTop = scrollController!.position.pixels == 0;
+            controller.loadMorePaid.value = true;
+            controller.getPaidOrders();
+          }
+          break;
+        } //paid
+
+      case Status.COD_PENDING:
+        {
+          if (controller.loadMoreCodPending.value) return;
+          if ((controller.limitCodPending.value <
+                  controller.totalCodPending.value) &&
+              scrollController!.position.extentAfter < 100.0) {
+            controller.loadMoreCodPending.value = true;
+            controller.getCodPendingOrders();
+          }
+          break;
+        } //COD PENDING
+
+      case Status.READY_TO_PAY:
+        {
+          if (controller.loadMoreReadyToPay.value) return;
+          if ((controller.limitReadyToPay.value <
+                  controller.totalReadyToPay.value) &&
+              scrollController!.position.extentAfter < 100.0) {
+            // bool isTop = scrollController!.position.pixels == 0;
+            controller.loadMoreReadyToPay.value = true;
+            // controller.listReadyToPay += controller.listReadyToPay;
+            controller.getReadyToPayOrders();
+          }
+          break;
+        } //READY TO PAY
+      case Status.COD_WITH_DRIVERS:
+        {
+          if (controller.loadMoreCodWithDrivers.value) return;
+          if ((controller.limitCodWithDrivers.value <
+                  controller.totalCodWithDrivers.value) &&
+              scrollController!.position.extentAfter < 100.0) {
+            // bool isTop = scrollController!.position.pixels == 0;
+            controller.loadMoreCodWithDrivers.value = true;
+            controller.getCodWithDriversOrders();
+          }
+          break;
+        } //COD_WITH_DRIVERS
+
+      case Status.COD_RETURN:
+        {
+          if (controller.loadMoreCodReturn.value) return;
+          if ((controller.limitCodReturn.value <
+                  controller.totalCodReturn.value) &&
+              scrollController!.position.extentAfter < 100.0) {
+            // bool isTop = scrollController!.position.pixels == 0;
+            controller.loadMoreCodReturn.value = true;
+            controller.getCodReturnOrders();
+          }
+          break;
+        } //COD_RETURN
+
+    } //switch
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: primaryColor,
+        appBar: _buildAppBar(),
+        body: Container(
+          padding: EdgeInsets.only(top: 0),
+          decoration: const BoxDecoration(
+              color: bgColor,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
+          child: GetX<FinanceListingController>(builder: (controller) {
+            return Container(
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                children: [
+                  Text('total: ' +
+                      controller.totalPaid.value.toString() +
+                      '========>now :' +
+                      controller.listPaid.length.toString()),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.8,
+                          child: SmartRefresher(
+                            header: WaterDropMaterialHeader(
+                              backgroundColor: primaryColor,
+                            ),
+                            controller: refreshController,
+                            onRefresh: () async {
+                              _refresh(type: widget.type);
+                            },
+                            child: ListView.separated(
+                              // shrinkWrap: false,
+                              controller: scrollController,
+                              separatorBuilder: (context, i) =>
+                                  const SizedBox(height: 15),
+                              itemCount: widget.type == Status.ALL
+                                  ? controller.listAll.length
+                                  : widget.type == Status.PAID
+                                      ? controller.listPaid.length
+                                      : widget.type == Status.COD_PENDING
+                                          ? controller.listCodPending.length
+                                          : widget.type == Status.READY_TO_PAY
+                                              ? controller.listReadyToPay.length
+                                              : widget.type ==
+                                                      Status.COD_WITH_DRIVERS
+                                                  ? controller
+                                                      .listCodWithDrivers.length
+                                                  : controller
+                                                      .listCodReturn.length,
+                              padding: const EdgeInsets.only(
+                                  left: 15, right: 15, bottom: 10, top: 5),
+                              itemBuilder: (context, i) {
+                                return GetBuilder<FinanceListingController>(
+                                  builder: (x) => card(
+                                      controller,
+                                      widget.type == Status.ALL
+                                          ? controller.listAll[i]
+                                          : widget.type == Status.PAID
+                                              ? controller.listPaid[i]
+                                              : widget.type ==
+                                                      Status.COD_PENDING
+                                                  ? controller.listCodPending[i]
+                                                  : widget.type ==
+                                                          Status.READY_TO_PAY
+                                                      ? controller
+                                                          .listReadyToPay[i]
+                                                      : widget.type ==
+                                                              Status
+                                                                  .COD_WITH_DRIVERS
+                                                          ? controller
+                                                                  .listCodWithDrivers[
+                                                              i]
+                                                          : controller
+                                                              .listCodReturn[i],
+                                      x),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        loadMoreIndicator(),
+                      ],
+                    ),
+                  ),
+                  // loadMoreIndicator(),
+                ],
+              ),
+            );
+          }),
+        ));
+  }
+
+  loadMoreIndicator() {
+    switch (widget.type) {
+      case Status.ALL:
+        {
+          if (controller.loadMoreAll.value) {
+            return Positioned(
+                bottom: 0, left: 0, right: 0, child: const WaiteImage());
+          } else
+            return Text('');
+        } //all
+
+      case Status.PAID:
+        {
+          if (controller.loadMorePaid.value) {
+            return Positioned(
+                bottom: 0, left: 0, right: 0, child: const WaiteImage());
+          } else
+            return Text('');
+        } //paid
+
+      case Status.COD_PENDING:
+        {
+          if (controller.loadMoreCodPending.value) {
+            return Positioned(
+                bottom: 0, left: 0, right: 0, child: const WaiteImage());
+          } else
+            return Text('');
+        } //cod pending
+      case Status.READY_TO_PAY:
+        {
+          if (controller.loadMoreReadyToPay.value) {
+            return Positioned(
+                bottom: 0, left: 0, right: 0, child: const WaiteImage());
+          } else
+            return Text('');
+        } //  ready to pay
+      case Status.COD_WITH_DRIVERS:
+        {
+          if (controller.loadMoreCodWithDrivers.value) {
+            return Positioned(
+                bottom: 0, left: 0, right: 0, child: const WaiteImage());
+          } else
+            return Text('');
+        } //cod reaturn
+      case Status.COD_RETURN:
+        {
+          if (controller.loadMoreCodReturn.value) {
+            return Positioned(
+                bottom: 0, left: 0, right: 0, child: const WaiteImage());
+          } else
+            return Text('');
+        } //cod reaturn
+      default:
+        {
+          return Text('');
+        }
+    }
+  }
+
+  CardBody card(FinanceListingController controller, Shipment shipment,
+      FinanceListingController x) {
+    return CardBody(
+      orderId: shipment.orderId ?? 00,
+      customer_name: shipment.customerName,
+      Order_current_Status: shipment.orderStatusName,
+      number: shipment.phone ?? "+968",
+      orderNumber: shipment.orderNo,
+      cod: shipment.cod ?? "0.00",
+      cop: shipment.cop ?? "0.00",
+      shipmentCost: shipment.shippingPrice ?? "0.00",
+      totalCharges:
+          '${double.parse(shipment.shippingPrice.toString()) + double.parse(shipment.cod.toString())}',
+      stutaus: shipment.orderActivities,
+      icon: controller.trackingStatuses
+          .map((element) => element.icon.toString())
+          .toList(),
+      status_key: shipment.orderStatusKey,
+      ref: shipment.refId ?? 0,
+      weight: shipment.weight ?? 0.00,
+      currentStep: shipment.currentStatus ?? 1,
+      isOpen: shipment.isOpen,
+      onPressedShowMore: () {
+        if (shipment.isOpen == false) {
+          controller.listAll.forEach((element) => element.isOpen = false);
+          shipment.isOpen = !shipment.isOpen;
+          x.update();
+        } else {
+          print('-------------');
+          shipment.isOpen = false;
+          x.update();
+        }
+      },
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      elevation: 0,
+      toolbarHeight: 70,
+      backgroundColor: primaryColor,
+      foregroundColor: whiteColor,
+      title: CustomText(
+          text: widget.title,
+          color: whiteColor,
+          size: 18,
+          fontWeight: FontWeight.w500,
+          alignment: Alignment.center),
+      centerTitle: true,
+    );
+  }
+}

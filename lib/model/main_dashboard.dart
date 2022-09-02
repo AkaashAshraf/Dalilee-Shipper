@@ -37,6 +37,8 @@ class Data {
     this.toBeDelivered,
     this.returnedShipments,
     this.cancelShipments,
+    this.undeliveredShipments,
+    this.ofdShipments,
   });
 
   int? totalShipments;
@@ -45,6 +47,8 @@ class Data {
   int? toBeDelivered;
   int? returnedShipments;
   int? cancelShipments;
+  int? undeliveredShipments;
+  int? ofdShipments;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         totalShipments: json["total_shipments"],
@@ -53,6 +57,8 @@ class Data {
         toBeDelivered: json["to_be_delivered"],
         returnedShipments: json["returned_shipments"],
         cancelShipments: json["cancel_shipments"],
+        undeliveredShipments: json["undelivered_shipments"],
+        ofdShipments: json["ofd_shipments"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -62,5 +68,7 @@ class Data {
         "to_be_delivered": toBeDelivered,
         "returned_shipments": returnedShipments,
         "cancel_shipments": cancelShipments,
+        "undelivered_shipments": undeliveredShipments,
+        "ofd_shipments": ofdShipments,
       };
 }

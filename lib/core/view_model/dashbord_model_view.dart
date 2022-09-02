@@ -34,6 +34,10 @@ class DashbordController extends GetxController {
   RxInt dashboard_to_b_Delivered = 0.obs;
   RxInt dashboard_returnedShipment = 0.obs;
   RxInt dashboard_CancelledShiments = 0.obs;
+
+  RxInt dashboard_undeliverdShiments = 0.obs;
+  RxInt dashboard_OFDShiments = 0.obs;
+
 // ///////limts
   RxInt limit_allShiments = 0.obs;
   RxInt limit_to_b_Pichup = 0.obs;
@@ -133,6 +137,8 @@ class DashbordController extends GetxController {
         dashboard_returnedShipment.value = data.data!.returnedShipments!;
         dashboard_CancelledShiments.value = data.data!.cancelShipments!;
         dashboard_deliveredShipments.value = data.data!.deliveredShipments!;
+        dashboard_OFDShiments.value = data.data!.ofdShipments!;
+        dashboard_undeliverdShiments.value = data.data!.deliveredShipments!;
       } else {
         if (!Get.isSnackbarOpen) {
           Get.snackbar('Filed', DashboardApi.mass);
@@ -279,11 +285,11 @@ class DashbordController extends GetxController {
       var deliverData = await DashboardApi.fetchTobeDeliveredData();
       if (deliverData != null) {
         if (isRefresh) {
-          tobeDelShipemet.value = deliverData.data!.shipmentsToDelivered!;
+          tobeDelShipemet.value = deliverData.data!.ofdShipments!;
         } else {
-          tobeDelShipemet.value += deliverData.data!.shipmentsToDelivered!;
+          tobeDelShipemet.value += deliverData.data!.ofdShipments!;
         }
-        toBeDelShipmentNumber.value = deliverData.data!.totalShipments!;
+        toBeDelShipmentNumber.value = deliverData.data!.totalOfdShipments!;
         toBeDelvList.value = deliverData.data!.trackingStatuses!;
       } else {
         if (!Get.isSnackbarOpen) {
@@ -291,12 +297,13 @@ class DashbordController extends GetxController {
         }
       }
     } finally {
+      inViewLoading_to_be_deliveredShipments.value = false;
+
       if (DashboardApi.checkAuth == true) {
         Get.offAll(() => LoginView());
         DashboardApi.checkAuth = false;
       }
       loadMore_to_be_deliveredShipments.value = false;
-
       isLoading(false);
     }
   }

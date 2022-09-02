@@ -308,13 +308,12 @@ class _MainDashState extends State<MainDash> {
                     () => GetX<DashbordController>(builder: (controller) {
                           return controller.allShipemet.isEmpty
                               ? MainCardBodyView(
-                                  controller:
-                                      controller?.inViewLoading_allShipments ==
-                                              true
-                                          ? WaiteImage()
-                                          : EmptyState(
-                                              label: 'No data',
-                                            ),
+                                  controller: controller
+                                          .inViewLoading_allShipments.value
+                                      ? WaiteImage()
+                                      : EmptyState(
+                                          label: 'No data',
+                                        ),
                                   title: "Shipments")
                               : MainCardBodyView(
                                   title: 'All Shipments',
@@ -323,16 +322,15 @@ class _MainDashState extends State<MainDash> {
                                     child: Column(
                                       children: [
                                         Container(
-                                          height:
-                                              controller?.loadMore.value == true
-                                                  ? MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.75
-                                                  : MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.82,
+                                          height: controller.loadMore.value
+                                              ? MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.75
+                                              : MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.82,
                                           child: SmartRefresher(
                                             header: WaterDropMaterialHeader(
                                               backgroundColor: primaryColor,
@@ -362,6 +360,13 @@ class _MainDashState extends State<MainDash> {
                                                             .allShipemet[i]
                                                             .orderId ??
                                                         00,
+                                                    customer_name: controller
+                                                        .allShipemet[i]
+                                                        .customerName,
+                                                    Order_current_Status:
+                                                        controller
+                                                            ?.allShipemet[i]
+                                                            .orderStatusName,
                                                     number: controller
                                                             .allShipemet[i]
                                                             .phone ??
@@ -529,6 +534,11 @@ class _MainDashState extends State<MainDash> {
                                                           DashbordController>(
                                                         builder: (x) =>
                                                             CardBody(
+                                                          Order_current_Status:
+                                                              controller
+                                                                  ?.deliverShipemet[
+                                                                      i]
+                                                                  .orderStatusName,
                                                           orderId: widget
                                                                   .controller
                                                                   .deliverShipemet[
@@ -686,7 +696,7 @@ class _MainDashState extends State<MainDash> {
                                             : EmptyState(
                                                 label: 'No data',
                                               ),
-                                        title: "To Be Pickup")
+                                        title: "Un-Delivered Shipments")
                                     : Container(
                                         color: Colors.white,
                                         height:
@@ -707,7 +717,7 @@ class _MainDashState extends State<MainDash> {
                                                           .height *
                                                       1,
                                               child: MainCardBodyView(
-                                                title: "To Be Pickup",
+                                                title: "Un-Delivered Shipments",
                                                 controller: SmartRefresher(
                                                   header:
                                                       WaterDropMaterialHeader(
@@ -775,8 +785,12 @@ class _MainDashState extends State<MainDash> {
                     },
                     child: _InsideSmallBox(
                       image: 'assets/images/tobepickup.png',
-                      title: 'To Be\nPickup',
-                      numbers: ' ${widget.controller.dashboard_to_b_Pichup}',
+                      // title: 'To Be\nPickup',
+                      title: 'Un-Delivered\nShipments',
+
+                      // numbers: ' ${widget.controller.dashboard_to_b_Pichup}',
+                      numbers:
+                          ' ${widget.controller.dashboard_undeliverdShiments}',
                     ),
                   ),
                 ),
@@ -801,7 +815,8 @@ class _MainDashState extends State<MainDash> {
                                             : EmptyState(
                                                 label: 'No data',
                                               ),
-                                        title: "To Be Delivered")
+                                        // title: "To Be Delivered")
+                                        title: "Out For Delivery (OFD)")
                                     : Container(
                                         color: Colors.white,
                                         height:
@@ -822,7 +837,7 @@ class _MainDashState extends State<MainDash> {
                                                           .height *
                                                       1,
                                               child: MainCardBodyView(
-                                                title: 'To Be Deliver',
+                                                title: 'Out For Delivery (OFD)',
                                                 controller: SmartRefresher(
                                                   header:
                                                       WaterDropMaterialHeader(
@@ -990,9 +1005,10 @@ class _MainDashState extends State<MainDash> {
                     },
                     child: _InsideSmallBox(
                       image: 'assets/images/tobedelivered.png',
-                      title: 'To Be\nDelivered',
+                      title: 'Out For\nDelivery (OFD)',
                       numbers:
-                          '${widget.controller.dashboard_to_b_Delivered.value}',
+                          // '${widget.controller.dashboard_to_b_Delivered.value}',
+                          '${widget.controller.dashboard_OFDShiments.value}',
                     ),
                   ),
                 ),
@@ -1418,6 +1434,13 @@ Widget buildCard(BuildContext context, Widget child, a, b, c, d) {
     width: MediaQuery.of(context).size.width,
     decoration: BoxDecoration(
       color: primaryColor,
+      boxShadow: [
+        BoxShadow(
+            // spreadRadius: 1,
+            // blurRadius: 1,
+            // offset: Offset(0.0, 1.0),
+            )
+      ],
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(a),
         topRight: Radius.circular(b),

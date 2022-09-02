@@ -1,10 +1,9 @@
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/view/menu/profiles/edit_profile.dart';
 import 'package:dalile_customer/view/menu/profiles/terms_Conditions_view.dart';
-import 'package:dalile_customer/view/menu/profiles/manage_address_view.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/custom_form_filed.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
-import 'package:dalile_customer/view/widget/my_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:launch_review/launch_review.dart';
@@ -40,9 +39,9 @@ class ProfileView extends StatelessWidget {
             const SizedBox(
               height: 70,
             ),
-            // _buildRows("Profile", Icons.account_circle_outlined, () {
-            //   Get.to(() => const EditProfile());
-            // }),
+            _buildRows("Profile", Icons.account_circle_outlined, () {
+              Get.to(() => const EditProfile());
+            }),
 
             // const SizedBox(
             //   height: 20,

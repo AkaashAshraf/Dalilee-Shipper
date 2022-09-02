@@ -302,6 +302,25 @@ abstract class FinanceApi {
     return null;
   }
 
+  static Future download({url}) async {
+    try {
+      var response = await http.get(
+        Uri.parse(url),
+        headers: {
+          "Accept": "application/json",
+        },
+      );
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+      ;
+    }
+  }
+
   static Future<List<SubCatList>?> fetchSubCatList(id) async {
     var _url = base_url + '/inquiry/sub-category/listing';
     // "https://shaheen-test2.dalilee.om/api/inquiry/sub-category/listing";

@@ -13,11 +13,10 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return  GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialBinding: Binding(),
-        home: const SplashScreen(),
-  
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialBinding: Binding(),
+      home: const SplashScreen(),
     );
   }
 }

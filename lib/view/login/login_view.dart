@@ -51,6 +51,7 @@ class LoginView extends StatelessWidget {
                     controller: _controller.phoneNumber,
                     validator: (x) => _controller.mobileVild(x),
                     keyboardType: TextInputType.phone,
+                    limitCharacters: 8,
                     hintText: 'Enter your mobile number',
                     prefix: const Padding(
                       padding: EdgeInsets.only(left: 5.0, top: 15),

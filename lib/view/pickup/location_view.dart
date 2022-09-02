@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:dalile_customer/components/popups/askOtp.dart';
+import 'package:dalile_customer/components/popups/w3WordsPopup.dart';
 import 'package:dalile_customer/view/widget/custom_popup.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/server/pickup_api.dart';
@@ -92,8 +95,10 @@ class _GMapState extends State<GMap> {
 
   String word3 = '';
   Future what3WordApi(lang, lat) async {
-    var _url =
-        "http://shaheen-test2.dalilee.om/api/w3w/convert-to-3wa/?lat=$lat&lng=$lang";
+    // var _url =
+    //     "http://shaheen-test2.dalilee.om/api/w3w/convert-to-3wa/?lat=$lat&lng=$lang";
+
+    var _url = "$base_url/w3w/convert-to-3wa/?lat=$lat&lng=$lang";
     try {
       var response = await http.get(
         Uri.parse(_url),
@@ -129,7 +134,7 @@ class _GMapState extends State<GMap> {
           Get.back();
         }
         if (value) {
-          Get.to(PickupView());
+          // Get.to(PickupView());
           Get.snackbar('Successful', "${PickupApi.success}",
               colorText: whiteColor,
               backgroundColor: primaryColor.withOpacity(0.7));
@@ -137,36 +142,66 @@ class _GMapState extends State<GMap> {
           Get.snackbar('Failed', "${PickupApi.mass}",
               colorText: whiteColor, backgroundColor: Colors.red[800]);
         }
-      }).whenComplete(() {
-        Get.put(PickupController()).fetchAllPickupData();
+      }).whenComplete(() async {
+        var _controller = Get.put(PickupController(), permanent: false);
+        _controller.fetchAllPickupData();
+        _controller.fetchTodayPickupData();
+
         // var temp = Get.find<PickupController>;
         // Navigator.pop(context);
 
-        Get.put(PickupController()).fetchTodayPickupData();
-        Navigator.pop(context);
-        Navigator.pop(context);
+        // Get.put(PickupController()).fetchTodayPickupData();
         // Navigator.pop(context);
-        // Navigator.pop(context);
+        // w3WordsPopup(context, "word3");
+
+        await what3WordApi(
+          long.text.toString(),
+          lat.text.toString(),
+        );
+        Navigator.pop(context);
+
+        w3WordsPopup(context, word3);
+
+        // .whenComplete(() {
+        //   if (word3.isNotEmpty) {
+        //     w3WordsPopup(context, word3);
+
+        //     // showDialog(
+        //     //     useRootNavigator: true,
+        //     //     barrierDismissible: true,
+        //     //     barrierColor: Colors.transparent,
+        //     //     context: context,
+        //     //     builder: (BuildContext context) {
+        //     //       return CustomDialogBoxAl(
+        //     //         title: "What3Word",
+        //     //         des: "3 word = $word3",
+        //     //         icon: Icons.map,
+        //     //       );
+        //     //     });
+        //   }
+        // });
+
+        // return true;
       });
     } finally {
-      what3WordApi(
-        long.text.toString(),
-        lat.text.toString(),
-      ).whenComplete(() {
-        if (word3.isNotEmpty) {
-          showDialog(
-              barrierDismissible: true,
-              barrierColor: Colors.transparent,
-              context: context,
-              builder: (BuildContext context) {
-                return CustomDialogBoxAl(
-                  title: "What3Word",
-                  des: "3 word = $word3",
-                  icon: Icons.map,
-                );
-              });
-        }
-      });
+      // what3WordApi(
+      //   long.text.toString(),
+      //   lat.text.toString(),
+      // ).whenComplete(() {
+      //   if (word3.isNotEmpty) {
+      //     showDialog(
+      //         barrierDismissible: true,
+      //         barrierColor: Colors.transparent,
+      //         context: context,
+      //         builder: (BuildContext context) {
+      //           return CustomDialogBoxAl(
+      //             title: "What3Word",
+      //             des: "3 word = $word3",
+      //             icon: Icons.map,
+      //           );
+      //         });
+      //   }
+      // });
     }
   }
 
@@ -263,6 +298,7 @@ class _GMapState extends State<GMap> {
                           text: 'Pick Address',
                           onPressed: () {
                             _apiData();
+                            ;
                           },
                         )),
             )

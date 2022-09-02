@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/ticket_details_model_vew.dart';
 import 'package:dalile_customer/model/complain_type_model.dart';
 import 'package:dalile_customer/model/complian_model.dart';
@@ -10,7 +11,9 @@ abstract class ComplainApi {
   static String mass = '';
   static bool checkAuth = false;
   static Future<List<Ticket>?> fetchComplainData(stats) async {
-    var url = "https://shaheen-test2.dalilee.om/api/tickets/list-tickets";
+    // var url = "https://shaheen-test2.dalilee.om/api/tickets/list-tickets";
+
+    var url = "$base_url/tickets/list-tickets";
     final prefs = await SharedPreferences.getInstance();
 
     String token = prefs.getString('token') ?? '';
@@ -53,11 +56,20 @@ abstract class ComplainApi {
 
   static Future<TicketTypeModel?> fetchTypeListData() async {
     try {
-      var url = "https://shaheen-test2.dalilee.om/api/tickets/list-categories";
-      var response = await http.get(Uri.parse(url));
+      final prefs = await SharedPreferences.getInstance();
+
+      String token = prefs.getString('token') ?? '';
+
+      // var url = "https://shaheen-test2.dalilee.om/api/tickets/list-categories";
+      var url = "$base_url/tickets/list-categories";
+
+      var response = await http.get(Uri.parse(url), headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token'
+      });
       if (response.statusCode == 200) {
         var data = ticketTypeModelFromJson(response.body);
-
         return data;
       } else {
         var err = json.decode(response.body);
@@ -73,7 +85,8 @@ abstract class ComplainApi {
 
   static Future<dynamic> fetchCreateComplainData(
       orderId, complianID, nameType, dsec) async {
-    var url = "https://shaheen-test2.dalilee.om/api/tickets/create-ticket";
+    // var url = "https://shaheen-test2.dalilee.om/api/tickets/create-ticket";
+    var url = "$base_url/tickets/create-ticket";
     final prefs = await SharedPreferences.getInstance();
 
     dynamic fromString = prefs.getString('loginData') ?? '';
@@ -125,7 +138,8 @@ abstract class ComplainApi {
 
   static Future<dynamic> fetchCreateCommentData(
       String ticketId, String bodyText, List<ImageFile> file) async {
-    var url = "http://shaheen-test2.dalilee.om/api/tickets/create-comment";
+    // var url = "http://shaheen-test2.dalilee.om/api/tickets/create-comment";
+    var url = "$base_url/tickets/create-comment";
     final prefs = await SharedPreferences.getInstance();
 
     String token = prefs.getString('token') ?? '';
@@ -161,7 +175,8 @@ abstract class ComplainApi {
   }
 
   static Future<TicketDetailsModel?> fetchTicketDetailsData(stats) async {
-    var url = "https://shaheen-test2.dalilee.om/api/tickets/ticket-details";
+    // var url = "https://shaheen-test2.dalilee.om/api/tickets/ticket-details";
+    var url = "$base_url/tickets/ticket-details";
 
     try {
       var response = await http.post(Uri.parse(url), body: {

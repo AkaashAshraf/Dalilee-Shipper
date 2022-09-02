@@ -68,6 +68,11 @@ dependencies:
   launch_review: ^3.0.1
   webview_flutter: ^3.0.4
   flutter_inappwebview: ^5.4.3+7
+  flutter_downloader: ^1.8.3
+  path_provider: ^2.0.11
+  image_picker: ^0.8.5+3
+  image_crop: ^0.4.1
+  rflutter_alert: ^2.0.4
 
 dev_dependencies:
   flutter_test:

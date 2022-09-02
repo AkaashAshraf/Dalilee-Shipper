@@ -3,7 +3,7 @@ import 'package:dalile_customer/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
- class LoginAPi {
+class LoginAPi {
   static String mass = 'please try agian later';
 
   static Future loginData(String mobile) async {
@@ -17,6 +17,27 @@ import 'package:http/http.dart' as http;
         if (res["message"] != null && res["message"] == "OK") {
           String tostring = res["otp"].toString();
           _saveProduct(tostring, "otp");
+          return res;
+        } else {
+          mass = res['message'];
+          return null;
+        }
+      }
+      mass = res['message'];
+    } catch (e) {
+      mass = 'Network error';
+    }
+  }
+
+  static Future sendOtpGeneral(String mobile) async {
+    try {
+      final url = Uri.parse("$like/send-otp-general");
+      final data = {'mobile': mobile};
+      final headers = {"Accept": "application/json"};
+      final response = await http.post(url, headers: headers, body: data);
+      final res = json.decode(response.body);
+      if (response.statusCode == 200) {
+        if (res["message"] != null && res["message"] == "OK") {
           return res;
         } else {
           mass = res['message'];
@@ -47,7 +68,7 @@ import 'package:http/http.dart' as http;
         if (res["success"] == "OK" || res["success"] == "ok") {
           _saveProduct(response.body, "loginData");
           final token = json.decode(response.body);
-        
+
           _saveProduct(token['data']["access_token"], "token");
           return res;
         } else {

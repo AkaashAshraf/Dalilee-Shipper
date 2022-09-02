@@ -2,11 +2,9 @@ import 'dart:io';
 
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/ticket_details_model_vew.dart';
-import 'package:dalile_customer/view/menu/complains/imageurl.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/empty.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -273,7 +271,7 @@ class ComplainDetails extends StatelessWidget {
                                             onTap: () async {
                                               print("------------");
                                               final url =
-                                                  "https://shaheen-test2.dalilee.om/${_controller.ticketDetailsData.value.comments![i].files[x]}";
+                                                  "$domain/${_controller.ticketDetailsData.value.comments![i].files[x]}";
                                               await launch(url);
                                             },
                                             child: CustomText(
