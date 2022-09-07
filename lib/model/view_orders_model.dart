@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:dalile_customer/model/all_shipment.dart';
+
 OrderViewListModel orderViewListModelFromJson(String str) =>
     OrderViewListModel.fromJson(json.decode(str));
 
@@ -39,12 +41,13 @@ class ViewOrderData {
   });
   int? totalOrders;
 
-  List<Order>? orders;
+  List<Shipment>? orders;
   List<TrackingStatus>? trackingStatuses;
 
   factory ViewOrderData.fromJson(Map<String, dynamic> json) => ViewOrderData(
         totalOrders: json["total_orders"],
-        orders: List<Order>.from(json["orders"].map((x) => Order.fromJson(x))),
+        orders:
+            List<Shipment>.from(json["orders"].map((x) => Order.fromJson(x))),
         trackingStatuses: List<TrackingStatus>.from(
             json["tracking_statuses"].map((x) => TrackingStatus.fromJson(x))),
       );
@@ -154,42 +157,6 @@ class OrderActivity {
         "external_text": externalText,
         "short_text": shortText,
         "internal_text": internalText,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
-      };
-}
-
-class TrackingStatus {
-  TrackingStatus({
-    this.id,
-    this.statusAr,
-    this.statusEng,
-    required this.icon,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  dynamic id;
-  dynamic statusAr;
-  dynamic statusEng;
-  String icon;
-  dynamic createdAt;
-  dynamic updatedAt;
-
-  factory TrackingStatus.fromJson(Map<String, dynamic> json) => TrackingStatus(
-        id: json["id"],
-        statusAr: json["status_ar"],
-        statusEng: json["status_eng"],
-        icon: json["icon"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "status_ar": statusAr,
-        "status_eng": statusEng,
-        "icon": icon,
         "created_at": createdAt,
         "updated_at": updatedAt,
       };

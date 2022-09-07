@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "356528026647",
+    "project_id": "dalilee-b198c",
+    "storage_bucket": "dalilee-b198c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:356528026647:android:5b6c9b1db5fbd2633f1852",
+        "android_client_info": {
+          "package_name": "com.dalilee_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "356528026647-crbjltvde5nlvsfmumodgv749gvkckks.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKHLkmw5qqLPbgq02aiSfl9Bh1Z5JDKV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "356528026647-crbjltvde5nlvsfmumodgv749gvkckks.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "356528026647-mv9u80vn9ejmhfi15c9c5jbugt119f7h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "thiqatech.dalilee.shipper"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:356528026647:android:c7df5fd9e5452d083f1852",
+        "android_client_info": {
+          "package_name": "thiqatech.dalilee.shipper_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "356528026647-crbjltvde5nlvsfmumodgv749gvkckks.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKHLkmw5qqLPbgq02aiSfl9Bh1Z5JDKV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "356528026647-crbjltvde5nlvsfmumodgv749gvkckks.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "356528026647-mv9u80vn9ejmhfi15c9c5jbugt119f7h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "thiqatech.dalilee.shipper"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

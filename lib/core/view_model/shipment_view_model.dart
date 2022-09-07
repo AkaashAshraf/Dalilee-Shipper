@@ -2,19 +2,23 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
+import 'package:dalile_customer/components/popups/askOtp.dart';
+import 'package:dalile_customer/components/popups/downloadProgressBarNew.dart';
 
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/server/finance_api.dart';
 import 'package:dalile_customer/core/server/shipments.dart';
 import 'package:dalile_customer/core/view_model/complain_view_model.dart';
+import 'package:dalile_customer/core/view_model/downloadController.dart';
 import 'package:dalile_customer/core/view_model/name_icons.dart';
-import 'package:dalile_customer/model/out_in_shipments.dart';
+import 'package:dalile_customer/model/all_shipment.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/custom_form_filed.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/my_input.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -65,20 +69,18 @@ class ShipmentViewModel extends GetxController {
   List<NameWithIcon> callList = [
     NameWithIcon(icon: Icons.call, name: 'Call'),
     NameWithIcon(icon: Icons.mail_outlined, name: 'Send Message'),
-    NameWithIcon(icon: Icons.mail_outlined, name: 'WhatsApp Message'),
+    NameWithIcon(icon: Icons.whatsapp_outlined, name: 'WhatsApp Message'),
     NameWithIcon(icon: Icons.content_copy_outlined, name: 'Copy Number'),
-    NameWithIcon(icon: Icons.person_add_outlined, name: 'Create New Contact'),
+    // NameWithIcon(icon: Icons.person_add_outlined, name: 'Create New Contact'),
   ];
   List<NameWithIcon> menuList = [
-    NameWithIcon(icon: Icons.info_outlined, name: 'Ticket'),
-    NameWithIcon(icon: Icons.picture_as_pdf_outlined, name: 'Download Pdf'),
-    NameWithIcon(icon: Icons.download_done_outlined, name: 'Download Csv'),
-    NameWithIcon(
-        icon: Icons.download_done_outlined, name: 'Download Pickup Image'),
-    NameWithIcon(
-        icon: Icons.download_done_outlined, name: 'Download Deliver Image'),
-    NameWithIcon(
-        icon: Icons.download_done_outlined, name: 'Download Undeliver Image'),
+    NameWithIcon(icon: Icons.info_outlined, name: 'Generate Ticket'),
+    NameWithIcon(icon: Icons.picture_as_pdf_outlined, name: 'Download Bill'),
+    // NameWithIcon(icon: Icons.download_outlined, name: 'Download Pickup Image'),
+    // NameWithIcon(
+    //     icon: Icons.download_outlined, name: 'Download Delivered Image'),
+    // NameWithIcon(
+    //     icon: Icons.download_outlined, name: 'Download Undelivered Image'),
   ];
 
   callAlert(context, number) {
@@ -116,7 +118,7 @@ class ShipmentViewModel extends GetxController {
                           break;
 
                         case 2:
-                          launchWhatsapp("123");
+                          launchWhatsapp(number);
                           break;
                         case 3:
                           Clipboard.setData(ClipboardData(text: "$number"))
@@ -155,13 +157,13 @@ class ShipmentViewModel extends GetxController {
     } finally {}
   }
 
-  menuAlert(context, number, orderN) async {
-    FlutterDownloader.initialize();
-    void downloadCallback(String id, DownloadTaskStatus status, int progress) {
-      final SendPort send =
-          IsolateNameServer.lookupPortByName('downloader_send_port')!;
-      send.send([id, status, progress]);
-    }
+  menuAlert(context, number, orderN, dImage, undImage, pickupImage) async {
+    // FlutterDownloader.initialize();
+    // void downloadCallback(String id, DownloadTaskStatus status, int progress) {
+    //   // final SendPort send =
+    //   //     IsolateNameServer.lookupPortByName('downloader_send_port')!;
+    //   // send.send([id, status, progress]);
+    // }
 
     final ReceivePort _port = ReceivePort();
 
@@ -189,78 +191,53 @@ class ShipmentViewModel extends GetxController {
                 shrinkWrap: true,
                 itemCount: menuList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    leading: Text(
-                      menuList[index].name,
-                      style: const TextStyle(color: Colors.black),
-                    ),
-                    trailing: Icon(
-                      menuList[index].icon,
-                      color: Colors.black,
-                    ),
-                    onTap: () async {
-                      // print(res);
-                      //   Get.put(ComplainController()).fetchTypeComplainData();
-                      // Get.put(ComplainController()).typeID.clear();
-                      // Get.put(ComplainController()).typeName.clear();
-                      // Get.put(ComplainController()).orderID.clear();
-                      switch (index) {
-                        case 0:
-                          Get.back();
-                          showD(context, orderN);
-                          break;
-                        case 1:
-                          try {
-                            FlutterDownloader.registerCallback(
-                                downloadCallback);
+                  return Stack(
+                    children: [
+                      ListTile(
+                        leading: Text(
+                          menuList[index].name,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                        trailing: Icon(
+                          menuList[index].icon,
+                          color: Colors.black,
+                        ),
+                        onTap: () async {
+                          DownloadController controller =
+                              Get.put(DownloadController());
+                          await Permission.storage.request();
 
-                            // Directory appDocDir =
-                            //     await getApplicationDocumentsDirectory();
-                            // String appDocPath = appDocDir.path;
-                            var url =
-                                'https://shaheen-oman.dalilee.om/storage/uploads/store/shipments/2022/Aug/shipments1661714131.csv';
-
-                            final status = await Permission.storage.request();
-
-                            if (status.isGranted) {
-                              final externalDir =
-                                  await getExternalStorageDirectory();
-
-                              final id = await FlutterDownloader.enqueue(
-                                url: url,
-                                savedDir: externalDir!.path,
-                                showNotification: true,
-                                openFileFromNotification: true,
-                              );
-                            } else {
-                              print('Permission Denied');
-                            }
-                            // final taskId = await FlutterDownloader.enqueue(
-                            //   url:
-                            //       'https://shaheen-oman.dalilee.om/storage/uploads/store/shipments/2022/Aug/shipments1661714131.csv',
-                            //   headers: {}, // optional: header send with url (auth token etc)
-                            //   savedDir: appDocPath,
-                            //   showNotification:
-                            //       true, // show download progress in status bar (for Android)
-                            //   openFileFromNotification:
-                            //       true, // click on notification to open downloaded file (for Android)
-                            // );
-                            // print(appDocDir);
-
-                            // final Uri _url = Uri.parse(
-                            //     'https://shaheen-oman.dalilee.om/storage/uploads/store/shipments/2022/Aug/shipments1661714131.csv');
-                            // launchUrl(_url);
-                            // var res = await FinanceApi.download(
-                            //     url:
-                            //         "https://shaheen-oman.dalilee.om/storage/uploads/store/shipments/2022/Aug/shipments1661714131.csv");
-                            // print(res);
-                          } catch (r) {
-                            print(r);
+                          switch (index) {
+                            case 0:
+                              Get.back();
+                              showD(context, orderN);
+                              break;
+                            case 1:
+                              try {
+                                controller.startDownloadingSingle(
+                                    orderN.toString(),
+                                    isGoBack: true);
+                              } catch (r) {}
+                              break;
+                            case 2:
+                              try {
+                                controller.startDownloadingImage(pickupImage);
+                              } catch (r) {}
+                              break;
+                            case 3:
+                              try {
+                                controller.startDownloadingImage(dImage);
+                              } catch (r) {}
+                              break;
+                            case 4:
+                              try {
+                                controller.startDownloadingImage(undImage);
+                              } catch (r) {}
+                              break;
                           }
-                          Get.back();
-                          break;
-                      }
-                    },
+                        },
+                      ),
+                    ],
                   );
                 },
               ),
@@ -314,8 +291,8 @@ class ShipmentViewModel extends GetxController {
 
   var isLoadingOut = true.obs;
   var isLoadingIN = true.obs;
-  var outList = <Request?>[].obs;
-  var inList = <Request?>[].obs;
+  var outList = <Shipment?>[].obs;
+  var inList = <Shipment?>[].obs;
   List<TrackingStatus> shipList = [];
   List<TrackingStatus> outshipList = [];
 
@@ -390,7 +367,7 @@ class ShipmentViewModel extends GetxController {
 
   TextEditingController searchConter = TextEditingController();
 
-  var searchResult = <Request?>[].obs;
+  var searchResult = <Shipment?>[].obs;
   onSearchTextChanged(text) async {
     searchResult.clear();
     if (text.isEmpty) {

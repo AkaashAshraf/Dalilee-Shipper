@@ -1,15 +1,23 @@
 import 'dart:convert';
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/core/view_model/login_view_model.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class LoginAPi {
   static String mass = 'please try agian later';
 
-  static Future loginData(String mobile) async {
+  static Future loginData(
+      {required String mobile,
+      required String email,
+      bool isEmail: false}) async {
     try {
-      final url = Uri.parse("$like/send-otp");
-      final data = {'mobile': mobile};
+      final url =
+          Uri.parse(isEmail ? "$like/send-otp-email" : "$like/send-otp");
+      var data = {'mobile': mobile};
+      if (isEmail) data = {'email': email};
       final headers = {"Accept": "application/json"};
       final response = await http.post(url, headers: headers, body: data);
       final res = json.decode(response.body);
@@ -23,6 +31,7 @@ class LoginAPi {
           return null;
         }
       }
+
       mass = res['message'];
     } catch (e) {
       mass = 'Network error';
@@ -50,16 +59,30 @@ class LoginAPi {
     }
   }
 
-  static Future loginOtpData(
-      String mobile, String otpnum, String dId, String dName) async {
+  static Future loginOtpData(String otpnum, String dId, String dName,
+      {required String email,
+      required String mobile,
+      bool isEmail: false}) async {
+    print(Get.put(LoginController()).mobile.value +
+        "-" +
+        Get.put(LoginController()).emailAddress.value);
+
     try {
-      var url = Uri.parse("$like/login");
+      var url = Uri.parse(isEmail ? "$like/login-with-email" : "$like/login");
+
+      String? token = await FirebaseMessaging.instance.getToken();
+
+      print("fcm:$token");
       var data = {
         "mobile": mobile,
+        "email": email,
         "code": otpnum,
         "device_id": dId,
-        "device_name": dName
+        "device_name": dName,
+        "fcm_token": token
       };
+
+      print(data);
       var headers = {"Accept": "application/json"};
       final response = await http.post(url, headers: headers, body: data);
       var res = json.decode(response.body);
@@ -79,7 +102,7 @@ class LoginAPi {
       }
       mass = res['message'] ?? "please try agian later";
     } catch (e) {
-      mass = 'Network error';
+      mass = 'Network error' + e.toString();
     }
   }
 

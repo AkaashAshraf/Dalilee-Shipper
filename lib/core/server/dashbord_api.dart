@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/model/OFDModel.dart';
 import 'package:dalile_customer/model/all_shipment.dart';
 import 'package:dalile_customer/model/cancelled_shipment.dart';
 import 'package:dalile_customer/model/delivered_shipment.dart';
@@ -8,8 +9,8 @@ import 'package:dalile_customer/model/finance_dashbord.dart';
 import 'package:dalile_customer/model/main_dashboard.dart';
 import 'package:dalile_customer/model/ofd.dart';
 import 'package:dalile_customer/model/return_shipment.dart';
-import 'package:dalile_customer/model/to_be_delivered.dart';
 import 'package:dalile_customer/model/to_be_picku.dart';
+import 'package:dalile_customer/model/undelivered_shipment.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -93,7 +94,7 @@ abstract class DashboardApi {
   static Future<DeliveredDashbordModel?> fetchDeliveredShipemetData(
       {offset: 0}) async {
     var url =
-        "$like/dashboard/delivered-shipments?shipment_offset={}&activity_offset=0";
+        "$like/dashboard/delivered-shipments?shipment_offset=$offset&activity_offset=0";
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? '';
 
@@ -126,6 +127,46 @@ abstract class DashboardApi {
       }
     } catch (e) {
       mass = 'Network error';
+    }
+
+    return null;
+  }
+
+  static Future<UnDeliveredDashbordModel?> fetchUnDeliveredShipemetData(
+      {offset: 0}) async {
+    var url = "$like/dashboard/undelivered-shipments?shipment_offset=$offset";
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token') ?? '';
+
+    try {
+      var response = await http.get(
+        Uri.parse(url),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": "Bearer $token"
+        },
+      );
+      if (response.statusCode == 200) {
+        var data = unDeliveredDashbordModelFromJson(response.body);
+
+        return data;
+      } else if (response.statusCode == 401) {
+        checkAuth = true;
+        var err = json.decode(response.body);
+
+        mass = '${err["message"]}';
+        prefs.remove("loginData");
+        prefs.remove("token");
+        return null;
+      } else {
+        var err = json.decode(response.body);
+
+        mass = '${err["message"]}';
+
+        return null;
+      }
+    } catch (e) {
+      mass = 'Network error' + e.toString();
     }
 
     return null;
@@ -211,7 +252,7 @@ abstract class DashboardApi {
   }
 
   static Future<ToBePickupData?> fetchTobePickupData({limit: 0}) async {
-    var url = "$like/dashboard/to-be-pickups?pickup_offset=${limit}";
+    var url = "$like/dashboard/to-be-pickups?pickup_offset=$limit";
     final prefs = await SharedPreferences.getInstance();
 
     String token = prefs.getString('token') ?? '';
@@ -252,7 +293,7 @@ abstract class DashboardApi {
   static Future<CancellDashbordModel?> fetchCancellShipemetData(
       {limit: 0}) async {
     var url =
-        "$like/dashboard/cancel-shipments?shipment_offset=${limit}&activity_offset=0";
+        "$like/dashboard/cancel-shipments?shipment_offset=$limit&activity_offset=0";
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? '';
 
@@ -266,6 +307,44 @@ abstract class DashboardApi {
       );
       if (response.statusCode == 200) {
         var data = dashbordCancellModelFromJson(response.body);
+
+        return data;
+      } else if (response.statusCode == 401) {
+        checkAuth = true;
+        var err = json.decode(response.body);
+
+        mass = '${err["message"]}';
+        prefs.remove("loginData");
+        prefs.remove("token");
+        return null;
+      } else {
+        var err = json.decode(response.body);
+
+        mass = '${err["message"]}';
+
+        return null;
+      }
+    } catch (e) {
+      mass = 'Network error';
+    }
+    return null;
+  }
+
+  static Future<OfdModel?> fetchOFDShipemetData({limit: 0}) async {
+    var url = "$like/dashboard/ofd-shipments?shipment_offset=$limit";
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token') ?? '';
+
+    try {
+      var response = await http.get(
+        Uri.parse(url),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": "Bearer $token"
+        },
+      );
+      if (response.statusCode == 200) {
+        var data = ofdModelFromJson(response.body);
 
         return data;
       } else if (response.statusCode == 401) {

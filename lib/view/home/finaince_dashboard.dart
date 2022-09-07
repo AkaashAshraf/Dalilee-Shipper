@@ -1,3 +1,4 @@
+import 'package:dalile_customer/components/popups/exportModal.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/dashbord_model_view.dart';
 import 'package:dalile_customer/view/home/FinanceListings/FinanceListing.dart';
@@ -17,9 +18,9 @@ class FinanceDash extends StatefulWidget {
 }
 
 class _FinanceDashState extends State<FinanceDash> {
-  RefreshController MainScreenRefresh_Controller =
+  RefreshController mainScreenRefreshController =
       RefreshController(initialRefresh: true);
-
+  FinanceListingController fController = Get.put(FinanceListingController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,9 +35,9 @@ class _FinanceDashState extends State<FinanceDash> {
           onRefresh: () async {
             var res = await widget.controller.fetchFinanceDashbordData();
 
-            MainScreenRefresh_Controller.refreshCompleted();
+            mainScreenRefreshController.refreshCompleted();
           },
-          controller: MainScreenRefresh_Controller,
+          controller: mainScreenRefreshController,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             // widget.controller.isLoadingf.value
             //     ? WaiteImage()
@@ -66,8 +67,13 @@ class _FinanceDashState extends State<FinanceDash> {
             // ),
             GestureDetector(
               onTap: () {
+                // if (fController.listAll.length == 0) fController.getAllOrders();
                 Get.to(FinanceDasboradListing(
-                    title: "All Orders", type: Status.ALL));
+                    title: "All Orders",
+                    type: Status.ALL,
+                    subTitle_: fController.listAll.length.toString() +
+                        '/' +
+                        fController.totalAll.value.toString()));
               },
               child: buildCard(
                   context,
@@ -94,7 +100,11 @@ class _FinanceDashState extends State<FinanceDash> {
             GestureDetector(
               onTap: () {
                 Get.to(FinanceDasboradListing(
-                    title: "Paid Orders", type: Status.PAID));
+                    title: "Paid Orders",
+                    type: Status.PAID,
+                    subTitle_: fController.listPaid.length.toString() +
+                        '/' +
+                        fController.totalPaid.value.toString()));
               },
               child: buildCard(
                 context,
@@ -131,7 +141,11 @@ class _FinanceDashState extends State<FinanceDash> {
                           '${widget.controller.dashData.value.codPending.toString() + " OMR"}',
                     ), () {
                   Get.to(FinanceDasboradListing(
-                      title: "COD Pending", type: Status.COD_PENDING));
+                      title: "COD Pending",
+                      type: Status.COD_PENDING,
+                      subTitle_: fController.listCodPending.length.toString() +
+                          '/' +
+                          fController.totalCodPending.value.toString()));
                 }),
                 const SizedBox(
                   width: 5,
@@ -146,9 +160,11 @@ class _FinanceDashState extends State<FinanceDash> {
                           '${widget.controller.dashData.value.readyToPay.toString() + " OMR"}',
                     ), () {
                   Get.to(FinanceDasboradListing(
-                    title: "Ready To Pay",
-                    type: Status.READY_TO_PAY,
-                  ));
+                      title: "Ready To Pay",
+                      type: Status.READY_TO_PAY,
+                      subTitle_: fController.listReadyToPay.length.toString() +
+                          '/' +
+                          fController.totalReadyToPay.value.toString()));
                 }),
               ],
             ),
@@ -167,9 +183,12 @@ class _FinanceDashState extends State<FinanceDash> {
                           '${widget.controller.dashData.value.codWithDrivers.toString() + " OMR"}',
                     ), () {
                   Get.to(FinanceDasboradListing(
-                    title: "COD with Drivers",
-                    type: Status.COD_WITH_DRIVERS,
-                  ));
+                      title: "COD with Drivers",
+                      type: Status.COD_WITH_DRIVERS,
+                      subTitle_: fController.listCodWithDrivers.length
+                              .toString() +
+                          '/' +
+                          fController.totalCodWithDrivers.value.toString()));
                 }),
                 const SizedBox(
                   width: 5,
@@ -184,9 +203,11 @@ class _FinanceDashState extends State<FinanceDash> {
                           '${widget.controller.dashData.value.codReturned.toString() + " OMR"}',
                     ), () {
                   Get.to(FinanceDasboradListing(
-                    title: "COD Return",
-                    type: Status.COD_RETURN,
-                  ));
+                      title: "COD Return",
+                      type: Status.COD_RETURN,
+                      subTitle_: fController.listCodReturn.length.toString() +
+                          '/' +
+                          fController.totalCodReturn.value.toString()));
                 }),
               ],
             ),

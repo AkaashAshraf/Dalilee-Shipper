@@ -1,3 +1,4 @@
+import 'package:dalile_customer/components/popups/ImagesViewModal.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/complain_view_model.dart';
 import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
@@ -20,12 +21,13 @@ class CardBody extends StatelessWidget {
       this.stutaus,
       this.totalCharges,
       this.weight,
-      this.Order_current_Status: "",
-      this.deleiver_image: "",
-      this.undeleiver_image: "",
+      required this.Order_current_Status,
+      required this.deleiver_image,
+      required this.pickup_image,
+      required this.undeleiver_image,
       this.cc: "0",
-      this.status_key: '',
-      this.customer_name: "",
+      required this.status_key,
+      required this.customer_name,
       this.orderNumber,
       required this.currentStep,
       required this.onPressedShowMore,
@@ -44,6 +46,7 @@ class CardBody extends StatelessWidget {
       Order_current_Status,
       deleiver_image,
       undeleiver_image,
+      pickup_image,
       cc,
       customer_name,
       cod;
@@ -56,6 +59,14 @@ class CardBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<OrderImages> images = [];
+    if (pickup_image != "")
+      images.add(OrderImages(pickup_image, 'Pickup Image'));
+    if (deleiver_image != "")
+      images.add(OrderImages(deleiver_image, 'Delivered Image'));
+    if (undeleiver_image != "")
+      images.add(OrderImages(undeleiver_image, 'Undelivered Image'));
+
     return Container(
       decoration: BoxDecoration(
           color: whiteColor,
@@ -99,21 +110,7 @@ class CardBody extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        Get.defaultDialog(
-                            title: 'PDF File',
-                            titlePadding: const EdgeInsets.all(15),
-                            contentPadding: const EdgeInsets.all(5),
-                            middleText: 'Are you sure to download pdf file?',
-                            textCancel: 'Cancel',
-                            textConfirm: 'Ok',
-                            buttonColor: primaryColor,
-                            confirmTextColor: Colors.white,
-                            cancelTextColor: Colors.black,
-                            radius: 10,
-                            backgroundColor: whiteColor,
-                            onConfirm: () {
-                              Get.put(ShipmentViewModel()).launchPDF("2574953");
-                            });
+                        imagesViewModal(context, images, orderNumber).show();
                       },
                       child: const Icon(
                         Icons.remove_red_eye,
@@ -127,8 +124,15 @@ class CardBody extends StatelessWidget {
                     InkWell(
                       onTap: () async {
                         Get.put(ComplainController()).fetchTypeComplainData();
+
                         await Get.put(ShipmentViewModel()).menuAlert(
-                            context, number ?? "000", orderId ?? "2574953");
+                          context,
+                          number ?? "000",
+                          orderId ?? "2574953",
+                          deleiver_image,
+                          undeleiver_image,
+                          pickup_image,
+                        );
                       },
                       child: const Icon(
                         Icons.more_vert,
@@ -186,9 +190,11 @@ class CardBody extends StatelessWidget {
               Order_current_Status,
               status_key == 'return'
                   ? Colors.red
-                  : status_key == 'F'
+                  : status_key == 'F' || status_key == "FW"
                       ? Colors.orange
-                      : primaryColor),
+                      : status_key == 'completed'
+                          ? Colors.green
+                          : primaryColor),
           Padding(
             padding: const EdgeInsets.only(
               left: 15.0,

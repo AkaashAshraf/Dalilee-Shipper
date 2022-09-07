@@ -7,7 +7,6 @@ import 'package:dalile_customer/view/widget/empty.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ViewOrderView extends StatefulWidget {
@@ -134,6 +133,19 @@ class _ViewOrderViewState extends State<ViewOrderView> {
                                     init: ShipmentViewModel(),
                                     builder: (x) {
                                       return CardBody(
+                                        status_key: controller
+                                            .viewOrderData[i].orderStatusKey,
+                                        deleiver_image: controller
+                                            .viewOrderData[i].orderDeliverImage,
+                                        Order_current_Status: controller
+                                            .viewOrderData[i].orderStatusKey,
+                                        undeleiver_image: controller
+                                            .viewOrderData[i]
+                                            .orderUndeliverImage,
+                                        pickup_image: controller
+                                            .viewOrderData[i].orderPickupImage,
+                                        customer_name: controller
+                                            .viewOrderData[i].customerName,
                                         orderId: controller
                                                 .viewOrderData[i].orderId ??
                                             "00",

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/server/finance_api.dart';
 import 'package:dalile_customer/core/view_model/name_icons.dart';
-import 'package:dalile_customer/model/view_orders_model.dart';
+import 'package:dalile_customer/model/all_shipment.dart';
 import 'package:dalile_customer/view/shipments/complain_body_shipement.dart';
 import 'package:dalile_customer/view/shipments/edit_shipement_body.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class ViewOrderController extends GetxController {
   var isLoading = true.obs;
   RxBool loadMore = false.obs;
 
-  RxList<Order> viewOrderData = <Order>[].obs;
+  RxList<Shipment> viewOrderData = <Shipment>[].obs;
   RxInt limit = 0.obs;
   RxInt total_orders = 0.obs;
 

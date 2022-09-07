@@ -15,6 +15,7 @@ Future<dynamic> get(String url) async {
       "Accept": "application/json",
       "Authorization": "Bearer $token"
     });
+    print(response.body);
     // return response.statusCode;
     if (response.statusCode == 200) {
       return response;
@@ -29,7 +30,7 @@ Future<dynamic> get(String url) async {
       return null;
     }
   } catch (e) {
-    return null;
+    return e;
   }
 }
 
@@ -85,9 +86,10 @@ Future<dynamic> multirequestPost(dynamic request) async {
       Get.offAll(() => LoginView());
       return null;
     } else {
-      return res.statusCode;
+      return null;
     }
   } catch (e) {
+    // print('object');
     return null;
   }
 }

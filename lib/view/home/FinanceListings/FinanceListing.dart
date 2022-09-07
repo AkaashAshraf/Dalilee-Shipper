@@ -20,9 +20,14 @@ enum Status {
 
 class FinanceDasboradListing extends StatefulWidget {
   FinanceDasboradListing(
-      {Key? key, this.onUplod, required this.title, required this.type})
+      {Key? key,
+      this.onUplod,
+      required this.title,
+      required this.type,
+      this.subTitle_: "0/0"})
       : super(key: key);
   final String title;
+  final String subTitle_;
   final Enum type;
 
   final void Function()? onUplod;
@@ -37,41 +42,79 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
   ScrollController? scrollController;
 
   void _refresh({required type}) async {
+    print(type);
     switch (type) {
       case Status.ALL:
         {
           await controller.getAllOrders(isRefresh: true);
           refreshController.refreshCompleted();
+          if (this.mounted)
+            setState(() {
+              subTitle = controller.listAll.length.toString() +
+                  "/" +
+                  controller.totalAll.toString();
+            });
           break;
         } //delived
       case Status.PAID:
         {
           await controller.getPaidOrders(isRefresh: true);
           refreshController.refreshCompleted();
+          if (this.mounted)
+            setState(() {
+              ;
+              subTitle = controller.listPaid.length.toString() +
+                  "/" +
+                  controller.totalPaid.toString();
+            });
           break;
         } //delived
       case Status.COD_PENDING:
         {
           await controller.getCodPendingOrders(isRefresh: true);
           refreshController.refreshCompleted();
+          if (this.mounted)
+            setState(() {
+              subTitle = controller.listCodPending.length.toString() +
+                  "/" +
+                  controller.totalCodPending.toString();
+            });
           break;
         } //to be pickup
       case Status.READY_TO_PAY:
         {
           await controller.getReadyToPayOrders(isRefresh: true);
           refreshController.refreshCompleted();
+          if (this.mounted)
+            setState(() {
+              subTitle = controller.listReadyToPay.length.toString() +
+                  "/" +
+                  controller.totalReadyToPay.toString();
+            });
           break;
         } //tp\o be delived
       case Status.COD_WITH_DRIVERS:
         {
           await controller.getCodWithDriversOrders(isRefresh: true);
           refreshController.refreshCompleted();
+          if (this.mounted)
+            setState(() {
+              subTitle = controller.listCodWithDrivers.length.toString() +
+                  "/" +
+                  controller.totalCodWithDrivers.toString();
+            });
           break;
         } //to be delived
       case Status.COD_RETURN:
         {
           await controller.getCodReturnOrders(isRefresh: true);
           refreshController.refreshCompleted();
+          if (this.mounted)
+            setState(() {
+              subTitle = controller.listCodReturn.length.toString() +
+                  "/" +
+                  controller.totalCodReturn.toString();
+            });
           break;
         } //CENCELLED_SHIPMENTS
     } //switch
@@ -82,6 +125,10 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
     scrollController = ScrollController()
       ..addListener(() {
         _loadMore(type: widget.type);
+      });
+    if (this.mounted)
+      setState(() {
+        subTitle = widget.subTitle_;
       });
     // controller.getAll_orders();
 
@@ -100,7 +147,7 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
     super.dispose();
   }
 
-  _loadMore({required type}) {
+  _loadMore({required type}) async {
     // print(type);
     switch (type) {
       case Status.ALL:
@@ -110,7 +157,13 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
               scrollController!.position.extentAfter < 100.0) {
             // bool isTop = scrollController!.position.pixels == 0;
             controller.loadMoreAll.value = true;
-            controller.getAllOrders();
+            await controller.getAllOrders();
+            if (this.mounted)
+              setState(() {
+                subTitle = controller.listAll.length.toString() +
+                    "/" +
+                    controller.totalAll.toString();
+              });
           }
           break;
         } //ALL
@@ -121,7 +174,13 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
               scrollController!.position.extentAfter < 100.0) {
             // bool isTop = scrollController!.position.pixels == 0;
             controller.loadMorePaid.value = true;
-            controller.getPaidOrders();
+            await controller.getPaidOrders();
+            if (this.mounted)
+              setState(() {
+                subTitle = controller.listPaid.length.toString() +
+                    "/" +
+                    controller.totalPaid.toString();
+              });
           }
           break;
         } //paid
@@ -133,7 +192,13 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
                   controller.totalCodPending.value) &&
               scrollController!.position.extentAfter < 100.0) {
             controller.loadMoreCodPending.value = true;
-            controller.getCodPendingOrders();
+            await controller.getCodPendingOrders();
+            if (this.mounted)
+              setState(() {
+                subTitle = controller.listCodPending.length.toString() +
+                    "/" +
+                    controller.totalCodPending.toString();
+              });
           }
           break;
         } //COD PENDING
@@ -147,7 +212,13 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
             // bool isTop = scrollController!.position.pixels == 0;
             controller.loadMoreReadyToPay.value = true;
             // controller.listReadyToPay += controller.listReadyToPay;
-            controller.getReadyToPayOrders();
+            await controller.getReadyToPayOrders();
+            if (this.mounted)
+              setState(() {
+                subTitle = controller.listReadyToPay.length.toString() +
+                    "/" +
+                    controller.totalReadyToPay.toString();
+              });
           }
           break;
         } //READY TO PAY
@@ -159,7 +230,13 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
               scrollController!.position.extentAfter < 100.0) {
             // bool isTop = scrollController!.position.pixels == 0;
             controller.loadMoreCodWithDrivers.value = true;
-            controller.getCodWithDriversOrders();
+            await controller.getCodWithDriversOrders();
+            if (this.mounted)
+              setState(() {
+                subTitle = controller.listCodWithDrivers.length.toString() +
+                    "/" +
+                    controller.totalCodWithDrivers.toString();
+              });
           }
           break;
         } //COD_WITH_DRIVERS
@@ -172,7 +249,13 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
               scrollController!.position.extentAfter < 100.0) {
             // bool isTop = scrollController!.position.pixels == 0;
             controller.loadMoreCodReturn.value = true;
-            controller.getCodReturnOrders();
+            await controller.getCodReturnOrders();
+            if (this.mounted)
+              setState(() {
+                subTitle = controller.listCodReturn.length.toString() +
+                    "/" +
+                    controller.totalCodReturn.toString();
+              });
           }
           break;
         } //COD_RETURN
@@ -180,6 +263,7 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
     } //switch
   }
 
+  String subTitle = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -195,72 +279,109 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
               height: MediaQuery.of(context).size.height,
               child: Column(
                 children: [
-                  Text('total: ' +
-                      controller.totalPaid.value.toString() +
-                      '========>now :' +
-                      controller.listPaid.length.toString()),
+                  // NoDataView(label: "No Data" + widget.type.toString()),
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.8,
+                    height: MediaQuery.of(context).size.height * 0.85,
                     child: Stack(
                       children: [
                         Container(
-                          height: MediaQuery.of(context).size.height * 0.8,
+                          height: MediaQuery.of(context).size.height * 0.85,
                           child: SmartRefresher(
-                            header: WaterDropMaterialHeader(
-                              backgroundColor: primaryColor,
+                            header: WaterDropHeader(
+                              waterDropColor: primaryColor,
                             ),
                             controller: refreshController,
                             onRefresh: () async {
                               _refresh(type: widget.type);
                             },
-                            child: ListView.separated(
-                              // shrinkWrap: false,
-                              controller: scrollController,
-                              separatorBuilder: (context, i) =>
-                                  const SizedBox(height: 15),
-                              itemCount: widget.type == Status.ALL
-                                  ? controller.listAll.length
-                                  : widget.type == Status.PAID
-                                      ? controller.listPaid.length
-                                      : widget.type == Status.COD_PENDING
-                                          ? controller.listCodPending.length
-                                          : widget.type == Status.READY_TO_PAY
-                                              ? controller.listReadyToPay.length
-                                              : widget.type ==
-                                                      Status.COD_WITH_DRIVERS
-                                                  ? controller
-                                                      .listCodWithDrivers.length
-                                                  : controller
-                                                      .listCodReturn.length,
-                              padding: const EdgeInsets.only(
-                                  left: 15, right: 15, bottom: 10, top: 5),
-                              itemBuilder: (context, i) {
-                                return GetBuilder<FinanceListingController>(
-                                  builder: (x) => card(
-                                      controller,
-                                      widget.type == Status.ALL
-                                          ? controller.listAll[i]
-                                          : widget.type == Status.PAID
-                                              ? controller.listPaid[i]
-                                              : widget.type ==
-                                                      Status.COD_PENDING
-                                                  ? controller.listCodPending[i]
-                                                  : widget.type ==
-                                                          Status.READY_TO_PAY
-                                                      ? controller
-                                                          .listReadyToPay[i]
-                                                      : widget.type ==
-                                                              Status
-                                                                  .COD_WITH_DRIVERS
-                                                          ? controller
-                                                                  .listCodWithDrivers[
-                                                              i]
-                                                          : controller
-                                                              .listCodReturn[i],
-                                      x),
-                                );
-                              },
-                            ),
+                            child: widget.type == Status.ALL &&
+                                    controller.inViewLoadingAll.value &&
+                                    controller.listAll.isEmpty
+                                ? WaiteImage()
+                                : widget.type == Status.ALL &&
+                                        controller.listAll.isEmpty
+                                    ? NoDataView(label: "No Data")
+                                    : widget.type == Status.COD_PENDING &&
+                                            controller.inViewLoadingCodPending
+                                                .value &&
+                                            controller.listCodPending.isEmpty
+                                        ? WaiteImage()
+                                        : widget.type == Status.COD_PENDING &&
+                                                controller
+                                                    .listCodPending.isEmpty
+                                            ? NoDataView(label: "No Data")
+                                            : widget.type == Status.COD_RETURN &&
+                                                    controller
+                                                        .inViewLoadingCodReturn
+                                                        .value &&
+                                                    controller
+                                                        .listCodReturn.isEmpty
+                                                ? WaiteImage()
+                                                : widget.type == Status.COD_RETURN &&
+                                                        controller.listCodReturn
+                                                            .isEmpty
+                                                    ? NoDataView(
+                                                        label: "No Data")
+                                                    : widget.type == Status.COD_WITH_DRIVERS &&
+                                                            controller
+                                                                .inViewLoadingCodWithDrivers
+                                                                .value &&
+                                                            controller
+                                                                .listCodWithDrivers
+                                                                .isEmpty
+                                                        ? WaiteImage()
+                                                        : widget.type == Status.COD_WITH_DRIVERS &&
+                                                                controller
+                                                                    .listCodWithDrivers
+                                                                    .isEmpty
+                                                            ? NoDataView(
+                                                                label:
+                                                                    "No Data")
+                                                            : widget.type == Status.PAID &&
+                                                                    controller.inViewLoadingPaid.value &&
+                                                                    controller.listPaid.isEmpty
+                                                                ? WaiteImage()
+                                                                : widget.type == Status.PAID && controller.listPaid.isEmpty
+                                                                    ? NoDataView(label: "No Data")
+                                                                    : widget.type == Status.READY_TO_PAY && controller.inViewLoadingReadyToPay.value && controller.listReadyToPay.isEmpty
+                                                                        ? WaiteImage()
+                                                                        : widget.type == Status.READY_TO_PAY && controller.listReadyToPay.isEmpty
+                                                                            ? NoDataView(label: "No Data")
+                                                                            : ListView.separated(
+                                                                                // shrinkWrap: false,
+                                                                                controller: scrollController,
+                                                                                separatorBuilder: (context, i) => const SizedBox(height: 15),
+                                                                                itemCount: widget.type == Status.ALL
+                                                                                    ? controller.listAll.length
+                                                                                    : widget.type == Status.PAID
+                                                                                        ? controller.listPaid.length
+                                                                                        : widget.type == Status.COD_PENDING
+                                                                                            ? controller.listCodPending.length
+                                                                                            : widget.type == Status.READY_TO_PAY
+                                                                                                ? controller.listReadyToPay.length
+                                                                                                : widget.type == Status.COD_WITH_DRIVERS
+                                                                                                    ? controller.listCodWithDrivers.length
+                                                                                                    : controller.listCodReturn.length,
+                                                                                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 5),
+                                                                                itemBuilder: (context, i) {
+                                                                                  return GetBuilder<FinanceListingController>(
+                                                                                    builder: (x) => card(
+                                                                                        controller,
+                                                                                        widget.type == Status.ALL
+                                                                                            ? controller.listAll[i]
+                                                                                            : widget.type == Status.PAID
+                                                                                                ? controller.listPaid[i]
+                                                                                                : widget.type == Status.COD_PENDING
+                                                                                                    ? controller.listCodPending[i]
+                                                                                                    : widget.type == Status.READY_TO_PAY
+                                                                                                        ? controller.listReadyToPay[i]
+                                                                                                        : widget.type == Status.COD_WITH_DRIVERS
+                                                                                                            ? controller.listCodWithDrivers[i]
+                                                                                                            : controller.listCodReturn[i],
+                                                                                        x),
+                                                                                  );
+                                                                                },
+                                                                              ),
                           ),
                         ),
                         loadMoreIndicator(),
@@ -281,7 +402,10 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
         {
           if (controller.loadMoreAll.value) {
             return Positioned(
-                bottom: 0, left: 0, right: 0, child: const WaiteImage());
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: const bottomLoadingIndicator());
           } else
             return Text('');
         } //all
@@ -290,7 +414,10 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
         {
           if (controller.loadMorePaid.value) {
             return Positioned(
-                bottom: 0, left: 0, right: 0, child: const WaiteImage());
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: const bottomLoadingIndicator());
           } else
             return Text('');
         } //paid
@@ -299,7 +426,10 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
         {
           if (controller.loadMoreCodPending.value) {
             return Positioned(
-                bottom: 0, left: 0, right: 0, child: const WaiteImage());
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: const bottomLoadingIndicator());
           } else
             return Text('');
         } //cod pending
@@ -307,7 +437,10 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
         {
           if (controller.loadMoreReadyToPay.value) {
             return Positioned(
-                bottom: 0, left: 0, right: 0, child: const WaiteImage());
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: const bottomLoadingIndicator());
           } else
             return Text('');
         } //  ready to pay
@@ -315,7 +448,10 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
         {
           if (controller.loadMoreCodWithDrivers.value) {
             return Positioned(
-                bottom: 0, left: 0, right: 0, child: const WaiteImage());
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: const bottomLoadingIndicator());
           } else
             return Text('');
         } //cod reaturn
@@ -323,7 +459,10 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
         {
           if (controller.loadMoreCodReturn.value) {
             return Positioned(
-                bottom: 0, left: 0, right: 0, child: const WaiteImage());
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: const bottomLoadingIndicator());
           } else
             return Text('');
         } //cod reaturn
@@ -345,6 +484,9 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       cod: shipment.cod ?? "0.00",
       cop: shipment.cop ?? "0.00",
       shipmentCost: shipment.shippingPrice ?? "0.00",
+      deleiver_image: shipment.orderDeliverImage ?? "",
+      undeleiver_image: shipment.orderUndeliverImage ?? "",
+      pickup_image: shipment.orderPickupImage ?? "",
       totalCharges:
           '${double.parse(shipment.shippingPrice.toString()) + double.parse(shipment.cod.toString())}',
       stutaus: shipment.orderActivities,
@@ -373,11 +515,11 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
   AppBar _buildAppBar() {
     return AppBar(
       elevation: 0,
-      toolbarHeight: 70,
+      toolbarHeight: MediaQuery.of(context).size.height * 0.08,
       backgroundColor: primaryColor,
       foregroundColor: whiteColor,
       title: CustomText(
-          text: widget.title,
+          text: widget.title + ' ($subTitle)',
           color: whiteColor,
           size: 18,
           fontWeight: FontWeight.w500,

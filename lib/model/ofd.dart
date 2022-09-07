@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:dalile_customer/model/all_shipment.dart';
 import 'package:dalile_customer/model/to_be_delivered.dart';
 
 OfdResponse ofdResponseFromJson(String str) =>
@@ -39,13 +40,12 @@ class Data {
   });
 
   int? totalOfdShipments;
-  List<ToBeDeliveredShipment>? ofdShipments;
+  List<Shipment>? ofdShipments;
   List<TrackingStatusTOBED>? trackingStatuses;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         totalOfdShipments: json["total_ofd_shipments"],
-        ofdShipments: List<ToBeDeliveredShipment>.from(
-            json["ofd_shipments"].map((x) => x)),
+        ofdShipments: List<Shipment>.from(json["ofd_shipments"].map((x) => x)),
         trackingStatuses: List<TrackingStatusTOBED>.from(
             json["tracking_statuses"]
                 .map((x) => TrackingStatusTOBED.fromJson(x))),

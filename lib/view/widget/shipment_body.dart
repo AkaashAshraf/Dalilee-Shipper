@@ -1,6 +1,6 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
-import 'package:dalile_customer/model/out_in_shipments.dart';
+import 'package:dalile_customer/model/all_shipment.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/stepess.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class ShipmentBody extends StatelessWidget {
       required this.i,
       required this.shipList})
       : super(key: key);
-  final Request? outList;
+  final Shipment? outList;
   final List<TrackingStatus> shipList;
 
   final int i;
@@ -64,37 +64,38 @@ class ShipmentBody extends StatelessWidget {
                           const SizedBox(
                             width: 8,
                           ),
-                            InkWell(
-              onTap: () {
-                Get.defaultDialog(
-                    title: 'PDF File',
-                    titlePadding: const EdgeInsets.all(15),
-                    contentPadding: const EdgeInsets.all(5),
-                    middleText: 'Are you sure to download pdf file?',
-                    textCancel: 'Cancel',
-                    textConfirm: 'Ok',
-                    buttonColor: primaryColor,
-                    confirmTextColor: Colors.white,
-                    cancelTextColor: Colors.black,
-                    radius: 10,
-                    backgroundColor: whiteColor,
-                    onConfirm: () {
-                      _data.launchPDF(outList!.orderId);
-                    });
-              },
-              child: Image.asset(
-                'assets/images/pdf.png',
-                width: 20,
-                height: 20,
-              ),
-            ),
-         
+                          InkWell(
+                            onTap: () {
+                              Get.defaultDialog(
+                                  title: 'PDF File',
+                                  titlePadding: const EdgeInsets.all(15),
+                                  contentPadding: const EdgeInsets.all(5),
+                                  middleText:
+                                      'Are you sure to download pdf file?',
+                                  textCancel: 'Cancel',
+                                  textConfirm: 'Ok',
+                                  buttonColor: primaryColor,
+                                  confirmTextColor: Colors.white,
+                                  cancelTextColor: Colors.black,
+                                  radius: 10,
+                                  backgroundColor: whiteColor,
+                                  onConfirm: () {
+                                    _data.launchPDF(outList!.orderId);
+                                  });
+                            },
+                            child: Image.asset(
+                              'assets/images/pdf.png',
+                              width: 20,
+                              height: 20,
+                            ),
+                          ),
                           const SizedBox(
                             width: 8,
                           ),
                           InkWell(
                             onTap: () {
-                              _data.menuAlert(context, outList!.customerNo,outList!.orderId);
+                              _data.menuAlert(context, outList!.customerNo,
+                                  outList!.orderId, "", "", "");
                             },
                             child: const Icon(
                               Icons.more_vert,

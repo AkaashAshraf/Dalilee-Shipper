@@ -11,40 +11,47 @@ import 'package:get/get.dart';
 
 class DashbordController extends GetxController {
   RxBool isLoading = false.obs;
-  RxBool inViewLoading_allShipments = true.obs;
-  RxBool inViewLoading_deliveredShipments = true.obs;
-  RxBool inViewLoading_to_be_pickupShipments = true.obs;
-  RxBool inViewLoading_to_be_deliveredShipments = true.obs;
-  RxBool inViewLoading_returnedShipments = true.obs;
-  RxBool inViewLoading_cancelledShipments = true.obs;
+  RxBool inViewLoadingallShipments = true.obs;
+  RxBool inViewLoadingdeliveredShipments = true.obs;
+  RxBool inViewLoadingToBePickupShipments = true.obs;
+  RxBool inViewLoadingToBeDeliveredShipments = true.obs;
+  RxBool inViewLoadingOFDShipments = true.obs;
+  RxBool inViewLoadingUndeliver = true.obs;
+  RxBool inViewLoadingReturnedShipments = true.obs;
+  RxBool inViewLoadingCancelledShipments = true.obs;
 // //// load more
   RxBool loadMore = false.obs;
-  RxBool loadMore_deliveredShipments = false.obs;
-  RxBool loadMore_to_be_deliveredShipments = false.obs;
-  RxBool loadMore_to_bePickup = false.obs;
-  RxBool loadMore_returnShipments = false.obs;
-  RxBool loadMore_cancelShipments = false.obs;
+  RxBool loadMoreDeliveredShipments = false.obs;
+  RxBool loadMoreToBeDeliveredShipments = false.obs;
+  RxBool loadMoreUndeliver = false.obs;
+  RxBool loadMoreToBePickup = false.obs;
+  RxBool loadMoreReturnShipments = false.obs;
+  RxBool loadMoreCancelShipments = false.obs;
+  RxBool loadMoreOFDShipments = false.obs;
 
   RxBool isLoadingf = false.obs;
 
   // ////// lists
-  RxInt dashboard_allShiments = 0.obs;
-  RxInt dashboard_to_b_Pichup = 0.obs;
-  RxInt dashboard_deliveredShipments = 0.obs;
-  RxInt dashboard_to_b_Delivered = 0.obs;
-  RxInt dashboard_returnedShipment = 0.obs;
-  RxInt dashboard_CancelledShiments = 0.obs;
+  RxInt dashboardAllShiments = 0.obs;
+  RxInt dashboardToBePichup = 0.obs;
+  RxInt dashboardUndeliver = 0.obs;
+  RxInt dashboardDeliveredShipments = 0.obs;
+  RxInt dashboardToBeDelivered = 0.obs;
+  RxInt dashboardReturnedShipment = 0.obs;
+  RxInt dashboardCancelledShiments = 0.obs;
 
-  RxInt dashboard_undeliverdShiments = 0.obs;
-  RxInt dashboard_OFDShiments = 0.obs;
+  RxInt dashboardUndeliverdShiments = 0.obs;
+  RxInt dashboardOFDShiments = 0.obs;
 
 // ///////limts
-  RxInt limit_allShiments = 0.obs;
-  RxInt limit_to_b_Pichup = 0.obs;
-  RxInt limit_deliveredShipments = 0.obs;
-  RxInt limit_to_b_Delivered = 0.obs;
-  RxInt limit_returnedShipment = 0.obs;
-  RxInt limit_CancelledShiments = 0.obs;
+  RxInt limitAllShiments = 0.obs;
+  RxInt limitToBePichup = 0.obs;
+  RxInt limitUndeliver = 0.obs;
+  RxInt limitDeliveredShipments = 0.obs;
+  RxInt limitToBeDelivered = 0.obs;
+  RxInt limitReturnedShipment = 0.obs;
+  RxInt limitCancelledShiments = 0.obs;
+  RxInt limitOfdShiments = 0.obs;
 
   Rx<FinanceDashbordData> dashData = FinanceDashbordData().obs;
   fetchFinanceDashbordData() async {
@@ -72,12 +79,14 @@ class DashbordController extends GetxController {
     fetchMainDashBoardData();
     fetchFinanceDashbordData();
 
-    fetchAllShipemetData();
-    fetchDeliverShipemetData();
-    fetchRetrunShipemetData();
-    fetchcancellShipemetData();
-    fetchToBeDeliveredShipemetData();
-    fetchToBePickupData();
+    fetchAllShipemetData(isRefresh: true);
+    fetchDeliverShipemetData(isRefresh: true);
+    fetchRetrunShipemetData(isRefresh: true);
+    fetchcancellShipemetData(isRefresh: true);
+    // fetchToBeDeliveredShipemetData(isRefresh: true);
+    fetchToBePickupData(isRefresh: true);
+    fetchUnDeliverShipemetData(isRefresh: true);
+    fetchOFDShipemetData(isRefresh: true);
     super.onInit();
   }
 
@@ -85,14 +94,15 @@ class DashbordController extends GetxController {
   //---------------------Api------------------
   RxList<Shipment> allShipemet = <Shipment>[].obs;
   RxList<TrackingStatus> allList = <TrackingStatus>[].obs;
+  RxList<TrackingStatus> unDeliverStatuses = <TrackingStatus>[].obs;
+
   RxInt allShipmentNumber = 0.obs;
   fetchAllShipemetData({bool isRefresh: false}) async {
     try {
       // isLoading(true);
-      if (isRefresh) limit_allShiments.value = 0;
+      if (isRefresh) limitAllShiments.value = 0;
       var allData = await DashboardApi.fetchAllShipemetData(
-          "shipments?shipment_offset=$limit_allShiments&activity_offset=0");
-      inViewLoading_allShipments.value = false;
+          "shipments?shipment_offset=$limitAllShiments&activity_offset=0");
       // var allData = await DashboardApi.fetchAllShipemetData("");
       loadMore.value = false;
 
@@ -114,14 +124,15 @@ class DashbordController extends GetxController {
         Get.offAll(() => LoginView());
         DashboardApi.checkAuth = false;
       }
-      // print("total==============" + allShipemet.length.toString());
+      inViewLoadingallShipments(false);
       isLoading(false);
       return null;
     }
   }
 
   //---------------------Delivered shp------------
-  RxList<DeliveredShipment> deliverShipemet = <DeliveredShipment>[].obs;
+  RxList<Shipment> deliverShipemet = <Shipment>[].obs;
+  RxList<Shipment> undeliverShipemet = <Shipment>[].obs;
   RxList<TrackingStatusDelivered> deliverList = <TrackingStatusDelivered>[].obs;
   RxInt deliverShipmentNumber = 0.obs;
 
@@ -131,14 +142,14 @@ class DashbordController extends GetxController {
 
       var data = await DashboardApi.fetchMAinDashBoardData('');
       if (data != null) {
-        dashboard_allShiments.value = data.data!.totalShipments!;
-        dashboard_to_b_Pichup.value = data.data!.toBePickups!;
-        dashboard_to_b_Delivered.value = data.data!.toBeDelivered!;
-        dashboard_returnedShipment.value = data.data!.returnedShipments!;
-        dashboard_CancelledShiments.value = data.data!.cancelShipments!;
-        dashboard_deliveredShipments.value = data.data!.deliveredShipments!;
-        dashboard_OFDShiments.value = data.data!.ofdShipments!;
-        dashboard_undeliverdShiments.value = data.data!.deliveredShipments!;
+        dashboardAllShiments.value = data.data!.totalShipments!;
+        dashboardToBePichup.value = data.data!.toBePickups!;
+        dashboardToBeDelivered.value = data.data!.toBeDelivered!;
+        dashboardReturnedShipment.value = data.data!.returnedShipments!;
+        dashboardCancelledShiments.value = data.data!.cancelShipments!;
+        dashboardDeliveredShipments.value = data.data!.deliveredShipments!;
+        dashboardOFDShiments.value = data.data!.ofdShipments!;
+        dashboardUndeliverdShiments.value = data.data!.deliveredShipments!;
       } else {
         if (!Get.isSnackbarOpen) {
           Get.snackbar('Filed', DashboardApi.mass);
@@ -157,13 +168,13 @@ class DashbordController extends GetxController {
     try {
       // isLoading(true);
       if (isRefresh) {
-        limit_deliveredShipments.value = 0;
-        loadMore_deliveredShipments.value = false;
+        limitDeliveredShipments.value = 0;
+        loadMoreDeliveredShipments.value = false;
       } else {
-        loadMore_deliveredShipments.value = true;
+        loadMoreDeliveredShipments.value = true;
       }
       var deliverData = await DashboardApi.fetchDeliveredShipemetData(
-          offset: limit_deliveredShipments);
+          offset: limitDeliveredShipments);
       if (deliverData != null) {
         if (isRefresh) {
           deliverShipemet.value = deliverData.data!.deliveredShipment!;
@@ -182,27 +193,64 @@ class DashbordController extends GetxController {
         Get.offAll(() => LoginView());
         DashboardApi.checkAuth = false;
       }
-      loadMore_deliveredShipments.value = false;
-
+      loadMoreDeliveredShipments.value = false;
+      inViewLoadingdeliveredShipments(false);
       isLoading(false);
     }
   }
 
+  fetchUnDeliverShipemetData({isRefresh: false}) async {
+    try {
+      // isLoading(true);
+      if (isRefresh) {
+        limitUndeliver.value = 0;
+        loadMoreUndeliver.value = false;
+      } else {
+        loadMoreUndeliver.value = true;
+      }
+      var undeliverData = await DashboardApi.fetchUnDeliveredShipemetData(
+          offset: limitUndeliver);
+      if (undeliverData != null) {
+        unDeliverStatuses.value = undeliverData.data!.trackingStatuses!;
+
+        if (isRefresh) {
+          undeliverShipemet.value = undeliverData.data!.undeliveredShipments!;
+        } else
+          undeliverShipemet.value += undeliverData.data!.undeliveredShipments!;
+
+        dashboardUndeliver.value =
+            undeliverData.data!.totalUndeliveredShipments!;
+      } else {
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar('Filed', DashboardApi.mass);
+        }
+      }
+    } finally {
+      if (DashboardApi.checkAuth == true) {
+        Get.offAll(() => LoginView());
+        DashboardApi.checkAuth = false;
+      }
+      loadMoreDeliveredShipments.value = false;
+
+      inViewLoadingUndeliver(false);
+    }
+  }
+
   //------------Return Shipmenet---------------
-  RxList<ReturnShipment> returnShipemet = <ReturnShipment>[].obs;
+  RxList<Shipment> returnShipemet = <Shipment>[].obs;
   RxList<TrackingStatusRetrun> returnList = <TrackingStatusRetrun>[].obs;
   RxInt returnShipmentNumber = 0.obs;
   fetchRetrunShipemetData({isRefresh: false}) async {
     try {
       // isLoading(true);
       if (isRefresh) {
-        limit_returnedShipment.value = 0;
-        loadMore_returnShipments.value = false;
+        limitReturnedShipment.value = 0;
+        loadMoreReturnShipments.value = false;
       } else {
-        loadMore_returnShipments.value = true;
+        loadMoreReturnShipments.value = true;
       }
       var deliverData = await DashboardApi.fetchRetrunShipemetData(
-          limit: limit_returnedShipment.value);
+          limit: limitReturnedShipment.value);
       if (deliverData != null) {
         if (isRefresh) {
           returnShipemet.value = deliverData.data!.retrunShipment!;
@@ -222,27 +270,27 @@ class DashbordController extends GetxController {
         DashboardApi.checkAuth = false;
       }
       isLoading(false);
-      inViewLoading_returnedShipments.value = false;
-      loadMore_returnShipments.value = false;
+      inViewLoadingReturnedShipments.value = false;
+      loadMoreReturnShipments.value = false;
     }
   }
 
   //------------Cancell Shipmenet---------------
-  RxList<CancellShipment> cancellShipemet = <CancellShipment>[].obs;
+  RxList<Shipment> cancellShipemet = <Shipment>[].obs;
   RxList<TrackingStatusCanc> cancellList = <TrackingStatusCanc>[].obs;
   RxInt cancellShipmentNumber = 0.obs;
   fetchcancellShipemetData({isRefresh: false}) async {
     try {
       if (isRefresh) {
-        limit_CancelledShiments.value = 0;
-        loadMore_cancelShipments.value = false;
+        limitCancelledShiments.value = 0;
+        loadMoreCancelShipments.value = false;
       } else {
-        loadMore_cancelShipments.value = true;
+        loadMoreCancelShipments.value = true;
       }
       // isLoading(true);
 
       var deliverData = await DashboardApi.fetchCancellShipemetData(
-          limit: limit_CancelledShiments);
+          limit: limitCancelledShiments);
       if (deliverData != null) {
         if (isRefresh) {
           cancellShipemet.value = deliverData.data!.cancellshipments!;
@@ -261,25 +309,62 @@ class DashbordController extends GetxController {
         Get.offAll(() => LoginView());
         DashboardApi.checkAuth = false;
       }
-      print("------===========>>>>>>>cancel===>" +
-          cancellShipemet.length.toString());
       isLoading(false);
-      loadMore_cancelShipments.value = false;
+      inViewLoadingCancelledShipments(false);
+      loadMoreCancelShipments.value = false;
+    }
+  }
+
+  RxList<Shipment> ofdShipemet = <Shipment>[].obs;
+  RxList<TrackingStatus> ofdlList = <TrackingStatus>[].obs;
+  fetchOFDShipemetData({isRefresh: false}) async {
+    try {
+      if (isRefresh) {
+        limitOfdShiments.value = 0;
+        loadMoreOFDShipments.value = false;
+      } else {
+        loadMoreOFDShipments.value = true;
+      }
+      // isLoading(true);
+
+      var ofdData =
+          await DashboardApi.fetchOFDShipemetData(limit: limitOfdShiments);
+      if (ofdData != null) {
+        if (isRefresh) {
+          ofdShipemet.value = ofdData.data!.ofdShipments!;
+        } else
+          ofdShipemet.value += ofdData.data!.ofdShipments!;
+
+        dashboardOFDShiments.value = ofdData.data!.totalOfdShipments!;
+        ofdlList.value = ofdData.data!.trackingStatuses!;
+      } else {
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar('Filed', DashboardApi.mass);
+        }
+      }
+    } finally {
+      if (DashboardApi.checkAuth == true) {
+        Get.offAll(() => LoginView());
+        DashboardApi.checkAuth = false;
+      }
+      inViewLoadingOFDShipments(false);
+      isLoading(false);
+      loadMoreOFDShipments.value = false;
     }
   }
 
   //------------To be Delivered Shipmenet---------------
-  RxList<ToBeDeliveredShipment> tobeDelShipemet = <ToBeDeliveredShipment>[].obs;
+  RxList<Shipment> tobeDelShipemet = <Shipment>[].obs;
   RxList<TrackingStatusTOBED> toBeDelvList = <TrackingStatusTOBED>[].obs;
   RxInt toBeDelShipmentNumber = 0.obs;
   fetchToBeDeliveredShipemetData({isRefresh: false}) async {
     try {
       // isLoading(true);
       if (isRefresh) {
-        limit_to_b_Delivered.value = 0;
-        loadMore_to_be_deliveredShipments.value = false;
+        limitToBeDelivered.value = 0;
+        loadMoreToBeDeliveredShipments.value = false;
       } else {
-        loadMore_to_be_deliveredShipments.value = true;
+        loadMoreToBeDeliveredShipments.value = true;
       }
 
       var deliverData = await DashboardApi.fetchTobeDeliveredData();
@@ -297,13 +382,13 @@ class DashbordController extends GetxController {
         }
       }
     } finally {
-      inViewLoading_to_be_deliveredShipments.value = false;
+      inViewLoadingToBeDeliveredShipments.value = false;
 
       if (DashboardApi.checkAuth == true) {
         Get.offAll(() => LoginView());
         DashboardApi.checkAuth = false;
       }
-      loadMore_to_be_deliveredShipments.value = false;
+      loadMoreToBeDeliveredShipments.value = false;
       isLoading(false);
     }
   }
@@ -317,13 +402,13 @@ class DashbordController extends GetxController {
     try {
       // isLoading(true);
       if (isRefresh) {
-        limit_to_b_Pichup.value = 0;
-        loadMore_to_bePickup.value = false;
+        limitToBePichup.value = 0;
+        loadMoreToBePickup.value = false;
       } else {
-        loadMore_to_bePickup.value = true;
+        loadMoreToBePickup.value = true;
       }
-      var tobeData = await DashboardApi.fetchTobePickupData(
-          limit: limit_to_b_Pichup.value);
+      var tobeData =
+          await DashboardApi.fetchTobePickupData(limit: limitToBePichup.value);
       print("----------to-be-total:=>" +
           tobeData!.toBePickups!.length.toString());
       if (tobeData != null) {
@@ -344,7 +429,7 @@ class DashbordController extends GetxController {
         DashboardApi.checkAuth = false;
       }
       isLoading(false);
-      loadMore_to_bePickup.value = false;
+      loadMoreToBePickup.value = false;
     }
   }
 }

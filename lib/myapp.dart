@@ -13,10 +13,21 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialBinding: Binding(),
-      home: const SplashScreen(),
-    );
+    return FutureBuilder(builder: (context, snapshot) {
+      // future:
+      // Firebase.initializeApp();
+
+      return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialBinding: Binding(),
+        home: const SplashScreen(),
+      );
+    });
+
+    //  GetMaterialApp(
+    //   debugShowCheckedModeBanner: false,
+    //   initialBinding: Binding(),
+    //   home: const SplashScreen(),
+    // );
   }
 }

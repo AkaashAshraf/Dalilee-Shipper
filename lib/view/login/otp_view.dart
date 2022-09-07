@@ -31,7 +31,7 @@ class _OTPViewState extends State<OTPView> {
   }
 
   late FocusNode focusNode;
-  final LoginController _controller = Get.put(LoginController());
+  LoginController _controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +86,7 @@ class _OTPViewState extends State<OTPView> {
                       FixedColorBuilder(primaryColor.withOpacity(0.3)),
                 ),
                 onCodeSubmitted: (code) {
-                   focusNode.unfocus();
+                  focusNode.unfocus();
                   _controller.onCompl();
                 },
                 focusNode: focusNode,
@@ -109,9 +109,8 @@ class _OTPViewState extends State<OTPView> {
                   : CustomButtom(
                       text: 'Confirm the code',
                       onPressed: () {
-                          focusNode.unfocus();
+                        focusNode.unfocus();
                         _controller.onCompl();
-
                       },
                     ),
             ),
@@ -140,7 +139,6 @@ class _HoursState extends State<_Hours> {
   int _start = 60;
   Timer? _timer;
   void startTimer() {
-    print('----------Start---------$_start');
     Get.put(LoginController()).fetchOTPSentData();
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
@@ -187,7 +185,7 @@ class _HoursState extends State<_Hours> {
             onPressed: () {
               startTimer();
             },
-            child: const DefaultTextStyle(
+            child: DefaultTextStyle(
                 style: TextStyle(
                     decoration: TextDecoration.underline,
                     color: textRedColor,

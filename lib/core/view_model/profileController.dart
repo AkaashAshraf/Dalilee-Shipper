@@ -91,8 +91,9 @@ class ProfileController extends GetxController {
       return true;
     } //try
     catch (e) {
-      // print(e);
-      Get.snackbar('Error', "This mobile number is already registered",
+      print(e);
+      Get.snackbar(
+          'Error', "This mobile number is already registered" + e.toString(),
           backgroundColor: Colors.red.withOpacity(0.8), colorText: whiteColor);
       isEditinig(true);
       profileLoading(false);

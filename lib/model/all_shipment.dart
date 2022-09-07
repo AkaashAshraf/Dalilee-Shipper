@@ -78,6 +78,7 @@ class Shipment {
     this.orderStatusKey,
     this.orderDeliverImage,
     this.orderUndeliverImage,
+    this.orderPickupImage,
   });
 
   dynamic orderId;
@@ -98,24 +99,29 @@ class Shipment {
 
   String? orderStatusName;
   String? orderStatusKey;
-  String? orderDeliverImage;
-  String? orderUndeliverImage;
+  dynamic orderDeliverImage;
+  dynamic orderUndeliverImage;
+
+  dynamic orderPickupImage;
 
   factory Shipment.fromJson(Map<String, dynamic> json) => Shipment(
         cc: json["cc"] == null ? null : json["cc"],
         customerName: json['customer_name'],
-        orderStatusName: json["order_status_name"],
-        orderStatusKey: json["order_status_key"],
+        orderStatusName:
+            json["order_status_name"] == null ? "" : json["order_status_name"],
+        orderStatusKey:
+            json["order_status_key"] == null ? "" : json["order_status_key"],
         orderDeliverImage: json["order_deliver_image"],
         orderUndeliverImage: json["order_undeliver_image"],
+        orderPickupImage: json["order_pickup_image"],
         isOpen: false,
         orderId: json["order_id"],
         orderNo: json["order_no"],
         refId: json["ref_id"],
         cop: json["cop"],
-        customerNo: json["customer_no"] == null ? null : json["customer_no"],
+        customerNo: json["customer_no"] == null ? "" : json["customer_no"],
         weight: json["weight"] == null ? null : json["weight"],
-        phone: json["phone"] == null ? null : json["phone"],
+        phone: json["phone"] == null ? "" : json["phone"],
         shippingPrice: json["shipping_price"],
         cod: json["cod"],
         currentStatus:
@@ -136,6 +142,7 @@ class Shipment {
         "order_status_key": orderStatusKey,
         "order_deliver_image": orderDeliverImage,
         "order_undeliver_image": orderUndeliverImage,
+        "order_pickup_image": orderPickupImage,
         "weight": weight,
         "phone": phone,
         "shipping_price": shippingPrice,

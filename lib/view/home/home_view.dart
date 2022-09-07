@@ -1,58 +1,96 @@
+import 'package:dalile_customer/components/popups/exportModal.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/dashbord_model_view.dart';
+import 'package:dalile_customer/core/view_model/downloadController.dart';
 import 'package:dalile_customer/view/home/finaince_dashboard.dart';
 import 'package:dalile_customer/view/home/main_dash.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({Key? key}) : super(key: key);
- final controller = Get.put(DashbordController());
- 
+  final controller = Get.put(DashbordController());
+  final downloadController = Get.put(DownloadController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primaryColor,
-      appBar: AppBar(
-        elevation: 0,
-        toolbarHeight: 70,
         backgroundColor: primaryColor,
-        foregroundColor: whiteColor,
-        title: const CustomText(
-          text: 'DASHBOARD',
-          color: whiteColor,
-          size: 18,
-          alignment: Alignment.center,
+        appBar: AppBar(
+          elevation: 0,
+          toolbarHeight: 70,
+          backgroundColor: primaryColor,
+          foregroundColor: whiteColor,
+          title: const CustomText(
+            text: 'DASHBOARD',
+            color: whiteColor,
+            size: 18,
+            alignment: Alignment.center,
+          ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      body:DefaultTabController(
-        length: 2,
-        child: NestedScrollView(
-          headerSliverBuilder: (context, headerSliverBuilder) => [
-            SliverAppBar(
-              toolbarHeight: 10,
-              elevation: 0,
-              backgroundColor: whiteColor,
-              bottom: _tabBarIndicatorShape(),
-            ),
-          ],
-          body:TabBarView(
-              
+        floatingActionButton: SpeedDial(
+            animatedIcon: AnimatedIcons.menu_close,
+            elevation: 8,
+            backgroundColor: primaryColor,
+            overlayOpacity: 0.1,
+            children: [
+              SpeedDialChild(
+                child: Icon(
+                  Icons.picture_as_pdf_outlined,
+                  color: primaryColor,
+                ),
+                label: 'Export Pdf',
+                labelStyle: TextStyle(color: primaryColor),
+                onTap: () {
+                  downloadController.selectedOrderType.value =
+                      OrderTypes("", "");
+
+                  exportModal(context, 'pdf').show();
+                },
+              ),
+              SpeedDialChild(
+                child: Icon(
+                  Icons.table_rows_outlined,
+                  color: primaryColor,
+                ),
+                label: 'Export Excell',
+                labelStyle: TextStyle(color: primaryColor),
+                onTap: () {
+                  downloadController.selectedOrderType.value =
+                      OrderTypes("", "");
+
+                  exportModal(context, 'csv').show();
+                },
+              ),
+            ]), //
+        body: DefaultTabController(
+          length: 2,
+          child: NestedScrollView(
+            headerSliverBuilder: (context, headerSliverBuilder) => [
+              SliverAppBar(
+                toolbarHeight: 10,
+                elevation: 0,
+                backgroundColor: whiteColor,
+                bottom: _tabBarIndicatorShape(),
+              ),
+            ],
+            body: TabBarView(
               children: [
-             MainDash(controller: controller,),
-             FinanceDash(controller:controller)
-               // const RequestPickup()
+                MainDash(
+                  controller: controller,
+                ),
+                FinanceDash(controller: controller)
+                // const RequestPickup()
               ],
             ),
-           ),
-    )
-    );
-    
-    }
-     _tabBarIndicatorShape() => TabBar(
-      
+          ),
+        ));
+  }
+
+  _tabBarIndicatorShape() => TabBar(
         indicatorWeight: 0.0,
         tabs: _tabTwoParameters(),
         labelColor: whiteColor,
@@ -90,5 +128,4 @@ class HomeView extends StatelessWidget {
         //   text: "Request Pickup",
         // ),
       ];
-
-  }
+}

@@ -20,9 +20,6 @@ class InShipments extends StatefulWidget {
 class _InShipmentsState extends State<InShipments> {
   final controller = Get.put(ShipmentViewModel(), permanent: true);
   @override
-
-  // TODO: implement initState
-
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -90,6 +87,14 @@ class _InShipmentsState extends State<InShipments> {
                         itemBuilder: (context, i) {
                           return GetBuilder<ShipmentViewModel>(
                             builder: (x) => CardBody(
+                              customer_name:
+                                  controller.searchResult[i]!.customerName,
+                              deleiver_image:
+                                  controller.searchResult[i]!.orderDeliverImage,
+                              undeleiver_image: controller
+                                  .searchResult[i]!.orderUndeliverImage,
+                              pickup_image:
+                                  controller.searchResult[i]!.orderPickupImage,
                               orderId:
                                   controller.searchResult[i]!.orderId ?? "00",
                               number:
@@ -104,6 +109,10 @@ class _InShipmentsState extends State<InShipments> {
                                   '${double.parse(controller.searchResult[i]!.shippingPrice.toString()) + double.parse(controller.searchResult[i]!.cod.toString())}',
                               stutaus:
                                   controller.searchResult[i]!.orderActivities,
+                              status_key:
+                                  controller.searchResult[i]!.orderStatusKey,
+                              Order_current_Status:
+                                  controller.searchResult[i]!.orderStatusName,
                               icon: controller.shipList
                                   .map((element) => element.icon.toString())
                                   .toList(),
@@ -167,6 +176,14 @@ class _InShipmentsState extends State<InShipments> {
                           itemBuilder: (context, i) {
                             return GetBuilder<ShipmentViewModel>(
                               builder: (x) => CardBody(
+                                customer_name:
+                                    controller.inList[i]!.customerName,
+                                deleiver_image:
+                                    controller.inList[i]!.orderDeliverImage,
+                                undeleiver_image:
+                                    controller.inList[i]!.orderUndeliverImage,
+                                pickup_image:
+                                    controller.inList[i]!.orderPickupImage,
                                 orderId: controller.inList[i]!.orderId ?? "00",
                                 number: controller.inList[i]!.phone ?? "+968",
                                 cod: controller.inList[i]!.cod ?? "0.00",
@@ -183,6 +200,10 @@ class _InShipmentsState extends State<InShipments> {
                                     .toList(),
                                 ref: controller.inList[i]!.refId ?? "0",
                                 weight: controller.inList[i]!.weight ?? "0.00",
+                                status_key:
+                                    controller.inList[i]!.orderStatusKey,
+                                Order_current_Status:
+                                    controller.inList[i]!.orderStatusName,
                                 currentStep:
                                     controller.inList[i]!.currentStatus ?? 1,
                                 isOpen: controller.inList[i]!.isOpen,
@@ -315,6 +336,14 @@ class OutShipments extends StatelessWidget {
                       itemBuilder: (context, i) {
                         return GetBuilder<ShipmentViewModel>(
                           builder: (x) => CardBody(
+                            customer_name:
+                                controller.searchResult[i]!.customerName,
+                            deleiver_image:
+                                controller.searchResult[i]!.orderDeliverImage,
+                            undeleiver_image:
+                                controller.searchResult[i]!.orderUndeliverImage,
+                            pickup_image:
+                                controller.searchResult[i]!.orderPickupImage,
                             orderId:
                                 controller.searchResult[i]!.orderId ?? "00",
                             number: controller.searchResult[i]!.phone ?? "+968",
@@ -332,6 +361,10 @@ class OutShipments extends StatelessWidget {
                                 .map((element) => element.icon.toString())
                                 .toList(),
                             ref: controller.searchResult[i]!.refId ?? "0",
+                            status_key:
+                                controller.searchResult[i]!.orderStatusKey,
+                            Order_current_Status:
+                                controller.searchResult[i]!.orderStatusName,
                             weight:
                                 controller.searchResult[i]!.weight ?? "0.00",
                             currentStep:
@@ -390,6 +423,14 @@ class OutShipments extends StatelessWidget {
                           itemBuilder: (context, i) {
                             return GetBuilder<ShipmentViewModel>(
                               builder: (x) => CardBody(
+                                customer_name:
+                                    controller.outList[i]!.customerName,
+                                deleiver_image:
+                                    controller.outList[i]!.orderDeliverImage,
+                                undeleiver_image:
+                                    controller.outList[i]!.orderUndeliverImage,
+                                pickup_image:
+                                    controller.outList[i]!.orderPickupImage,
                                 orderId: controller.outList[i]!.orderId ?? "00",
                                 number: controller.outList[i]!.phone ?? "+968",
                                 cod: controller.outList[i]!.cod ?? "0.00",
@@ -406,6 +447,10 @@ class OutShipments extends StatelessWidget {
                                     .toList(),
                                 ref: controller.outList[i]!.refId ?? "0",
                                 weight: controller.outList[i]!.weight ?? "0.00",
+                                status_key:
+                                    controller.outList[i]!.orderStatusKey,
+                                Order_current_Status:
+                                    controller.outList[i]!.orderStatusName,
                                 currentStep:
                                     controller.outList[i]!.currentStatus ?? 1,
                                 isOpen: controller.outList[i]!.isOpen,
@@ -417,13 +462,9 @@ class OutShipments extends StatelessWidget {
                                         !controller.outList[i]!.isOpen;
                                     x.update();
                                   } else {
-                                    print('-------------');
                                     controller.outList[i]!.isOpen = false;
                                     x.update();
                                   }
-
-                                  print(
-                                      controller.outList[i]!.isOpen.toString());
                                 },
                               ),
                             );

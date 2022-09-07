@@ -14,15 +14,26 @@ import 'package:sms_autofill/sms_autofill.dart';
 class LoginController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isAgree = false.obs;
+  RxString mobile = "".obs;
+  RxString emailAddress = "".obs;
 
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
-  TextEditingController phoneNumber = TextEditingController();
-  // ignore: prefer_typing_uninitialized_variables
+  Rx<TextEditingController> phoneNumber = TextEditingController().obs;
+  Rx<TextEditingController> email = TextEditingController().obs;
+  RxInt isLoginWithEmail = 0.obs;
+
   var code;
   void fetchOTPSentData() async {
     try {
+      mobile(phoneNumber.value.text);
+      emailAddress(email.value.text);
+
       isLoading(true);
-      var data = await LoginAPi.loginData(phoneNumber.text);
+
+      var data = await LoginAPi.loginData(
+          mobile: phoneNumber.value.text,
+          email: email.value.text,
+          isEmail: isLoginWithEmail.value == 0 ? false : true);
       if (data != null) {
         if (data["message"] == "OK") {
           code = await SmsAutoFill().getAppSignature;
@@ -52,11 +63,13 @@ class LoginController extends GetxController {
 
   final OtpFieldController otpController = OtpFieldController();
   RxString pinController = ''.obs;
-  void fetchCheckLoginData(String otp) async {
+  fetchCheckLoginData(String otp) async {
     try {
       isLoading(true);
-      var data = await LoginAPi.loginOtpData(
-          phoneNumber.text, otp, "$identifier", "$deviceName");
+      var data = await LoginAPi.loginOtpData(otp, "$identifier", "$deviceName",
+          email: emailAddress.value,
+          isEmail: isLoginWithEmail.value == 0 ? false : true,
+          mobile: mobile.value);
       if (data != null) {
         if (data["success"] == "ok" || data["success"] == "OK") {
           Get.offAll(() => ControllerView());
@@ -87,7 +100,18 @@ class LoginController extends GetxController {
     }
   }
 
+  emailVild(x) {
+    if (x.isEmpty) {
+      return "please enter your email";
+    }
+    bool isValid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(x);
+    if (!isValid) return "please enter a valid email";
+  }
+
   RxString deviceName = ''.obs;
+  RxString enteredEmail = ''.obs;
 
   RxString identifier = ''.obs;
 

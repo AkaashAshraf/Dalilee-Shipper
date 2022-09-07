@@ -1,11 +1,14 @@
+import 'package:dalile_customer/config/localNotificationService.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/dashbord_model_view.dart';
+import 'package:dalile_customer/view/home/MainDashboardListing/unDeliverListing.dart';
 import 'package:dalile_customer/view/home/card_body.dart';
 import 'package:dalile_customer/view/home/item_body.dart';
 import 'package:dalile_customer/view/widget/all_pickup_body.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/empty.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -24,64 +27,99 @@ enum Status {
   TO_BE_DELIVERED,
   TO_BE_PICKUP,
   RETURNED_SHIPMENTS,
-  CENCELLED_SHIPMENTS
+  CENCELLED_SHIPMENTS,
+  OFD
 }
 
 class _MainDashState extends State<MainDash> {
-  ScrollController? allShipmentScroll_Controller;
-  ScrollController? deliveredShipmentScroll_Controller;
-  ScrollController? to_bePickupScroll_Controller;
-  ScrollController? to_be_delieveredScroll_Controller;
-  ScrollController? returenedScroll_Controller;
-  ScrollController? cancelScroll_Controller;
+  ScrollController? allShipmentScrollController;
+  ScrollController? deliveredShipmentScrollController;
+  ScrollController? toBePickupScrollController;
+  ScrollController? toBeDelieveredScrollController;
+  ScrollController? returenedScrollController;
+  ScrollController? cancelScrollController;
+  ScrollController? ofdScrollController;
 
-  RefreshController MainScreenRefresh_Controller =
+  RefreshController mainScreenRefreshController =
       RefreshController(initialRefresh: true);
-
-  RefreshController allShipmentRefresh_Controller =
-      RefreshController(initialRefresh: true);
-  RefreshController deliveredShipmentRefresh_Controller =
-      RefreshController(initialRefresh: true);
-  RefreshController to_be_deliveredShipmentRefresh_Controller =
-      RefreshController(initialRefresh: true);
-  RefreshController to_be_pickupShipmentRefresh_Controller =
-      RefreshController(initialRefresh: true);
-  RefreshController returnedShipmentRefresh_Controller =
+  RefreshController ofdRefreshController =
       RefreshController(initialRefresh: true);
 
-  RefreshController cancelShipmentRefresh_Controller =
+  RefreshController allShipmentRefreshController =
       RefreshController(initialRefresh: true);
+  RefreshController deliveredShipmentRefreshController =
+      RefreshController(initialRefresh: true);
+  RefreshController toBeDeliveredShipmentRefreshController =
+      RefreshController(initialRefresh: true);
+  RefreshController toBePickupShipmentRefreshController =
+      RefreshController(initialRefresh: true);
+  RefreshController returnedShipmentRefreshController =
+      RefreshController(initialRefresh: true);
+
+  RefreshController cancelShipmentRefreshController =
+      RefreshController(initialRefresh: true);
+  Future<void> setupInteractedMessage() async {
+    // Get any messages which caused the application to open from
+    // a terminated state.
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    // If the message also contains a data property with a "type" of "chat",
+    // navigate to a chat screen
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+
+    FirebaseMessaging.onMessageOpenedApp.listen((val) {
+      Get.to(UndeliverListing());
+    });
+    FirebaseMessaging.onMessage.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    NotificationService.showNotification(message.notification!.title.toString(),
+        message.notification!.body.toString(), 'Order Update');
+  }
 
   @override
   void initState() {
     super.initState();
-    allShipmentScroll_Controller = ScrollController()
+    setupInteractedMessage();
+    allShipmentScrollController = ScrollController()
       ..addListener(() {
         _loadMore(type: Status.ALL);
       });
 
-    deliveredShipmentScroll_Controller = ScrollController()
+    deliveredShipmentScrollController = ScrollController()
       ..addListener(() {
         _loadMore(type: Status.DELIVERED);
       });
 
-    to_be_delieveredScroll_Controller = ScrollController()
+    toBeDelieveredScrollController = ScrollController()
       ..addListener(() {
         _loadMore(type: Status.TO_BE_DELIVERED);
       });
 
-    to_bePickupScroll_Controller = ScrollController()
+    toBePickupScrollController = ScrollController()
       ..addListener(() {
         _loadMore(type: Status.TO_BE_PICKUP);
       });
 
-    returenedScroll_Controller = ScrollController()
+    returenedScrollController = ScrollController()
       ..addListener(() {
         _loadMore(type: Status.RETURNED_SHIPMENTS);
       });
-    cancelScroll_Controller = ScrollController()
+    cancelScrollController = ScrollController()
       ..addListener(() {
         _loadMore(type: Status.CENCELLED_SHIPMENTS);
+      });
+
+    ofdScrollController = ScrollController()
+      ..addListener(() {
+        _loadMore(type: Status.OFD);
       });
   }
 
@@ -89,14 +127,12 @@ class _MainDashState extends State<MainDash> {
     switch (type) {
       case Status.ALL:
         {
-          // if (widget.controller.inViewLoading_allShipments.value) return;
-          if (widget.controller.dashboard_allShiments >
-                  widget.controller.limit_allShiments.value &&
-              allShipmentScroll_Controller!.position.extentAfter < 10) {
-            // Increase _page by 1
-            widget.controller.limit_allShiments.value += 10;
-            bool isTop = allShipmentScroll_Controller!.position.pixels == 0;
-            // if (!isTop) {
+          if (widget.controller.loadMore.value) return;
+
+          if (widget.controller.dashboardAllShiments >
+                  widget.controller.allShipemet.length &&
+              allShipmentScrollController!.position.extentAfter < 3000.0) {
+            widget.controller.limitAllShiments.value += 10;
             widget.controller.loadMore.value = true;
 
             widget.controller.fetchAllShipemetData();
@@ -106,15 +142,11 @@ class _MainDashState extends State<MainDash> {
         } //ALL
       case Status.DELIVERED:
         {
-          // if (widget.controller.inViewLoading_deliveredShipments.value) return;
-          if (widget.controller.dashboard_deliveredShipments >
-                  widget.controller.limit_deliveredShipments.value &&
-              deliveredShipmentScroll_Controller!.position.extentAfter < 10) {
-            // Increase _page by 1
-            bool isTop =
-                deliveredShipmentScroll_Controller!.position.pixels == 0;
-            // if (!isTop) {
-            widget.controller.limit_deliveredShipments.value += 10;
+          if (widget.controller.loadMoreDeliveredShipments.value) return;
+          if (widget.controller.dashboardDeliveredShipments >
+                  widget.controller.deliverShipemet.length &&
+              deliveredShipmentScrollController!.position.extentAfter < 3000) {
+            widget.controller.limitDeliveredShipments.value += 10;
             widget.controller.fetchDeliverShipemetData();
             // }
           }
@@ -123,15 +155,11 @@ class _MainDashState extends State<MainDash> {
 
       case Status.TO_BE_DELIVERED:
         {
-          // if (widget.controller.inViewLoading_deliveredShipments.value) return;
-          if (widget.controller.dashboard_to_b_Delivered >
-                  widget.controller.limit_to_b_Delivered.value &&
-              to_be_delieveredScroll_Controller!.position.extentAfter < 10) {
-            // Increase _page by 1
-            bool isTop =
-                to_be_delieveredScroll_Controller!.position.pixels == 0;
-            // if (!isTop) {
-            widget.controller.limit_to_b_Delivered.value += 10;
+          if (widget.controller.loadMoreToBeDeliveredShipments.value) return;
+          if (widget.controller.dashboardToBeDelivered >
+                  widget.controller.tobeDelShipemet.length &&
+              toBeDelieveredScrollController!.position.extentAfter < 3000.0) {
+            widget.controller.limitToBeDelivered.value += 10;
             widget.controller.fetchToBeDeliveredShipemetData();
             // }
           }
@@ -140,14 +168,11 @@ class _MainDashState extends State<MainDash> {
 
       case Status.TO_BE_PICKUP:
         {
-          // if (widget.controller.inViewLoading_deliveredShipments.value) return;
-          if (widget.controller.dashboard_to_b_Pichup >
-                  widget.controller.limit_to_b_Pichup.value &&
-              to_bePickupScroll_Controller!.position.extentAfter < 10) {
-            // Increase _page by 1
-            bool isTop = to_bePickupScroll_Controller!.position.pixels == 0;
-            // if (!isTop) {
-            widget.controller.limit_to_b_Pichup.value += 10;
+          if (widget.controller.loadMoreToBePickup.value) return;
+          if (widget.controller.dashboardToBePichup >
+                  widget.controller.tobePickup.length &&
+              toBePickupScrollController!.position.extentAfter < 3000) {
+            widget.controller.limitToBePichup.value += 10;
             widget.controller.fetchToBePickupData();
             // }
           }
@@ -155,14 +180,11 @@ class _MainDashState extends State<MainDash> {
         } //TO_BE_PICKUP
       case Status.RETURNED_SHIPMENTS:
         {
-          // if (widget.controller.inViewLoading_deliveredShipments.value) return;
-          if (widget.controller.dashboard_returnedShipment >
-                  widget.controller.limit_returnedShipment.value &&
-              returenedScroll_Controller!.position.extentAfter < 10) {
-            // Increase _page by 1
-            bool isTop = returenedScroll_Controller!.position.pixels == 0;
-            // if (!isTop) {
-            widget.controller.limit_returnedShipment.value += 10;
+          if (widget.controller.loadMoreReturnShipments.value) return;
+          if (widget.controller.dashboardReturnedShipment >
+                  widget.controller.returnShipemet.length &&
+              returenedScrollController!.position.extentAfter < 3000) {
+            widget.controller.limitReturnedShipment.value += 10;
             widget.controller.fetchRetrunShipemetData();
             // }
           }
@@ -171,18 +193,29 @@ class _MainDashState extends State<MainDash> {
 
       case Status.CENCELLED_SHIPMENTS:
         {
-          // if (widget.controller.inViewLoading_deliveredShipments.value) return;
-          if (widget.controller.dashboard_CancelledShiments >
-                  widget.controller.limit_CancelledShiments.value &&
-              cancelScroll_Controller!.position.extentAfter < 10) {
-            bool isTop = cancelScroll_Controller!.position.pixels == 0;
-            // if (!isTop) {
-            widget.controller.limit_CancelledShiments.value += 10;
+          if (widget.controller.loadMoreCancelShipments.value) return;
+          if (widget.controller.dashboardCancelledShiments >
+                  widget.controller.cancellShipemet.length &&
+              cancelScrollController!.position.extentAfter < 3000) {
+            widget.controller.limitCancelledShiments.value += 10;
             widget.controller.fetchcancellShipemetData();
             // }
           }
           break;
-        } //RETURNED_SHIPMENTS
+        } //CENCELLED_SHIPMENTS
+
+      case Status.OFD:
+        {
+          if (widget.controller.loadMoreOFDShipments.value) return;
+          if (widget.controller.dashboardOFDShiments >
+                  widget.controller.ofdShipemet.length &&
+              cancelScrollController!.position.extentAfter < 3000) {
+            widget.controller.limitOfdShiments.value += 10;
+            widget.controller.fetchOFDShipemetData();
+            // }
+          }
+          break;
+        } //ofd
 
     } //switch
   }
@@ -191,68 +224,72 @@ class _MainDashState extends State<MainDash> {
     switch (type) {
       case Status.ALL:
         {
-          var res =
-              await widget.controller.fetchAllShipemetData(isRefresh: true);
-          allShipmentRefresh_Controller.refreshCompleted();
+          await widget.controller.fetchAllShipemetData(isRefresh: true);
+          allShipmentRefreshController.refreshCompleted();
           break;
         } //delived
       case Status.DELIVERED:
         {
-          var res =
-              await widget.controller.fetchDeliverShipemetData(isRefresh: true);
-          deliveredShipmentRefresh_Controller.refreshCompleted();
+          await widget.controller.fetchDeliverShipemetData(isRefresh: true);
+          deliveredShipmentRefreshController.refreshCompleted();
           break;
         } //delived
       case Status.TO_BE_PICKUP:
         {
-          var res =
-              await widget.controller.fetchToBePickupData(isRefresh: true);
-          to_be_pickupShipmentRefresh_Controller.refreshCompleted();
+          await widget.controller.fetchToBePickupData(isRefresh: true);
+          toBePickupShipmentRefreshController.refreshCompleted();
           break;
         } //to be pickup
       case Status.TO_BE_DELIVERED:
         {
-          var res = await widget.controller
+          await widget.controller
               .fetchToBeDeliveredShipemetData(isRefresh: true);
-          to_be_deliveredShipmentRefresh_Controller.refreshCompleted();
+          toBeDeliveredShipmentRefreshController.refreshCompleted();
           break;
         } //tp\o be delived
       case Status.RETURNED_SHIPMENTS:
         {
-          var res =
-              await widget.controller.fetchRetrunShipemetData(isRefresh: true);
-          returnedShipmentRefresh_Controller.refreshCompleted();
+          await widget.controller.fetchRetrunShipemetData(isRefresh: true);
+          returnedShipmentRefreshController.refreshCompleted();
           break;
         } //to be delived
       case Status.CENCELLED_SHIPMENTS:
         {
-          var res =
-              await widget.controller.fetchcancellShipemetData(isRefresh: true);
-          cancelShipmentRefresh_Controller.refreshCompleted();
+          await widget.controller.fetchcancellShipemetData(isRefresh: true);
+          cancelShipmentRefreshController.refreshCompleted();
           break;
         } //CENCELLED_SHIPMENTS
+      case Status.OFD:
+        {
+          await widget.controller.fetchOFDShipemetData(isRefresh: true);
+          ofdRefreshController.refreshCompleted();
+          break;
+        } //OFD
     } //switch
   }
 
   @override
   void dispose() {
-    allShipmentScroll_Controller!.removeListener(() {
+    allShipmentScrollController!.removeListener(() {
       _loadMore(type: Status.ALL);
     });
-    deliveredShipmentScroll_Controller!.removeListener(() {
+    deliveredShipmentScrollController!.removeListener(() {
       _loadMore(type: Status.DELIVERED);
     });
-    to_be_delieveredScroll_Controller!.removeListener(() {
+    toBeDelieveredScrollController!.removeListener(() {
       _loadMore(type: Status.TO_BE_DELIVERED);
     });
-    to_bePickupScroll_Controller!.removeListener(() {
+    toBePickupScrollController!.removeListener(() {
       _loadMore(type: Status.TO_BE_PICKUP);
     });
-    returenedScroll_Controller!.removeListener(() {
+    returenedScrollController!.removeListener(() {
       _loadMore(type: Status.RETURNED_SHIPMENTS);
     });
-    cancelScroll_Controller!.removeListener(() {
+    cancelScrollController!.removeListener(() {
       _loadMore(type: Status.CENCELLED_SHIPMENTS);
+    });
+    cancelScrollController!.removeListener(() {
+      _loadMore(type: Status.OFD);
     });
 
     super.dispose();
@@ -271,10 +308,16 @@ class _MainDashState extends State<MainDash> {
           ),
           onRefresh: () async {
             var res = await widget.controller.fetchMainDashBoardData();
-            MainScreenRefresh_Controller.refreshCompleted();
+            mainScreenRefreshController.refreshCompleted();
           },
-          controller: MainScreenRefresh_Controller,
+          controller: mainScreenRefreshController,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            // const DownloadingDialog(
+            //   url:
+            //       "https://shaheen-oman.dalilee.om/storage/uploads/store/shipments/2022/Aug/shipments1661714131.csv",
+            //   format: "csv",
+            // ),
+            // Text(txt),
             // widget.controller.isLoading.value
             //     ? WaiteImage()
             //     : MaterialButton(
@@ -303,144 +346,181 @@ class _MainDashState extends State<MainDash> {
             // ),
             InkWell(
               onTap: () {
+                // flutterLocalNotificationsPlugin.show(
+                //     4253,
+                //     'title',
+                //     " body",
+                //     NotificationDetails(
+                //         android: AndroidNotificationDetails(
+                //             '1213', "chanel.name",
+                //             playSound: true)));
+
                 _refresh(type: Status.ALL);
                 Get.to(
                     () => GetX<DashbordController>(builder: (controller) {
                           return controller.allShipemet.isEmpty
                               ? MainCardBodyView(
-                                  controller: controller
-                                          .inViewLoading_allShipments.value
-                                      ? WaiteImage()
-                                      : EmptyState(
-                                          label: 'No data',
-                                        ),
+                                  controller:
+                                      controller.inViewLoadingallShipments.value
+                                          ? WaiteImage()
+                                          : EmptyState(
+                                              label: 'No data',
+                                            ),
                                   title: "Shipments")
                               : MainCardBodyView(
-                                  title: 'All Shipments',
+                                  title: 'All Shipments (' +
+                                      controller.allShipemet.length.toString() +
+                                      "/" +
+                                      controller.dashboardAllShiments.value
+                                          .toString() +
+                                      ")",
                                   controller: Container(
                                     height: MediaQuery.of(context).size.height,
-                                    child: Column(
+                                    child: Stack(
                                       children: [
-                                        Container(
-                                          height: controller.loadMore.value
-                                              ? MediaQuery.of(context)
+                                        Column(
+                                          children: [
+                                            Container(
+                                              height: MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  0.75
-                                              : MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.82,
-                                          child: SmartRefresher(
-                                            header: WaterDropMaterialHeader(
-                                              backgroundColor: primaryColor,
-                                            ),
-                                            controller:
-                                                allShipmentRefresh_Controller,
-                                            onRefresh: () async {
-                                              _refresh(type: Status.ALL);
-                                            },
-                                            child: ListView.separated(
-                                              controller:
-                                                  allShipmentScroll_Controller,
-                                              separatorBuilder: (context, i) =>
-                                                  const SizedBox(height: 15),
-                                              itemCount:
-                                                  controller.allShipemet.length,
-                                              padding: const EdgeInsets.only(
-                                                  left: 15,
-                                                  right: 15,
-                                                  bottom: 10,
-                                                  top: 5),
-                                              itemBuilder: (context, i) {
-                                                return GetBuilder<
-                                                    DashbordController>(
-                                                  builder: (x) => CardBody(
-                                                    orderId: controller
-                                                            .allShipemet[i]
-                                                            .orderId ??
-                                                        00,
-                                                    customer_name: controller
-                                                        .allShipemet[i]
-                                                        .customerName,
-                                                    Order_current_Status:
-                                                        controller
-                                                            ?.allShipemet[i]
-                                                            .orderStatusName,
-                                                    number: controller
-                                                            .allShipemet[i]
-                                                            .phone ??
-                                                        "+968",
-                                                    orderNumber: controller
-                                                        .allShipemet[i].orderNo,
-                                                    cod: controller
-                                                            .allShipemet[i]
-                                                            .cod ??
-                                                        "0.00",
-                                                    cop: controller
-                                                            .allShipemet[i]
-                                                            .cop ??
-                                                        "0.00",
-                                                    shipmentCost: controller
-                                                            .allShipemet[i]
-                                                            .shippingPrice ??
-                                                        "0.00",
-                                                    totalCharges:
-                                                        '${double.parse(controller.allShipemet[i].shippingPrice.toString()) + double.parse(controller.allShipemet[i].cod.toString())}',
-                                                    stutaus: controller
-                                                        .allShipemet[i]
-                                                        .orderActivities,
-                                                    icon: controller.allList
-                                                        .map((element) =>
-                                                            element.icon
-                                                                .toString())
-                                                        .toList(),
-                                                    ref: controller
-                                                            .allShipemet[i]
-                                                            .refId ??
-                                                        0,
-                                                    weight: controller
-                                                            .allShipemet[i]
-                                                            .weight ??
-                                                        0.00,
-                                                    currentStep: controller
-                                                            .allShipemet[i]
-                                                            .currentStatus ??
-                                                        1,
-                                                    isOpen: controller
-                                                        .allShipemet[i].isOpen,
-                                                    onPressedShowMore: () {
-                                                      if (controller
-                                                              .allShipemet[i]
-                                                              .isOpen ==
-                                                          false) {
-                                                        controller.allShipemet
-                                                            .forEach((element) =>
-                                                                element.isOpen =
-                                                                    false);
-                                                        controller
+                                                  0.81,
+                                              child: SmartRefresher(
+                                                header: WaterDropHeader(
+                                                    // backgroundColor: primaryColor,
+                                                    ),
+                                                controller:
+                                                    allShipmentRefreshController,
+                                                onRefresh: () async {
+                                                  _refresh(type: Status.ALL);
+                                                },
+                                                child: ListView.separated(
+                                                  controller:
+                                                      allShipmentScrollController,
+                                                  separatorBuilder:
+                                                      (context, i) =>
+                                                          const SizedBox(
+                                                              height: 15),
+                                                  itemCount: controller
+                                                      .allShipemet.length,
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 15,
+                                                          right: 15,
+                                                          bottom: 10,
+                                                          top: 5),
+                                                  itemBuilder: (context, i) {
+                                                    return GetBuilder<
+                                                        DashbordController>(
+                                                      builder: (x) => CardBody(
+                                                        deleiver_image: controller
                                                                 .allShipemet[i]
-                                                                .isOpen =
-                                                            !controller
+                                                                .orderDeliverImage ??
+                                                            "",
+                                                        undeleiver_image: controller
                                                                 .allShipemet[i]
-                                                                .isOpen;
-                                                        x.update();
-                                                      } else {
-                                                        print('-------------');
-                                                        controller
+                                                                .orderUndeliverImage ??
+                                                            "",
+                                                        pickup_image: controller
+                                                                .allShipemet[i]
+                                                                .orderPickupImage ??
+                                                            "",
+                                                        orderId: controller
+                                                                .allShipemet[i]
+                                                                .orderId ??
+                                                            00,
+                                                        status_key: widget
+                                                            .controller
                                                             .allShipemet[i]
-                                                            .isOpen = false;
-                                                        x.update();
-                                                      }
-                                                    },
-                                                  ),
-                                                );
-                                              },
+                                                            .orderStatusKey,
+                                                        customer_name:
+                                                            controller
+                                                                .allShipemet[i]
+                                                                .customerName,
+                                                        Order_current_Status:
+                                                            controller
+                                                                .allShipemet[i]
+                                                                .orderStatusName,
+                                                        number: controller
+                                                                .allShipemet[i]
+                                                                .phone ??
+                                                            "+968",
+                                                        orderNumber: controller
+                                                            .allShipemet[i]
+                                                            .orderNo,
+                                                        cod: controller
+                                                                .allShipemet[i]
+                                                                .cod ??
+                                                            "0.00",
+                                                        cop: controller
+                                                                .allShipemet[i]
+                                                                .cop ??
+                                                            "0.00",
+                                                        shipmentCost: controller
+                                                                .allShipemet[i]
+                                                                .shippingPrice ??
+                                                            "0.00",
+                                                        totalCharges:
+                                                            '${double.parse(controller.allShipemet[i].shippingPrice.toString()) + double.parse(controller.allShipemet[i].cod.toString())}',
+                                                        stutaus: controller
+                                                            .allShipemet[i]
+                                                            .orderActivities,
+                                                        icon: controller.allList
+                                                            .map((element) =>
+                                                                element.icon
+                                                                    .toString())
+                                                            .toList(),
+                                                        ref: controller
+                                                                .allShipemet[i]
+                                                                .refId ??
+                                                            0,
+                                                        weight: controller
+                                                                .allShipemet[i]
+                                                                .weight ??
+                                                            0.00,
+                                                        currentStep: controller
+                                                                .allShipemet[i]
+                                                                .currentStatus ??
+                                                            1,
+                                                        isOpen: controller
+                                                            .allShipemet[i]
+                                                            .isOpen,
+                                                        onPressedShowMore: () {
+                                                          if (controller
+                                                                  .allShipemet[
+                                                                      i]
+                                                                  .isOpen ==
+                                                              false) {
+                                                            controller
+                                                                .allShipemet
+                                                                .forEach((element) =>
+                                                                    element.isOpen =
+                                                                        false);
+                                                            controller
+                                                                    .allShipemet[i]
+                                                                    .isOpen =
+                                                                !controller
+                                                                    .allShipemet[
+                                                                        i]
+                                                                    .isOpen;
+                                                            x.update();
+                                                          } else {
+                                                            controller
+                                                                .allShipemet[i]
+                                                                .isOpen = false;
+                                                            x.update();
+                                                          }
+                                                        },
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                          ],
                                         ),
-                                        if (controller?.loadMore.value == true)
-                                          WaiteImage()
+                                        if (controller.loadMore.value)
+                                          bottomLoadingIndicator()
                                       ],
                                     ),
                                   ),
@@ -454,7 +534,7 @@ class _MainDashState extends State<MainDash> {
                   _InsideShape(
                     image: 'assets/images/allshipment.png',
                     title: 'All Shipments',
-                    numbers: '${widget.controller.dashboard_allShiments.value}',
+                    numbers: '${widget.controller.dashboardAllShiments.value}',
                   ),
                   15.0,
                   15.0,
@@ -474,196 +554,239 @@ class _MainDashState extends State<MainDash> {
                                 return widget.controller.deliverShipemet.isEmpty
                                     ? MainCardBodyView(
                                         controller: controller
-                                                    ?.inViewLoading_deliveredShipments ==
-                                                true
+                                                .inViewLoadingdeliveredShipments
+                                                .value
                                             ? WaiteImage()
                                             : EmptyState(
                                                 label: 'No data',
                                               ),
-                                        title: "Delivered Shipments")
+                                        title: 'Delivered Shipments (' +
+                                            controller.deliverShipemet.length
+                                                .toString() +
+                                            "/" +
+                                            controller
+                                                .dashboardDeliveredShipments
+                                                .toString() +
+                                            ")",
+                                      )
                                     : Container(
                                         color: Colors.white,
                                         height:
                                             MediaQuery.of(context).size.height,
-                                        child: Column(
+                                        child: Stack(
                                           children: [
-                                            Container(
-                                              height: controller
-                                                          ?.loadMore_deliveredShipments
-                                                          .value ==
-                                                      true
-                                                  ? MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.93
-                                                  : MediaQuery.of(context)
+                                            Column(
+                                              children: [
+                                                Container(
+                                                  height: MediaQuery.of(context)
                                                           .size
                                                           .height *
                                                       1,
-                                              child: MainCardBodyView(
-                                                title: 'Delivered Shipments',
-                                                controller: SmartRefresher(
-                                                  header:
-                                                      WaterDropMaterialHeader(
-                                                    backgroundColor:
-                                                        primaryColor,
-                                                  ),
-                                                  controller:
-                                                      deliveredShipmentRefresh_Controller,
-                                                  onRefresh: () async {
-                                                    _refresh(
-                                                        type: Status.DELIVERED);
-                                                  },
-                                                  child: ListView.separated(
-                                                    controller:
-                                                        deliveredShipmentScroll_Controller,
-                                                    separatorBuilder:
-                                                        (context, i) =>
-                                                            const SizedBox(
-                                                                height: 15),
-                                                    itemCount: controller
-                                                        .deliverShipemet.length,
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15,
-                                                            bottom: 10,
-                                                            top: 5),
-                                                    itemBuilder: (context, i) {
-                                                      return GetBuilder<
-                                                          DashbordController>(
-                                                        builder: (x) =>
-                                                            CardBody(
-                                                          Order_current_Status:
-                                                              controller
-                                                                  ?.deliverShipemet[
+                                                  child: MainCardBodyView(
+                                                    title: 'Delivered Shipments (' +
+                                                        controller
+                                                            .deliverShipemet
+                                                            .length
+                                                            .toString() +
+                                                        "/" +
+                                                        controller
+                                                            .dashboardDeliveredShipments
+                                                            .toString() +
+                                                        ")",
+                                                    controller: SmartRefresher(
+                                                      header: WaterDropHeader(
+                                                        waterDropColor:
+                                                            primaryColor,
+                                                      ),
+                                                      controller:
+                                                          deliveredShipmentRefreshController,
+                                                      onRefresh: () async {
+                                                        _refresh(
+                                                            type: Status
+                                                                .DELIVERED);
+                                                      },
+                                                      child: ListView.separated(
+                                                        controller:
+                                                            deliveredShipmentScrollController,
+                                                        separatorBuilder:
+                                                            (context, i) =>
+                                                                const SizedBox(
+                                                                    height: 15),
+                                                        itemCount: controller
+                                                            .deliverShipemet
+                                                            .length,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 15,
+                                                                right: 15,
+                                                                bottom: 10,
+                                                                top: 5),
+                                                        itemBuilder:
+                                                            (context, i) {
+                                                          return GetBuilder<
+                                                              DashbordController>(
+                                                            builder: (x) =>
+                                                                CardBody(
+                                                              deleiver_image: controller
+                                                                      .deliverShipemet[
+                                                                          i]
+                                                                      .orderDeliverImage ??
+                                                                  "",
+                                                              customer_name: controller
+                                                                      .deliverShipemet[
+                                                                          i]
+                                                                      .customerName ??
+                                                                  "",
+                                                              undeleiver_image:
+                                                                  controller
+                                                                          .deliverShipemet[
+                                                                              i]
+                                                                          .orderUndeliverImage ??
+                                                                      "",
+                                                              pickup_image: controller
+                                                                      .deliverShipemet[
+                                                                          i]
+                                                                      .orderPickupImage ??
+                                                                  "",
+                                                              Order_current_Status:
+                                                                  controller
+                                                                      .deliverShipemet[
+                                                                          i]
+                                                                      .orderStatusName,
+                                                              orderId: widget
+                                                                      .controller
+                                                                      .deliverShipemet[
+                                                                          i]
+                                                                      .orderId ??
+                                                                  00,
+                                                              orderNumber:
+                                                                  controller
+                                                                      .deliverShipemet[
+                                                                          i]
+                                                                      .orderNo,
+                                                              number: widget
+                                                                      .controller
+                                                                      .deliverShipemet[
+                                                                          i]
+                                                                      .phone ??
+                                                                  "+968",
+                                                              cod: widget
+                                                                      .controller
+                                                                      .deliverShipemet[
+                                                                          i]
+                                                                      .cod ??
+                                                                  "0.00",
+                                                              cop: widget
+                                                                      .controller
+                                                                      .deliverShipemet[
+                                                                          i]
+                                                                      .cop ??
+                                                                  "0.00",
+                                                              shipmentCost: widget
+                                                                      .controller
+                                                                      .deliverShipemet[
+                                                                          i]
+                                                                      .shippingPrice ??
+                                                                  "0.00",
+                                                              status_key: controller
+                                                                  .deliverShipemet[
                                                                       i]
-                                                                  .orderStatusName,
-                                                          orderId: widget
+                                                                  .orderStatusKey,
+                                                              totalCharges:
+                                                                  '${double.parse(widget.controller.deliverShipemet[i].shippingPrice.toString()) + double.parse(widget.controller.deliverShipemet[i].cod.toString())}',
+                                                              stutaus: widget
                                                                   .controller
                                                                   .deliverShipemet[
                                                                       i]
-                                                                  .orderId ??
-                                                              00,
-                                                          orderNumber: controller
-                                                              .deliverShipemet[
-                                                                  i]
-                                                              .orderNo,
-                                                          number: widget
+                                                                  .orderActivities,
+                                                              icon: widget
+                                                                  .controller
+                                                                  .deliverList
+                                                                  .map((element) =>
+                                                                      element
+                                                                          .icon
+                                                                          .toString())
+                                                                  .toList(),
+                                                              ref: widget
+                                                                      .controller
+                                                                      .deliverShipemet[
+                                                                          i]
+                                                                      .refId ??
+                                                                  0,
+                                                              weight: widget
+                                                                      .controller
+                                                                      .deliverShipemet[
+                                                                          i]
+                                                                      .weight ??
+                                                                  0.00,
+                                                              currentStep: widget
+                                                                      .controller
+                                                                      .deliverShipemet[
+                                                                          i]
+                                                                      .currentStatus ??
+                                                                  1,
+                                                              isOpen: widget
                                                                   .controller
                                                                   .deliverShipemet[
                                                                       i]
-                                                                  .phone ??
-                                                              "+968",
-                                                          cod: widget
-                                                                  .controller
-                                                                  .deliverShipemet[
-                                                                      i]
-                                                                  .cod ??
-                                                              "0.00",
-                                                          cop: widget
-                                                                  .controller
-                                                                  .deliverShipemet[
-                                                                      i]
-                                                                  .cop ??
-                                                              "0.00",
-                                                          shipmentCost: widget
-                                                                  .controller
-                                                                  .deliverShipemet[
-                                                                      i]
-                                                                  .shippingPrice ??
-                                                              "0.00",
-                                                          totalCharges:
-                                                              '${double.parse(widget.controller.deliverShipemet[i].shippingPrice.toString()) + double.parse(widget.controller.deliverShipemet[i].cod.toString())}',
-                                                          stutaus: widget
-                                                              .controller
-                                                              .deliverShipemet[
-                                                                  i]
-                                                              .orderActivities,
-                                                          icon: widget
-                                                              .controller
-                                                              .deliverList
-                                                              .map((element) =>
-                                                                  element.icon
-                                                                      .toString())
-                                                              .toList(),
-                                                          ref: widget
-                                                                  .controller
-                                                                  .deliverShipemet[
-                                                                      i]
-                                                                  .refId ??
-                                                              0,
-                                                          weight: widget
-                                                                  .controller
-                                                                  .deliverShipemet[
-                                                                      i]
-                                                                  .weight ??
-                                                              0.00,
-                                                          currentStep: widget
-                                                                  .controller
-                                                                  .deliverShipemet[
-                                                                      i]
-                                                                  .currentStatus ??
-                                                              1,
-                                                          isOpen: widget
-                                                              .controller
-                                                              .deliverShipemet[
-                                                                  i]
-                                                              .isOpen,
-                                                          onPressedShowMore:
-                                                              () {
-                                                            if (widget
+                                                                  .isOpen,
+                                                              onPressedShowMore:
+                                                                  () {
+                                                                if (widget
+                                                                        .controller
+                                                                        .deliverShipemet[
+                                                                            i]
+                                                                        .isOpen ==
+                                                                    false) {
+                                                                  widget
+                                                                      .controller
+                                                                      .deliverShipemet
+                                                                      .forEach((element) =>
+                                                                          element.isOpen =
+                                                                              false);
+                                                                  widget
+                                                                          .controller
+                                                                          .deliverShipemet[
+                                                                              i]
+                                                                          .isOpen =
+                                                                      !widget
+                                                                          .controller
+                                                                          .deliverShipemet[
+                                                                              i]
+                                                                          .isOpen;
+                                                                  x.update();
+                                                                } else {
+                                                                  print(
+                                                                      '-------------');
+                                                                  widget
+                                                                      .controller
+                                                                      .deliverShipemet[
+                                                                          i]
+                                                                      .isOpen = false;
+                                                                  x.update();
+                                                                }
+
+                                                                print(widget
                                                                     .controller
                                                                     .deliverShipemet[
                                                                         i]
-                                                                    .isOpen ==
-                                                                false) {
-                                                              widget.controller
-                                                                  .deliverShipemet
-                                                                  .forEach((element) =>
-                                                                      element.isOpen =
-                                                                          false);
-                                                              widget
-                                                                      .controller
-                                                                      .deliverShipemet[
-                                                                          i]
-                                                                      .isOpen =
-                                                                  !widget
-                                                                      .controller
-                                                                      .deliverShipemet[
-                                                                          i]
-                                                                      .isOpen;
-                                                              x.update();
-                                                            } else {
-                                                              print(
-                                                                  '-------------');
-                                                              widget
-                                                                  .controller
-                                                                  .deliverShipemet[
-                                                                      i]
-                                                                  .isOpen = false;
-                                                              x.update();
-                                                            }
-
-                                                            print(widget
-                                                                .controller
-                                                                .deliverShipemet[
-                                                                    i]
-                                                                .isOpen
-                                                                .toString());
-                                                          },
-                                                        ),
-                                                      );
-                                                    },
+                                                                    .isOpen
+                                                                    .toString());
+                                                              },
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
                                             if (controller
-                                                    ?.loadMore_deliveredShipments
-                                                    .value ==
-                                                true)
-                                              WaiteImage()
+                                                .loadMoreDeliveredShipments
+                                                .value)
+                                              bottomLoadingIndicator()
                                           ],
                                         ),
                                       );
@@ -675,7 +798,7 @@ class _MainDashState extends State<MainDash> {
                       image: 'assets/images/delivered.png',
                       title: 'Delivered\nShipments',
                       numbers:
-                          '${widget.controller.dashboard_deliveredShipments.value}',
+                          '${widget.controller.dashboardDeliveredShipments.value}',
                     ),
                   ),
                 ),
@@ -685,103 +808,108 @@ class _MainDashState extends State<MainDash> {
                 _buildsmallbox(
                   InkWell(
                     onTap: () {
-                      Get.to(
-                          () => GetX<DashbordController>(builder: (controller) {
-                                return widget.controller.tobePickup.isEmpty
-                                    ? MainCardBodyView(
-                                        controller: controller
-                                                    ?.inViewLoading_to_be_pickupShipments ==
-                                                true
-                                            ? WaiteImage()
-                                            : EmptyState(
-                                                label: 'No data',
-                                              ),
-                                        title: "Un-Delivered Shipments")
-                                    : Container(
-                                        color: Colors.white,
-                                        height:
-                                            MediaQuery.of(context).size.height,
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              height: controller
-                                                          ?.loadMore_to_bePickup
-                                                          .value ==
-                                                      true
-                                                  ? MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.93
-                                                  : MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      1,
-                                              child: MainCardBodyView(
-                                                title: "Un-Delivered Shipments",
-                                                controller: SmartRefresher(
-                                                  header:
-                                                      WaterDropMaterialHeader(
-                                                    backgroundColor:
-                                                        primaryColor,
-                                                  ),
-                                                  controller:
-                                                      to_be_pickupShipmentRefresh_Controller,
-                                                  onRefresh: () async {
-                                                    _refresh(
-                                                        type: Status
-                                                            .TO_BE_PICKUP);
-                                                  },
-                                                  child: ListView.separated(
+                      Get.to(UndeliverListing());
+                      if (false)
+                        Get.to(
+                            () =>
+                                GetX<DashbordController>(builder: (controller) {
+                                  return widget.controller.tobePickup.isEmpty
+                                      ? MainCardBodyView(
+                                          controller: controller
+                                                  .inViewLoadingToBePickupShipments
+                                                  .value
+                                              ? WaiteImage()
+                                              : EmptyState(
+                                                  label: 'No data',
+                                                ),
+                                          title: "Un-Delivered Shipments")
+                                      : Container(
+                                          color: Colors.white,
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height,
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                height: controller
+                                                            .loadMoreToBePickup
+                                                            .value ==
+                                                        true
+                                                    ? MediaQuery.of(context)
+                                                            .size
+                                                            .height *
+                                                        0.93
+                                                    : MediaQuery.of(context)
+                                                            .size
+                                                            .height *
+                                                        1,
+                                                child: MainCardBodyView(
+                                                  title:
+                                                      "Un-Delivered Shipments",
+                                                  controller: SmartRefresher(
+                                                    header: WaterDropHeader(
+                                                      waterDropColor:
+                                                          primaryColor,
+                                                    ),
                                                     controller:
-                                                        to_bePickupScroll_Controller,
-                                                    separatorBuilder:
-                                                        (context, i) =>
-                                                            const SizedBox(
-                                                                height: 15),
-                                                    itemCount: controller
-                                                        .tobePickup.length,
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15,
-                                                            bottom: 10,
-                                                            top: 5),
-                                                    itemBuilder: (context, i) {
-                                                      return AllPickupBody(
-                                                        cod:
-                                                            "${widget.controller.tobePickup[i].cop ?? 0}",
-                                                        name:
-                                                            "${widget.controller.tobePickup[i].driver ?? "undefined"}",
-                                                        qty:
-                                                            "${widget.controller.tobePickup[i].quantity ?? 0}",
-                                                        date:
-                                                            "${widget.controller.tobePickup[i].date ?? "dd-mm-yyyy"}",
-                                                        id: "${widget.controller.tobePickup[i].id ?? 00}",
-                                                        onPressed: () {
-                                                          // controllerClass.makePhoneCall(
-                                                          //     "${controllerClass.allPickup[i]!.driveMobile}");
-                                                        },
-                                                        status: widget
-                                                                .controller
-                                                                .tobePickup[i]
-                                                                .status ??
-                                                            '',
-                                                      );
+                                                        toBePickupShipmentRefreshController,
+                                                    onRefresh: () async {
+                                                      _refresh(
+                                                          type: Status
+                                                              .TO_BE_PICKUP);
                                                     },
+                                                    child: ListView.separated(
+                                                      controller:
+                                                          toBePickupScrollController,
+                                                      separatorBuilder:
+                                                          (context, i) =>
+                                                              const SizedBox(
+                                                                  height: 15),
+                                                      itemCount: controller
+                                                          .tobePickup.length,
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 15,
+                                                              right: 15,
+                                                              bottom: 10,
+                                                              top: 5),
+                                                      itemBuilder:
+                                                          (context, i) {
+                                                        return AllPickupBody(
+                                                          cod:
+                                                              "${widget.controller.tobePickup[i].cop ?? 0}",
+                                                          name:
+                                                              "${widget.controller.tobePickup[i].driver ?? "undefined"}",
+                                                          qty:
+                                                              "${widget.controller.tobePickup[i].quantity ?? 0}",
+                                                          date:
+                                                              "${widget.controller.tobePickup[i].date ?? "dd-mm-yyyy"}",
+                                                          id: "${widget.controller.tobePickup[i].id ?? 00}",
+                                                          onPressed: () {
+                                                            // controllerClass.makePhoneCall(
+                                                            //     "${controllerClass.allPickup[i]!.driveMobile}");
+                                                          },
+                                                          status: widget
+                                                                  .controller
+                                                                  .tobePickup[i]
+                                                                  .status ??
+                                                              '',
+                                                        );
+                                                      },
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            if (controller?.loadMore_to_bePickup
-                                                    .value ==
-                                                true)
-                                              WaiteImage()
-                                          ],
-                                        ),
-                                      );
-                              }),
-                          transition: Transition.downToUp,
-                          duration: const Duration(milliseconds: 400));
+                                              if (controller?.loadMoreToBePickup
+                                                      .value ==
+                                                  true)
+                                                WaiteImage()
+                                            ],
+                                          ),
+                                        );
+                                }),
+                            transition: Transition.downToUp,
+                            duration: const Duration(milliseconds: 400));
                     },
                     child: _InsideSmallBox(
                       image: 'assets/images/tobepickup.png',
@@ -790,7 +918,7 @@ class _MainDashState extends State<MainDash> {
 
                       // numbers: ' ${widget.controller.dashboard_to_b_Pichup}',
                       numbers:
-                          ' ${widget.controller.dashboard_undeliverdShiments}',
+                          ' ${widget.controller.dashboardUndeliverdShiments}',
                     ),
                   ),
                 ),
@@ -806,196 +934,236 @@ class _MainDashState extends State<MainDash> {
                     onTap: () {
                       Get.to(
                           () => GetX<DashbordController>(builder: (controller) {
-                                return widget.controller.tobeDelShipemet.isEmpty
+                                return widget.controller.ofdShipemet.isEmpty
                                     ? MainCardBodyView(
                                         controller: controller
-                                                    .inViewLoading_to_be_deliveredShipments ==
-                                                true
+                                                .inViewLoadingOFDShipments.value
                                             ? WaiteImage()
                                             : EmptyState(
                                                 label: 'No data',
                                               ),
                                         // title: "To Be Delivered")
-                                        title: "Out For Delivery (OFD)")
+                                        title: "Out For Delivery OFD (" +
+                                            controller.ofdShipemet.length
+                                                .toString() +
+                                            "/" +
+                                            controller.dashboardOFDShiments
+                                                .toString() +
+                                            ")")
                                     : Container(
                                         color: Colors.white,
                                         height:
                                             MediaQuery.of(context).size.height,
-                                        child: Column(
+                                        child: Stack(
                                           children: [
-                                            Container(
-                                              height: controller
-                                                          ?.loadMore_to_be_deliveredShipments
-                                                          .value ==
-                                                      true
-                                                  ? MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.93
-                                                  : MediaQuery.of(context)
+                                            Column(
+                                              children: [
+                                                Container(
+                                                  height: MediaQuery.of(context)
                                                           .size
                                                           .height *
                                                       1,
-                                              child: MainCardBodyView(
-                                                title: 'Out For Delivery (OFD)',
-                                                controller: SmartRefresher(
-                                                  header:
-                                                      WaterDropMaterialHeader(
-                                                    backgroundColor:
-                                                        primaryColor,
-                                                  ),
-                                                  controller:
-                                                      to_be_deliveredShipmentRefresh_Controller,
-                                                  onRefresh: () async {
-                                                    _refresh(
-                                                        type: Status
-                                                            .TO_BE_DELIVERED);
-                                                  },
-                                                  child: ListView.separated(
-                                                    controller:
-                                                        to_be_delieveredScroll_Controller,
-                                                    separatorBuilder:
-                                                        (context, i) =>
-                                                            const SizedBox(
-                                                                height: 15),
-                                                    itemCount: controller
-                                                        .tobeDelShipemet.length,
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15,
-                                                            bottom: 10,
-                                                            top: 5),
-                                                    itemBuilder: (context, i) {
-                                                      return GetBuilder<
-                                                          DashbordController>(
-                                                        builder: (x) =>
-                                                            CardBody(
-                                                          orderId: widget
-                                                                  .controller
-                                                                  .tobeDelShipemet[
-                                                                      i]
-                                                                  .orderId ??
-                                                              00,
-                                                          number: widget
-                                                                  .controller
-                                                                  .tobeDelShipemet[
-                                                                      i]
-                                                                  .phone ??
-                                                              "+968",
-                                                          cod: widget
-                                                                  .controller
-                                                                  .tobeDelShipemet[
-                                                                      i]
-                                                                  .cod ??
-                                                              "0.00",
-                                                          cop: widget
-                                                                  .controller
-                                                                  .tobeDelShipemet[
-                                                                      i]
-                                                                  .cop ??
-                                                              "0.00",
-                                                          orderNumber: controller
-                                                              .tobeDelShipemet[
-                                                                  i]
-                                                              .orderNo,
-                                                          shipmentCost: widget
-                                                                  .controller
-                                                                  .tobeDelShipemet[
-                                                                      i]
-                                                                  .shippingPrice ??
-                                                              "0.00",
-                                                          totalCharges:
-                                                              '${double.parse(widget.controller.tobeDelShipemet[i].shippingPrice.toString()) + double.parse(widget.controller.tobeDelShipemet[i].cod.toString())}',
-                                                          stutaus: widget
-                                                              .controller
-                                                              .tobeDelShipemet[
-                                                                  i]
-                                                              .orderActivities,
-                                                          icon: widget
-                                                              .controller
-                                                              .toBeDelvList
-                                                              .map((element) =>
-                                                                  element.icon
-                                                                      .toString())
-                                                              .toList(),
-                                                          ref: widget
-                                                                  .controller
-                                                                  .tobeDelShipemet[
-                                                                      i]
-                                                                  .refId ??
-                                                              0,
-                                                          weight: widget
-                                                                  .controller
-                                                                  .tobeDelShipemet[
-                                                                      i]
-                                                                  .weight ??
-                                                              0.00,
-                                                          currentStep: widget
-                                                                  .controller
-                                                                  .tobeDelShipemet[
-                                                                      i]
-                                                                  .currentStatus ??
-                                                              1,
-                                                          isOpen: widget
-                                                              .controller
-                                                              .tobeDelShipemet[
-                                                                  i]
-                                                              .isOpen,
-                                                          onPressedShowMore:
-                                                              () {
-                                                            if (widget
-                                                                    .controller
-                                                                    .tobeDelShipemet[
-                                                                        i]
-                                                                    .isOpen ==
-                                                                false) {
-                                                              widget.controller
-                                                                  .tobeDelShipemet
-                                                                  .forEach((element) =>
-                                                                      element.isOpen =
-                                                                          false);
-                                                              widget
-                                                                      .controller
-                                                                      .tobeDelShipemet[
+                                                  child: MainCardBodyView(
+                                                    title: "Out For Delivery OFD (" +
+                                                        controller
+                                                            .ofdShipemet.length
+                                                            .toString() +
+                                                        "/" +
+                                                        controller
+                                                            .dashboardOFDShiments
+                                                            .toString() +
+                                                        ")",
+                                                    controller: SmartRefresher(
+                                                      header: WaterDropHeader(
+                                                        waterDropColor:
+                                                            primaryColor,
+                                                      ),
+                                                      controller:
+                                                          ofdRefreshController,
+                                                      onRefresh: () async {
+                                                        _refresh(
+                                                            type: Status.OFD);
+                                                      },
+                                                      child: ListView.separated(
+                                                        controller:
+                                                            ofdScrollController,
+                                                        separatorBuilder:
+                                                            (context, i) =>
+                                                                const SizedBox(
+                                                                    height: 15),
+                                                        itemCount: controller
+                                                            .ofdShipemet.length,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 15,
+                                                                right: 15,
+                                                                bottom: 10,
+                                                                top: 5),
+                                                        itemBuilder:
+                                                            (context, i) {
+                                                          return GetBuilder<
+                                                              DashbordController>(
+                                                            builder: (x) =>
+                                                                CardBody(
+                                                              Order_current_Status:
+                                                                  controller
+                                                                      .ofdShipemet[
                                                                           i]
-                                                                      .isOpen =
-                                                                  !widget
-                                                                      .controller
-                                                                      .tobeDelShipemet[
-                                                                          i]
-                                                                      .isOpen;
-                                                              x.update();
-                                                            } else {
-                                                              print(
-                                                                  '-------------');
-                                                              widget
-                                                                  .controller
-                                                                  .tobeDelShipemet[
+                                                                      .orderStatusName,
+                                                              customer_name: controller
+                                                                  .ofdShipemet[
                                                                       i]
-                                                                  .isOpen = false;
-                                                              x.update();
-                                                            }
+                                                                  .customerName,
+                                                              deleiver_image: controller
+                                                                      .ofdShipemet[
+                                                                          i]
+                                                                      .orderDeliverImage ??
+                                                                  "",
+                                                              undeleiver_image:
+                                                                  controller
+                                                                          .ofdShipemet[
+                                                                              i]
+                                                                          .orderUndeliverImage ??
+                                                                      "",
+                                                              pickup_image: controller
+                                                                      .ofdShipemet[
+                                                                          i]
+                                                                      .orderPickupImage ??
+                                                                  "",
+                                                              orderId: widget
+                                                                      .controller
+                                                                      .ofdShipemet[
+                                                                          i]
+                                                                      .orderId ??
+                                                                  00,
+                                                              status_key: widget
+                                                                  .controller
+                                                                  .ofdShipemet[
+                                                                      i]
+                                                                  .orderStatusKey,
+                                                              number: widget
+                                                                      .controller
+                                                                      .ofdShipemet[
+                                                                          i]
+                                                                      .phone ??
+                                                                  "+968",
+                                                              cod: widget
+                                                                      .controller
+                                                                      .ofdShipemet[
+                                                                          i]
+                                                                      .cod ??
+                                                                  "0.00",
+                                                              cop: widget
+                                                                      .controller
+                                                                      .ofdShipemet[
+                                                                          i]
+                                                                      .cop ??
+                                                                  "0.00",
+                                                              orderNumber:
+                                                                  controller
+                                                                      .ofdShipemet[
+                                                                          i]
+                                                                      .orderNo,
+                                                              shipmentCost: widget
+                                                                      .controller
+                                                                      .ofdShipemet[
+                                                                          i]
+                                                                      .shippingPrice ??
+                                                                  "0.00",
+                                                              totalCharges:
+                                                                  '${double.parse(widget.controller.ofdShipemet[i].shippingPrice.toString()) + double.parse(widget.controller.ofdShipemet[i].cod.toString())}',
+                                                              stutaus: widget
+                                                                  .controller
+                                                                  .ofdShipemet[
+                                                                      i]
+                                                                  .orderActivities,
+                                                              icon: widget
+                                                                  .controller
+                                                                  .ofdlList
+                                                                  .map((element) =>
+                                                                      element
+                                                                          .icon
+                                                                          .toString())
+                                                                  .toList(),
+                                                              ref: widget
+                                                                      .controller
+                                                                      .ofdShipemet[
+                                                                          i]
+                                                                      .refId ??
+                                                                  0,
+                                                              weight: widget
+                                                                      .controller
+                                                                      .ofdShipemet[
+                                                                          i]
+                                                                      .weight ??
+                                                                  0.00,
+                                                              currentStep: widget
+                                                                      .controller
+                                                                      .ofdShipemet[
+                                                                          i]
+                                                                      .currentStatus ??
+                                                                  1,
+                                                              isOpen: widget
+                                                                  .controller
+                                                                  .ofdShipemet[
+                                                                      i]
+                                                                  .isOpen,
+                                                              onPressedShowMore:
+                                                                  () {
+                                                                if (widget
+                                                                        .controller
+                                                                        .ofdShipemet[
+                                                                            i]
+                                                                        .isOpen ==
+                                                                    false) {
+                                                                  widget
+                                                                      .controller
+                                                                      .ofdShipemet
+                                                                      .forEach((element) =>
+                                                                          element.isOpen =
+                                                                              false);
+                                                                  widget
+                                                                          .controller
+                                                                          .ofdShipemet[
+                                                                              i]
+                                                                          .isOpen =
+                                                                      !widget
+                                                                          .controller
+                                                                          .ofdShipemet[
+                                                                              i]
+                                                                          .isOpen;
+                                                                  x.update();
+                                                                } else {
+                                                                  print(
+                                                                      '-------------');
+                                                                  widget
+                                                                      .controller
+                                                                      .ofdShipemet[
+                                                                          i]
+                                                                      .isOpen = false;
+                                                                  x.update();
+                                                                }
 
-                                                            print(widget
-                                                                .controller
-                                                                .tobeDelShipemet[
-                                                                    i]
-                                                                .isOpen
-                                                                .toString());
-                                                          },
-                                                        ),
-                                                      );
-                                                    },
+                                                                print(widget
+                                                                    .controller
+                                                                    .ofdShipemet[
+                                                                        i]
+                                                                    .isOpen
+                                                                    .toString());
+                                                              },
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
                                             if (controller
-                                                    ?.loadMore_to_be_deliveredShipments
-                                                    .value ==
-                                                true)
-                                              WaiteImage()
+                                                .loadMoreOFDShipments.value)
+                                              bottomLoadingIndicator()
                                           ],
                                         ),
                                       );
@@ -1005,10 +1173,10 @@ class _MainDashState extends State<MainDash> {
                     },
                     child: _InsideSmallBox(
                       image: 'assets/images/tobedelivered.png',
-                      title: 'Out For\nDelivery (OFD)',
+                      title: "Out For Delivery OFD ",
                       numbers:
                           // '${widget.controller.dashboard_to_b_Delivered.value}',
-                          '${widget.controller.dashboard_OFDShiments.value}',
+                          '${widget.controller.dashboardOFDShiments.value}',
                     ),
                   ),
                 ),
@@ -1023,189 +1191,239 @@ class _MainDashState extends State<MainDash> {
                                 return widget.controller.returnShipemet.isEmpty
                                     ? MainCardBodyView(
                                         controller: controller
-                                                    ?.inViewLoading_returnedShipments ==
-                                                true
+                                                .inViewLoadingReturnedShipments
+                                                .value
                                             ? WaiteImage()
                                             : EmptyState(
                                                 label: 'No data',
                                               ),
-                                        title: "Return Shipments")
+                                        title: "Return Shipments (" +
+                                            controller.returnShipemet.length
+                                                .toString() +
+                                            "/" +
+                                            controller
+                                                .dashboardReturnedShipment.value
+                                                .toString() +
+                                            ")")
                                     : Container(
                                         color: Colors.white,
                                         height:
                                             MediaQuery.of(context).size.height,
-                                        child: Column(
+                                        child: Stack(
                                           children: [
-                                            Container(
-                                              height: controller
-                                                          ?.loadMore_returnShipments
-                                                          .value ==
-                                                      true
-                                                  ? MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.93
-                                                  : MediaQuery.of(context)
+                                            Column(
+                                              children: [
+                                                Container(
+                                                  height: MediaQuery.of(context)
                                                           .size
                                                           .height *
                                                       1,
-                                              child: MainCardBodyView(
-                                                title: 'Return Shipments',
-                                                controller: SmartRefresher(
-                                                  header:
-                                                      WaterDropMaterialHeader(
-                                                    backgroundColor:
-                                                        primaryColor,
-                                                  ),
-                                                  controller:
-                                                      returnedShipmentRefresh_Controller,
-                                                  onRefresh: () async {
-                                                    _refresh(
-                                                        type: Status
-                                                            .RETURNED_SHIPMENTS);
-                                                  },
-                                                  child: ListView.separated(
-                                                    controller:
-                                                        returenedScroll_Controller,
-                                                    separatorBuilder:
-                                                        (context, i) =>
-                                                            const SizedBox(
-                                                                height: 15),
-                                                    itemCount: controller
-                                                        .returnShipemet.length,
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15,
-                                                            bottom: 10,
-                                                            top: 5),
-                                                    itemBuilder: (context, i) {
-                                                      return GetBuilder<
-                                                          DashbordController>(
-                                                        builder: (x) =>
-                                                            CardBody(
-                                                          orderId: widget
+                                                  child: MainCardBodyView(
+                                                    title: "Return Shipments (" +
+                                                        controller
+                                                            .returnShipemet
+                                                            .length
+                                                            .toString() +
+                                                        "/" +
+                                                        controller
+                                                            .dashboardReturnedShipment
+                                                            .value
+                                                            .toString() +
+                                                        ")",
+                                                    controller: SmartRefresher(
+                                                      header: WaterDropHeader(
+                                                        waterDropColor:
+                                                            primaryColor,
+                                                      ),
+                                                      controller:
+                                                          returnedShipmentRefreshController,
+                                                      onRefresh: () async {
+                                                        _refresh(
+                                                            type: Status
+                                                                .RETURNED_SHIPMENTS);
+                                                      },
+                                                      child: ListView.separated(
+                                                        controller:
+                                                            returenedScrollController,
+                                                        separatorBuilder:
+                                                            (context, i) =>
+                                                                const SizedBox(
+                                                                    height: 15),
+                                                        itemCount: controller
+                                                            .returnShipemet
+                                                            .length,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 15,
+                                                                right: 15,
+                                                                bottom: 10,
+                                                                top: 5),
+                                                        itemBuilder:
+                                                            (context, i) {
+                                                          return GetBuilder<
+                                                              DashbordController>(
+                                                            builder: (x) =>
+                                                                CardBody(
+                                                              deleiver_image: controller
+                                                                      .returnShipemet[
+                                                                          i]
+                                                                      .orderDeliverImage ??
+                                                                  "",
+                                                              customer_name: controller
+                                                                      .returnShipemet[
+                                                                          i]
+                                                                      .customerName ??
+                                                                  "",
+                                                              undeleiver_image:
+                                                                  controller
+                                                                          .returnShipemet[
+                                                                              i]
+                                                                          .orderUndeliverImage ??
+                                                                      "",
+                                                              pickup_image: controller
+                                                                      .returnShipemet[
+                                                                          i]
+                                                                      .orderPickupImage ??
+                                                                  "",
+                                                              orderId: widget
+                                                                      .controller
+                                                                      .returnShipemet[
+                                                                          i]
+                                                                      .orderId ??
+                                                                  00,
+                                                              number: widget
+                                                                      .controller
+                                                                      .returnShipemet[
+                                                                          i]
+                                                                      .phone ??
+                                                                  "+968",
+                                                              orderNumber:
+                                                                  controller
+                                                                      .returnShipemet[
+                                                                          i]
+                                                                      .orderNo,
+                                                              status_key: widget
                                                                   .controller
                                                                   .returnShipemet[
                                                                       i]
-                                                                  .orderId ??
-                                                              00,
-                                                          number: widget
+                                                                  .orderStatusKey,
+                                                              Order_current_Status:
+                                                                  controller
+                                                                      .returnShipemet[
+                                                                          i]
+                                                                      .orderStatusName,
+                                                              cod: widget
+                                                                      .controller
+                                                                      .returnShipemet[
+                                                                          i]
+                                                                      .cod ??
+                                                                  "0.00",
+                                                              cop: widget
+                                                                      .controller
+                                                                      .returnShipemet[
+                                                                          i]
+                                                                      .cop ??
+                                                                  "0.00",
+                                                              shipmentCost: widget
+                                                                      .controller
+                                                                      .returnShipemet[
+                                                                          i]
+                                                                      .shippingPrice ??
+                                                                  "0.00",
+                                                              totalCharges:
+                                                                  '${double.parse(widget.controller.returnShipemet[i].shippingPrice.toString()) + double.parse(widget.controller.returnShipemet[i].cod.toString())}',
+                                                              stutaus: widget
                                                                   .controller
                                                                   .returnShipemet[
                                                                       i]
-                                                                  .phone ??
-                                                              "+968",
-                                                          orderNumber: controller
-                                                              .returnShipemet[i]
-                                                              .orderNo,
-                                                          cod: widget
+                                                                  .orderActivities,
+                                                              icon: widget
+                                                                  .controller
+                                                                  .returnList
+                                                                  .map((element) =>
+                                                                      element
+                                                                          .icon
+                                                                          .toString())
+                                                                  .toList(),
+                                                              ref: widget
+                                                                      .controller
+                                                                      .returnShipemet[
+                                                                          i]
+                                                                      .refId ??
+                                                                  0,
+                                                              weight: widget
+                                                                      .controller
+                                                                      .returnShipemet[
+                                                                          i]
+                                                                      .weight ??
+                                                                  0.00,
+                                                              currentStep: widget
+                                                                      .controller
+                                                                      .returnShipemet[
+                                                                          i]
+                                                                      .currentStatus ??
+                                                                  1,
+                                                              isOpen: widget
                                                                   .controller
                                                                   .returnShipemet[
                                                                       i]
-                                                                  .cod ??
-                                                              "0.00",
-                                                          cop: widget
-                                                                  .controller
-                                                                  .returnShipemet[
-                                                                      i]
-                                                                  .cop ??
-                                                              "0.00",
-                                                          shipmentCost: widget
-                                                                  .controller
-                                                                  .returnShipemet[
-                                                                      i]
-                                                                  .shippingPrice ??
-                                                              "0.00",
-                                                          totalCharges:
-                                                              '${double.parse(widget.controller.returnShipemet[i].shippingPrice.toString()) + double.parse(widget.controller.returnShipemet[i].cod.toString())}',
-                                                          stutaus: widget
-                                                              .controller
-                                                              .returnShipemet[i]
-                                                              .orderActivities,
-                                                          icon: widget
-                                                              .controller
-                                                              .returnList
-                                                              .map((element) =>
-                                                                  element.icon
-                                                                      .toString())
-                                                              .toList(),
-                                                          ref: widget
-                                                                  .controller
-                                                                  .returnShipemet[
-                                                                      i]
-                                                                  .refId ??
-                                                              0,
-                                                          weight: widget
-                                                                  .controller
-                                                                  .returnShipemet[
-                                                                      i]
-                                                                  .weight ??
-                                                              0.00,
-                                                          currentStep: widget
-                                                                  .controller
-                                                                  .returnShipemet[
-                                                                      i]
-                                                                  .currentStatus ??
-                                                              1,
-                                                          isOpen: widget
-                                                              .controller
-                                                              .returnShipemet[i]
-                                                              .isOpen,
-                                                          onPressedShowMore:
-                                                              () {
-                                                            if (widget
+                                                                  .isOpen,
+                                                              onPressedShowMore:
+                                                                  () {
+                                                                if (widget
+                                                                        .controller
+                                                                        .returnShipemet[
+                                                                            i]
+                                                                        .isOpen ==
+                                                                    false) {
+                                                                  widget
+                                                                      .controller
+                                                                      .returnShipemet
+                                                                      .forEach((element) =>
+                                                                          element.isOpen =
+                                                                              false);
+                                                                  widget
+                                                                          .controller
+                                                                          .returnShipemet[
+                                                                              i]
+                                                                          .isOpen =
+                                                                      !widget
+                                                                          .controller
+                                                                          .returnShipemet[
+                                                                              i]
+                                                                          .isOpen;
+                                                                  x.update();
+                                                                } else {
+                                                                  print(
+                                                                      '-------------');
+                                                                  widget
+                                                                      .controller
+                                                                      .returnShipemet[
+                                                                          i]
+                                                                      .isOpen = false;
+                                                                  x.update();
+                                                                }
+
+                                                                print(widget
                                                                     .controller
                                                                     .returnShipemet[
                                                                         i]
-                                                                    .isOpen ==
-                                                                false) {
-                                                              widget.controller
-                                                                  .returnShipemet
-                                                                  .forEach((element) =>
-                                                                      element.isOpen =
-                                                                          false);
-                                                              widget
-                                                                      .controller
-                                                                      .returnShipemet[
-                                                                          i]
-                                                                      .isOpen =
-                                                                  !widget
-                                                                      .controller
-                                                                      .returnShipemet[
-                                                                          i]
-                                                                      .isOpen;
-                                                              x.update();
-                                                            } else {
-                                                              print(
-                                                                  '-------------');
-                                                              widget
-                                                                  .controller
-                                                                  .returnShipemet[
-                                                                      i]
-                                                                  .isOpen = false;
-                                                              x.update();
-                                                            }
-
-                                                            print(widget
-                                                                .controller
-                                                                .returnShipemet[
-                                                                    i]
-                                                                .isOpen
-                                                                .toString());
-                                                          },
-                                                        ),
-                                                      );
-                                                    },
+                                                                    .isOpen
+                                                                    .toString());
+                                                              },
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
                                             if (controller
-                                                    ?.loadMore_returnShipments
-                                                    .value ==
-                                                true)
-                                              WaiteImage()
+                                                .loadMoreReturnShipments.value)
+                                              bottomLoadingIndicator()
                                           ],
                                         ),
                                       );
@@ -1235,161 +1453,209 @@ class _MainDashState extends State<MainDash> {
                               return widget.controller.cancellShipemet.isEmpty
                                   ? MainCardBodyView(
                                       controller: controller
-                                                  ?.inViewLoading_cancelledShipments ==
-                                              true
+                                              .inViewLoadingCancelledShipments
+                                              .value
                                           ? WaiteImage()
                                           : EmptyState(
                                               label: 'No data',
                                             ),
-                                      title: "Cancel Shipments")
+                                      title: "Cancel Shipments (" +
+                                          controller.cancellShipemet.length
+                                              .toString() +
+                                          "/" +
+                                          controller
+                                              .dashboardCancelledShiments.value
+                                              .toString() +
+                                          ")")
                                   : Container(
                                       height:
                                           MediaQuery.of(context).size.height,
                                       color: Colors.white,
-                                      child: Column(
+                                      child: Stack(
                                         children: [
-                                          Container(
-                                            height: controller
-                                                        ?.loadMore_cancelShipments
-                                                        .value ==
-                                                    true
-                                                ? MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.93
-                                                : MediaQuery.of(context)
+                                          Column(
+                                            children: [
+                                              Container(
+                                                height: MediaQuery.of(context)
                                                         .size
                                                         .height *
                                                     1,
-                                            child: MainCardBodyView(
-                                              title: 'Cancel Shipments',
-                                              controller: SmartRefresher(
-                                                header: WaterDropMaterialHeader(
-                                                  backgroundColor: primaryColor,
-                                                ),
-                                                controller:
-                                                    cancelShipmentRefresh_Controller,
-                                                onRefresh: () async {
-                                                  _refresh(
-                                                      type: Status
-                                                          .CENCELLED_SHIPMENTS);
-                                                },
-                                                child: ListView.separated(
-                                                  controller:
-                                                      cancelScroll_Controller,
-                                                  separatorBuilder:
-                                                      (context, i) =>
-                                                          const SizedBox(
-                                                              height: 15),
-                                                  itemCount: controller
-                                                      .cancellShipemet.length,
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 15,
-                                                          right: 15,
-                                                          bottom: 10,
-                                                          top: 5),
-                                                  itemBuilder: (context, i) {
-                                                    return CardBody(
-                                                      orderId: controller
-                                                              .cancellShipemet[
-                                                                  i]
-                                                              .orderId ??
-                                                          "00",
-                                                      number: controller
-                                                              .cancellShipemet[
-                                                                  i]
-                                                              .phone ??
-                                                          "+968",
-                                                      cod: controller
-                                                              .cancellShipemet[
-                                                                  i]
-                                                              .cod ??
-                                                          "0.00",
-                                                      cop: controller
-                                                              .cancellShipemet[
-                                                                  i]
-                                                              .cop ??
-                                                          "0.00",
-                                                      orderNumber: controller
-                                                          .cancellShipemet[i]
-                                                          .orderNo,
-                                                      shipmentCost: controller
-                                                              .cancellShipemet[
-                                                                  i]
-                                                              .shippingPrice ??
-                                                          "0.00",
-                                                      totalCharges:
-                                                          '${double.parse(controller.cancellShipemet[i].shippingPrice.toString()) + double.parse(controller.cancellShipemet[i].cod.toString())}',
-                                                      stutaus: controller
-                                                          .cancellShipemet[i]
-                                                          .orderActivities,
-                                                      icon: controller
-                                                          .cancellList
-                                                          .map((element) =>
-                                                              element.icon
-                                                                  .toString())
-                                                          .toList(),
-                                                      ref: controller
-                                                              .cancellShipemet[
-                                                                  i]
-                                                              .refId ??
-                                                          0,
-                                                      weight: controller
-                                                              .cancellShipemet[
-                                                                  i]
-                                                              .weight ??
-                                                          0.00,
-                                                      currentStep: controller
-                                                              .cancellShipemet[
-                                                                  i]
-                                                              .currentStatus ??
-                                                          1,
-                                                      isOpen: controller
-                                                          .cancellShipemet[i]
-                                                          .isOpen,
-                                                      onPressedShowMore: () {
-                                                        if (controller
-                                                                .cancellShipemet[
-                                                                    i]
-                                                                .isOpen ==
-                                                            false) {
-                                                          controller
-                                                              .cancellShipemet
-                                                              .forEach((element) =>
-                                                                  element.isOpen =
-                                                                      false);
-                                                          controller
+                                                child: MainCardBodyView(
+                                                  title: "Cancel Shipments (" +
+                                                      controller.cancellShipemet
+                                                          .length
+                                                          .toString() +
+                                                      "/" +
+                                                      controller
+                                                          .dashboardCancelledShiments
+                                                          .value
+                                                          .toString() +
+                                                      ")",
+                                                  controller: SmartRefresher(
+                                                    header: WaterDropHeader(
+                                                      waterDropColor:
+                                                          primaryColor,
+                                                    ),
+                                                    controller:
+                                                        cancelShipmentRefreshController,
+                                                    onRefresh: () async {
+                                                      _refresh(
+                                                          type: Status
+                                                              .CENCELLED_SHIPMENTS);
+                                                    },
+                                                    child: ListView.separated(
+                                                      controller:
+                                                          cancelScrollController,
+                                                      separatorBuilder:
+                                                          (context, i) =>
+                                                              const SizedBox(
+                                                                  height: 15),
+                                                      itemCount: controller
+                                                          .cancellShipemet
+                                                          .length,
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 15,
+                                                              right: 15,
+                                                              bottom: 10,
+                                                              top: 5),
+                                                      itemBuilder:
+                                                          (context, i) {
+                                                        return CardBody(
+                                                          deleiver_image: controller
                                                                   .cancellShipemet[
                                                                       i]
-                                                                  .isOpen =
-                                                              !controller
+                                                                  .orderDeliverImage ??
+                                                              "",
+                                                          customer_name: controller
                                                                   .cancellShipemet[
                                                                       i]
-                                                                  .isOpen;
-                                                          // x.update();
-                                                          controller.update();
-                                                        } else {
-                                                          print(
-                                                              '-------------');
-                                                          controller
+                                                                  .customerName ??
+                                                              "",
+                                                          undeleiver_image: controller
+                                                                  .cancellShipemet[
+                                                                      i]
+                                                                  .orderUndeliverImage ??
+                                                              "",
+                                                          pickup_image: controller
+                                                                  .cancellShipemet[
+                                                                      i]
+                                                                  .orderPickupImage ??
+                                                              "",
+                                                          orderId: controller
+                                                                  .cancellShipemet[
+                                                                      i]
+                                                                  .orderId ??
+                                                              "00",
+                                                          number: controller
+                                                                  .cancellShipemet[
+                                                                      i]
+                                                                  .phone ??
+                                                              "+968",
+                                                          cod: controller
+                                                                  .cancellShipemet[
+                                                                      i]
+                                                                  .cod ??
+                                                              "0.00",
+                                                          cop: controller
+                                                                  .cancellShipemet[
+                                                                      i]
+                                                                  .cop ??
+                                                              "0.00",
+                                                          status_key: controller
                                                               .cancellShipemet[
                                                                   i]
-                                                              .isOpen = false;
-                                                          controller.update();
-                                                        }
+                                                              .orderStatusKey,
+                                                          orderNumber: controller
+                                                              .cancellShipemet[
+                                                                  i]
+                                                              .orderNo,
+                                                          shipmentCost: controller
+                                                                  .cancellShipemet[
+                                                                      i]
+                                                                  .shippingPrice ??
+                                                              "0.00",
+                                                          totalCharges:
+                                                              '${double.parse(controller.cancellShipemet[i].shippingPrice.toString()) + double.parse(controller.cancellShipemet[i].cod.toString())}',
+                                                          stutaus: controller
+                                                              .cancellShipemet[
+                                                                  i]
+                                                              .orderActivities,
+                                                          icon: controller
+                                                              .cancellList
+                                                              .map((element) =>
+                                                                  element.icon
+                                                                      .toString())
+                                                              .toList(),
+                                                          ref: controller
+                                                                  .cancellShipemet[
+                                                                      i]
+                                                                  .refId ??
+                                                              0,
+                                                          weight: controller
+                                                                  .cancellShipemet[
+                                                                      i]
+                                                                  .weight ??
+                                                              0.00,
+                                                          currentStep: controller
+                                                                  .cancellShipemet[
+                                                                      i]
+                                                                  .currentStatus ??
+                                                              1,
+                                                          isOpen: controller
+                                                              .cancellShipemet[
+                                                                  i]
+                                                              .isOpen,
+                                                          Order_current_Status:
+                                                              controller
+                                                                  .cancellShipemet[
+                                                                      i]
+                                                                  .orderStatusName,
+                                                          onPressedShowMore:
+                                                              () {
+                                                            if (controller
+                                                                    .cancellShipemet[
+                                                                        i]
+                                                                    .isOpen ==
+                                                                false) {
+                                                              controller
+                                                                  .cancellShipemet
+                                                                  .forEach((element) =>
+                                                                      element.isOpen =
+                                                                          false);
+                                                              controller
+                                                                      .cancellShipemet[
+                                                                          i]
+                                                                      .isOpen =
+                                                                  !controller
+                                                                      .cancellShipemet[
+                                                                          i]
+                                                                      .isOpen;
+                                                              // x.update();
+                                                              controller
+                                                                  .update();
+                                                            } else {
+                                                              print(
+                                                                  '-------------');
+                                                              controller
+                                                                  .cancellShipemet[
+                                                                      i]
+                                                                  .isOpen = false;
+                                                              controller
+                                                                  .update();
+                                                            }
+                                                          },
+                                                        );
                                                       },
-                                                    );
-                                                  },
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
+                                            ],
                                           ),
                                           if (controller
-                                                  ?.loadMore_cancelShipments
-                                                  .value ==
-                                              true)
-                                            WaiteImage()
+                                              .loadMoreCancelShipments.value)
+                                            bottomLoadingIndicator()
                                         ],
                                       ),
                                     );
@@ -1401,7 +1667,7 @@ class _MainDashState extends State<MainDash> {
                     image: 'assets/images/cancell.png',
                     title: 'Cancelled Shipments',
                     numbers:
-                        '${widget.controller.dashboard_CancelledShiments.value}',
+                        '${widget.controller.dashboardCancelledShiments.value}',
                   ),
                 ),
                 0.0,

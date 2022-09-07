@@ -1,7 +1,4 @@
-// TODO Implement this library.import 'dart:async';
-
 import 'package:dalile_customer/model/Finance/finance_Listing.dart';
-import 'package:dalile_customer/model/delivered_shipment.dart';
 import 'package:get/get.dart';
 import 'package:dalile_customer/model/all_shipment.dart';
 
@@ -43,6 +40,14 @@ class FinanceListingController extends GetxController {
   RxBool loadMoreCodWithDrivers = false.obs;
   RxBool loadMoreCodReturn = false.obs;
 
+// ///// in view loading
+  RxBool inViewLoadingAll = true.obs;
+  RxBool inViewLoadingPaid = true.obs;
+  RxBool inViewLoadingCodPending = true.obs;
+  RxBool inViewLoadingReadyToPay = true.obs;
+  RxBool inViewLoadingCodWithDrivers = true.obs;
+  RxBool inViewLoadingCodReturn = true.obs;
+
 // list
   var listAll = <Shipment>[].obs;
   var listPaid = <Shipment>[].obs;
@@ -53,6 +58,15 @@ class FinanceListingController extends GetxController {
   @override
   void onInit() async {
     // getAll_orders();
+    try {
+      getAllOrders(isRefresh: true);
+      getPaidOrders(isRefresh: true);
+      getCodPendingOrders(isRefresh: true);
+      getReadyToPayOrders(isRefresh: true);
+      getCodWithDriversOrders(isRefresh: true);
+      getCodReturnOrders(isRefresh: true);
+    } catch (e) {}
+
     super.onInit();
   }
 
@@ -67,9 +81,11 @@ class FinanceListingController extends GetxController {
   } //getlist
 
   getAllOrders({bool isRefresh: false}) async {
-    print('call again');
-    if (isRefresh) limitAll(0);
-    loadMoreAll(true);
+    // print('call again');
+    if (isRefresh)
+      limitAll(0);
+    else
+      loadMoreAll(true);
     if (limitAll.value != 0 && limitAll.value >= totalAll.value) {
       loadMoreAll(false);
       loadingAll(false);
@@ -92,12 +108,15 @@ class FinanceListingController extends GetxController {
     } finally {
       loadMoreAll(false);
       loadingAll(false);
+      inViewLoadingAll.value = false;
     }
   }
 
   getPaidOrders({bool isRefresh: false}) async {
-    if (isRefresh) limitPaid(0);
-    loadMorePaid(true);
+    if (isRefresh)
+      limitPaid(0);
+    else
+      loadMorePaid(true);
     if (limitPaid.value != 0 && limitPaid.value >= totalPaid.value) {
       loadMorePaid(false);
       loadingPaid(false);
@@ -119,13 +138,15 @@ class FinanceListingController extends GetxController {
     } finally {
       loadMorePaid(false);
       loadingPaid(false);
+      inViewLoadingPaid(false);
     }
   }
 
   getCodPendingOrders({bool isRefresh: false}) async {
-    print('cod peinfg');
-    if (isRefresh) limitCodPending(0);
-    loadMoreCodPending(true);
+    if (isRefresh)
+      limitCodPending(0);
+    else
+      loadMoreCodPending(true);
     if (limitCodPending.value != 0 &&
         limitCodPending.value >= totalCodPending.value) {
       loadMoreCodPending(false);
@@ -146,10 +167,10 @@ class FinanceListingController extends GetxController {
       else
         listCodPending.value += json.data!.shipments!;
     } catch (e) {
-      print(e);
     } finally {
       loadMoreCodPending(false);
       loadingCodPending(false);
+      inViewLoadingCodPending(false);
     }
   }
 
@@ -187,6 +208,7 @@ class FinanceListingController extends GetxController {
     } finally {
       loadMoreReadyToPay(false);
       loadingReadyToPay(false);
+      inViewLoadingReadyToPay(false);
     }
   }
 
@@ -197,7 +219,6 @@ class FinanceListingController extends GetxController {
       loadMoreCodWithDrivers(true);
       if (limitCodWithDrivers.value != 0 &&
           limitCodWithDrivers.value >= totalCodWithDrivers.value) {
-        print('its exceed');
         loadMoreCodWithDrivers(false);
         loadingCodWithDrivers(false);
         return;
@@ -223,12 +244,15 @@ class FinanceListingController extends GetxController {
     } finally {
       loadMoreCodWithDrivers(false);
       loadingCodWithDrivers(false);
+      inViewLoadingCodWithDrivers(false);
     }
   }
 
   getCodReturnOrders({bool isRefresh: false}) async {
-    if (isRefresh) limitCodReturn(0);
-    loadMoreCodReturn(true);
+    if (isRefresh)
+      limitCodReturn(0);
+    else
+      loadMoreCodReturn(true);
     if (limitCodReturn.value != 0 &&
         limitCodReturn.value >= totalCodReturn.value) {
       loadMoreCodReturn(false);
@@ -253,6 +277,7 @@ class FinanceListingController extends GetxController {
     } finally {
       loadMoreCodReturn(false);
       loadingCodReturn(false);
+      inViewLoadingCodReturn(false);
     }
   }
 }
