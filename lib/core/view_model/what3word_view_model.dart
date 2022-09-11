@@ -12,6 +12,8 @@ class What3WordController extends GetxController {
   bool isWaiting = false;
   String long = '';
   String lat = '';
+  RxString currentWords = ''.obs;
+
   final formKeyG = GlobalKey<FormState>();
 
   chickWhat3Word(context) async {

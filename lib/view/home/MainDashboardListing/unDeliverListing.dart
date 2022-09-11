@@ -1,6 +1,6 @@
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/dashbord_model_view.dart';
-import 'package:dalile_customer/model/all_shipment.dart';
+import 'package:dalile_customer/core/view_model/dashbordController.dart';
+import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
 import 'package:dalile_customer/view/home/card_body.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
@@ -192,19 +192,19 @@ CardBody card(
     totalCharges:
         '${double.parse(shipment.shippingPrice.toString()) + double.parse(shipment.cod.toString())}',
     stutaus: shipment.orderActivities,
-    icon: controller.unDeliverStatuses
+    icon: controller.trackingStatuses
         .map((element) => element.icon.toString())
         .toList(),
     status_key: shipment.orderStatusKey,
     ref: shipment.refId ?? 0,
     weight: shipment.weight ?? 0.00,
     currentStep: shipment.currentStatus ?? 1,
-    isOpen: shipment.isOpen,
+    isOpen: shipment.isOpen!,
     onPressedShowMore: () {
       if (shipment.isOpen == false) {
         controller.undeliverShipemet
             .forEach((element) => element.isOpen = false);
-        shipment.isOpen = !shipment.isOpen;
+        shipment.isOpen = !shipment.isOpen!;
         x.update();
       } else {
         shipment.isOpen = false;

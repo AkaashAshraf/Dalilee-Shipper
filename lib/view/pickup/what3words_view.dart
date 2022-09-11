@@ -1,16 +1,37 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/what3word_view_model.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
+import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/my_input.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
-class What3WordsView extends StatelessWidget {
+class What3WordsView extends StatefulWidget {
   const What3WordsView({Key? key}) : super(key: key);
 
   @override
+  State<What3WordsView> createState() => _What3WordsViewState();
+}
+
+class _What3WordsViewState extends State<What3WordsView> {
+  List<String> added = [];
+  String currentText = "";
+  List<String> suggestions = [
+    "oman.muscat.mabela",
+    "oman.muscat.seeb",
+    "oman.barka.sawadi",
+    "oman.sohar.sur",
+    "oman.salalah.tamrid",
+    "oman.nizwa.sur",
+  ];
+
+  GlobalKey<AutoCompleteTextFieldState<String>> key = GlobalKey();
+
+  @override
   Widget build(BuildContext context) {
+    Get.put(What3WordController()).currentWords.value = "";
     return Scaffold(
       backgroundColor: Colors.grey.withOpacity(0.3),
       body: Center(
@@ -25,7 +46,7 @@ class What3WordsView extends StatelessWidget {
                     blurRadius: 4,
                     spreadRadius: 1)
               ]),
-          child: GetBuilder<What3WordController>(
+          child: GetX<What3WordController>(
               init: What3WordController(),
               builder: (_data) {
                 return Form(
@@ -52,15 +73,48 @@ class What3WordsView extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(30.0),
-                        child: CustomFormFiledWithTitle(
-                          controller: _data.twaController,
-                          validator: (val) => val!.isEmpty
-                              ? "please enter 3 word"
-                              : !val.contains('.')
-                                  ? "should contains ( . )"
-                                  : null,
-                          text: 'Enter what3words',
-                          hintText: '/// limit.broom.flip',
+                        child:
+                            // CustomFormFiledWithTitle(
+                            //   controller: _data.twaController,
+                            //   validator: (val) => val!.isEmpty
+                            //       ? "please enter 3 word"
+                            //       : !val.contains('.')
+                            //           ? "should contains ( . )"
+                            //           : null,
+                            //   text: 'Enter what3words',
+                            //   hintText: '/// limit.broom.flip',
+                            // ),
+                            Column(
+                          children: [
+                            CustomText(
+                              text:
+                                  "Enter what3words" + _data.currentWords.value,
+                              color: text1Color,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            SimpleAutoCompleteTextField(
+                                key: key,
+                                decoration: InputDecoration(
+                                    border: const OutlineInputBorder(
+                                        // borderSide: BorderSide(
+                                        //     color: Colors.blue, width: 0.5),
+                                        ),
+                                    hintText: "/// limit.broom.flip",
+                                    errorText: _data.currentWords.value != "" &&
+                                            !_data.currentWords.value
+                                                .contains(".")
+                                        ? "invalid patterens"
+                                        : ""),
+                                controller:
+                                    TextEditingController(text: currentText),
+                                suggestions: suggestions,
+                                textChanged: (text) =>
+                                    _data.currentWords.value = text,
+                                clearOnSubmit: false,
+                                textSubmitted: (text) => {
+                                      _data.currentWords.value = text,
+                                    }),
+                          ],
                         ),
                       ),
                       //SizedBox(height: 10,),

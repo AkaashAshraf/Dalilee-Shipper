@@ -92,7 +92,7 @@ class Shipment {
   dynamic cod;
   dynamic currentStatus;
   List<OrderActivity>? orderActivities;
-  bool isOpen;
+  bool isOpen = false;
 
   int? cc;
   String? customerName;

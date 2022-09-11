@@ -1,3 +1,4 @@
+import 'package:dalile_customer/core/view_model/DashbordController.dart';
 import 'package:dalile_customer/core/view_model/downloadController.dart';
 import 'package:dalile_customer/core/view_model/financeListingController.dart';
 import 'package:dalile_customer/core/view_model/home_view_model.dart';
@@ -11,6 +12,7 @@ class Binding extends Bindings {
     Get.lazyPut(() => LoginController(), fenix: true);
     Get.put(() => HomeViewModel(), permanent: true);
     Get.put(() => FinanceListingController(), permanent: true);
+    Get.put(() => DashbordController(), permanent: true);
 
     Get.put(() => ProfileController(), permanent: true);
     Get.put(() => DownloadController(), permanent: true);
