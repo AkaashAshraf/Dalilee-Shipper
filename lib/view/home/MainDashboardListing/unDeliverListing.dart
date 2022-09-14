@@ -178,6 +178,7 @@ CardBody card(
   DashbordController x,
 ) {
   return CardBody(
+    date: shipment.updatedAt,
     orderId: shipment.orderId ?? 00,
     customer_name: shipment.customerName,
     Order_current_Status: shipment.orderStatusName,
@@ -190,7 +191,7 @@ CardBody card(
     pickup_image: shipment.orderPickupImage ?? "",
     shipmentCost: shipment.shippingPrice ?? "0.00",
     totalCharges:
-        '${double.parse(shipment.shippingPrice.toString()) + double.parse(shipment.cod.toString())}',
+        '${(double.tryParse(shipment.cod.toString()) ?? 0.0) - (double.tryParse(shipment.shippingPrice.toString()) ?? 0.0)}',
     stutaus: shipment.orderActivities,
     icon: controller.trackingStatuses
         .map((element) => element.icon.toString())

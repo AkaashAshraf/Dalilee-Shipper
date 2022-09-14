@@ -34,67 +34,71 @@ Alert imagesViewModal(
                 Container(
                   height: MediaQuery.of(context).size.width * 0.75,
                   width: MediaQuery.of(context).size.width * 0.75,
-                  child: CarouselSlider(
-                      items: images.reversed
-                          .map((subItem) => Stack(children: [
-                                Center(
-                                    child: CachedNetworkImage(
-                                  imageUrl: subItem.image.toString(),
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.75,
-                                  height:
-                                      MediaQuery.of(context).size.width * 0.75,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) => Text(''),
-                                  errorWidget: (context, url, error) =>
-                                      Icon(Icons.error),
-                                )),
-                                Positioned(
-                                    bottom: 0,
-                                    left: 0,
-                                    right: 0,
-                                    child: GestureDetector(
-                                      onTap: () async {
-                                        controller.startDownloadingImage(
-                                            subItem.image.toString(),
-                                            isGoBack: false);
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            subItem.type.toString(),
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                            textAlign: TextAlign.center,
+                  child: images.length == 0
+                      ? new NoDataView(label: "No Images Avaiable")
+                      : CarouselSlider(
+                          items: images.reversed
+                              .map((subItem) => Stack(children: [
+                                    Center(
+                                        child: CachedNetworkImage(
+                                      imageUrl: subItem.image.toString(),
+                                      width: MediaQuery.of(context).size.width *
+                                          0.75,
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.75,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) => Text(''),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                    )),
+                                    Positioned(
+                                        bottom: 0,
+                                        left: 0,
+                                        right: 0,
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            controller.startDownloadingImage(
+                                                subItem.image.toString(),
+                                                isGoBack: false);
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                subItem.type.toString(),
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              SizedBox(width: 10),
+                                              const Icon(
+                                                Icons.download_outlined,
+                                                color: Colors.white,
+                                                size: 25,
+                                              ),
+                                            ],
                                           ),
-                                          SizedBox(width: 10),
-                                          const Icon(
-                                            Icons.download_outlined,
-                                            color: Colors.white,
-                                            size: 25,
-                                          ),
-                                        ],
-                                      ),
-                                    ))
-                              ]))
-                          .toList(),
-                      options: CarouselOptions(
-                        height: 400,
-                        aspectRatio: 16 / 9,
-                        viewportFraction: 0.8,
-                        initialPage: 0,
-                        enableInfiniteScroll: true,
-                        reverse: false,
-                        autoPlay: false,
-                        autoPlayInterval: Duration(seconds: 3),
-                        autoPlayAnimationDuration: Duration(milliseconds: 800),
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        enlargeCenterPage: true,
-                        onPageChanged: (index, reason) {},
-                        scrollDirection: Axis.horizontal,
-                      )),
+                                        ))
+                                  ]))
+                              .toList(),
+                          options: CarouselOptions(
+                            height: 400,
+                            aspectRatio: 16 / 9,
+                            viewportFraction: 0.8,
+                            initialPage: 0,
+                            enableInfiniteScroll: true,
+                            reverse: false,
+                            autoPlay: false,
+                            autoPlayInterval: Duration(seconds: 3),
+                            autoPlayAnimationDuration:
+                                Duration(milliseconds: 800),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enlargeCenterPage: true,
+                            onPageChanged: (index, reason) {},
+                            scrollDirection: Axis.horizontal,
+                          )),
                 )
               ]),
               if (controller.isDownloading.value)

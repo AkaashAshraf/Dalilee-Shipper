@@ -1,6 +1,7 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
-import 'package:dalile_customer/model/all_shipment.dart';
+import 'package:dalile_customer/model/Dashboard/MainDashboardModel.dart';
+import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/stepess.dart';
 import 'package:flutter/material.dart';

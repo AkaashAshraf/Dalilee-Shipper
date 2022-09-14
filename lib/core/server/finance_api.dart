@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/core/http/FromDalilee.dart';
+import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
 import 'package:dalile_customer/model/add_inqury_list_caterogry_model.dart';
 import 'package:dalile_customer/model/bank_model.dart';
 import 'package:dalile_customer/model/close_finance_model.dart';
@@ -7,7 +10,6 @@ import 'package:dalile_customer/model/enquiry_model.dart';
 import 'package:dalile_customer/model/finance_open_model.dart';
 import 'package:dalile_customer/model/manage_account_model.dart';
 import 'package:dalile_customer/model/sub_cat_list_model.dart';
-import 'package:dalile_customer/model/view_orders_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,31 +17,12 @@ abstract class FinanceApi {
   static String mass = '';
   static bool checkAuth = false;
   static Future<OpenData?> fetchopenData() async {
-    var url = "$like/runsheet/open-finance";
-    final prefs = await SharedPreferences.getInstance();
-
-    dynamic fromString = prefs.getString('loginData') ?? '';
-
-    dynamic resLogin = json.decode(fromString!.toString());
-    dynamic tokenLo = resLogin['data']["access_token"] ?? '';
-
     try {
-      var response = await http.get(Uri.parse(url), headers: {
-        "Accept": "application/json",
-        "Authorization": "Bearer $tokenLo"
-      });
+      final response = await dalileePost("/openFinance", {});
       if (response.statusCode == 200) {
         var data = financeOpenModelFromJson(response.body);
 
         return data.data;
-      } else if (response.statusCode == 401) {
-        checkAuth = true;
-        var err = json.decode(response.body);
-
-        mass = '${err["message"]}';
-        prefs.remove("loginData");
-        prefs.remove("token");
-        return null;
       } else {
         var err = json.decode(response.body);
 
@@ -53,22 +36,11 @@ abstract class FinanceApi {
     return null;
   }
 
-  static Future<ViewOrderData?> fetchViewOrdersData({limit: '0'}) async {
-    var url = "$like/runsheet/open-finance-orders?offset=${limit}";
-    final prefs = await SharedPreferences.getInstance();
-
-    dynamic fromString = prefs.getString('loginData') ?? '';
-
-    dynamic resLogin = json.decode(fromString!.toString());
-    dynamic tokenLo = resLogin['data']["access_token"] ?? '';
-
+  static Future<Data?> fetchViewOrdersData(dynamic body) async {
     try {
-      var response = await http.get(Uri.parse(url), headers: {
-        "Accept": "application/json",
-        "Authorization": "Bearer $tokenLo"
-      });
+      var response = await dalileePost("/getStoresOrders", body);
       if (response.statusCode == 200) {
-        var data = orderViewListModelFromJson(response.body);
+        var data = shipmentListingFromJson(response.body);
 
         return data.data;
       } else {
@@ -84,7 +56,7 @@ abstract class FinanceApi {
     return null;
   }
 
-  static Future<Data?> fetchManageAccountData() async {
+  static Future<Data_?> fetchManageAccountData() async {
     final prefs = await SharedPreferences.getInstance();
 
     dynamic fromString = prefs.getString('loginData') ?? '';
@@ -139,6 +111,7 @@ abstract class FinanceApi {
           "Authorization": "Bearer $token",
         },
       );
+
       if (response.statusCode == 200) {
         var data = enquiryModelFromJson(response.body);
         return data.data;
@@ -196,32 +169,13 @@ abstract class FinanceApi {
     }
   }
 
-  static Future<CloseData?> fetchCloseData() async {
-    var url = "$like/runsheet/close-finance";
-    final prefs = await SharedPreferences.getInstance();
-
-    dynamic fromString = prefs.getString('loginData') ?? '';
-
-    dynamic resLogin = json.decode(fromString!.toString());
-    dynamic tokenLo = resLogin['data']["access_token"] ?? '';
-
+  static Future<CloseData?> fetchCloseData(dynamic body) async {
     try {
-      var response = await http.get(Uri.parse(url), headers: {
-        "Accept": "application/json",
-        "Authorization": "Bearer $tokenLo"
-      });
+      final response = await dalileePost("/closeFinance", body);
       if (response.statusCode == 200) {
         var data = closedFinanceListModelFromJson(response.body);
 
         return data.data;
-      } else if (response.statusCode == 401) {
-        checkAuth = true;
-        var err = json.decode(response.body);
-
-        mass = '${err["message"]}';
-        prefs.remove("loginData");
-        prefs.remove("token");
-        return null;
       } else {
         var err = json.decode(response.body);
 

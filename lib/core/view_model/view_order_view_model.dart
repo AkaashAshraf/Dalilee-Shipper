@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/server/finance_api.dart';
 import 'package:dalile_customer/core/view_model/name_icons.dart';
-import 'package:dalile_customer/model/all_shipment.dart';
+import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
 import 'package:dalile_customer/view/shipments/complain_body_shipement.dart';
 import 'package:dalile_customer/view/shipments/edit_shipement_body.dart';
 import 'package:flutter/material.dart';
@@ -22,37 +22,36 @@ class ViewOrderController extends GetxController {
   RxBool loadMore = false.obs;
 
   RxList<Shipment> viewOrderData = <Shipment>[].obs;
-  RxInt limit = 0.obs;
-  RxInt total_orders = 0.obs;
-
-  RxList<TrackingStatus> viewOrderList = <TrackingStatus>[].obs;
+  RxInt totalOrders = 0.obs;
 
   fetchViewOrderData({isRefresh: false}) async {
     try {
+      var limit = "100";
+      var offset = viewOrderData.length.toString();
+
       if (isRefresh) {
-        limit.value = 0;
-        // isLoading(true);
+        limit = "100";
+        offset = "0";
         loadMore.value = false;
       } else {
         loadMore.value = true;
       }
-      var viewOrder = await FinanceApi.fetchViewOrdersData(limit: limit);
+      var body = {"offset": offset, "limit": limit, "module": "open_finance"};
+      var viewOrder = await FinanceApi.fetchViewOrdersData(body);
       if (viewOrder != null) {
-        total_orders.value = viewOrder.totalOrders!;
+        totalOrders.value = viewOrder.totalShipments!;
         if (isRefresh)
-          viewOrderData.value = viewOrder.orders!;
+          viewOrderData.value = viewOrder.shipments!;
         else
-          viewOrderData.value += viewOrder.orders!;
-
-        viewOrderList.value = viewOrder.trackingStatuses!;
+          viewOrderData.value += viewOrder.shipments!;
       } else {
         if (FinanceApi.mass.isEmpty) {
           if (!Get.isSnackbarOpen) {
-            Get.snackbar('Filed', "please try agian later");
+            Get.snackbar('Failed', "please try agian later");
           }
         }
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', FinanceApi.mass);
+          Get.snackbar('Failed', FinanceApi.mass);
         }
       }
     } finally {

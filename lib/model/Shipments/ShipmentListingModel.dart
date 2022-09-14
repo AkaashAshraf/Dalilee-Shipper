@@ -156,7 +156,7 @@ class Shipment {
                 json["order_activities"].map((x) => OrderActivity.fromJson(x))),
         status: json["status"],
         currentStatus:
-            json["current_status"] == null ? "" : json["current_status"],
+            json["current_status"] == null ? 0 : json["current_status"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -221,7 +221,7 @@ class OrderActivity {
 
   factory OrderActivity.fromJson(Map<String, dynamic> json) => OrderActivity(
         id: json["id"] == null ? null : json["id"],
-        status: json["status"] == null ? "" : json["status"],
+        status: json["status"] == null ? 0 : json["status"],
         externalText:
             json["external_text"] == null ? "" : json["external_text"],
         createdAt: json["created_at"] == null ? "" : json["created_at"],
@@ -230,7 +230,7 @@ class OrderActivity {
 
   Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
-        "status": status == null ? "" : status,
+        "status": status == null ? 0 : status,
         "external_text": externalText == null ? "" : externalText,
         "created_at": createdAt == null ? "" : createdAt,
         "updated_at": updatedAt == null ? "" : updatedAt,

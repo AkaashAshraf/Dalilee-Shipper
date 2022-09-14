@@ -37,159 +37,187 @@ class _FinanceDashState extends State<FinanceDash> {
             mainScreenRefreshController.refreshCompleted();
           },
           controller: mainScreenRefreshController,
-          child: SingleChildScrollView(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              GestureDetector(
-                onTap: () {
-                  Get.to(FinanceDasboradListing(
-                      title: "All Orders",
-                      type: Status.ALL,
-                      subTitle_: fController.listAll.length.toString() +
-                          '/' +
-                          fController.totalAll.value.toString()));
-                },
-                child: buildCard(
-                    context,
-                    _InsideShape(
-                      subtitle: '',
-                      image: Icon(
-                        Icons.account_balance_wallet_outlined,
-                        color: whiteColor,
-                        size: 50,
-                      ),
-                      // title: 'Total Orders',
-                      title: 'Total Orders Amount',
-                      numbers:
-                          '${widget.controller.totalAmount.value + " OMR"}',
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            GestureDetector(
+              onTap: () {
+                Get.to(FinanceDasboradListing(
+                    title: "All Orders",
+                    type: Status.ALL,
+                    subTitle_: fController.listAll.length.toString() +
+                        '/' +
+                        fController.totalAll.value.toString()));
+              },
+              child: buildCard(
+                  context,
+                  _InsideShape(
+                    subtitle: '',
+                    image: Icon(
+                      Icons.account_balance_wallet_outlined,
+                      color: whiteColor,
+                      size: 50,
                     ),
-                    15.0,
-                    15.0,
-                    0.0,
-                    0.0),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              GestureDetector(
-                onTap: () {
+                    // title: 'Total Orders',
+                    title: 'Total Orders Amount',
+                    numbers: '${widget.controller.totalAmount.value + " OMR"}',
+                  ),
+                  15.0,
+                  15.0,
+                  0.0,
+                  0.0),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            // GestureDetector(
+            //   onTap: () {
+            //     Get.to(FinanceDasboradListing(
+            //         title: "Paid Orders",
+            //         type: Status.PAID,
+            //         subTitle_: fController.listPaid.length.toString() +
+            //             '/' +
+            //             fController.totalPaid.value.toString()));
+            //   },
+            //   child: buildCard(
+            //     context,
+            //     _InsideShape(
+            //       subtitle: '',
+            //       image: Icon(
+            //         Icons.paid_outlined,
+            //         color: whiteColor,
+            //         size: 50,
+            //       ),
+            //       // title: 'Total to be Paid',
+            //       title: 'Paid Amount',
+            //       numbers: '${widget.controller.paidAmount.value + " OMR"}',
+            //     ),
+            //     15.0,
+            //     15.0,
+            //     15.0,
+            //     15.0,
+            //   ),
+            // ),
+
+            Row(
+              children: [
+                _buildsmallbox(
+                    _InsideSmallBox(
+                      image: 'assets/images/delivered.png',
+                      // title: 'Total collected',
+                      title: 'Paid Amount',
+
+                      numbers: '${widget.controller.paidAmount.value + " OMR"}',
+                    ), () {
                   Get.to(FinanceDasboradListing(
                       title: "Paid Orders",
                       type: Status.PAID,
                       subTitle_: fController.listPaid.length.toString() +
                           '/' +
                           fController.totalPaid.value.toString()));
-                },
-                child: buildCard(
-                  context,
-                  _InsideShape(
-                    subtitle: '',
-                    image: Icon(
-                      Icons.paid_outlined,
-                      color: whiteColor,
-                      size: 50,
-                    ),
-                    // title: 'Total to be Paid',
-                    title: 'Paid Amount',
-                    numbers: '${widget.controller.paidAmount.value + " OMR"}',
-                  ),
-                  15.0,
-                  15.0,
-                  15.0,
-                  15.0,
+                }),
+                const SizedBox(
+                  width: 5,
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  _buildsmallbox(
-                      _InsideSmallBox(
-                        image: 'assets/images/tobepickup.png',
-                        // title: 'Total collected',
-                        title: 'COD Pending',
+                _buildsmallbox(
+                    _InsideSmallBox(
+                      // image: 'assets/images/tobepickup.png',
+                      image: 'assets/images/delivered.png',
 
-                        numbers:
-                            '${widget.controller.codPendingAmount.value + " OMR"}',
-                      ), () {
-                    Get.to(FinanceDasboradListing(
-                        title: "COD Pending",
-                        type: Status.COD_PENDING,
-                        subTitle_:
-                            fController.listCodPending.length.toString() +
-                                '/' +
-                                fController.totalCodPending.value.toString()));
-                  }),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  _buildsmallbox(
-                      _InsideSmallBox(
-                        // image: 'assets/images/tobepickup.png',
-                        image: 'assets/images/delivered.png',
+                      // title: 'COD Pending',
+                      title: 'Shipping Cost',
 
-                        // title: 'COD Pending',
-                        title: 'Ready To Pay',
+                      numbers:
+                          '${widget.controller.shipmentCost.value + " OMR"}',
+                    ),
+                    () {}),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                _buildsmallbox(
+                    _InsideSmallBox(
+                      image: 'assets/images/tobepickup.png',
+                      // title: 'Total collected',
+                      title: 'COD Pending',
 
-                        numbers:
-                            '${widget.controller.readyToPayAmount.value + " OMR"}',
-                      ), () {
-                    Get.to(FinanceDasboradListing(
-                        title: "Ready To Pay",
-                        type: Status.READY_TO_PAY,
-                        subTitle_:
-                            fController.listReadyToPay.length.toString() +
-                                '/' +
-                                fController.totalReadyToPay.value.toString()));
-                  }),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  _buildsmallbox(
-                      _InsideSmallBox(
-                        image: 'assets/images/tobepickup.png',
-                        title: 'COD with Drivers',
-                        // title: 'Total with Driver',
+                      numbers:
+                          '${widget.controller.codPendingAmount.value + " OMR"}',
+                    ), () {
+                  Get.to(FinanceDasboradListing(
+                      title: "COD Pending",
+                      type: Status.COD_PENDING,
+                      subTitle_: fController.listCodPending.length.toString() +
+                          '/' +
+                          fController.totalCodPending.value.toString()));
+                }),
+                const SizedBox(
+                  width: 5,
+                ),
+                _buildsmallbox(
+                    _InsideSmallBox(
+                      // image: 'assets/images/tobepickup.png',
+                      image: 'assets/images/delivered.png',
 
-                        numbers:
-                            '${widget.controller.codWithDriversAmount.value + " OMR"}',
-                      ), () {
-                    Get.to(FinanceDasboradListing(
-                        title: "COD with Drivers",
-                        type: Status.COD_WITH_DRIVERS,
-                        subTitle_: fController.listCodWithDrivers.length
-                                .toString() +
-                            '/' +
-                            fController.totalCodWithDrivers.value.toString()));
-                  }),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  _buildsmallbox(
-                      _InsideSmallBox(
-                        image: 'assets/images/delivered.png',
-                        title: 'COD Return',
-                        // title: 'Total Returned',
+                      // title: 'COD Pending',
+                      title: 'Ready To Pay',
 
-                        numbers:
-                            '${widget.controller.codReturn.value + " OMR"}',
-                      ), () {
-                    Get.to(FinanceDasboradListing(
-                        title: "COD Return",
-                        type: Status.COD_RETURN,
-                        subTitle_: fController.listCodReturn.length.toString() +
-                            '/' +
-                            fController.totalCodReturn.value.toString()));
-                  }),
-                ],
-              ),
-            ]),
-          ),
+                      numbers:
+                          '${widget.controller.readyToPayAmount.value + " OMR"}',
+                    ), () {
+                  Get.to(FinanceDasboradListing(
+                      title: "Ready To Pay",
+                      type: Status.READY_TO_PAY,
+                      subTitle_: fController.listReadyToPay.length.toString() +
+                          '/' +
+                          fController.totalReadyToPay.value.toString()));
+                }),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                _buildsmallbox(
+                    _InsideSmallBox(
+                      image: 'assets/images/tobepickup.png',
+                      title: 'COD with Drivers',
+                      // title: 'Total with Driver',
+
+                      numbers:
+                          '${widget.controller.codWithDriversAmount.value + " OMR"}',
+                    ), () {
+                  Get.to(FinanceDasboradListing(
+                      title: "COD with Drivers",
+                      type: Status.COD_WITH_DRIVERS,
+                      subTitle_: fController.listCodWithDrivers.length
+                              .toString() +
+                          '/' +
+                          fController.totalCodWithDrivers.value.toString()));
+                }),
+                const SizedBox(
+                  width: 5,
+                ),
+                _buildsmallbox(
+                    _InsideSmallBox(
+                      image: 'assets/images/delivered.png',
+                      title: 'COD Return',
+                      // title: 'Total Returned',
+
+                      numbers: '${widget.controller.codReturn.value + " OMR"}',
+                    ), () {
+                  Get.to(FinanceDasboradListing(
+                      title: "COD Return",
+                      type: Status.COD_RETURN,
+                      subTitle_: fController.listCodReturn.length.toString() +
+                          '/' +
+                          fController.totalCodReturn.value.toString()));
+                }),
+              ],
+            ),
+          ]),
         ),
       ),
     );

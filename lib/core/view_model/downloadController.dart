@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DownloadController extends GetxController {
   Rx<bool> isDownloading = false.obs;
@@ -127,34 +128,52 @@ class DownloadController extends GetxController {
 
   startDownloadingExcellOrPdf(String url, String extension) async {
     try {
-      Get.back();
-      if (url == "") return;
-      if (Platform.isAndroid)
-        Get.snackbar('Downloading...', "Your file start downloading",
-            backgroundColor: primaryColor.withOpacity(0.7));
+      // Get.snackbar(
+      //     'Successfully Exported', "File has been sent to your email address.",
+      //     backgroundColor: primaryColor.withOpacity(0.7));
+      // isDownloading(true);
+      if (Platform.isIOS) {
+        final Uri _url = Uri.parse(url);
 
-      isDownloading(true);
-      int timestamp = DateTime.now().millisecondsSinceEpoch;
-      String fileName = "$timestamp.$extension";
-      String path = await _getFilePath(fileName);
-      var dio = Dio();
-      await dio
-          .download(
-        url,
-        path,
-        options: Options(),
-      )
-          .then((_) {
-        if (Platform.isIOS)
-          Get.snackbar('Successfully Exported',
-              "File has been sent to your email address.",
+        launchUrl(_url);
+        return;
+      } else {
+        Get.back();
+        if (url == "") return;
+
+        if (Platform.isAndroid) {
+          Get.snackbar('Downloading...', "Your file start downloading",
               backgroundColor: primaryColor.withOpacity(0.7));
-        OpenFile.open(path);
-      });
+        }
+
+        if (Platform.isIOS == true) {
+          Get.snackbar('File Sent...',
+              "Your file has been sent to your registered email",
+              backgroundColor: primaryColor.withOpacity(0.7));
+        }
+        isDownloading(true);
+        int timestamp = DateTime.now().millisecondsSinceEpoch;
+        String fileName = "$timestamp.$extension";
+        String path = await _getFilePath(fileName);
+        var dio = Dio();
+        await dio
+            .download(
+          url,
+          path,
+          options: Options(),
+        )
+            .then((_) {
+          // if (Platform.isIOS)
+          //   Get.snackbar('Successfully Exported',
+          //       "File has been sent to your email address.",
+          //       backgroundColor: primaryColor.withOpacity(0.7));
+          OpenFile.open(path);
+        });
+      }
     } catch (e) {
-      print(e);
+      // print(e);
     } finally {
-      Get.back();
+      if (!Platform.isIOS) Get.back();
 
       isDownloading(false);
     }

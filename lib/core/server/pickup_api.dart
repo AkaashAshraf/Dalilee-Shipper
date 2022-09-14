@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/model/all_pickup_model.dart';
+import 'package:dalile_customer/core/http/FromDalilee.dart';
+import 'package:dalile_customer/model/Pickup/PickupModel.dart';
 import 'package:dalile_customer/model/muhafaza_model.dart';
 import 'package:dalile_customer/model/pickup_deatils.dart';
 import 'package:dalile_customer/model/region_model.dart';
@@ -12,19 +13,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PickupApi {
   static String mass = '';
   static String success = '';
-static bool checkAuth = false;
+  static bool checkAuth = false;
   static Future<PickupDetailsModel?> fetchPickupDetailsData(refid) async {
-    var url = "$like/pickup/collection-orders";
-    final prefs = await SharedPreferences.getInstance();
-      String token = prefs.getString('token') ?? '';
-
     try {
-      var response = await http.post(Uri.parse(url), headers: {
-        "Accept": "application/json",
-        "Authorization": "Bearer $token"
-      }, body: {
-        "collection_id": "$refid"
-      });
+      var response =
+          await dalileePost("/collectionOrders", {"collection_id": refid});
       if (response.statusCode == 200) {
         var data = pickupDetailsModelFromJson(response.body);
 
@@ -40,14 +33,12 @@ static bool checkAuth = false;
       mass = 'Network error';
       return null;
     }
-   
   }
 
   static Future<MuhafazaModel?> fetchMuhafazaData() async {
     var url = "$like/pickup/governates";
     final prefs = await SharedPreferences.getInstance();
-      String token = prefs.getString('token') ?? '';
-
+    String token = prefs.getString('token') ?? '';
 
     try {
       var response = await http.get(Uri.parse(url), headers: {
@@ -67,15 +58,14 @@ static bool checkAuth = false;
       }
     } catch (e) {
       mass = 'Network error';
-        return null;
+      return null;
     }
-  
   }
 
   static Future<bool> fetchlocationData(lat, lng) async {
     var url = "$like/pickup/create-pickup";
     final prefs = await SharedPreferences.getInstance();
-     String token = prefs.getString('token') ?? '';
+    String token = prefs.getString('token') ?? '';
 
     try {
       var response = await http.post(Uri.parse(url), headers: {
@@ -131,39 +121,29 @@ static bool checkAuth = false;
       mass = 'Network error';
       return null;
     }
-    
   }
 
-  static Future<Data?> fetchAllPickupData(String date) async {
-    var url = "$like/pickup/trader-pickup";
-    final prefs = await SharedPreferences.getInstance();
+  static Future<Data?> fetchAllPickupData(String date,
+      {bool isRefresh = false, int listLength = 0, required String tab}) async {
+    var offset = listLength.toString();
+    var limit = "50";
+    if (isRefresh) {
+      offset = "0";
+      limit = "50";
+    }
 
-    dynamic fromString = prefs.getString('loginData') ?? '';
-
-    dynamic resLogin = json.decode(fromString!.toString());
-    String token = prefs.getString('token') ?? '';
-
-    dynamic id = resLogin['data']["store"]["id"] ?? '';
     try {
-      var response = await http.post(Uri.parse(url), headers: {
-        "Accept": "application/json",
-        "Authorization": "Bearer $token",
-      }, body: {
-        "store_id": "$id",
-        "tab": date,
-      });
+      var body = {
+        "offset": offset,
+        "limit": limit,
+        "tab": tab,
+      };
+      // print(body);
+      var response = await dalileePost("/traderPickup", body);
       if (response.statusCode == 200) {
         var data = pickupModelFromJson(response.body);
 
         return data.data;
-      } else if (response.statusCode == 401) {
-        checkAuth = true;
-        var err = json.decode(response.body);
-
-        mass = '${err["message"]}';
-        prefs.remove("loginData");
-        prefs.remove("token");
-        return null;
       } else {
         var err = json.decode(response.body);
 
@@ -173,9 +153,8 @@ static bool checkAuth = false;
       }
     } catch (e) {
       mass = 'Network error';
-         return null;
+      return null;
     }
- 
   }
 
   static Future<RegionModel?> fetchRegionData(wid) async {
@@ -202,15 +181,14 @@ static bool checkAuth = false;
       }
     } catch (e) {
       mass = 'Network error';
-       return null;
+      return null;
     }
-   
   }
 
   static Future<dynamic> fetchPriceValueData(wid, weight) async {
     var url = "$like/runsheet/calculate-price";
     final prefs = await SharedPreferences.getInstance();
-   String token = prefs.getString('token') ?? '';
+    String token = prefs.getString('token') ?? '';
 
     try {
       var response = await http.post(Uri.parse(url), headers: {
@@ -234,7 +212,6 @@ static bool checkAuth = false;
       }
     } catch (e) {
       mass = 'Network error';
-      
     }
   }
 

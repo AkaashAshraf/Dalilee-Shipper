@@ -44,6 +44,7 @@ class DashbordController extends GetxController {
   RxString codReturnAmount = "0".obs;
   RxString codWithDriversAmount = "0".obs;
   RxString codReturn = "0".obs;
+  RxString shipmentCost = "0".obs;
 
   @override
   void onInit() {
@@ -62,7 +63,40 @@ class DashbordController extends GetxController {
   RxList<Shipment> allShipemet = <Shipment>[].obs;
   RxList<Shipment> deliverShipemet = <Shipment>[].obs;
   RxList<Shipment> undeliverShipemet = <Shipment>[].obs;
-  RxList<TrackingStatus> trackingStatuses = <TrackingStatus>[].obs;
+  RxList<TrackingStatus> trackingStatuses = <TrackingStatus>[
+    TrackingStatus(
+        id: 1,
+        icon: "https://shaheen-oman.dalilee.om/storage/order-icons/pickup.png",
+        statusEng: "pickup"),
+    TrackingStatus(
+        id: 2,
+        icon: "https://shaheen-oman.dalilee.om/storage/order-icons/send.png",
+        statusEng: "send in branch"),
+    TrackingStatus(
+        id: 3,
+        icon:
+            "https://shaheen-oman.dalilee.om/storage/order-icons/received.png",
+        statusEng: "received in branch"),
+    TrackingStatus(
+        id: 4,
+        icon:
+            "https://shaheen-oman.dalilee.om/storage/order-icons/assigned.png",
+        statusEng: "order assigned"),
+    TrackingStatus(
+        id: 5,
+        icon: "https://shaheen-oman.dalilee.om/storage/order-icons/process.png",
+        statusEng: "in process"),
+    TrackingStatus(
+        id: 6,
+        icon:
+            "https://shaheen-oman.dalilee.om/storage/order-icons/un-delivered.png",
+        statusEng: "un delivered"),
+    TrackingStatus(
+        id: 7,
+        icon:
+            "https://shaheen-oman.dalilee.om/storage/order-icons/delivered.png",
+        statusEng: "delivered")
+  ].obs;
   RxList<Shipment> returnShipemet = <Shipment>[].obs;
   RxList<Shipment> cancellShipemet = <Shipment>[].obs;
   RxList<Shipment> ofdShipemet = <Shipment>[].obs;
@@ -87,7 +121,7 @@ class DashbordController extends GetxController {
         trackingStatuses.value = data.data!.trackingStatuses!;
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', DashboardApi.mass);
+          Get.snackbar('Failed', DashboardApi.mass);
         }
       }
     } finally {
@@ -110,6 +144,7 @@ class DashbordController extends GetxController {
         readyToPayAmount.value = data.readyToPay.toString();
         codWithDriversAmount.value = data.codWithDrivers.toString();
         codReturn.value = data.codReturned.toString();
+        shipmentCost.value = data.totalShippingAmount.toString();
       } else {
         if (!Get.isSnackbarOpen) {
           Get.snackbar('Failed', DashboardApi.mass);
@@ -126,14 +161,16 @@ class DashbordController extends GetxController {
 
   fetchAllShipmentData({bool isRefresh: false}) async {
     try {
-      var limit = "50";
+      var limit = "100";
       var offset = allShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "50";
+        limit = "100";
         offset = "0";
       }
+      // limit = "1";
+      // offset = "249";
       var body = {"limit": limit, "offset": offset, "module": "shipments"};
       var data = await DashboardApi.fetchShipmentList(body);
 
@@ -149,7 +186,7 @@ class DashbordController extends GetxController {
         return data.data!.shipments;
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', DashboardApi.mass);
+          Get.snackbar('Failed', DashboardApi.mass);
         }
       }
     } finally {
@@ -164,12 +201,12 @@ class DashbordController extends GetxController {
 
   fetchDeliverShipemetData({isRefresh: false}) async {
     try {
-      var limit = "50";
+      var limit = "100";
       var offset = deliverShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "50";
+        limit = "100";
         offset = "0";
       } else
         loadMoreDeliveredShipments(true);
@@ -188,7 +225,7 @@ class DashbordController extends GetxController {
           deliverShipemet.value += data.data!.shipments!;
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', DashboardApi.mass);
+          Get.snackbar('Failed', DashboardApi.mass);
         }
       }
     } finally {
@@ -205,12 +242,12 @@ class DashbordController extends GetxController {
 
   fetchUnDeliverShipemetData({isRefresh: false}) async {
     try {
-      var limit = "50";
+      var limit = "100";
       var offset = undeliverShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "50";
+        limit = "100";
         offset = "0";
       } else
         loadMoreUndeliver(true);
@@ -229,7 +266,7 @@ class DashbordController extends GetxController {
           undeliverShipemet.value += data.data!.shipments!;
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', DashboardApi.mass);
+          Get.snackbar('Failed', DashboardApi.mass);
         }
       }
     } finally {
@@ -246,12 +283,12 @@ class DashbordController extends GetxController {
 
   fetchRetrunShipemetData({isRefresh: false}) async {
     try {
-      var limit = "50";
+      var limit = "100";
       var offset = returnShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "50";
+        limit = "100";
         offset = "0";
       } else
         loadMoreReturnShipments(true);
@@ -270,7 +307,7 @@ class DashbordController extends GetxController {
           returnShipemet.value += data.data!.shipments!;
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', DashboardApi.mass);
+          Get.snackbar('Failed', DashboardApi.mass);
         }
       }
     } finally {
@@ -287,12 +324,12 @@ class DashbordController extends GetxController {
 
   fetchcancellShipemetData({isRefresh: false}) async {
     try {
-      var limit = "50";
+      var limit = "100";
       var offset = cancellShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "50";
+        limit = "100";
         offset = "0";
       } else
         loadMoreCancelShipments(true);
@@ -311,7 +348,7 @@ class DashbordController extends GetxController {
           cancellShipemet.value += data.data!.shipments!;
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', DashboardApi.mass);
+          Get.snackbar('Failed', DashboardApi.mass);
         }
       }
     } finally {
@@ -328,12 +365,12 @@ class DashbordController extends GetxController {
 
   fetchOFDShipemetData({isRefresh: false}) async {
     try {
-      var limit = "50";
+      var limit = "100";
       var offset = ofdShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "50";
+        limit = "100";
         offset = "0";
       } else
         loadMoreOFDShipments(true);
@@ -348,7 +385,7 @@ class DashbordController extends GetxController {
           ofdShipemet.value += data.data!.shipments!;
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', DashboardApi.mass);
+          Get.snackbar('Failed', DashboardApi.mass);
         }
       }
     } finally {

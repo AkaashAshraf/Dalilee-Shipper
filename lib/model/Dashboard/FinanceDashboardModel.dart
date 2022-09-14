@@ -49,14 +49,14 @@ class Data {
 }
 
 class FinanceStats {
-  FinanceStats({
-    this.totalAmount,
-    this.codWithDrivers,
-    this.codPending,
-    this.codReturned,
-    this.paid,
-    this.readyToPay,
-  });
+  FinanceStats(
+      {this.totalAmount,
+      this.codWithDrivers,
+      this.codPending,
+      this.codReturned,
+      this.paid,
+      this.readyToPay,
+      this.totalShippingAmount});
 
   dynamic totalAmount;
   dynamic codWithDrivers;
@@ -64,6 +64,7 @@ class FinanceStats {
   dynamic codReturned;
   dynamic paid;
   dynamic readyToPay;
+  dynamic totalShippingAmount;
 
   factory FinanceStats.fromJson(Map<String, dynamic> json) => FinanceStats(
         totalAmount: json["total_amount"] == null
@@ -96,6 +97,9 @@ class FinanceStats {
             : json["ready_to_pay"] == ""
                 ? 0
                 : json["ready_to_pay"],
+        totalShippingAmount: json["total_shipping_amount"] == null
+            ? 0
+            : json["total_shipping_amount"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -105,5 +109,7 @@ class FinanceStats {
         "cod_returned": codReturned == null ? 0 : codReturned,
         "paid": paid == null ? 0 : paid,
         "ready_to_pay": readyToPay == null ? 0 : readyToPay,
+        "total_shipping_amount":
+            totalShippingAmount == null ? 0 : totalShippingAmount,
       };
 }

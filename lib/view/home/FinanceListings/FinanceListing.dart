@@ -363,20 +363,21 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
                                                                                 itemBuilder: (context, i) {
                                                                                   return GetBuilder<FinanceListingController>(
                                                                                     builder: (x) => card(
-                                                                                        controller,
-                                                                                        widget.type == Status.ALL
-                                                                                            ? controller.listAll[i]
-                                                                                            : widget.type == Status.PAID
-                                                                                                ? controller.listPaid[i]
-                                                                                                : widget.type == Status.COD_PENDING
-                                                                                                    ? controller.listCodPending[i]
-                                                                                                    : widget.type == Status.READY_TO_PAY
-                                                                                                        ? controller.listReadyToPay[i]
-                                                                                                        : widget.type == Status.COD_WITH_DRIVERS
-                                                                                                            ? controller.listCodWithDrivers[i]
-                                                                                                            : controller.listCodReturn[i],
-                                                                                        x,
-                                                                                        dashboardController.trackingStatuses),
+                                                                                      controller,
+                                                                                      widget.type == Status.ALL
+                                                                                          ? controller.listAll[i]
+                                                                                          : widget.type == Status.PAID
+                                                                                              ? controller.listPaid[i]
+                                                                                              : widget.type == Status.COD_PENDING
+                                                                                                  ? controller.listCodPending[i]
+                                                                                                  : widget.type == Status.READY_TO_PAY
+                                                                                                      ? controller.listReadyToPay[i]
+                                                                                                      : widget.type == Status.COD_WITH_DRIVERS
+                                                                                                          ? controller.listCodWithDrivers[i]
+                                                                                                          : controller.listCodReturn[i],
+                                                                                      x,
+                                                                                      dashboardController.trackingStatuses,
+                                                                                    ),
                                                                                   );
                                                                                 },
                                                                               ),
@@ -471,14 +472,19 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
     }
   }
 
-  CardBody card(FinanceListingController controller, Shipment shipment,
-      FinanceListingController x, List<TrackingStatus> trackingStatus) {
+  CardBody card(
+    FinanceListingController controller,
+    Shipment shipment,
+    FinanceListingController x,
+    List<TrackingStatus> trackingStatus,
+  ) {
     return CardBody(
       orderId: shipment.orderId ?? 00,
+      date: shipment.updatedAt,
       customer_name: shipment.customerName,
       Order_current_Status: shipment.orderStatusName,
       number: shipment.phone ?? "+968",
-      orderNumber: shipment.orderNo,
+      orderNumber: shipment.orderNo.toString(),
       cod: shipment.cod ?? "0.00",
       cop: shipment.cop ?? "0.00",
       shipmentCost: shipment.shippingPrice ?? "0.00",
@@ -486,7 +492,7 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       undeleiver_image: shipment.orderUndeliverImage ?? "",
       pickup_image: shipment.orderPickupImage ?? "",
       totalCharges:
-          '${double.parse(shipment.shippingPrice.toString()) + double.parse(shipment.cod.toString())}',
+          '${(double.tryParse(shipment.cod.toString()) ?? 0.0) - (double.tryParse(shipment.shippingPrice.toString()) ?? 0.0)}',
       stutaus: shipment.orderActivities,
       icon: trackingStatus.map((element) => element.icon.toString()).toList(),
       status_key: shipment.orderStatusKey,

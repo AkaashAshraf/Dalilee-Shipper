@@ -14,6 +14,7 @@ class PickupView extends StatelessWidget {
   PickupView({Key? key}) : super(key: key);
 
   final ValueNotifier<bool> isDialOpen = ValueNotifier(false);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,9 +100,11 @@ class PickupView extends StatelessWidget {
 
   _tabBarIndicatorShape() => TabBar(
         physics: const CustomTabBarViewScrollPhysics(),
+        // isScrollable: true,
         indicatorWeight: 0.0,
         tabs: _tabTwoParameters(),
         labelColor: whiteColor,
+
         padding: const EdgeInsets.all(5),
         labelStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
         unselectedLabelColor: primaryColor,
@@ -125,12 +128,13 @@ class PickupView extends StatelessWidget {
           ),
         ),
       );
-  List<Widget> _tabTwoParameters() => const [
+  // var controller = Get.put(PickupController());
+  List<Widget> _tabTwoParameters() => [
         Tab(
           text: "Today",
         ),
         Tab(
-          text: "All",
+          text: "All   ",
         ),
         // Tab(
         //   text: "Request Pickup",

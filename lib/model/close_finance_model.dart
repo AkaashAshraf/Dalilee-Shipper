@@ -34,17 +34,22 @@ class ClosedFinanceListModel {
 class CloseData {
   CloseData({
     this.invoices,
+    this.totalInvoices,
   });
 
   List<Invoice>? invoices;
+  int? totalInvoices;
 
   factory CloseData.fromJson(Map<String, dynamic> json) => CloseData(
         invoices: List<Invoice>.from(
             json["invoices"].map((x) => Invoice.fromJson(x))),
+        totalInvoices:
+            json["total_invoices"] == null ? 0 : json["total_invoices"],
       );
 
   Map<String, dynamic> toJson() => {
         "invoices": List<dynamic>.from(invoices!.map((x) => x.toJson())),
+        "total_invoices": totalInvoices == null ? 0 : totalInvoices,
       };
 }
 

@@ -77,10 +77,12 @@ class Store {
     this.tripStatus,
     this.createdAt,
     this.updatedAt,
+    this.userName,
     this.user,
   });
 
   dynamic id;
+  dynamic userName;
   dynamic userId;
   dynamic wilayaId;
   dynamic areaId;
@@ -102,6 +104,7 @@ class Store {
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(
         id: json["id"],
+        userName: json['username'],
         userId: json["user_id"],
         wilayaId: json["wilaya_id"],
         areaId: json["area_id"],
@@ -124,6 +127,7 @@ class Store {
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "username": userName,
         "user_id": userId,
         "wilaya_id": wilayaId,
         "area_id": areaId,

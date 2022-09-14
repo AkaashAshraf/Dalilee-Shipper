@@ -54,12 +54,19 @@ class FinanceView extends GetWidget<FinanceController> {
 
   _tabBarIndicatorShape() => TabBar(
         indicatorSize: TabBarIndicatorSize.tab,
-        padding:const EdgeInsets.symmetric(horizontal: 30, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 4),
         labelStyle: const TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
         unselectedLabelColor: primaryColor,
         physics: const CustomTabBarViewScrollPhysics(),
         indicatorWeight: 0.0,
-        tabs: _tabTwoParameters(),
+        tabs: [
+          Tab(
+            text: 'Opened',
+          ),
+          Tab(
+            text: 'Closed',
+          ),
+        ],
         indicator: ShapeDecoration(
           shape: RoundedRectangleBorder(
               side: const BorderSide(color: primaryColor),
@@ -81,15 +88,6 @@ class FinanceView extends GetWidget<FinanceController> {
           print('$value');
         },
       );
-
-  List<Widget> _tabTwoParameters() => [
-        const Tab(
-          text: 'Opened',
-        ),
-        const Tab(
-          text: 'Closed',
-        ),
-      ];
 }
 
 class CustomTabBarViewScrollPhysics extends ScrollPhysics {

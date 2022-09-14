@@ -13,7 +13,7 @@ class CardBody extends StatelessWidget {
       {Key? key,
       this.cod,
       this.cop,
-      required this.icon,
+      this.icon,
       this.number,
       this.orderId,
       this.ref,
@@ -21,6 +21,7 @@ class CardBody extends StatelessWidget {
       this.stutaus,
       this.totalCharges,
       this.weight,
+      required this.date,
       required this.Order_current_Status,
       required this.deleiver_image,
       required this.pickup_image,
@@ -49,12 +50,13 @@ class CardBody extends StatelessWidget {
       pickup_image,
       cc,
       customer_name,
+      date,
       cod;
 
   final List<dynamic>? stutaus;
   final int currentStep;
   final bool isOpen;
-  final List<String> icon;
+  final List<String>? icon;
   final void Function()? onPressedShowMore;
 
   @override
@@ -157,14 +159,14 @@ class CardBody extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 4,
-                  child: _buildRowText('Ref : $ref', 'Name : $customer_name'),
+                  child: _buildRowText('Ref : $ref', '# : $number'),
                 ),
                 const Spacer(
                   flex: 1,
                 ),
                 Expanded(
                     flex: 3,
-                    child: _buildRowText('CC : $cc OMR', '# : $number ')),
+                    child: _buildRowText('CC : $cc OMR', 'Date : $date ')),
               ],
             ),
           ),
@@ -202,7 +204,7 @@ class CardBody extends StatelessWidget {
               top: 10,
             ),
             child: StepProgressView(
-              icons: icon,
+              icons: icon ?? [],
               curStep: currentStep,
               color: primaryColor,
             ),

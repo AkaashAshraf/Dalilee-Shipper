@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:dalile_customer/model/all_shipment.dart';
+import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
 
 DeliveredDashbordModel dashbordDeliveredShipmentModelFromJson(String str) =>
     DeliveredDashbordModel.fromJson(json.decode(str));

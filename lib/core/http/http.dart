@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 Future<dynamic> get(String url) async {
   var _url = like + url;
+  // print(_url);
   final prefs = await SharedPreferences.getInstance();
 
   String token = prefs.getString('token') ?? '';
@@ -15,7 +16,7 @@ Future<dynamic> get(String url) async {
       "Accept": "application/json",
       "Authorization": "Bearer $token"
     });
-    print(response.body);
+    // print(response.body);
     // return response.statusCode;
     if (response.statusCode == 200) {
       return response;

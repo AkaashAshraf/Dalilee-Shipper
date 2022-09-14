@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:dalile_customer/core/server/pickup_api.dart';
-import 'package:dalile_customer/model/all_pickup_model.dart';
+import 'package:dalile_customer/model/Pickup/PickupModel.dart';
 import 'package:dalile_customer/model/muhafaza_model.dart';
 import 'package:dalile_customer/model/pickup_deatils.dart';
 import 'package:dalile_customer/model/region_model.dart';
@@ -20,6 +20,11 @@ class PickupController extends GetxController {
 
   final GlobalKey<FormState> _formKeyRequest = GlobalKey<FormState>();
   GlobalKey<FormState> get formKeyRequest => _formKeyRequest;
+  RxBool loadMoreAllPickup = false.obs;
+  RxBool loadMoreTodayPickup = false.obs;
+  RxInt totalAllPickup = 0.obs;
+  RxInt totalTodayPickup = 0.obs;
+
   // requrstValidation(context) {
   //   if (_formKeyRequest.currentState!.validate()) {
   //     showDialog(
@@ -75,10 +80,12 @@ class PickupController extends GetxController {
 //---------------- validation----------------------
 
   var isLoadingToday = true.obs;
+  var isLoadingDetails = false.obs;
+
   var isLoadingAll = true.obs;
   var muhafazaList = <Governate?>[].obs;
-  var allPickup = <Reference?>[].obs;
-  var today = <Reference?>[].obs;
+  RxList<Reference?> allPickup = <Reference?>[].obs;
+  RxList<Reference?> today = <Reference?>[].obs;
 
   var wilayaList = <WilayaOM?>[].obs;
   var regionList = <AreaRegion?>[].obs;
@@ -87,7 +94,7 @@ class PickupController extends GetxController {
   void onInit() {
     fetchMuhafazaData();
     fetchTodayPickupData();
-    fetchAllPickupData();
+    fetchAllPickupData(isRefresh: true);
 
     super.onInit();
   }
@@ -101,13 +108,18 @@ class PickupController extends GetxController {
   }
 //----------------Api Data----------------------
 
-  void fetchAllPickupData() async {
+  fetchAllPickupData({bool isRefresh = false}) async {
     try {
-      isLoadingAll(true);
+      if (!isRefresh) loadMoreAllPickup(true);
 
-      var pickup = await PickupApi.fetchAllPickupData("");
+      var pickup = await PickupApi.fetchAllPickupData("",
+          listLength: allPickup.length, isRefresh: isRefresh, tab: "all");
       if (pickup != null) {
-        allPickup.value = pickup.references!.reversed.toList();
+        totalAllPickup.value = pickup.totalReferences!;
+        if (isRefresh)
+          allPickup.value = pickup.references!;
+        else
+          allPickup.value += pickup.references!;
       } else {
         if (!Get.isSnackbarOpen) {
           Get.snackbar('Filed', PickupApi.mass);
@@ -118,6 +130,8 @@ class PickupController extends GetxController {
         Get.offAll(() => LoginView());
         PickupApi.checkAuth = false;
       }
+      loadMoreAllPickup.value = false;
+
       isLoadingAll(false);
     }
   }
@@ -145,7 +159,7 @@ class PickupController extends GetxController {
               });
         } else {
           if (!Get.isSnackbarOpen) {
-            Get.snackbar('Filed', PickupApi.mass);
+            Get.snackbar('Failed', PickupApi.mass);
           }
         }
       }
@@ -158,38 +172,46 @@ class PickupController extends GetxController {
     }
   }
 
-  void fetchTodayPickupData() async {
+  fetchTodayPickupData({bool isRefresh = false}) async {
     try {
-      isLoadingToday(true);
+      print("pickup called ");
+      // isLoadingToday(true);
+      if (!isRefresh) loadMoreTodayPickup(true);
 
-      var pickupToday = await PickupApi.fetchAllPickupData("today");
+      var pickupToday = await PickupApi.fetchAllPickupData("",
+          listLength: today.length, isRefresh: isRefresh, tab: "today");
       if (pickupToday != null) {
-        today.value = pickupToday.references!.reversed.toList();
+        totalTodayPickup.value = pickupToday.totalReferences!;
+        if (isRefresh)
+          today.value = pickupToday.references!;
+        else
+          today.value += pickupToday.references!;
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', PickupApi.mass);
+          Get.snackbar('Failed', PickupApi.mass);
         }
       }
     } finally {
       isLoadingToday(false);
+      loadMoreTodayPickup.value = false;
     }
   }
 
   RxList<Order> pickupDetailsList = <Order>[].obs;
   void fetcPickupDetailsData(ref) async {
     try {
-      isLoadingToday(true);
-
+      // isLoadingToday(true);
+      isLoadingDetails(true);
       var data = await PickupApi.fetchPickupDetailsData(ref);
       if (data != null) {
         pickupDetailsList.value = data.data!.orders!;
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', PickupApi.mass);
+          Get.snackbar('Failed', PickupApi.mass);
         }
       }
     } finally {
-      isLoadingToday(false);
+      isLoadingDetails(false);
     }
   }
 

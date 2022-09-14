@@ -1,12 +1,20 @@
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/model/login_data_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<dynamic> dalileePost(String url, dynamic _body) async {
   var _url = dalileeOldBaseUrl + url;
+  final prefs = await SharedPreferences.getInstance();
+
+  var jsonString = prefs.getString('username');
+
+  // final logindataModel = logindataModelFromJson(jsonString!);
+  // print(logindataModel.data!.store!.userName);
   var body = {
     ..._body,
     "key": "shaheen-api090078601",
-    "store_username": "dubai"
+    "store_username": jsonString
   };
   try {
     var response = await http.post(Uri.parse(_url), body: body, headers: {
@@ -19,6 +27,7 @@ Future<dynamic> dalileePost(String url, dynamic _body) async {
       return response;
     }
   } catch (e) {
-    return e;
+    print(e.toString());
+    return null;
   }
 }

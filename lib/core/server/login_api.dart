@@ -82,7 +82,7 @@ class LoginAPi {
         "fcm_token": token
       };
 
-      print(data);
+      // print(data);
       var headers = {"Accept": "application/json"};
       final response = await http.post(url, headers: headers, body: data);
       var res = json.decode(response.body);
@@ -91,8 +91,11 @@ class LoginAPi {
         if (res["success"] == "OK" || res["success"] == "ok") {
           _saveProduct(response.body, "loginData");
           final token = json.decode(response.body);
-
+          print(token['data']['store']['username']);
+          // return null;
           _saveProduct(token['data']["access_token"], "token");
+          _saveProduct(token['data']['store']['username'], "username");
+
           return res;
         } else {
           mass = res['message'] ?? "please try agian later";

@@ -41,6 +41,7 @@ abstract class DashboardApi {
         return null;
       }
     } catch (e) {
+      print(e.toString());
       mass = 'Network error' + e.toString();
     }
     return null;
