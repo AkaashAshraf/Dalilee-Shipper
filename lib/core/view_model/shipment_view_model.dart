@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
-import 'dart:ui';
-import 'package:dalile_customer/components/popups/askOtp.dart';
-import 'package:dalile_customer/components/popups/downloadProgressBarNew.dart';
 
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/server/finance_api.dart';
@@ -11,30 +8,25 @@ import 'package:dalile_customer/core/server/shipments.dart';
 import 'package:dalile_customer/core/view_model/complain_view_model.dart';
 import 'package:dalile_customer/core/view_model/downloadController.dart';
 import 'package:dalile_customer/core/view_model/name_icons.dart';
-import 'package:dalile_customer/model/all_shipment.dart';
+import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/custom_form_filed.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/my_input.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class ShipmentViewModel extends GetxController {
   bool isOpen = false;
   RxBool inLoadMore = false.obs;
   RxBool outLoadMore = false.obs;
 
-  RxInt in_limit = 0.obs;
-  RxInt out_limit = 0.obs;
   RxInt total_in = 0.obs;
   RxInt total_out = 0.obs;
 
@@ -49,38 +41,15 @@ class ShipmentViewModel extends GetxController {
     super.dispose();
   }
 
-  void listenScrolling() {
-    if (controller.position.maxScrollExtent / 2 > controller.position.pixels) {
-      isSDown = false;
-      update();
-    } else {
-      isSDown = true;
-      update();
-    }
-    if (controller.position.extentAfter > 10 &&
-        total_out.value > out_limit.value) {
-      if (inLoadMore.value) return;
-      inLoadMore.value = true;
-
-      fetchOutShipemetData(isRefresh: false);
-    } //load more
-  }
-
   List<NameWithIcon> callList = [
     NameWithIcon(icon: Icons.call, name: 'Call'),
     NameWithIcon(icon: Icons.mail_outlined, name: 'Send Message'),
     NameWithIcon(icon: Icons.whatsapp_outlined, name: 'WhatsApp Message'),
     NameWithIcon(icon: Icons.content_copy_outlined, name: 'Copy Number'),
-    // NameWithIcon(icon: Icons.person_add_outlined, name: 'Create New Contact'),
   ];
   List<NameWithIcon> menuList = [
     NameWithIcon(icon: Icons.info_outlined, name: 'Generate Ticket'),
     NameWithIcon(icon: Icons.picture_as_pdf_outlined, name: 'Download Bill'),
-    // NameWithIcon(icon: Icons.download_outlined, name: 'Download Pickup Image'),
-    // NameWithIcon(
-    //     icon: Icons.download_outlined, name: 'Download Delivered Image'),
-    // NameWithIcon(
-    //     icon: Icons.download_outlined, name: 'Download Undelivered Image'),
   ];
 
   callAlert(context, number) {
@@ -158,13 +127,6 @@ class ShipmentViewModel extends GetxController {
   }
 
   menuAlert(context, number, orderN, dImage, undImage, pickupImage) async {
-    // FlutterDownloader.initialize();
-    // void downloadCallback(String id, DownloadTaskStatus status, int progress) {
-    //   // final SendPort send =
-    //   //     IsolateNameServer.lookupPortByName('downloader_send_port')!;
-    //   // send.send([id, status, progress]);
-    // }
-
     final ReceivePort _port = ReceivePort();
 
     _port.listen((dynamic data) {
@@ -172,10 +134,6 @@ class ShipmentViewModel extends GetxController {
       DownloadTaskStatus status = data[1];
       int progress = data[2];
     });
-
-    // void _download(String url) async {
-
-    // }
 
     return showDialog(
         context: context,
@@ -279,8 +237,7 @@ class ShipmentViewModel extends GetxController {
   @override
   void onInit() {
     fetchOutShipemetData();
-    fetchShipemetData(isRefresh: true);
-    controller.addListener(listenScrolling);
+    fetchInShipemetData(isRefresh: true);
     super.onInit();
   }
 
@@ -293,29 +250,30 @@ class ShipmentViewModel extends GetxController {
   var isLoadingIN = true.obs;
   var outList = <Shipment?>[].obs;
   var inList = <Shipment?>[].obs;
-  List<TrackingStatus> shipList = [];
-  List<TrackingStatus> outshipList = [];
 
-  void fetchShipemetData({isRefresh: false}) async {
+  fetchInShipemetData({isRefresh: false}) async {
     try {
+      var limit = "100";
+      var offset = inList.length.toString();
+
       if (isRefresh) {
-        in_limit.value = 0;
+        limit = "100";
+        offset = "0";
       } else
-        in_limit.value += 10;
-      isLoadingIN(true);
+        inLoadMore(true);
+      // if (inList.length == 0) isLoadingOut(true);
 
-      var outInData = await ShipmentApi.fetchShipemetData("in",
-          limit: in_limit.value.toString());
-      if (outInData != null) {
+      var body = {"offset": offset, "limit": limit, "tab": "in"};
+      var inData = await ShipmentApi.fetchShipemetData(body);
+      if (inData != null) {
+        total_in.value = inData.totalShipments!;
         if (isRefresh)
-          inList.value = outInData.requests!.toList();
+          inList.value = inData.shipments!.toList();
         else
-          inList.value += outInData.requests!.toList();
-
-        shipList = outInData.trackingStatuses!;
+          inList.value += inData.shipments!.toList();
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', ShipmentApi.mass);
+          Get.snackbar('Failed', ShipmentApi.mass);
         }
       }
     } finally {
@@ -324,34 +282,30 @@ class ShipmentViewModel extends GetxController {
         ShipmentApi.checkAuth = false;
       }
       isLoadingIN(false);
+      inLoadMore(false);
     }
   }
 
-  void fetchOutShipemetData({isRefresh: false}) async {
+  fetchOutShipemetData({isRefresh: false}) async {
     try {
-      // if (isLoadingOut.value || outLoadMore.value) return;
+      var limit = "100";
+      var offset = outList.length.toString();
 
       if (isRefresh) {
-        out_limit.value = 0;
+        limit = "100";
+        offset = "0";
       } else
-        out_limit.value += 10;
-      if (out_limit.value == 0) isLoadingOut(true);
-
-      var outData = await ShipmentApi.fetchShipemetData("out",
-          limit: out_limit.value.toString());
+        outLoadMore(true);
+      // if (outList.length == 0) isLoadingOut(true);
+      var body = {"offset": offset, "limit": limit, "tab": "out"};
+      var outData = await ShipmentApi.fetchShipemetData(body);
       if (outData != null) {
         if (isRefresh)
-          outList.value = outData.requests!.toList();
+          outList.value = outData.shipments!.toList();
         else
-          outList.value += outData.requests!.toList();
+          outList.value += outData.shipments!.toList();
 
-        total_out.value = outData.total_requests!;
-        outshipList = outData.trackingStatuses!;
-        if (outList.length > 0) {}
-      } else {
-        if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', ShipmentApi.mass);
-        }
+        total_out.value = outData.totalShipments!;
       }
     } finally {
       if (ShipmentApi.checkAuth == true) {
@@ -359,7 +313,7 @@ class ShipmentViewModel extends GetxController {
         ShipmentApi.checkAuth = false;
       }
       isLoadingOut(false);
-      inLoadMore.value = false;
+      outLoadMore.value = false;
     }
   }
 

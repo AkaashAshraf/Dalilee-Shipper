@@ -1,4 +1,5 @@
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/core/view_model/dashbordController.dart';
 import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
 import 'package:dalile_customer/core/view_model/view_order_view_model.dart';
 import 'package:dalile_customer/view/home/card_body.dart';
@@ -19,8 +20,9 @@ class ViewOrderView extends StatefulWidget {
 class _ViewOrderViewState extends State<ViewOrderView> {
   ScrollController? scrollController;
 
-  final ViewOrderController controller =
-      Get.put(ViewOrderController(), permanent: true);
+  final controller = Get.put(ViewOrderController());
+  final dashboardController = Get.put(DashbordController());
+
   RefreshController refreshController = RefreshController(initialRefresh: true);
   @override
   void dispose() {
@@ -40,27 +42,51 @@ class _ViewOrderViewState extends State<ViewOrderView> {
   }
 
   void _loadMore() async {
-    if (controller.total_orders.value > controller.limit.value &&
-        scrollController!.position.extentAfter < 10) {
+    if (controller.totalOrders.value > controller.viewOrderData.length &&
+        scrollController!.position.extentAfter < 100.0) {
       if (!controller.loadMore.value) {
-        controller.limit.value += 10;
-        controller.fetchViewOrderData(isRefresh: false);
+        await controller.fetchViewOrderData(isRefresh: false);
+        if (mounted)
+          setState(() {
+            subTitle =
+                "(${controller.viewOrderData.length.toString()}/${controller.totalOrders.toString()})";
+          });
       }
     }
   } //_loadMore
 
   void _refresh() async {
     if (!controller.isLoading.value) {
-      var res = await controller.fetchViewOrderData(isRefresh: true);
+      await controller.fetchViewOrderData(isRefresh: true);
+      if (mounted)
+        setState(() {
+          subTitle =
+              "(${controller.viewOrderData.length.toString()}/${controller.totalOrders.toString()})";
+        });
     }
     refreshController.refreshCompleted();
   } //_refresh
 
+  String subTitle = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: primaryColor,
-        appBar: _buildAppBar(),
+        appBar: AppBar(
+          elevation: 0,
+          toolbarHeight: 70,
+          backgroundColor: primaryColor,
+          foregroundColor: whiteColor,
+          title: GetX<ViewOrderController>(builder: (_controller) {
+            return CustomText(
+                text:
+                    'View Orders (${_controller.viewOrderData.length.toString()}/${_controller.totalOrders.value.toString()})',
+                color: whiteColor,
+                size: 18,
+                alignment: Alignment.center);
+          }),
+          centerTitle: true,
+        ),
         body: Container(
           decoration: const BoxDecoration(
               color: bgColor,
@@ -75,10 +101,11 @@ class _ViewOrderViewState extends State<ViewOrderView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const EmptyState(
-                      label: 'no Data ',
+                      label: 'No Data ',
                     ),
                     MaterialButton(
                       onPressed: () {
+                        controller.isLoading(true);
                         controller.fetchViewOrderData();
                       },
                       child: Row(
@@ -116,8 +143,8 @@ class _ViewOrderViewState extends State<ViewOrderView> {
                         child: Expanded(
                           flex: 14,
                           child: SmartRefresher(
-                            header: WaterDropMaterialHeader(
-                              backgroundColor: primaryColor,
+                            header: WaterDropHeader(
+                              waterDropColor: primaryColor,
                             ),
                             controller: refreshController,
                             onRefresh: _refresh,
@@ -133,6 +160,8 @@ class _ViewOrderViewState extends State<ViewOrderView> {
                                     init: ShipmentViewModel(),
                                     builder: (x) {
                                       return CardBody(
+                                        date: controller
+                                            .viewOrderData[i].updatedAt,
                                         status_key: controller
                                             .viewOrderData[i].orderStatusKey,
                                         deleiver_image: controller
@@ -163,10 +192,11 @@ class _ViewOrderViewState extends State<ViewOrderView> {
                                         orderNumber:
                                             controller.viewOrderData[i].orderNo,
                                         totalCharges:
-                                            '${double.parse(controller.viewOrderData[i].shippingPrice.toString()) + double.parse(controller.viewOrderData[i].cod.toString())}',
+                                            '${(double.tryParse(controller.viewOrderData[i].cod.toString()) ?? 0.0) - (double.tryParse(controller.viewOrderData[i].shippingPrice.toString()) ?? 0.0)}',
                                         stutaus: controller
                                             .viewOrderData[i].orderActivities,
-                                        icon: controller.viewOrderList
+                                        icon: dashboardController
+                                            .trackingStatuses
                                             .map((element) =>
                                                 element.icon.toString())
                                             .toList(),
@@ -197,7 +227,7 @@ class _ViewOrderViewState extends State<ViewOrderView> {
                           ),
                         ),
                       ),
-                      if (controller.loadMore.value) WaiteImage()
+                      if (controller.loadMore.value) bottomLoadingIndicator()
                     ],
                   ),
                 ],
@@ -205,20 +235,5 @@ class _ViewOrderViewState extends State<ViewOrderView> {
             }),
           ),
         ));
-  }
-
-  AppBar _buildAppBar() {
-    return AppBar(
-      elevation: 0,
-      toolbarHeight: 70,
-      backgroundColor: primaryColor,
-      foregroundColor: whiteColor,
-      title: const CustomText(
-          text: 'View Orders',
-          color: whiteColor,
-          size: 18,
-          alignment: Alignment.center),
-      centerTitle: true,
-    );
   }
 }

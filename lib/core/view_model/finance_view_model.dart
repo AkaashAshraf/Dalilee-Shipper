@@ -9,10 +9,13 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FinanceController extends GetxController {
+  RxBool loadMoreClosed = false.obs;
+  RxInt totalCloseInvoices = 0.obs;
+
   @override
   void onInit() {
     fetchOpenData();
-    fetchCloseData();
+    fetchCloseData(isRefresh: true);
 
     super.onInit();
   }
@@ -40,7 +43,7 @@ class FinanceController extends GetxController {
 
   var openData = OpenData().obs;
   var closeData = <Invoice>[].obs;
-  void fetchOpenData() async {
+  fetchOpenData() async {
     try {
       isLoading(true);
       var open = await FinanceApi.fetchopenData();
@@ -61,12 +64,24 @@ class FinanceController extends GetxController {
     }
   }
 
-  void fetchCloseData() async {
+  fetchCloseData({bool isRefresh: false}) async {
     try {
-      isLoading(true);
-      var close = await FinanceApi.fetchCloseData();
+      // isLoading(true);
+
+      var limit = "100";
+      var offset = closeData.length.toString();
+      if (isRefresh) {
+        limit = "100";
+        offset = "0";
+      }
+      final body = {"offset": offset, "limit": limit};
+      var close = await FinanceApi.fetchCloseData(body);
       if (close != null) {
-        closeData.value = close.invoices!;
+        totalCloseInvoices.value = close.totalInvoices!;
+        if (isRefresh)
+          closeData.value = close.invoices!;
+        else
+          closeData.value += close.invoices!;
       } else {
         if (!Get.isSnackbarOpen) {
           Get.snackbar('Filed', FinanceApi.mass);
@@ -78,6 +93,7 @@ class FinanceController extends GetxController {
         Get.offAll(() => LoginView());
         FinanceApi.checkAuth = false;
       }
+      loadMoreClosed(false);
       isLoading(false);
     }
   }

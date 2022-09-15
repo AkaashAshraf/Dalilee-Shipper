@@ -1,6 +1,6 @@
 import 'package:dalile_customer/components/popups/exportModal.dart';
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/dashbord_model_view.dart';
+import 'package:dalile_customer/core/view_model/dashbordController.dart';
 import 'package:dalile_customer/core/view_model/downloadController.dart';
 import 'package:dalile_customer/view/home/finaince_dashboard.dart';
 import 'package:dalile_customer/view/home/main_dash.dart';

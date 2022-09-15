@@ -1,0 +1,238 @@
+import 'dart:convert';
+
+ShipmentListing shipmentListingFromJson(String str) =>
+    ShipmentListing.fromJson(json.decode(str));
+
+String shipmentListingToJson(ShipmentListing data) =>
+    json.encode(data.toJson());
+
+class ShipmentListing {
+  ShipmentListing({
+    this.success,
+    this.data,
+  });
+
+  String? success;
+  Data? data;
+
+  factory ShipmentListing.fromJson(Map<String, dynamic> json) =>
+      ShipmentListing(
+        success: json["success"] == null ? null : json["success"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "success": success == null ? null : success,
+        "data": data == null ? null : data!.toJson(),
+      };
+}
+
+class Data {
+  Data({
+    this.totalShipments,
+    this.shipments,
+  });
+
+  int? totalShipments;
+  List<Shipment>? shipments;
+
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+        totalShipments:
+            json["total_shipments"] == null ? 0 : json["total_shipments"],
+        shipments: json["shipments"] == null
+            ? []
+            : List<Shipment>.from(
+                json["shipments"].map((x) => Shipment.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "total_shipments": totalShipments == null ? 0 : totalShipments,
+        "shipments": shipments == null
+            ? []
+            : List<Shipment>.from(shipments!.map((x) => x.toJson())),
+      };
+}
+
+class Shipment {
+  Shipment(
+      {this.orderId,
+      this.orderNo,
+      this.refId,
+      this.cop,
+      this.customerNo,
+      this.customerName,
+      this.cc,
+      this.orderStatusName,
+      this.orderStatusKey,
+      this.orderPickupImage,
+      this.orderDeliverImage,
+      this.orderUndeliverImage,
+      this.weight,
+      this.phone,
+      this.shippingPrice,
+      this.cod,
+      this.createdAt,
+      this.updatedAt,
+      this.orderActivities,
+      this.status,
+      this.currentStatus,
+      this.isOpen: false});
+
+  int? orderId;
+  String? orderNo;
+  int? refId;
+  dynamic cop;
+  dynamic customerNo;
+  String? customerName;
+  dynamic cc;
+  bool isOpen;
+
+  String? orderStatusName;
+  String? orderStatusKey;
+  String? orderPickupImage;
+  String? orderDeliverImage;
+  String? orderUndeliverImage;
+  dynamic weight;
+  String? phone;
+  String? shippingPrice;
+  String? cod;
+  String? createdAt;
+  String? updatedAt;
+  List<OrderActivity>? orderActivities;
+  dynamic status;
+  int? currentStatus;
+
+  factory Shipment.fromJson(Map<String, dynamic> json) => Shipment(
+        orderId: json["order_id"] == null ? "" : json["order_id"],
+        orderNo: json["order_no"] == null ? "" : json["order_no"],
+        refId: json["ref_id"] == null ? 0 : json["ref_id"],
+        cop: json["cop"] == null
+            ? ""
+            : json["cop"] == ""
+                ? "0"
+                : json["cop"],
+        customerNo: json["customer_no"] == null ? "" : json["customer_no"],
+        customerName:
+            json["customer_name"] == null ? "" : json["customer_name"],
+        cc: json["cc"] == null
+            ? "0"
+            : json["cc"] == ""
+                ? "0"
+                : json["cc"],
+        orderStatusName:
+            json["order_status_name"] == null ? "" : json["order_status_name"],
+        orderStatusKey:
+            json["order_status_key"] == null ? "" : json["order_status_key"],
+        orderPickupImage: json["order_pickup_image"] == null
+            ? ""
+            : json["order_pickup_image"],
+        orderDeliverImage: json["order_deliver_image"] == null
+            ? ""
+            : json["order_deliver_image"],
+        orderUndeliverImage: json["order_undeliver_image"] == null
+            ? ""
+            : json["order_undeliver_image"],
+        weight: json["weight"] == null
+            ? 0
+            : json["weight"] == ""
+                ? "0"
+                : json["weight"],
+        phone: json["phone"] == null ? "" : json["phone"],
+        shippingPrice: json["shipping_price"] == null
+            ? "0.0"
+            : json["shipping_price"] == ""
+                ? "0"
+                : json["shipping_price"],
+        cod: json["cod"] == null
+            ? "0"
+            : json["cod"] == ""
+                ? "0"
+                : json["cod"],
+        createdAt: json["created_at"] == null ? "" : json["created_at"],
+        updatedAt: json["updated_at"] == null ? "" : json["updated_at"],
+        orderActivities: json["order_activities"] == null
+            ? []
+            : List<OrderActivity>.from(
+                json["order_activities"].map((x) => OrderActivity.fromJson(x))),
+        status: json["status"],
+        currentStatus:
+            json["current_status"] == null ? 0 : json["current_status"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "order_id": orderId == null ? null : orderId,
+        "order_no": orderNo == null ? "" : orderNo,
+        "ref_id": refId == null ? null : refId,
+        "cop": cop == null
+            ? "0"
+            : cop == ""
+                ? "0"
+                : cop,
+        "customer_no": customerNo == null ? "" : customerNo,
+        "customer_name": customerName == null ? "" : customerName,
+        "cc": cc == null
+            ? "0"
+            : cc == ""
+                ? "0"
+                : cc,
+        "order_status_name": orderStatusName == null ? "" : orderStatusName,
+        "order_status_key": orderStatusKey == null ? "" : orderStatusKey,
+        "order_pickup_image": orderPickupImage == null ? "" : orderPickupImage,
+        "order_deliver_image":
+            orderDeliverImage == null ? "" : orderDeliverImage,
+        "order_undeliver_image":
+            orderUndeliverImage == null ? "" : orderUndeliverImage,
+        "weight": weight == null ? 0 : weight,
+        "phone": phone == null ? "" : phone,
+        "shipping_price": shippingPrice == null
+            ? "0.0"
+            : shippingPrice == ""
+                ? "0"
+                : shippingPrice,
+        "cod": cod == null
+            ? "0"
+            : cod == ""
+                ? "0"
+                : cod,
+        "created_at": createdAt == null ? "" : createdAt,
+        "updated_at": updatedAt == null ? "" : updatedAt,
+        "order_activities": orderActivities == null
+            ? []
+            : List<dynamic>.from(orderActivities!.map((x) => x.toJson())),
+        "status": status,
+        "current_status": currentStatus == null ? "" : currentStatus,
+      };
+}
+
+class OrderActivity {
+  OrderActivity({
+    this.id,
+    this.status,
+    this.externalText,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  int? id;
+  int? status;
+  dynamic externalText;
+  String? createdAt;
+  String? updatedAt;
+
+  factory OrderActivity.fromJson(Map<String, dynamic> json) => OrderActivity(
+        id: json["id"] == null ? null : json["id"],
+        status: json["status"] == null ? 0 : json["status"],
+        externalText:
+            json["external_text"] == null ? "" : json["external_text"],
+        createdAt: json["created_at"] == null ? "" : json["created_at"],
+        updatedAt: json["updated_at"] == null ? "" : json["updated_at"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id == null ? null : id,
+        "status": status == null ? 0 : status,
+        "external_text": externalText == null ? "" : externalText,
+        "created_at": createdAt == null ? "" : createdAt,
+        "updated_at": updatedAt == null ? "" : updatedAt,
+      };
+}

@@ -52,7 +52,10 @@ class AllPickupBody extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     Get.put(PickupController()).fetcPickupDetailsData("$id");
-                    Get.to(() => PickupDetails(ref: "$id",date: "$date",));
+                    Get.to(() => PickupDetails(
+                          ref: "$id",
+                          date: "$date",
+                        ));
                   },
                   child: Image.asset(
                     'assets/images/visbilty.png',

@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:dalile_customer/model/all_shipment.dart';
+import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
 import 'package:dalile_customer/model/to_be_delivered.dart';
 
 OfdResponse ofdResponseFromJson(String str) =>

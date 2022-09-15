@@ -77,9 +77,11 @@ class PickupDetails extends StatelessWidget {
               ),
               Divider(),
               Obx(() {
-                if (controllerClass.isLoadingToday.value) return WaiteImage();
+                if (controllerClass.isLoadingDetails.value) return WaiteImage();
                 return controllerClass.pickupDetailsList.isEmpty
-                    ? SizedBox()
+                    ? Expanded(
+                        child:
+                            Center(child: new NoDataView(label: "No Orders")))
                     : Expanded(
                         child: ListView.builder(
                             itemCount: controllerClass.pickupDetailsList.length,
@@ -151,7 +153,7 @@ class PickupDetails extends StatelessWidget {
                                             children: [
                                               CustomText(
                                                 text:
-                                                    '${controllerClass.pickupDetailsList[i].orderId ?? "Pxxx"}',
+                                                    '${controllerClass.pickupDetailsList[i].orderNo ?? "Pxxx"}',
                                                 fontWeight: FontWeight.bold,
                                                 size: 16,
                                                 color: primaryColor,

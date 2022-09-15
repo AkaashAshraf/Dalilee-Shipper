@@ -4,7 +4,8 @@
 
 import 'dart:convert';
 
-import 'package:dalile_customer/model/all_shipment.dart';
+import 'package:dalile_customer/model/Dashboard/MainDashboardModel.dart';
+import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
 
 OfdModel ofdModelFromJson(String str) => OfdModel.fromJson(json.decode(str));
 

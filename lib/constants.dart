@@ -19,3 +19,5 @@ String terms_url = "$domain/terms"; // live
 
 String like = '$base_url/v1/store'; //live
 String image = "$domain/storage/uploads/branches/"; // live
+String dalileeOldBaseUrl =
+    "https://api.dalilee.net/test/public/api/shaheen-api";

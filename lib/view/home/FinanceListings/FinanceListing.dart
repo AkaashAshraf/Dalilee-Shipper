@@ -1,6 +1,8 @@
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/core/view_model/dashbordController.dart';
 import 'package:dalile_customer/core/view_model/financeListingController.dart';
-import 'package:dalile_customer/model/all_shipment.dart';
+import 'package:dalile_customer/model/Dashboard/MainDashboardModel.dart';
+import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
 import 'package:dalile_customer/view/home/card_body.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
@@ -39,10 +41,11 @@ class FinanceDasboradListing extends StatefulWidget {
 class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
   FinanceListingController controller = Get.put(FinanceListingController());
   RefreshController refreshController = RefreshController(initialRefresh: true);
+  var dashboardController = Get.put(DashbordController());
+
   ScrollController? scrollController;
 
   void _refresh({required type}) async {
-    print(type);
     switch (type) {
       case Status.ALL:
         {
@@ -62,7 +65,6 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
           refreshController.refreshCompleted();
           if (this.mounted)
             setState(() {
-              ;
               subTitle = controller.listPaid.length.toString() +
                   "/" +
                   controller.totalPaid.toString();
@@ -130,9 +132,7 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       setState(() {
         subTitle = widget.subTitle_;
       });
-    // controller.getAll_orders();
 
-    // TODO: implement initState
     super.initState();
   }
 
@@ -148,14 +148,12 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
   }
 
   _loadMore({required type}) async {
-    // print(type);
     switch (type) {
       case Status.ALL:
         {
           if (controller.loadMoreAll.value) return;
-          if ((controller.limitAll.value < controller.totalAll.value) &&
-              scrollController!.position.extentAfter < 100.0) {
-            // bool isTop = scrollController!.position.pixels == 0;
+          if ((controller.listAll.length <= controller.totalAll.value) &&
+              scrollController!.position.extentAfter < 1000.0) {
             controller.loadMoreAll.value = true;
             await controller.getAllOrders();
             if (this.mounted)
@@ -170,9 +168,8 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       case Status.PAID:
         {
           if (controller.loadMorePaid.value) return;
-          if ((controller.limitPaid.value < controller.totalPaid.value) &&
-              scrollController!.position.extentAfter < 100.0) {
-            // bool isTop = scrollController!.position.pixels == 0;
+          if ((controller.listPaid.length <= controller.totalPaid.value) &&
+              scrollController!.position.extentAfter < 1000.0) {
             controller.loadMorePaid.value = true;
             await controller.getPaidOrders();
             if (this.mounted)
@@ -188,9 +185,9 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       case Status.COD_PENDING:
         {
           if (controller.loadMoreCodPending.value) return;
-          if ((controller.limitCodPending.value <
+          if ((controller.listCodPending.length <=
                   controller.totalCodPending.value) &&
-              scrollController!.position.extentAfter < 100.0) {
+              scrollController!.position.extentAfter < 1000.0) {
             controller.loadMoreCodPending.value = true;
             await controller.getCodPendingOrders();
             if (this.mounted)
@@ -206,9 +203,9 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       case Status.READY_TO_PAY:
         {
           if (controller.loadMoreReadyToPay.value) return;
-          if ((controller.limitReadyToPay.value <
+          if ((controller.listReadyToPay.length <=
                   controller.totalReadyToPay.value) &&
-              scrollController!.position.extentAfter < 100.0) {
+              scrollController!.position.extentAfter < 1000.0) {
             // bool isTop = scrollController!.position.pixels == 0;
             controller.loadMoreReadyToPay.value = true;
             // controller.listReadyToPay += controller.listReadyToPay;
@@ -225,9 +222,9 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       case Status.COD_WITH_DRIVERS:
         {
           if (controller.loadMoreCodWithDrivers.value) return;
-          if ((controller.limitCodWithDrivers.value <
+          if ((controller.listCodWithDrivers.length <=
                   controller.totalCodWithDrivers.value) &&
-              scrollController!.position.extentAfter < 100.0) {
+              scrollController!.position.extentAfter < 1000.0) {
             // bool isTop = scrollController!.position.pixels == 0;
             controller.loadMoreCodWithDrivers.value = true;
             await controller.getCodWithDriversOrders();
@@ -244,9 +241,9 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       case Status.COD_RETURN:
         {
           if (controller.loadMoreCodReturn.value) return;
-          if ((controller.limitCodReturn.value <
+          if ((controller.listCodReturn.length <=
                   controller.totalCodReturn.value) &&
-              scrollController!.position.extentAfter < 100.0) {
+              scrollController!.position.extentAfter < 1000.0) {
             // bool isTop = scrollController!.position.pixels == 0;
             controller.loadMoreCodReturn.value = true;
             await controller.getCodReturnOrders();
@@ -366,19 +363,21 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
                                                                                 itemBuilder: (context, i) {
                                                                                   return GetBuilder<FinanceListingController>(
                                                                                     builder: (x) => card(
-                                                                                        controller,
-                                                                                        widget.type == Status.ALL
-                                                                                            ? controller.listAll[i]
-                                                                                            : widget.type == Status.PAID
-                                                                                                ? controller.listPaid[i]
-                                                                                                : widget.type == Status.COD_PENDING
-                                                                                                    ? controller.listCodPending[i]
-                                                                                                    : widget.type == Status.READY_TO_PAY
-                                                                                                        ? controller.listReadyToPay[i]
-                                                                                                        : widget.type == Status.COD_WITH_DRIVERS
-                                                                                                            ? controller.listCodWithDrivers[i]
-                                                                                                            : controller.listCodReturn[i],
-                                                                                        x),
+                                                                                      controller,
+                                                                                      widget.type == Status.ALL
+                                                                                          ? controller.listAll[i]
+                                                                                          : widget.type == Status.PAID
+                                                                                              ? controller.listPaid[i]
+                                                                                              : widget.type == Status.COD_PENDING
+                                                                                                  ? controller.listCodPending[i]
+                                                                                                  : widget.type == Status.READY_TO_PAY
+                                                                                                      ? controller.listReadyToPay[i]
+                                                                                                      : widget.type == Status.COD_WITH_DRIVERS
+                                                                                                          ? controller.listCodWithDrivers[i]
+                                                                                                          : controller.listCodReturn[i],
+                                                                                      x,
+                                                                                      dashboardController.trackingStatuses,
+                                                                                    ),
                                                                                   );
                                                                                 },
                                                                               ),
@@ -473,14 +472,19 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
     }
   }
 
-  CardBody card(FinanceListingController controller, Shipment shipment,
-      FinanceListingController x) {
+  CardBody card(
+    FinanceListingController controller,
+    Shipment shipment,
+    FinanceListingController x,
+    List<TrackingStatus> trackingStatus,
+  ) {
     return CardBody(
       orderId: shipment.orderId ?? 00,
+      date: shipment.updatedAt,
       customer_name: shipment.customerName,
       Order_current_Status: shipment.orderStatusName,
       number: shipment.phone ?? "+968",
-      orderNumber: shipment.orderNo,
+      orderNumber: shipment.orderNo.toString(),
       cod: shipment.cod ?? "0.00",
       cop: shipment.cop ?? "0.00",
       shipmentCost: shipment.shippingPrice ?? "0.00",
@@ -488,11 +492,9 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       undeleiver_image: shipment.orderUndeliverImage ?? "",
       pickup_image: shipment.orderPickupImage ?? "",
       totalCharges:
-          '${double.parse(shipment.shippingPrice.toString()) + double.parse(shipment.cod.toString())}',
+          '${(double.tryParse(shipment.cod.toString()) ?? 0.0) - (double.tryParse(shipment.shippingPrice.toString()) ?? 0.0)}',
       stutaus: shipment.orderActivities,
-      icon: controller.trackingStatuses
-          .map((element) => element.icon.toString())
-          .toList(),
+      icon: trackingStatus.map((element) => element.icon.toString()).toList(),
       status_key: shipment.orderStatusKey,
       ref: shipment.refId ?? 0,
       weight: shipment.weight ?? 0.00,

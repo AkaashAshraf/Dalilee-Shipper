@@ -1,5 +1,6 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
+import 'package:dalile_customer/view/shipments/in_view.dart';
 import 'package:dalile_customer/view/shipments/out_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';

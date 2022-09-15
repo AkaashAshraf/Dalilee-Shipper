@@ -1,5 +1,6 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/finance_view_model.dart';
+import 'package:dalile_customer/core/view_model/view_order_view_model.dart';
 import 'package:dalile_customer/view/menu/finances/finance_enquiry.dart';
 import 'package:dalile_customer/view/menu/finances/view_order.dart';
 import 'package:dalile_customer/view/menu/finances/manage_accounts.dart';
@@ -8,44 +9,37 @@ import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class OpendedView extends StatelessWidget {
   const OpendedView({Key? key, required this.c}) : super(key: key);
   final FinanceController c;
+
   @override
   Widget build(BuildContext context) {
+    final RefreshController refreshController =
+        RefreshController(initialRefresh: true);
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
         child: Obx(
-          () => SingleChildScrollView(
+          () => SmartRefresher(
+            header: WaterDropHeader(
+              waterDropColor: primaryColor,
+            ),
+            controller: refreshController,
+            onRefresh: () async {
+              await c.fetchOpenData();
+
+              // await widget.c.fetchCloseData(isRefresh: true);
+              refreshController.refreshCompleted();
+            },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                !c.isLoading.value
-                    ? MaterialButton(
-                        onPressed: () {
-                          c.fetchOpenData();
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            CustomText(
-                              text: 'Updated data ',
-                              color: Colors.grey,
-                              alignment: Alignment.center,
-                              size: 10,
-                            ),
-                            Icon(
-                              Icons.refresh,
-                              color: Colors.grey,
-                            ),
-                          ],
-                        ),
-                      )
-                    : const Padding(
-                        padding: EdgeInsets.all(5), child: WaiteImage()),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                ),
                 Container(
                   constraints: const BoxConstraints(
                     minHeight: 250,
@@ -134,9 +128,10 @@ class OpendedView extends StatelessWidget {
                 CustomButtom(
                   text: 'View Orders',
                   onPressed: () {
+                    Get.put(ViewOrderController());
                     Get.to(() => ViewOrderView(),
                         transition: Transition.downToUp,
-                        duration: const Duration(milliseconds: 400));
+                        duration: const Duration(milliseconds: 0));
                   },
                 ),
                 const SizedBox(
