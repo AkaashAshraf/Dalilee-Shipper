@@ -23,8 +23,8 @@ class HomeView extends StatelessWidget {
           toolbarHeight: 70,
           backgroundColor: primaryColor,
           foregroundColor: whiteColor,
-          title: const CustomText(
-            text: 'DASHBOARD',
+          title: CustomText(
+            text: '14'.tr,
             color: whiteColor,
             size: 18,
             alignment: Alignment.center,
@@ -32,6 +32,7 @@ class HomeView extends StatelessWidget {
           centerTitle: true,
         ),
         floatingActionButton: SpeedDial(
+          
             animatedIcon: AnimatedIcons.menu_close,
             elevation: 8,
             backgroundColor: primaryColor,
@@ -42,7 +43,7 @@ class HomeView extends StatelessWidget {
                   Icons.picture_as_pdf_outlined,
                   color: primaryColor,
                 ),
-                label: 'Export Pdf',
+                label: '15'.tr,
                 labelStyle: TextStyle(color: primaryColor),
                 onTap: () {
                   downloadController.selectedOrderType.value =
@@ -56,7 +57,7 @@ class HomeView extends StatelessWidget {
                   Icons.table_rows_outlined,
                   color: primaryColor,
                 ),
-                label: 'Export Excell',
+                label: '16'.tr,
                 labelStyle: TextStyle(color: primaryColor),
                 onTap: () {
                   downloadController.selectedOrderType.value =
@@ -117,12 +118,12 @@ class HomeView extends StatelessWidget {
           ),
         ),
       );
-  List<Widget> _tabTwoParameters() => const [
+  List<Widget> _tabTwoParameters() => [
         Tab(
-          text: "Main Dashboard",
+          text: "17".tr,
         ),
         Tab(
-          text: "Finances Dashboard",
+          text: "18".tr,
         ),
         // Tab(
         //   text: "Request Pickup",

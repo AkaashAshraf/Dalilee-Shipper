@@ -1,4 +1,5 @@
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/core/view_model/my_lang_controller.dart';
 import 'package:dalile_customer/view/menu/profiles/edit_profile.dart';
 import 'package:dalile_customer/view/menu/profiles/terms_Conditions_view.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
@@ -152,22 +153,22 @@ class ProfileView extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            // _buildRows("Language", Icons.language, () {
-            //   showDialog(
-            //     context: context,
-            //     builder: (_) => AlertDialog(
-            //       scrollable: true,
-            //       shape: const RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.all(
-            //           Radius.circular(5.0),
-            //         ),
-            //       ),
-            //       content: Builder(builder: (context) {
-            //         return const _Showlung();
-            //       }),
-            //     ),
-            //   );
-            // }),
+            _buildRows("Language", Icons.language, () {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  scrollable: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5.0),
+                    ),
+                  ),
+                  content: Builder(builder: (context) {
+                    return  _Showlung();
+                  }),
+                ),
+              );
+            }),
 
             const Spacer(),
           ],
@@ -211,10 +212,10 @@ class ProfileView extends StatelessWidget {
 }
 
 class _Showlung extends StatelessWidget {
-  const _Showlung({
+  _Showlung({
     Key? key,
   }) : super(key: key);
-
+  MyLang controller = Get.put(MyLang());
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -249,6 +250,12 @@ class _Showlung extends StatelessWidget {
             hint: 'English',
             text: 'Select Language',
             onSaved: (val) {
+              if (val == "Arabic") {
+                controller.changeLang("ar");
+              } else {
+                controller.changeLang("en");
+              }
+              print("$val");
               return null;
             },
             validator: (val) => val == null

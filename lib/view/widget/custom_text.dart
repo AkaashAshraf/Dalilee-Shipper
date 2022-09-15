@@ -23,7 +23,7 @@ class CustomText extends StatelessWidget {
       child: Text(
         text,
         style:
-            TextStyle(fontSize: size, color: color, fontWeight: fontWeight,),
+            TextStyle(fontSize: size, color: color, fontWeight: fontWeight,fontFamily: "Montserrat",),
       ),
     );
   }

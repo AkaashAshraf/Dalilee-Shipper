@@ -366,9 +366,10 @@ class _MainDashState extends State<MainDash> {
                                           : EmptyState(
                                               label: 'No data',
                                             ),
-                                  title: "Shipments")
+                                  title: "20".tr)
                               : MainCardBodyView(
-                                  title: 'All Shipments (' +
+                                  title: '21'.tr +
+                                      '(' +
                                       controller.allShipemet.length.toString() +
                                       "/" +
                                       controller.dashboardAllShiments.value
@@ -533,7 +534,7 @@ class _MainDashState extends State<MainDash> {
                   context,
                   _InsideShape(
                     image: 'assets/images/allshipment.png',
-                    title: 'All Shipments',
+                    title: '21'.tr,
                     numbers: '${widget.controller.dashboardAllShiments.value}',
                   ),
                   15.0,
@@ -809,108 +810,7 @@ class _MainDashState extends State<MainDash> {
                   InkWell(
                     onTap: () {
                       Get.to(UndeliverListing());
-                      if (false)
-                        Get.to(
-                            () =>
-                                GetX<DashbordController>(builder: (controller) {
-                                  return widget.controller.tobePickup.isEmpty
-                                      ? MainCardBodyView(
-                                          controller: controller
-                                                  .inViewLoadingToBePickupShipments
-                                                  .value
-                                              ? WaiteImage()
-                                              : EmptyState(
-                                                  label: 'No data',
-                                                ),
-                                          title: "Un-Delivered Shipments")
-                                      : Container(
-                                          color: Colors.white,
-                                          height: MediaQuery.of(context)
-                                              .size
-                                              .height,
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                height: controller
-                                                            .loadMoreToBePickup
-                                                            .value ==
-                                                        true
-                                                    ? MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        0.93
-                                                    : MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        1,
-                                                child: MainCardBodyView(
-                                                  title:
-                                                      "Un-Delivered Shipments",
-                                                  controller: SmartRefresher(
-                                                    header: WaterDropHeader(
-                                                      waterDropColor:
-                                                          primaryColor,
-                                                    ),
-                                                    controller:
-                                                        toBePickupShipmentRefreshController,
-                                                    onRefresh: () async {
-                                                      _refresh(
-                                                          type: Status
-                                                              .TO_BE_PICKUP);
-                                                    },
-                                                    child: ListView.separated(
-                                                      controller:
-                                                          toBePickupScrollController,
-                                                      separatorBuilder:
-                                                          (context, i) =>
-                                                              const SizedBox(
-                                                                  height: 15),
-                                                      itemCount: controller
-                                                          .tobePickup.length,
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 15,
-                                                              right: 15,
-                                                              bottom: 10,
-                                                              top: 5),
-                                                      itemBuilder:
-                                                          (context, i) {
-                                                        return AllPickupBody(
-                                                          cod:
-                                                              "${widget.controller.tobePickup[i].cop ?? 0}",
-                                                          name:
-                                                              "${widget.controller.tobePickup[i].driver ?? "undefined"}",
-                                                          qty:
-                                                              "${widget.controller.tobePickup[i].quantity ?? 0}",
-                                                          date:
-                                                              "${widget.controller.tobePickup[i].date ?? "dd-mm-yyyy"}",
-                                                          id: "${widget.controller.tobePickup[i].id ?? 00}",
-                                                          onPressed: () {
-                                                            // controllerClass.makePhoneCall(
-                                                            //     "${controllerClass.allPickup[i]!.driveMobile}");
-                                                          },
-                                                          status: widget
-                                                                  .controller
-                                                                  .tobePickup[i]
-                                                                  .status ??
-                                                              '',
-                                                        );
-                                                      },
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              if (controller?.loadMoreToBePickup
-                                                      .value ==
-                                                  true)
-                                                WaiteImage()
-                                            ],
-                                          ),
-                                        );
-                                }),
-                            transition: Transition.downToUp,
-                            duration: const Duration(milliseconds: 400));
-                    },
+                     },
                     child: _InsideSmallBox(
                       image: 'assets/images/tobepickup.png',
                       // title: 'To Be\nPickup',

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dalile_customer/components/popups/askOtp.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/profileController.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';

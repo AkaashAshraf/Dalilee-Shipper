@@ -407,10 +407,9 @@ class DashbordController extends GetxController {
       } else {
         loadMoreToBePickup.value = true;
       }
-      var tobeData =
+      ToBePickupData? tobeData =
           await DashboardApi.fetchTobePickupData(limit: limitToBePichup.value);
-      print("----------to-be-total:=>" +
-          tobeData!.toBePickups!.length.toString());
+     
       if (tobeData != null) {
         if (isRefresh) {
           tobePickup.value = tobeData.toBePickups!;

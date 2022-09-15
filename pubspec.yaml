@@ -122,6 +122,14 @@ flutter:
     - family: MyTicket
       fonts:
         - asset: assets/images/MyTicket.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
+    #       - asset: fonts/Schyler-Italic.ttf
+
+    #         style: italic
+    #   - family: Trajan Pro
+
+    - family: Montserrat
+      fonts:
+        - asset: assets/font/Montserrat-Arabic-Medium.otf
+    - family: Montserratb
+      fonts:
+        - asset: assets/font/Montserrat-Arabic-SemiBold.otf
