@@ -178,6 +178,8 @@ CardBody card(
   DashbordController x,
 ) {
   return CardBody(
+    willaya: shipment.wilayaName,
+    area: shipment.areaName,
     date: shipment.updatedAt,
     orderId: shipment.orderId ?? 00,
     customer_name: shipment.customerName,

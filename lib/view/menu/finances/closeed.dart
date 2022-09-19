@@ -109,12 +109,12 @@ class _ColusedViewState extends State<ColusedView> {
                                 ),
                                 _buildRowText('Closing Date :',
                                     '${widget.c.closeData[i].closingDate}'),
+                                _buildRowText('Total Orders Delivered :',
+                                    '${widget.c.closeData[i].totalOrders}'),
                                 _buildRowText('COD :',
                                     '${widget.c.closeData[i].cod} OMR'),
                                 _buildRowText('Shipping Cost :',
                                     '${widget.c.closeData[i].shippingCost} OMR'),
-                                _buildRowText('Total Orders Delivered :',
-                                    '${widget.c.closeData[i].totalOrders}'),
                                 _buildRowText(
                                     'CC :', '${widget.c.closeData[i].cc} OMR'),
                                 Padding(
@@ -211,9 +211,40 @@ class _ColusedViewState extends State<ColusedView> {
             InkWell(
               onTap: () {
                 Get.defaultDialog(
+                    title: 'Excel File',
+                    titlePadding: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 15),
+                    contentPadding: const EdgeInsets.only(
+                        left: 30, right: 30, top: 0, bottom: 15),
+                    middleText: 'Are you sure to download Excel file?',
+                    textCancel: 'Cancel',
+                    textConfirm: 'Ok',
+                    buttonColor: primaryColor,
+                    confirmTextColor: Colors.white,
+                    cancelTextColor: Colors.black,
+                    radius: 10,
+                    backgroundColor: whiteColor,
+                    onConfirm: () {
+                      widget.c.launchFile(id, type: "csv");
+                    });
+              },
+              child: Image.asset(
+                'assets/images/csv.png',
+                width: 25,
+                height: 25,
+              ),
+            ),
+            const SizedBox(
+              width: 15,
+            ),
+            InkWell(
+              onTap: () {
+                Get.defaultDialog(
                     title: 'PDF File',
-                    titlePadding: const EdgeInsets.all(15),
-                    contentPadding: const EdgeInsets.all(5),
+                    titlePadding: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 15),
+                    contentPadding: const EdgeInsets.only(
+                        left: 30, right: 30, top: 0, bottom: 15),
                     middleText: 'Are you sure to download pdf file?',
                     textCancel: 'Cancel',
                     textConfirm: 'Ok',
@@ -223,7 +254,7 @@ class _ColusedViewState extends State<ColusedView> {
                     radius: 10,
                     backgroundColor: whiteColor,
                     onConfirm: () {
-                      widget.c.launchPDF(id);
+                      widget.c.launchFile(id, type: "pdf");
                     });
               },
               child: Image.asset(

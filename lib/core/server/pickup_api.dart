@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/http/FromDalilee.dart';
@@ -75,6 +76,7 @@ class PickupApi {
         "lat": "$lat",
         "lng": "$lng"
       });
+      // log(response.toString());
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
 

@@ -479,6 +479,8 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
     List<TrackingStatus> trackingStatus,
   ) {
     return CardBody(
+      willaya: shipment.wilayaName,
+      area: shipment.areaName,
       orderId: shipment.orderId ?? 00,
       date: shipment.updatedAt,
       customer_name: shipment.customerName,

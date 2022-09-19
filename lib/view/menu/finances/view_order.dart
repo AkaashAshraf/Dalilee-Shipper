@@ -160,6 +160,10 @@ class _ViewOrderViewState extends State<ViewOrderView> {
                                     init: ShipmentViewModel(),
                                     builder: (x) {
                                       return CardBody(
+                                        willaya: controller
+                                            .viewOrderData[i].wilayaName,
+                                        area: controller
+                                            .viewOrderData[i].areaName,
                                         date: controller
                                             .viewOrderData[i].updatedAt,
                                         status_key: controller

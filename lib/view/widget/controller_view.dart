@@ -7,35 +7,31 @@ import 'package:get/get.dart';
 
 class ControllerView extends StatelessWidget {
   const ControllerView({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeViewModel>(
-      init: HomeViewModel(),
-      builder: (_data) {
-      return Scaffold(
-        
-        bottomNavigationBar: ConvexAppBar(
-          disableDefaultTabController:true,
-           items: [
-              buildItem('assets/images/Vector.png'),
-              buildItem('assets/images/icon-park-outline_delivery.png'),
-              buildItem('assets/images/carbon_delivery-parcel.png'),
-              buildItem('assets/images/ll.png'),
-            ],
-            backgroundColor: primaryColor,
-            color: whiteColor,
-            activeColor: whiteColor,
-            style: TabStyle.reactCircle,
-          
-           
-            onTap: (i) {
-              
-              _data.onSelectItem(i, context);
-            }),
-        body: _data.screen,
-      );
-    });
+        init: HomeViewModel(),
+        builder: (_data) {
+          return Scaffold(
+            bottomNavigationBar: ConvexAppBar(
+                disableDefaultTabController: true,
+                items: [
+                  buildItem('assets/images/Vector.png'),
+                  buildItem('assets/images/icon-park-outline_delivery.png'),
+                  buildItem('assets/images/carbon_delivery-parcel.png'),
+                  buildItem('assets/images/ll.png'),
+                ],
+                backgroundColor: primaryColor,
+                color: whiteColor,
+                activeColor: whiteColor,
+                style: TabStyle.reactCircle,
+                onTap: (i) {
+                  _data.onSelectItem(i, context);
+                }),
+            body: _data.screen,
+          );
+        });
   }
 
   TabItem<dynamic> buildItem(String image) {

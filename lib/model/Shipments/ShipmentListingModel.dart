@@ -54,29 +54,32 @@ class Data {
 }
 
 class Shipment {
-  Shipment(
-      {this.orderId,
-      this.orderNo,
-      this.refId,
-      this.cop,
-      this.customerNo,
-      this.customerName,
-      this.cc,
-      this.orderStatusName,
-      this.orderStatusKey,
-      this.orderPickupImage,
-      this.orderDeliverImage,
-      this.orderUndeliverImage,
-      this.weight,
-      this.phone,
-      this.shippingPrice,
-      this.cod,
-      this.createdAt,
-      this.updatedAt,
-      this.orderActivities,
-      this.status,
-      this.currentStatus,
-      this.isOpen: false});
+  Shipment({
+    this.orderId,
+    this.orderNo,
+    this.refId,
+    this.cop,
+    this.customerNo,
+    this.customerName,
+    this.cc,
+    this.orderStatusName,
+    this.orderStatusKey,
+    this.orderPickupImage,
+    this.orderDeliverImage,
+    this.orderUndeliverImage,
+    this.weight,
+    this.phone,
+    this.shippingPrice,
+    this.cod,
+    this.createdAt,
+    this.updatedAt,
+    this.orderActivities,
+    this.status,
+    this.currentStatus,
+    this.isOpen: false,
+    this.wilayaName,
+    this.areaName,
+  });
 
   int? orderId;
   String? orderNo;
@@ -96,6 +99,9 @@ class Shipment {
   String? phone;
   String? shippingPrice;
   String? cod;
+
+  String? wilayaName;
+  String? areaName;
   String? createdAt;
   String? updatedAt;
   List<OrderActivity>? orderActivities;
@@ -132,6 +138,8 @@ class Shipment {
         orderUndeliverImage: json["order_undeliver_image"] == null
             ? ""
             : json["order_undeliver_image"],
+        wilayaName: json["wilaya_name"] ?? "",
+        areaName: json["area_name"] ?? "",
         weight: json["weight"] == null
             ? 0
             : json["weight"] == ""
@@ -184,6 +192,8 @@ class Shipment {
             orderUndeliverImage == null ? "" : orderUndeliverImage,
         "weight": weight == null ? 0 : weight,
         "phone": phone == null ? "" : phone,
+        "wilaya_name": wilayaName == null ? "" : wilayaName,
+        "area_name": areaName == null ? "" : areaName,
         "shipping_price": shippingPrice == null
             ? "0.0"
             : shippingPrice == ""

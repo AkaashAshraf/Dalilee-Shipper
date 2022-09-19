@@ -18,20 +18,13 @@ class What3WordsView extends StatefulWidget {
 class _What3WordsViewState extends State<What3WordsView> {
   List<String> added = [];
   String currentText = "";
-  List<String> suggestions = [
-    "oman.muscat.mabela",
-    "oman.muscat.seeb",
-    "oman.barka.sawadi",
-    "oman.sohar.sur",
-    "oman.salalah.tamrid",
-    "oman.nizwa.sur",
-  ];
 
   GlobalKey<AutoCompleteTextFieldState<String>> key = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     Get.put(What3WordController()).currentWords.value = "";
+    Get.put(What3WordController()).getMyWords();
+
     return Scaffold(
       backgroundColor: Colors.grey.withOpacity(0.3),
       body: Center(
@@ -87,27 +80,27 @@ class _What3WordsViewState extends State<What3WordsView> {
                             Column(
                           children: [
                             CustomText(
-                              text:
-                                  "Enter what3words" + _data.currentWords.value,
+                              text: "Enter what3words",
                               color: text1Color,
                               fontWeight: FontWeight.w400,
                             ),
                             SimpleAutoCompleteTextField(
                                 key: key,
+
+                                // autofocus: true,
                                 decoration: InputDecoration(
                                     border: const OutlineInputBorder(
                                         // borderSide: BorderSide(
                                         //     color: Colors.blue, width: 0.5),
                                         ),
                                     hintText: "/// limit.broom.flip",
-                                    errorText: _data.currentWords.value != "" &&
-                                            !_data.currentWords.value
-                                                .contains(".")
-                                        ? "invalid patterens"
-                                        : ""),
+                                    errorText:
+                                        !_data.currentWords.value.contains(".")
+                                            ? "invalid patterens"
+                                            : ""),
                                 controller:
                                     TextEditingController(text: currentText),
-                                suggestions: suggestions,
+                                suggestions: _data.suggestions,
                                 textChanged: (text) =>
                                     _data.currentWords.value = text,
                                 clearOnSubmit: false,

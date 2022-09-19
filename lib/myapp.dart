@@ -1,3 +1,4 @@
+import 'package:dalile_customer/core/server/auth.dart';
 import 'package:dalile_customer/helper/binding.dart';
 import 'package:dalile_customer/view/widget/splatsh_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +14,10 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+
     return FutureBuilder(builder: (context, snapshot) {
       // future:
       // Firebase.initializeApp();
-
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         initialBinding: Binding(),

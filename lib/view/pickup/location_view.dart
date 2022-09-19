@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dalile_customer/components/popups/askOtp.dart';
 import 'package:dalile_customer/components/popups/w3WordsPopup.dart';
@@ -17,6 +18,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:map_picker/map_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GMap extends StatefulWidget {
   const GMap({Key? key}) : super(key: key);
@@ -98,19 +100,23 @@ class _GMapState extends State<GMap> {
     // var _url =
     //     "http://shaheen-test2.dalilee.om/api/w3w/convert-to-3wa/?lat=$lat&lng=$lang";
 
-    var _url = "$base_url/w3w/convert-to-3wa/?lat=$lat&lng=$lang";
+    var _url =
+        "$base_url/w3w/convert-to-3wa/?lat=${double.tryParse(lat)!.toStringAsFixed(3)}&lng=${double.tryParse(lang)!.toStringAsFixed(3)}";
     try {
-      var response = await http.get(
-        Uri.parse(_url),
-      );
-
+      final prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString('token') ?? '';
+      var response = await http.get(Uri.parse(_url), headers: {
+        "Authorization": "Bearer $token",
+      });
       final data = json.decode(response.body);
 
       if (data["status"] == "success") {
-        word3 = data["words"];
+        setState(() {
+          word3 = data["words"];
+        });
       } else {}
     } catch (e) {
-      word3 = '';
+      word3 = "";
     }
   }
 
@@ -158,6 +164,8 @@ class _GMapState extends State<GMap> {
           long.text.toString(),
           lat.text.toString(),
         );
+        // log("-----------lat===>${lat.text.toString()}");
+        // log("-----------long===>${long.text.toString()}");
         Navigator.pop(context);
 
         w3WordsPopup(context, word3);
@@ -298,7 +306,6 @@ class _GMapState extends State<GMap> {
                           text: 'Pick Address',
                           onPressed: () {
                             _apiData();
-                            ;
                           },
                         )),
             )

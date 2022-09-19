@@ -189,7 +189,7 @@ abstract class FinanceApi {
     return null;
   }
 
-  static Future<String?> fetchPDFCloseData(id) async {
+  static Future<String?> fetchPDFCloseData(id, {required String type}) async {
     var url = "$like/pickup/export-invoice-pdf";
     final prefs = await SharedPreferences.getInstance();
 
@@ -203,7 +203,8 @@ abstract class FinanceApi {
         "Accept": "application/json",
         "Authorization": "Bearer $tokenLo"
       }, body: {
-        "invoice_id": "$id"
+        "invoice_id": "$id",
+        "type": type
       });
       if (response.statusCode == 200) {
         var data = json.decode(response.body);

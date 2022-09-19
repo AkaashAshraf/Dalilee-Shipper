@@ -21,6 +21,8 @@ class CardBody extends StatelessWidget {
       this.stutaus,
       this.totalCharges,
       this.weight,
+      required this.area,
+      required this.willaya,
       required this.date,
       required this.Order_current_Status,
       required this.deleiver_image,
@@ -51,7 +53,9 @@ class CardBody extends StatelessWidget {
       cc,
       customer_name,
       date,
-      cod;
+      cod,
+      willaya,
+      area;
 
   final List<dynamic>? stutaus;
   final int currentStep;
@@ -166,13 +170,22 @@ class CardBody extends StatelessWidget {
                 ),
                 Expanded(
                     flex: 3,
-                    child: _buildRowText('CC : $cc OMR', 'Date : $date ')),
+                    child: _buildRowText('COD : $cod OMR', 'Date : $date ')),
+                const SizedBox(
+                  height: 10,
+                ),
               ],
             ),
           ),
-          // const SizedBox(
-          //   height: 5,
-          // ),
+          if (willaya != "")
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 8),
+              child: CustomText(
+                text: "Address: $willaya $area",
+                fontWeight: FontWeight.w400,
+                color: text1Color,
+              ),
+            ),
           if (customer_name != "")
             Padding(
               padding: const EdgeInsets.only(left: 15.0, right: 10, top: 10),
@@ -280,6 +293,7 @@ class CardBody extends StatelessWidget {
             _buildRowDown(
                 text1Color, 12, 'Shipping Cost ', '$shipmentCost OMR'),
             _buildRowDown(text1Color, 12, 'COD ', '$cod OMR'),
+            _buildRowDown(text1Color, 12, 'CC ', '$cc OMR'),
             _buildRowDown(
                 primaryColor, 13, 'Total Charges ', ' $totalCharges OMR'),
           ],

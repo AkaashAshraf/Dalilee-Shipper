@@ -35,6 +35,37 @@ Future<dynamic> get(String url) async {
   }
 }
 
+Future<dynamic> getWithUrl(String url) async {
+  var _url = url;
+  // print(_url);
+  final prefs = await SharedPreferences.getInstance();
+
+  String token = prefs.getString('token') ?? '';
+
+  try {
+    var response = await http.get(Uri.parse(_url), headers: {
+      "Accept": "application/json",
+      "Authorization": "Bearer $token"
+    });
+    // print(response.body);
+    // return response.statusCode;
+    if (response.statusCode == 200) {
+      return response;
+    } else if (response.statusCode == 401) {
+      prefs.remove("loginData");
+      prefs.remove("token");
+      prefs.clear();
+      Get.deleteAll();
+      Get.offAll(() => LoginView());
+      return null;
+    } else {
+      return null;
+    }
+  } catch (e) {
+    return e;
+  }
+}
+
 Future<dynamic> post(String url, dynamic body) async {
   var _url = like + url;
   final prefs = await SharedPreferences.getInstance();

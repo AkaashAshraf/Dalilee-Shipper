@@ -95,7 +95,7 @@ class DownloadController extends GetxController {
         var body = exportResponseFromJson(res.body);
 
         startDownloadingExcellOrPdf(body.data!.url.toString(), type);
-        // print(body.data!.url.toString());
+        print(res.toString());
       } else
         print(res);
     } catch (e) {

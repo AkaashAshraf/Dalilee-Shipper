@@ -99,13 +99,13 @@ class FinanceController extends GetxController {
   }
 //----------------Api Data----------------------
 
-  launchPDF(id) async {
+  launchFile(id, {required String type}) async {
     Get.dialog(const WaiteImage(), barrierColor: Colors.transparent);
     try {
-      var pdf =
-          await FinanceApi.fetchPDFCloseData(id).whenComplete(() => Get.back());
+      var pdf = await FinanceApi.fetchPDFCloseData(id, type: type)
+          .whenComplete(() => Get.back());
       if (pdf != null) {
-        print('pdf----$pdf');
+        // print('pdf----$pdf');
         var url = pdf;
         await launch(url);
       }

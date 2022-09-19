@@ -1,6 +1,8 @@
 import 'package:dalile_customer/config/localNotificationService.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/dashbordController.dart';
+import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
+import 'package:dalile_customer/core/view_model/view_order_view_model.dart';
 import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
 import 'package:dalile_customer/view/home/MainDashboardListing/unDeliverListing.dart';
 import 'package:dalile_customer/view/home/card_body.dart';
@@ -48,6 +50,7 @@ class _MainDashState extends State<MainDash> {
 
   RefreshController cancelShipmentRefreshController =
       RefreshController(initialRefresh: true);
+
   Future<void> setupInteractedMessage() async {
     RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
@@ -223,6 +226,11 @@ class _MainDashState extends State<MainDash> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ShipmentViewModel());
+    Get.put(
+      () => ViewOrderController(),
+    );
+
     return Container(
       width: double.infinity,
       color: bgColor,
@@ -821,6 +829,8 @@ class _MainDashState extends State<MainDash> {
   CardBody dashBoardCard(
       DashbordController controller, Shipment shipment, DashbordController x) {
     return CardBody(
+      willaya: shipment.wilayaName,
+      area: shipment.areaName,
       date: shipment.updatedAt,
       deleiver_image: shipment.orderDeliverImage ?? "",
       undeleiver_image: shipment.orderUndeliverImage ?? "",

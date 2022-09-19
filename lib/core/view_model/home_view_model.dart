@@ -101,20 +101,25 @@ class HomeViewModel extends GetxController {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                buildMenu(Icons.calculate_outlined, "Calculate",
-                                    context, () {
-                                  Get.back();
-                                  _screen = const MenuPageView();
-                                  _screenMenu = const CalculateView();
-                                  update();
-                                }),
+                                // buildMenu(Icons.calculate_outlined, "Calculate",
+                                //     context, () {
+                                //   Get.back();
+                                //   _screen = const MenuPageView();
+                                //   _screenMenu = const CalculateView();
+                                //   update();
+                                // }),
                                 buildMenu(
                                     Icons.logout_outlined, "Sign out", context,
                                     () {
                                   Get.defaultDialog(
                                       title: 'Sgin Out',
-                                      titlePadding: const EdgeInsets.all(15),
-                                      contentPadding: const EdgeInsets.all(5),
+                                      titlePadding: const EdgeInsets.symmetric(
+                                          horizontal: 25, vertical: 15),
+                                      contentPadding: const EdgeInsets.only(
+                                          left: 30,
+                                          right: 30,
+                                          top: 0,
+                                          bottom: 15),
                                       middleText:
                                           'Are you sure you want to sign out ?',
                                       textCancel: 'Cancel',

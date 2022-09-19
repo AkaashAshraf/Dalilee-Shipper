@@ -114,8 +114,8 @@ class ShipmentViewModel extends GetxController {
   launchPDF(id) async {
     Get.dialog(const WaiteImage(), barrierColor: Colors.transparent);
     try {
-      var pdf =
-          await FinanceApi.fetchPDFCloseData(id).whenComplete(() => Get.back());
+      var pdf = await FinanceApi.fetchPDFCloseData(id, type: "pdf")
+          .whenComplete(() => Get.back());
       if (pdf != null) {
         var url = pdf;
         await launch(url);

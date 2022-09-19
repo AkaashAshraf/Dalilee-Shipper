@@ -161,12 +161,12 @@ class DashbordController extends GetxController {
 
   fetchAllShipmentData({bool isRefresh: false}) async {
     try {
-      var limit = "100";
+      var limit = "500";
       var offset = allShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "100";
+        limit = "500";
         offset = "0";
       }
       // limit = "1";
@@ -201,12 +201,12 @@ class DashbordController extends GetxController {
 
   fetchDeliverShipemetData({isRefresh: false}) async {
     try {
-      var limit = "100";
+      var limit = "500";
       var offset = deliverShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "100";
+        limit = "500";
         offset = "0";
       } else
         loadMoreDeliveredShipments(true);
@@ -242,12 +242,12 @@ class DashbordController extends GetxController {
 
   fetchUnDeliverShipemetData({isRefresh: false}) async {
     try {
-      var limit = "100";
+      var limit = "500";
       var offset = undeliverShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "100";
+        limit = "500";
         offset = "0";
       } else
         loadMoreUndeliver(true);
@@ -283,12 +283,12 @@ class DashbordController extends GetxController {
 
   fetchRetrunShipemetData({isRefresh: false}) async {
     try {
-      var limit = "100";
+      var limit = "500";
       var offset = returnShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "100";
+        limit = "500";
         offset = "0";
       } else
         loadMoreReturnShipments(true);
@@ -324,12 +324,12 @@ class DashbordController extends GetxController {
 
   fetchcancellShipemetData({isRefresh: false}) async {
     try {
-      var limit = "100";
+      var limit = "500";
       var offset = cancellShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "100";
+        limit = "500";
         offset = "0";
       } else
         loadMoreCancelShipments(true);
@@ -365,12 +365,12 @@ class DashbordController extends GetxController {
 
   fetchOFDShipemetData({isRefresh: false}) async {
     try {
-      var limit = "100";
+      var limit = "500";
       var offset = ofdShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "100";
+        limit = "500";
         offset = "0";
       } else
         loadMoreOFDShipments(true);

@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(status.toString());
+    // print(status.toString());
     return AnimatedSplashScreen(
         splashIconSize: 250,
         splash: Image.asset(

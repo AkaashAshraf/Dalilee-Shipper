@@ -1,5 +1,7 @@
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/core/view_model/pickup_view_model.dart';
+import 'package:dalile_customer/model/W3Words.dart';
 import 'package:dalile_customer/view/widget/custom_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,7 +15,14 @@ class What3WordController extends GetxController {
   String long = '';
   String lat = '';
   RxString currentWords = ''.obs;
-
+  RxList<String> suggestions = [
+    "oman.muscat.mabela",
+    "oman.muscat.seeb",
+    "oman.barka.sawadi",
+    "oman.sohar.sur",
+    "oman.salalah.tamrid",
+    "oman.nizwa.sur",
+  ].obs;
   final formKeyG = GlobalKey<FormState>();
 
   chickWhat3Word(context) async {
@@ -57,6 +66,21 @@ class What3WordController extends GetxController {
           Get.snackbar("Failed ",
               "please check 3 word, it should be like limit.broom.flip",
               backgroundColor: Colors.red, colorText: whiteColor);
+      }
+    } catch (e) {
+    } finally {
+      isWaiting = false;
+      update();
+    }
+  }
+
+  getMyWords() async {
+    try {
+      final response = await getWithUrl("$base_url/w3w/get-w3words_addresses");
+      if (response != null) {
+        final jsonData = w3WordsModelFromJson(response.body);
+        final words = List<String>.from(jsonData.words.map((e) => (e.words)));
+        suggestions.value = words;
       }
     } catch (e) {
     } finally {

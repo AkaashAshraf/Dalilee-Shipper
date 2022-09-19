@@ -67,11 +67,11 @@ class FinanceListingController extends GetxController {
   } //getlist
 
   getAllOrders({bool isRefresh: false}) async {
-    var limit = "100";
+    var limit = "500";
     var offset = listAll.length.toString();
 
     if (isRefresh) {
-      limit = "100";
+      limit = "500";
       offset = "0";
     } else {
       loadMoreAll(true);
@@ -97,11 +97,11 @@ class FinanceListingController extends GetxController {
   }
 
   getPaidOrders({bool isRefresh: false}) async {
-    var limit = "100";
+    var limit = "500";
     var offset = listPaid.length.toString();
 
     if (isRefresh) {
-      limit = "100";
+      limit = "500";
       offset = "0";
     } else {
       loadMorePaid(true);
@@ -127,11 +127,11 @@ class FinanceListingController extends GetxController {
   }
 
   getCodPendingOrders({bool isRefresh: false}) async {
-    var limit = "100";
+    var limit = "500";
     var offset = listCodPending.length.toString();
 
     if (isRefresh) {
-      limit = "100";
+      limit = "500";
       offset = "0";
     } else {
       loadMoreCodPending(true);
@@ -157,11 +157,11 @@ class FinanceListingController extends GetxController {
   }
 
   getReadyToPayOrders({bool isRefresh: false}) async {
-    var limit = "100";
+    var limit = "500";
     var offset = listReadyToPay.length.toString();
 
     if (isRefresh) {
-      limit = "100";
+      limit = "500";
       offset = "0";
     } else {
       loadMoreReadyToPay(true);
@@ -217,11 +217,11 @@ class FinanceListingController extends GetxController {
   }
 
   getCodReturnOrders({bool isRefresh: false}) async {
-    var limit = "100";
+    var limit = "500";
     var offset = listCodReturn.length.toString();
 
     if (isRefresh) {
-      limit = "100";
+      limit = "500";
       offset = "0";
     } else {
       loadMoreCodReturn(true);
