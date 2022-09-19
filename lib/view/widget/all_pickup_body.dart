@@ -44,7 +44,7 @@ class AllPickupBody extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: 'Ref : $id',
+                  text: 'Ref'.tr + ' : $id',
                   color: primaryColor,
                   size: 16,
                   fontWeight: FontWeight.w600,
@@ -72,29 +72,26 @@ class AllPickupBody extends StatelessWidget {
             endIndent: 0,
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 15.0, right: 10, top: 10),
+            padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Flexible(
-                  child: _buildRowText('Date :     $date', 'Driver :   $name'),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                _buildRowText('COP : $cod OMR', 'Quantity : $qty'),
+                _buildRowText('Date'.tr + ' : $date', 'Driver'.tr + ' : $name'),
+                _buildRowText(
+                    'COP'.tr + ' : $cod OMR', 'Quantity'.tr + ' : $qty'),
               ],
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(
-                left: 15.0, right: 10, top: 10, bottom: 5),
+                left: 15.0, right: 15, top: 10, bottom: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
-                    const CustomText(
-                      text: "status : ",
+                    CustomText(
+                      text: "status".tr + " : ",
                       fontWeight: FontWeight.w400,
                       color: text1Color,
                       alignment: Alignment.centerLeft,
@@ -156,16 +153,16 @@ class AllPickupBody extends StatelessWidget {
           text: title,
           fontWeight: FontWeight.w400,
           color: text1Color,
-          size: 14,
+          size: 13,
         ),
         const SizedBox(
-          height: 12,
+          height: 15,
         ),
         CustomText(
           text: subTilte,
           fontWeight: FontWeight.w400,
           color: text1Color,
-          size: 14,
+          size: 13,
         ),
       ],
     );

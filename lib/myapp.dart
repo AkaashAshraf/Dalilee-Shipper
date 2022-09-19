@@ -1,5 +1,6 @@
-import 'package:dalile_customer/core/server/auth.dart';
+import 'package:dalile_customer/core/view_model/my_lang_controller.dart';
 import 'package:dalile_customer/helper/binding.dart';
+import 'package:dalile_customer/helper/mytranslat.dart';
 import 'package:dalile_customer/view/widget/splatsh_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MyLang controller = Get.put(MyLang());
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -19,6 +21,8 @@ class MyApp extends StatelessWidget {
       // future:
       // Firebase.initializeApp();
       return GetMaterialApp(
+        translations: MyTranslations(),
+        locale: controller.locale,
         debugShowCheckedModeBanner: false,
         initialBinding: Binding(),
         home: const SplashScreen(),

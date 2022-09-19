@@ -257,11 +257,12 @@ class _MainDashState extends State<MainDash> {
                                       controller.inViewLoadingallShipments.value
                                           ? WaiteImage()
                                           : EmptyState(
-                                              label: 'No data',
+                                              label: 'NoData'.tr,
                                             ),
-                                  title: "Shipments")
+                                  title: "Shipments".tr)
                               : MainCardBodyView(
-                                  title: 'All Shipments (' +
+                                  title: 'AllShipments'.tr +
+                                      ' (' +
                                       controller.allShipemet.length.toString() +
                                       "/" +
                                       controller.dashboardAllShiments.value
@@ -330,7 +331,7 @@ class _MainDashState extends State<MainDash> {
                   context,
                   _InsideShape(
                     image: 'assets/images/allshipment.png',
-                    title: 'All Shipments',
+                    title: 'AllShipments'.tr,
                     numbers: '${widget.controller.dashboardAllShiments.value}',
                   ),
                   15.0,
@@ -355,9 +356,10 @@ class _MainDashState extends State<MainDash> {
                                                 .value
                                             ? WaiteImage()
                                             : EmptyState(
-                                                label: 'No data',
+                                                label: 'NoData'.tr,
                                               ),
-                                        title: 'Delivered Shipments (' +
+                                        title: 'DeliveredShipments'.tr +
+                                            ' (' +
                                             controller.deliverShipemet.length
                                                 .toString() +
                                             "/" +
@@ -380,7 +382,9 @@ class _MainDashState extends State<MainDash> {
                                                           .height *
                                                       1,
                                                   child: MainCardBodyView(
-                                                    title: 'Delivered Shipments (' +
+                                                    title: 'DeliveredShipments'
+                                                            .tr +
+                                                        ' (' +
                                                         controller
                                                             .deliverShipemet
                                                             .length
@@ -450,7 +454,7 @@ class _MainDashState extends State<MainDash> {
                     },
                     child: _InsideSmallBox(
                       image: 'assets/images/delivered.png',
-                      title: 'Delivered\nShipments',
+                      title: 'DeliverednShipments'.tr,
                       numbers:
                           '${widget.controller.dashboardDeliveredShipments.value}',
                     ),
@@ -467,7 +471,7 @@ class _MainDashState extends State<MainDash> {
                     child: _InsideSmallBox(
                       image: 'assets/images/tobepickup.png',
                       // title: 'To Be\nPickup',
-                      title: 'Un-Delivered\nShipments',
+                      title: 'Un-DeliverednShipments'.tr,
 
                       // numbers: ' ${widget.controller.dashboard_to_b_Pichup}',
                       numbers:
@@ -493,10 +497,11 @@ class _MainDashState extends State<MainDash> {
                                                 .inViewLoadingOFDShipments.value
                                             ? WaiteImage()
                                             : EmptyState(
-                                                label: 'No data',
+                                                label: 'NoData'.tr,
                                               ),
                                         // title: "To Be Delivered")
-                                        title: "Out For Delivery OFD (" +
+                                        title: "OFD".tr +
+                                            " (" +
                                             controller.ofdShipemet.length
                                                 .toString() +
                                             "/" +
@@ -517,7 +522,8 @@ class _MainDashState extends State<MainDash> {
                                                           .height *
                                                       1,
                                                   child: MainCardBodyView(
-                                                    title: "Out For Delivery OFD (" +
+                                                    title: "OFD".tr +
+                                                        " (" +
                                                         controller
                                                             .ofdShipemet.length
                                                             .toString() +
@@ -583,7 +589,7 @@ class _MainDashState extends State<MainDash> {
                     },
                     child: _InsideSmallBox(
                       image: 'assets/images/tobedelivered.png',
-                      title: "Out For Delivery OFD ",
+                      title: "OFD".tr,
                       numbers:
                           // '${widget.controller.dashboard_to_b_Delivered.value}',
                           '${widget.controller.dashboardOFDShiments.value}',
@@ -605,9 +611,10 @@ class _MainDashState extends State<MainDash> {
                                                 .value
                                             ? WaiteImage()
                                             : EmptyState(
-                                                label: 'No data',
+                                                label: 'NoData'.tr,
                                               ),
-                                        title: "Cancel Shipments (" +
+                                        title: "CancelShipments".tr +
+                                            " (" +
                                             controller.cancellShipemet.length
                                                 .toString() +
                                             "/" +
@@ -630,7 +637,9 @@ class _MainDashState extends State<MainDash> {
                                                           .height *
                                                       1,
                                                   child: MainCardBodyView(
-                                                    title: "Cancel Shipments (" +
+                                                    title: "CancelShipments"
+                                                            .tr +
+                                                        " (" +
                                                         controller
                                                             .cancellShipemet
                                                             .length
@@ -696,7 +705,7 @@ class _MainDashState extends State<MainDash> {
                     },
                     child: _InsideSmallBox(
                       image: 'assets/images/cancell.png',
-                      title: 'Cancelled Shipments',
+                      title: 'CancelShipments'.tr,
                       numbers:
                           '${widget.controller.dashboardCancelledShiments.value}',
                     ),
@@ -720,9 +729,10 @@ class _MainDashState extends State<MainDash> {
                                               .value
                                           ? WaiteImage()
                                           : EmptyState(
-                                              label: 'No data',
+                                              label: 'NoData'.tr,
                                             ),
-                                      title: "Return Shipments (" +
+                                      title: "ReturnShipments".tr +
+                                          " (" +
                                           controller.returnShipemet.length
                                               .toString() +
                                           "/" +
@@ -744,7 +754,8 @@ class _MainDashState extends State<MainDash> {
                                                         .height *
                                                     1,
                                                 child: MainCardBodyView(
-                                                  title: "Return Shipments (" +
+                                                  title: "ReturnShipments".tr +
+                                                      " (" +
                                                       controller
                                                           .returnShipemet.length
                                                           .toString() +
@@ -812,7 +823,7 @@ class _MainDashState extends State<MainDash> {
                   },
                   child: _InsideShape(
                       image: 'assets/images/returnshipment.png',
-                      title: 'Returned\nShipments',
+                      title: 'ReturnednShipments'.tr,
                       numbers:
                           '${widget.controller.dashboardReturnedShipment}'),
                 ),

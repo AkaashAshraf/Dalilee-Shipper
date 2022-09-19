@@ -24,7 +24,7 @@ class OficesListView extends StatelessWidget {
               ),
               MyInput(
                 keyboardType: TextInputType.name,
-                hintText: 'Search',
+                hintText: 'Search'.tr,
                 controller: controller.searchConter,
                 onChanged: controller.onSearchTextChanged,
                 suffixIcon: const Icon(
@@ -260,9 +260,9 @@ class OficesListView extends StatelessWidget {
                                                     contentPadding:
                                                         const EdgeInsets.all(5),
                                                     middleText:
-                                                        'Open View In Gooole Map',
-                                                    textCancel: 'Cancel',
-                                                    textConfirm: 'Ok',
+                                                        'OpenGoooleMap'.tr,
+                                                    textCancel: 'Cancel'.tr,
+                                                    textConfirm: 'Ok'.tr,
                                                     buttonColor: primaryColor,
                                                     confirmTextColor:
                                                         Colors.white,
@@ -285,7 +285,7 @@ class OficesListView extends StatelessWidget {
                                               child: Row(
                                                 children: [
                                                   CustomText(
-                                                    text: 'Go To Location',
+                                                    text: 'GoLocation'.tr,
                                                     color: primaryColor,
                                                   ),
                                                   Icon(
@@ -299,16 +299,16 @@ class OficesListView extends StatelessWidget {
                                             InkWell(
                                               onTap: () {
                                                 Get.defaultDialog(
-                                                    title: 'Whatsapp',
+                                                    title: 'Whatsapp'.tr,
                                                     titlePadding:
                                                         const EdgeInsets.all(
                                                             15),
                                                     contentPadding:
                                                         const EdgeInsets.all(5),
                                                     middleText:
-                                                        'Are you want to go to whatsapp?',
-                                                    textCancel: 'Cancel',
-                                                    textConfirm: 'Ok',
+                                                        'AreWhatsapp'.tr,
+                                                    textCancel: 'Cancel'.tr,
+                                                    textConfirm: 'Ok'.tr,
                                                     buttonColor: primaryColor,
                                                     confirmTextColor:
                                                         Colors.white,
@@ -331,16 +331,15 @@ class OficesListView extends StatelessWidget {
                                             InkWell(
                                               onTap: () {
                                                 Get.defaultDialog(
-                                                    title: 'Call',
+                                                    title: 'Call'.tr,
                                                     titlePadding:
                                                         const EdgeInsets.all(
                                                             15),
                                                     contentPadding:
                                                         const EdgeInsets.all(5),
-                                                    middleText:
-                                                        'Are you want to call?',
-                                                    textCancel: 'Cancel',
-                                                    textConfirm: 'Ok',
+                                                    middleText: 'AreCall'.tr,
+                                                    textCancel: 'Cancel'.tr,
+                                                    textConfirm: 'Ok'.tr,
                                                     buttonColor: primaryColor,
                                                     confirmTextColor:
                                                         Colors.white,

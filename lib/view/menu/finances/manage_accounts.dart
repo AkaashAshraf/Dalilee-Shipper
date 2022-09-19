@@ -21,7 +21,7 @@ class ManageAccountsView extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
             backgroundColor: primaryColor,
             onPressed: () {
-              controller.editBankAccount(context, "Add Bank Account");
+              controller.editBankAccount(context, "AddBankAccount".tr);
             },
             child: const Icon(
               Icons.add,
@@ -48,14 +48,14 @@ class ManageAccountsView extends StatelessWidget {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   mainAxisSize: MainAxisSize.min,
-                                  children:const [
-                                     CustomText(
-                                      text: 'Updated data ',
+                                  children: [
+                                    CustomText(
+                                      text: 'Updateddata'.tr,
                                       color: Colors.grey,
                                       alignment: Alignment.center,
                                       size: 10,
                                     ),
-                                     Icon(
+                                    Icon(
                                       Icons.refresh,
                                       color: Colors.grey,
                                     ),
@@ -126,8 +126,8 @@ class ManageAccountsView extends StatelessWidget {
                     : Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const EmptyState(
-                            label: 'no Data ',
+                          EmptyState(
+                            label: 'NoData'.tr,
                           ),
                           MaterialButton(
                             onPressed: () {
@@ -136,9 +136,9 @@ class ManageAccountsView extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
-                              children: const [
+                              children: [
                                 CustomText(
-                                  text: 'Updated data ',
+                                  text: 'Updateddata'.tr,
                                   color: Colors.grey,
                                   alignment: Alignment.center,
                                   size: 12,
@@ -162,8 +162,8 @@ class ManageAccountsView extends StatelessWidget {
       toolbarHeight: 70,
       backgroundColor: primaryColor,
       foregroundColor: whiteColor,
-      title: const CustomText(
-          text: 'Manage Accounts',
+      title: CustomText(
+          text: 'ManageAccounts'.tr,
           color: whiteColor,
           size: 18,
           alignment: Alignment.center),

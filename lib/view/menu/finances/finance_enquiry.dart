@@ -71,9 +71,9 @@ class FinanceEnquiry extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
-                                children: const [
+                                children: [
                                   CustomText(
-                                    text: 'Updated data ',
+                                    text: 'Updateddata'.tr,
                                     color: Colors.grey,
                                     alignment: Alignment.center,
                                     size: 10,
@@ -115,8 +115,8 @@ class FinanceEnquiry extends StatelessWidget {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             CustomText(
-                                              text:
-                                                  'Inquiry No : ${controller.enquriyData[i].inquiryNo}',
+                                              text: 'InquiryNo'.tr +
+                                                  ' : ${controller.enquriyData[i].inquiryNo}',
                                               color: primaryColor,
                                               size: 15,
                                               fontWeight: FontWeight.w600,
@@ -161,8 +161,8 @@ class FinanceEnquiry extends StatelessWidget {
                                             ),
                                             Row(
                                               children: [
-                                                const CustomText(
-                                                  text: 'Status :',
+                                                CustomText(
+                                                  text: 'status'.tr + ' :',
                                                   fontWeight: FontWeight.w400,
                                                 ),
                                                 const SizedBox(
@@ -229,8 +229,8 @@ class FinanceEnquiry extends StatelessWidget {
                     : Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const EmptyState(
-                            label: 'No Data',
+                          EmptyState(
+                            label: 'NoData'.tr,
                           ),
                           MaterialButton(
                             onPressed: () {
@@ -239,9 +239,9 @@ class FinanceEnquiry extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
-                              children: const [
+                              children: [
                                 CustomText(
-                                  text: 'Updated data ',
+                                  text: 'Updateddata'.tr,
                                   color: Colors.grey,
                                   alignment: Alignment.center,
                                   size: 12,
@@ -265,8 +265,8 @@ class FinanceEnquiry extends StatelessWidget {
       toolbarHeight: 70,
       backgroundColor: primaryColor,
       foregroundColor: whiteColor,
-      title: const CustomText(
-          text: 'FINANCE INQUIRY',
+      title: CustomText(
+          text: 'FinanceInquiry'.tr.toUpperCase(),
           color: whiteColor,
           size: 18,
           fontWeight: FontWeight.w600,
@@ -294,8 +294,8 @@ class _AlrtAddEnquryBody extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const CustomText(
-                      text: 'Request Inquiry',
+                    CustomText(
+                      text: 'RequestInquiry'.tr,
                       alignment: Alignment.topLeft,
                       color: primaryColor,
                       size: 15,
@@ -319,9 +319,9 @@ class _AlrtAddEnquryBody extends StatelessWidget {
                   height: 20,
                 ),
                 CustomFormFiled(
-                  hint: 'category Type',
+                  hint: 'categoryType'.tr,
                   // select: controller.bankName.text,
-                  text: 'Select category Type',
+                  text: 'SelectcategoryType'.tr,
                   onSaved: (val) {
                     for (int i = 0; i < _data.catListData.length; i++) {
                       if (_data.catListData[i].name == val) {
@@ -353,9 +353,9 @@ class _AlrtAddEnquryBody extends StatelessWidget {
                   items: List.generate(_data.subcatListData.length,
                       (index) => _data.subcatListData[index].name),
 
-                  hint: 'sub category Type',
+                  hint: 'subcategoryType'.tr,
                   // select: controller.bankName.text,
-                  text: 'Select sub category',
+                  text: 'Selectsubcategory'.tr,
                   onSaved: (val) {
                     for (int i = 0; i < _data.subcatListData.length; i++) {
                       if (_data.subcatListData[i].name == val) {
@@ -379,15 +379,15 @@ class _AlrtAddEnquryBody extends StatelessWidget {
                     onChanged: (z) {
                       _data.decConteroller = z;
                     },
-                    text: 'Explain your Inquiry',
-                    hintText: 'please explain your Inquiry here'),
+                    text: 'ExplainyourInquiry'.tr,
+                    hintText: 'writing'.tr),
                 const SizedBox(
                   height: 70,
                 ),
                 _data.isAddwiting
                     ? WaiteImage()
                     : CustomButtom(
-                        text: 'Create Inquiry',
+                        text: 'CreateInquiry'.tr,
                         onPressed: () {
                           _data.checkval(context);
                         },

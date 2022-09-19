@@ -179,13 +179,13 @@ class _MapsOfficesState extends State<MapsOffices> {
                             fontWeight: FontWeight.bold,
                           ),
                           const SizedBox(height: 5.0),
-                          _buildRowDays("Sunday", "08:00 am-10:00 pm"),
-                          _buildRowDays("Monday", "08:00 am-10:00 pm"),
-                          _buildRowDays("Tuesday", "08:00 am-10:00 pm"),
-                          _buildRowDays("WenDay", "08:00 am-10:00 pm"),
-                          _buildRowDays("Thursday", "08:00 am-10:00 pm"),
-                          _buildRowDays("Friday", "Closed"),
-                          _buildRowDays("Saturday", "08:00 am-10:00 pm"),
+                          _buildRowDays("Sunday".tr, "08:00 am-10:00 pm"),
+                          _buildRowDays("Monday".tr, "08:00 am-10:00 pm"),
+                          _buildRowDays("Tuesday".tr, "08:00 am-10:00 pm"),
+                          _buildRowDays("WenDay".tr, "08:00 am-10:00 pm"),
+                          _buildRowDays("Thursday".tr, "08:00 am-10:00 pm"),
+                          _buildRowDays("Friday".tr, "Closed"),
+                          _buildRowDays("Saturday".tr, "08:00 am-10:00 pm"),
                           const SizedBox(height: 20.0),
                           MaterialButton(
                             onPressed: () {
@@ -201,7 +201,7 @@ class _MapsOfficesState extends State<MapsOffices> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 CustomText(
-                                  text: 'Show More',
+                                  text: 'ShowMore'.tr,
                                   color: textRedColor,
                                   size: 18,
                                 ),
@@ -284,12 +284,12 @@ class _MapsOfficesState extends State<MapsOffices> {
                     InkWell(
                       onTap: () {
                         Get.defaultDialog(
-                            title: 'Google map',
+                            title: 'Googlemap'.tr,
                             titlePadding: const EdgeInsets.all(15),
                             contentPadding: const EdgeInsets.all(5),
-                            middleText: 'Open View In Gooole Map',
-                            textCancel: 'Cancel',
-                            textConfirm: 'Ok',
+                            middleText: 'OpenGoooleMap'.tr,
+                            textCancel: 'Cancel'.tr,
+                            textConfirm: 'Ok'.tr,
                             buttonColor: primaryColor,
                             confirmTextColor: Colors.white,
                             cancelTextColor: Colors.black,
@@ -305,7 +305,7 @@ class _MapsOfficesState extends State<MapsOffices> {
                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomText(
-                            text: 'Go To Location',
+                            text: 'GoLocation'.tr,
                             color: primaryColor,
                           ),
                           Icon(
@@ -320,12 +320,12 @@ class _MapsOfficesState extends State<MapsOffices> {
                     InkWell(
                       onTap: () {
                         Get.defaultDialog(
-                            title: 'Whatsapp',
+                            title: 'Whatsapp'.tr,
                             titlePadding: const EdgeInsets.all(15),
                             contentPadding: const EdgeInsets.all(5),
-                            middleText: 'Are you want to go to whatsapp?',
-                            textCancel: 'Cancel',
-                            textConfirm: 'Ok',
+                            middleText: 'AreWhatsapp'.tr,
+                            textCancel: 'Cancel'.tr,
+                            textConfirm: 'Ok'.tr,
                             buttonColor: primaryColor,
                             confirmTextColor: Colors.white,
                             cancelTextColor: Colors.black,
@@ -346,12 +346,12 @@ class _MapsOfficesState extends State<MapsOffices> {
                     InkWell(
                       onTap: () {
                         Get.defaultDialog(
-                            title: 'Call',
+                            title: 'Call'.tr,
                             titlePadding: const EdgeInsets.all(15),
                             contentPadding: const EdgeInsets.all(5),
-                            middleText: 'Are you want to call?',
-                            textCancel: 'Cancel',
-                            textConfirm: 'Ok',
+                            middleText: 'AreCall'.tr,
+                            textCancel: 'Cancel'.tr,
+                            textConfirm: 'Ok'.tr,
                             buttonColor: primaryColor,
                             confirmTextColor: Colors.white,
                             cancelTextColor: Colors.black,
@@ -373,23 +373,23 @@ class _MapsOfficesState extends State<MapsOffices> {
               ],
             ),
             const SizedBox(height: 7),
-            const CustomText(
-              text: "Working Hours",
+             CustomText(
+              text: "WorkingHours".tr,
               color: primaryColor,
               size: 12.0,
               fontWeight: FontWeight.w500,
             ),
             const SizedBox(height: 5.0),
-            _buildRowDays("Sunday", "08:00 am-10:00 pm"),
+            _buildRowDays("Sunday".tr, "08:00 am-10:00 pm"),
              const SizedBox(height: 5.0),
-            _buildRowDays("Monday", "08:00 am-10:00 pm"),
+            _buildRowDays("Monday".tr, "08:00 am-10:00 pm"),
              const SizedBox(height: 5.0),
-            _buildRowDays("Tuesday", "08:00 am-10:00 pm"),
+            _buildRowDays("Tuesday".tr, "08:00 am-10:00 pm"),
              const SizedBox(height: 5.0),
-            _buildRowDays("WenDay", "08:00 am-10:00 pm"), const SizedBox(height: 5.0),
-            _buildRowDays("Thursday", "08:00 am-10:00 pm"), const SizedBox(height: 5.0),
-            _buildRowDays("Friday", "Closed"), const SizedBox(height: 5.0),
-            _buildRowDays("Saturday", "08:00 am-10:00 pm"),
+            _buildRowDays("WenDay".tr, "08:00 am-10:00 pm"), const SizedBox(height: 5.0),
+            _buildRowDays("Thursday".tr, "08:00 am-10:00 pm"), const SizedBox(height: 5.0),
+            _buildRowDays("Friday".tr, "Closed".tr), const SizedBox(height: 5.0),
+            _buildRowDays("Saturday".tr, "08:00 am-10:00 pm"),
           ],
         ));
   }

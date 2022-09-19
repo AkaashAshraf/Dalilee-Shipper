@@ -35,7 +35,7 @@ Alert imagesViewModal(
                   height: MediaQuery.of(context).size.width * 0.75,
                   width: MediaQuery.of(context).size.width * 0.75,
                   child: images.length == 0
-                      ? new NoDataView(label: "No Images Avaiable")
+                      ? new NoDataView(label: "NoData".tr)
                       : CarouselSlider(
                           items: images.reversed
                               .map((subItem) => Stack(children: [

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:dalile_customer/core/http/FromDalilee.dart';
 import 'package:dalile_customer/model/Dashboard/FinanceDashboardModel.dart';
 import 'package:dalile_customer/model/Dashboard/MainDashboardModel.dart';
@@ -50,7 +51,8 @@ abstract class DashboardApi {
 // ////main dashboard data
   static Future<MainDashboard?> fetchMainDashBoardData(type) async {
     try {
-      var response = await dalileePost("/getStoresOrdersCount", {});
+      final response = await dalileePost("/getStoresOrdersCount", {});
+      log("------------>$response");
       if (response != null) {
         var data = mainDashboardFromJson(response.body);
 

@@ -267,7 +267,7 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
         backgroundColor: primaryColor,
         appBar: _buildAppBar(),
         body: Container(
-          padding: EdgeInsets.only(top: 0),
+          padding: EdgeInsets.only(top: 20),
           decoration: const BoxDecoration(
               color: bgColor,
               borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TermsConditions extends StatefulWidget {
@@ -31,8 +32,8 @@ class _TermsConditionsState extends State<TermsConditions> {
           toolbarHeight: 70,
           backgroundColor: primaryColor,
           foregroundColor: whiteColor,
-          title: const CustomText(
-            text: 'Terms & Conditions',
+          title: CustomText(
+            text: 'Terms&Conditions'.tr,
             color: whiteColor,
             size: 17,
             alignment: Alignment.center,

@@ -42,14 +42,14 @@ class ShipmentViewModel extends GetxController {
   }
 
   List<NameWithIcon> callList = [
-    NameWithIcon(icon: Icons.call, name: 'Call'),
-    NameWithIcon(icon: Icons.mail_outlined, name: 'Send Message'),
-    NameWithIcon(icon: Icons.whatsapp_outlined, name: 'WhatsApp Message'),
-    NameWithIcon(icon: Icons.content_copy_outlined, name: 'Copy Number'),
+    NameWithIcon(icon: Icons.call, name: 'Call'.tr),
+    NameWithIcon(icon: Icons.mail_outlined, name: 'SMS'.tr),
+    NameWithIcon(icon: Icons.whatsapp_outlined, name: 'WhatsAppMessage'.tr),
+    NameWithIcon(icon: Icons.content_copy_outlined, name: 'CopyNumber'.tr),
   ];
   List<NameWithIcon> menuList = [
-    NameWithIcon(icon: Icons.info_outlined, name: 'Generate Ticket'),
-    NameWithIcon(icon: Icons.picture_as_pdf_outlined, name: 'Download Bill'),
+    NameWithIcon(icon: Icons.info_outlined, name: 'GenerateTicket'.tr),
+    NameWithIcon(icon: Icons.picture_as_pdf_outlined, name: 'DownloadBill'.tr),
   ];
 
   callAlert(context, number) {
@@ -92,8 +92,7 @@ class ShipmentViewModel extends GetxController {
                         case 3:
                           Clipboard.setData(ClipboardData(text: "$number"))
                               .then((value) {
-                            Get.snackbar('Copy phone number',
-                                "phone number copy successful",
+                            Get.snackbar('Copyphonenumber'.tr, " ",
                                 colorText: whiteColor);
                           });
                           break;
@@ -383,8 +382,8 @@ class ShowCreateComplain2 extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const CustomText(
-                  text: 'Request Ticket',
+                CustomText(
+                  text: '161'.tr,
                   alignment: Alignment.topLeft,
                   color: primaryColor,
                   size: 15,
@@ -409,7 +408,7 @@ class ShowCreateComplain2 extends StatelessWidget {
             ),
             CustomFormFiledWithTitle(
               read: true,
-              text: 'Order No',
+              text: '133'.tr,
               hintText: '$orderN',
               onChanged: (v) {
                 _model.orderID.text = orderN.toString();
@@ -421,9 +420,9 @@ class ShowCreateComplain2 extends StatelessWidget {
             CustomFormFiled(
               select:
                   _model.typeName.text.isNotEmpty ? _model.typeName.text : null,
-              hint: 'Ticket Type',
+              hint: '134'.tr,
               // select: controller.bankName.text,
-              text: 'Select Ticket Type',
+              text: '162'.tr,
               onSaved: (val) {
                 _model.orderID.text = orderN.toString();
                 for (int i = 0; i < _model.typeData.length; i++) {

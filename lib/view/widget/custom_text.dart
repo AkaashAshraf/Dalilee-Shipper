@@ -22,8 +22,11 @@ class CustomText extends StatelessWidget {
       alignment: alignment,
       child: Text(
         text,
-        style:
-            TextStyle(fontSize: size, color: color, fontWeight: fontWeight,),
+        style: TextStyle(
+            fontSize: size,
+            color: color,
+            fontWeight: fontWeight,
+            fontFamily: "Montserrat"),
       ),
     );
   }

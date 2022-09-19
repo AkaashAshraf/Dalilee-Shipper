@@ -17,8 +17,8 @@ class OfficesView extends StatelessWidget {
         backgroundColor: bgColor,
         appBar: AppBar(
           backgroundColor: primaryColor,
-          title: const CustomText(
-            text: 'BRANCHES',
+          title: CustomText(
+            text: 'BRANCHES'.tr,
             color: whiteColor,
             alignment: Alignment.center,
             size: 18,
@@ -69,15 +69,18 @@ class OfficesView extends StatelessWidget {
         physics: NeverScrollableScrollPhysics(),
         labelPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         indicatorSize: TabBarIndicatorSize.tab,
-        labelStyle: const TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
-        unselectedLabelColor: primaryColor,
         indicatorWeight: 0.0,
         tabs: _tabTwoParameters(),
+        labelColor: whiteColor,
         padding: const EdgeInsets.all(5),
+        labelStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+        unselectedLabelColor: primaryColor,
+        unselectedLabelStyle:
+            const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
         indicator: ShapeDecoration(
           shape: RoundedRectangleBorder(
               side: const BorderSide(color: primaryColor),
-              borderRadius: BorderRadius.circular(25)),
+              borderRadius: BorderRadius.circular(30)),
           gradient: SweepGradient(
             colors: [
               primaryColor.withOpacity(0.75),
@@ -97,13 +100,13 @@ class OfficesView extends StatelessWidget {
       );
 
   List<Widget> _tabTwoParameters() => [
-        const Tab(
+        Tab(
           height: 20,
-          text: 'List View',
+          text: 'ListView'.tr,
         ),
-        const Tab(
+        Tab(
           height: 20,
-          text: 'Map View',
+          text: 'MapView'.tr,
         ),
       ];
 }

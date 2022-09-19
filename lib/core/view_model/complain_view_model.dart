@@ -1,4 +1,3 @@
-
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/server/complain_api.dart';
 import 'package:dalile_customer/model/complain_type_model.dart';
@@ -48,10 +47,10 @@ class ComplainController extends GetxController {
       if (data != null) {
         comCloseData.value = data.reversed.toList();
       } else {
-        Get.snackbar('Filed', ComplainApi.mass);
+        Get.snackbar('Filed'.tr, ComplainApi.mass);
       }
     } finally {
-       if (ComplainApi.checkAuth == true) {
+      if (ComplainApi.checkAuth == true) {
         Get.offAll(() => LoginView());
         ComplainApi.checkAuth = false;
       }
@@ -67,7 +66,7 @@ class ComplainController extends GetxController {
         comOpenData.value = data.reversed.toList();
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', ComplainApi.mass);
+          Get.snackbar('Filed'.tr, ComplainApi.mass);
         }
       }
     } finally {
@@ -86,7 +85,7 @@ class ComplainController extends GetxController {
         typeData = data.categories!;
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', ComplainApi.mass);
+          Get.snackbar('Filed'.tr, ComplainApi.mass);
         }
       }
     } finally {
@@ -113,15 +112,15 @@ class ComplainController extends GetxController {
             barrierColor: Colors.transparent,
             context: context,
             builder: (BuildContext context) {
-              return const CustomDialogBoxAl(
+              return  CustomDialogBoxAl(
                 title: "Done !!",
-                des: "add complain successfully",
+                des: "addcomplainsuccessfully".tr,
                 icon: Icons.priority_high_outlined,
               );
             });
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', "some data was missing");
+          Get.snackbar('Filed'.tr, "somedatamissing".tr);
         }
       }
     } finally {
@@ -169,10 +168,10 @@ class ShowCreateComplain extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const CustomText(
-                  text: 'Request Ticket',
-                  alignment: Alignment.topLeft,
+                CustomText(
+                  text: 'RequestTicket'.tr,
                   color: primaryColor,
+                  
                   size: 15,
                   fontWeight: FontWeight.w500,
                 ),
@@ -195,7 +194,7 @@ class ShowCreateComplain extends StatelessWidget {
             ),
             CustomFormFiledWithTitle(
               controller: _model.orderID,
-              text: 'Order No',
+              text: 'OrderNo'.tr,
               hintText: 'P00000',
             ),
             const SizedBox(
@@ -204,9 +203,9 @@ class ShowCreateComplain extends StatelessWidget {
             CustomFormFiled(
               select:
                   _model.typeName.text.isNotEmpty ? _model.typeName.text : null,
-              hint: 'Ticket Type',
+              hint: 'TicketType'.tr,
               // select: controller.bankName.text,
-              text: 'Select Ticket Type',
+              text: 'SelectTicketType'.tr,
               onSaved: (val) {
                 for (int i = 0; i < _model.typeData.length; i++) {
                   if (_model.typeData[i].name == val) {
@@ -227,8 +226,8 @@ class ShowCreateComplain extends StatelessWidget {
             CustomFormFiledAreaWithTitle(
               validator: (val) =>
                   val!.isEmpty ? 'please explain your ticket' : null,
-              text: 'Explain your Ticket',
-              hintText: 'Please explain your Ticket here',
+              text: 'ExplainyourTicket'.tr,
+              hintText: 'writing'.tr,
               onChanged: (value) {
                 _model.desc = value;
               },
@@ -239,7 +238,7 @@ class ShowCreateComplain extends StatelessWidget {
             _model.isLoadingCreate == true
                 ? WaiteImage()
                 : CustomButtom(
-                    text: 'Create ',
+                    text: 'Create'.tr,
                     onPressed: () {
                       _model.formVal(context);
                     },

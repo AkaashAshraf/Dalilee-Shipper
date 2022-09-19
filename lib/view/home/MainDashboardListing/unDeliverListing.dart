@@ -5,8 +5,7 @@ import 'package:dalile_customer/view/home/card_body.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
+import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class UndeliverListing extends StatefulWidget {
@@ -84,7 +83,7 @@ class _UndeliverListing extends State<UndeliverListing> {
       backgroundColor: primaryColor,
       foregroundColor: whiteColor,
       title: CustomText(
-          text: "Un-Delivered Orders ($subTitle)",
+          text: "Un-DeliveredShipments".tr + " ($subTitle)",
           color: whiteColor,
           size: 18,
           fontWeight: FontWeight.w500,
@@ -110,7 +109,7 @@ class _UndeliverListing extends State<UndeliverListing> {
               child: controller.undeliverShipemet.isEmpty
                   ? controller.inViewLoadingUndeliver.value
                       ? WaiteImage()
-                      : NoDataView(label: "Un Deliver Data")
+                      : NoDataView(label: "NoData".tr)
                   : Column(
                       children: [
                         Container(
@@ -202,12 +201,12 @@ CardBody card(
     ref: shipment.refId ?? 0,
     weight: shipment.weight ?? 0.00,
     currentStep: shipment.currentStatus ?? 1,
-    isOpen: shipment.isOpen!,
+    isOpen: shipment.isOpen,
     onPressedShowMore: () {
       if (shipment.isOpen == false) {
         controller.undeliverShipemet
             .forEach((element) => element.isOpen = false);
-        shipment.isOpen = !shipment.isOpen!;
+        shipment.isOpen = !shipment.isOpen;
         x.update();
       } else {
         shipment.isOpen = false;

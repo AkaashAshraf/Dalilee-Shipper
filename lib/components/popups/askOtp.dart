@@ -11,7 +11,7 @@ import 'package:sms_autofill/sms_autofill.dart';
 
 Alert otp_modal(BuildContext context) {
   String _code = "";
-  ProfileController controller = Get.put(ProfileController());
+ // ProfileController controller = Get.put(ProfileController());
   return modal(
     context,
     Column(
@@ -82,7 +82,7 @@ Alert otp_modal(BuildContext context) {
                     //     controller.enteredOtp.value.length == 4)
                     if (true) {
                       // Navigator.pop(context);
-                      var res = await controller.updateProfile();
+                    await controller.updateProfile();
                       // if (res)
                       Navigator.pop(context);
                     } else {

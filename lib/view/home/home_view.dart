@@ -23,26 +23,30 @@ class HomeView extends StatelessWidget {
           toolbarHeight: 70,
           backgroundColor: primaryColor,
           foregroundColor: whiteColor,
-          title: const CustomText(
-            text: 'DASHBOARD',
+          title: CustomText(
+            text: 'DASHBOARD'.tr,
             color: whiteColor,
             size: 18,
             alignment: Alignment.center,
           ),
           centerTitle: true,
         ),
+        floatingActionButtonLocation: 'ENORAR'.tr == "en"
+            ? FloatingActionButtonLocation.endFloat
+            : FloatingActionButtonLocation.startFloat,
         floatingActionButton: SpeedDial(
             animatedIcon: AnimatedIcons.menu_close,
-            elevation: 8,
+            elevation: 5,
             backgroundColor: primaryColor,
             overlayOpacity: 0.1,
+            direction: SpeedDialDirection.up,
             children: [
               SpeedDialChild(
                 child: Icon(
                   Icons.picture_as_pdf_outlined,
                   color: primaryColor,
                 ),
-                label: 'Export Pdf',
+                label: 'ExportPdf'.tr,
                 labelStyle: TextStyle(color: primaryColor),
                 onTap: () {
                   downloadController.selectedOrderType.value =
@@ -56,7 +60,7 @@ class HomeView extends StatelessWidget {
                   Icons.table_rows_outlined,
                   color: primaryColor,
                 ),
-                label: 'Export Excell',
+                label: 'ExportExcell'.tr,
                 labelStyle: TextStyle(color: primaryColor),
                 onTap: () {
                   downloadController.selectedOrderType.value =
@@ -117,12 +121,12 @@ class HomeView extends StatelessWidget {
           ),
         ),
       );
-  List<Widget> _tabTwoParameters() => const [
+  List<Widget> _tabTwoParameters() => [
         Tab(
-          text: "Main Dashboard",
+          text: "MainDashboard".tr,
         ),
         Tab(
-          text: "Finances Dashboard",
+          text: "FinancesDashboard".tr,
         ),
         // Tab(
         //   text: "Request Pickup",

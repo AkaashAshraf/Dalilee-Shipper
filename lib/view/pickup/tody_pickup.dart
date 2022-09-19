@@ -111,8 +111,8 @@ class _TodayListPickupState extends State<TodayListPickup> {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const EmptyState(
-              label: 'no Data ',
+            EmptyState(
+              label: 'NoData'.tr,
             ),
             MaterialButton(
               onPressed: () {
@@ -121,9 +121,9 @@ class _TodayListPickupState extends State<TodayListPickup> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   CustomText(
-                    text: 'Updated data ',
+                    text: 'Updateddata'.tr,
                     color: Colors.grey,
                     alignment: Alignment.center,
                     size: 12,

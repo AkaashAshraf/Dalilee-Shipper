@@ -29,15 +29,11 @@ class ManageAccountController extends GetxController {
       if (account != null) {
         accountData.value = account.bankAccounts!.reversed.toList();
       } else {
-           if (!Get.isSnackbarOpen) {
-           Get.snackbar('Filed', FinanceApi.mass);
-         }
-        
-     
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar('Filed', FinanceApi.mass);
+        }
       }
     } finally {
-     
-
       isLoading(false);
     }
   }
@@ -48,9 +44,7 @@ class ManageAccountController extends GetxController {
       if (bank != null) {
         bankListData.value = bank;
       }
-    } finally {
-     
-    }
+    } finally {}
   }
 
   editBankAccount(context, String title) {
@@ -117,12 +111,10 @@ class ManageAccountController extends GetxController {
                 );
               });
         } else {
-         
-             if (!Get.isSnackbarOpen) {
-           Get.snackbar('Filed', FinanceApi.mass,
-              colorText: whiteColor, backgroundColor: textRedColor);
-        }
-        
+          if (!Get.isSnackbarOpen) {
+            Get.snackbar('Filed', FinanceApi.mass,
+                colorText: whiteColor, backgroundColor: textRedColor);
+          }
         }
       }
     } finally {
@@ -132,7 +124,6 @@ class ManageAccountController extends GetxController {
       bankNo.clear();
       checkboxIs.value = false;
       fetchManageAccountData();
-     
     }
   }
 }
@@ -181,11 +172,12 @@ class ShowAddEditBank extends GetWidget<ManageAccountController> {
                   height: 5,
                 ),
                 CustomFormFiled(
-                    hint: 'Bank Muscat',
+                    hint: 'BankMuscat'.tr,
                     select: controller.bankName.text.isEmpty
                         ? null
                         : controller.bankName.text,
-                    text: 'Bank',
+                        
+                    text: 'Bank'.tr,
                     onSaved: (val) {
                       for (int i = 0; i < controller.bankListData.length; i++) {
                         if (controller.bankListData[i].name == val) {
@@ -193,7 +185,6 @@ class ShowAddEditBank extends GetWidget<ManageAccountController> {
                               controller.bankListData[i].id.toString();
                           controller.bankName.text =
                               controller.bankListData[i].name.toString();
-
                         }
                       }
                       return null;
@@ -214,7 +205,7 @@ class ShowAddEditBank extends GetWidget<ManageAccountController> {
                           : null,
                   controller: controller.bankNo,
                   keyboardType: TextInputType.number,
-                  text: 'Account Number',
+                  text: 'AccountNumber'.tr,
                   hintText: '012 345 6789',
                 ),
                 const SizedBox(
@@ -227,8 +218,8 @@ class ShowAddEditBank extends GetWidget<ManageAccountController> {
                       : val.length > 20
                           ? "name is to long"
                           : null,
-                  text: 'Beneficiary Name',
-                  hintText: 'name',
+                  text: 'BeneficiaryName'.tr,
+                  hintText: 'Name'.tr,
                 ),
                 CheckboxListTile(
                   controlAffinity: ListTileControlAffinity.leading,
@@ -236,20 +227,19 @@ class ShowAddEditBank extends GetWidget<ManageAccountController> {
                   activeColor: textRedColor,
                   value: controller.checkboxIs.value, // ************
                   onChanged: (vla) {
-                   
                     controller.onClickCheckBox(vla);
                   },
-                  title: const CustomText(
-                    text: "this account which all money will be transferred",
+                  title: CustomText(
+                    text: "thisaccounttransferred".tr,
                     color: textRedColor,
-                    size: 10,
+                    size: 9,
                   ),
                 ),
                 const SizedBox(
-                  height: 15,
+                  height: 20,
                 ),
                 CustomButtom(
-                  text: 'Add',
+                  text: 'Add'.tr,
                   onPressed: () {
                     if (controller.checkboxIs.value) {
                       controller.fetchAddPostData(context);

@@ -53,8 +53,8 @@ class _OTPViewState extends State<OTPView> {
             const SizedBox(
               height: 20,
             ),
-            const CustomText(
-              text: 'Enter the verification code',
+            CustomText(
+              text: 'Entertheverification'.tr,
               color: primaryColor,
               fontWeight: FontWeight.bold,
               alignment: Alignment.center,
@@ -63,10 +63,9 @@ class _OTPViewState extends State<OTPView> {
             const SizedBox(
               height: 10,
             ),
-            const CustomText(
-              text:
-                  'We have sent a 4 digit verification code.\nPlease enter the verification code below',
-              fontWeight: FontWeight.w400,
+            CustomText(
+              text: 'Wehavesent'.tr,
+              fontWeight: FontWeight.w300,
               alignment: Alignment.center,
             ),
             const SizedBox(
@@ -107,7 +106,7 @@ class _OTPViewState extends State<OTPView> {
               child: _controller.isLoading.value
                   ? const WaiteImage()
                   : CustomButtom(
-                      text: 'Confirm the code',
+                      text: 'Confirmthecode'.tr,
                       onPressed: () {
                         focusNode.unfocus();
                         _controller.onCompl();
@@ -192,7 +191,7 @@ class _HoursState extends State<_Hours> {
                     fontWeight: FontWeight.w500,
                     fontSize: 14),
                 child: Text(
-                  'Resend the verification code again',
+                  'Resendverification'.tr,
                   style: TextStyle(
                       decoration: TextDecoration.underline,
                       color: textRedColor,
