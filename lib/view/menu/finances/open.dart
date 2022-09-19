@@ -6,7 +6,6 @@ import 'package:dalile_customer/view/menu/finances/view_order.dart';
 import 'package:dalile_customer/view/menu/finances/manage_accounts.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
-import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -78,8 +77,8 @@ class OpendedView extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const CustomText(
-                                text: 'Store Remaining Amount',
+                              CustomText(
+                                text: 'StoreRemainingAmount'.tr,
                                 color: whiteColor,
                                 size: 17,
                                 fontWeight: FontWeight.w500,
@@ -111,13 +110,13 @@ class OpendedView extends StatelessWidget {
                           ),
                         )
                       ]),
-                      _buildBodyRow('Total Orders Delivered',
+                      _buildBodyRow('TotalOrdersDelivered'.tr,
                           '${c.openData.value.totalOrdersDelivered ?? 0}     '),
-                      _buildBodyRow('Total Amount of Request',
+                      _buildBodyRow('TotalAmountRequest'.tr,
                           '${c.openData.value.totalAmountRequest ?? 0.00} OMR'),
-                      _buildBodyRow('Delivery Fee',
+                      _buildBodyRow('DeliveryFee'.tr,
                           '${c.openData.value.deliveryFee ?? 0.00} OMR'),
-                      _buildBodyRow('Collection Fee',
+                      _buildBodyRow('CollectionFee'.tr,
                           '${c.openData.value.collectionFee ?? 0.00} OMR'),
                     ],
                   ),
@@ -126,7 +125,7 @@ class OpendedView extends StatelessWidget {
                   height: 25,
                 ),
                 CustomButtom(
-                  text: 'View Orders',
+                  text: 'ViewOrders'.tr,
                   onPressed: () {
                     Get.put(ViewOrderController());
                     Get.to(() => ViewOrderView(),
@@ -138,7 +137,7 @@ class OpendedView extends StatelessWidget {
                   height: 10,
                 ),
                 CustomButtom(
-                  text: 'Finance Inquiry',
+                  text: 'FinanceInquiry'.tr,
                   onPressed: () {
                     Get.to(() => FinanceEnquiry(),
                         transition: Transition.downToUp,
@@ -149,7 +148,7 @@ class OpendedView extends StatelessWidget {
                   height: 10,
                 ),
                 CustomButtom(
-                  text: 'Manage Accounts',
+                  text: 'ManageAccounts'.tr,
                   onPressed: () {
                     Get.to(() => ManageAccountsView(),
                         transition: Transition.downToUp,
@@ -164,15 +163,16 @@ class OpendedView extends StatelessWidget {
 
   Widget _buildBodyRow(String title, String subtitle) {
     return ListTile(
-        contentPadding: const EdgeInsets.all(0),
+        contentPadding: const EdgeInsets.only(left: 20),
         leading: Container(
           height: 30,
           width: 4,
           color: primaryColor,
         ),
+        
+        
         title: CustomText(
           text: title,
-          alignment: Alignment.centerLeft,
           fontWeight: FontWeight.w500,
           size: 13,
         ),

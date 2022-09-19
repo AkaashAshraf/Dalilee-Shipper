@@ -6,7 +6,6 @@ import 'package:dalile_customer/view/pickup/tody_pickup.dart';
 import 'package:dalile_customer/view/pickup/what3words_view.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
 import 'package:get/get.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -14,12 +13,12 @@ class PickupView extends StatelessWidget {
   PickupView({Key? key}) : super(key: key);
 
   final ValueNotifier<bool> isDialOpen = ValueNotifier(false);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation:'ENORAR'.tr == "en"? FloatingActionButtonLocation.endFloat: FloatingActionButtonLocation.startFloat,
       floatingActionButton: SpeedDial(
-          animatedIcon: AnimatedIcons.add_event,
+          animatedIcon: AnimatedIcons.menu_close,
           openCloseDial: isDialOpen,
           backgroundColor: primaryColor,
           overlayColor: Colors.grey,
@@ -37,7 +36,7 @@ class PickupView extends StatelessWidget {
                   color: primaryColor,
                   size: 30,
                 ),
-                label: 'Pick by Location',
+                label: 'PickbyLocation'.tr,
                 onTap: () {
                   Get.to(() => GMap(),
                       transition: Transition.downToUp,
@@ -49,7 +48,7 @@ class PickupView extends StatelessWidget {
                   Icons.qr_code,
                   color: primaryColor,
                 ),
-                label: 'Pick by QRcode',
+                label: 'PickbyQRcode'.tr,
                 onTap: () {
                   Get.put(QrCodeController()).scanQR(context);
                 }),
@@ -71,7 +70,7 @@ class PickupView extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: primaryColor,
-        title: const Text("PICKUP"),
+        title: Text("PICKUP".tr),
         centerTitle: true,
       ),
       body: DefaultTabController(
@@ -131,10 +130,10 @@ class PickupView extends StatelessWidget {
   // var controller = Get.put(PickupController());
   List<Widget> _tabTwoParameters() => [
         Tab(
-          text: "Today",
+          text: "Today".tr,
         ),
         Tab(
-          text: "All   ",
+          text: "All".tr,
         ),
         // Tab(
         //   text: "Request Pickup",

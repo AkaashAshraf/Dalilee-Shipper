@@ -4,7 +4,6 @@ import 'package:dalile_customer/view/menu/finances/closeed.dart';
 import 'package:dalile_customer/view/menu/finances/open.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
 
 import 'package:get/get.dart';
 
@@ -21,8 +20,8 @@ class FinanceView extends GetWidget<FinanceController> {
         backgroundColor: bgColor,
         appBar: AppBar(
           backgroundColor: primaryColor,
-          title: const CustomText(
-            text: 'FINANCE',
+          title: CustomText(
+            text: 'Finance'.tr.toUpperCase(),
             color: whiteColor,
             alignment: Alignment.center,
             size: 18,
@@ -61,10 +60,10 @@ class FinanceView extends GetWidget<FinanceController> {
         indicatorWeight: 0.0,
         tabs: [
           Tab(
-            text: 'Opened',
+            text: 'Opened'.tr,
           ),
           Tab(
-            text: 'Closed',
+            text: 'Closed'.tr,
           ),
         ],
         indicator: ShapeDecoration(

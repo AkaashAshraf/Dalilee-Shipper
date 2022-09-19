@@ -68,7 +68,7 @@ class _OutShipmentsState extends State<OutShipments> {
                   height: 40,
                   child: MyInput(
                     keyboardType: TextInputType.number,
-                    hintText: 'Enter Shipment Number',
+                    hintText: 'EnterShipmentNumber'.tr,
                     onChanged: controller.onSearchTextChanged2,
                     controller: controller.searchConter,
                     suffixIcon: MaterialButton(
@@ -163,8 +163,8 @@ class _OutShipmentsState extends State<OutShipments> {
                             ? Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const EmptyState(
-                                    label: 'no Data ',
+                                   EmptyState(
+                                    label: 'noData'.tr,
                                   ),
                                   MaterialButton(
                                     onPressed: () {
@@ -175,9 +175,9 @@ class _OutShipmentsState extends State<OutShipments> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       mainAxisSize: MainAxisSize.min,
-                                      children: const [
+                                      children:  [
                                         CustomText(
-                                          text: 'Updated data ',
+                                          text: 'Updateddata'.tr,
                                           color: Colors.grey,
                                           alignment: Alignment.center,
                                           size: 12,
@@ -269,8 +269,8 @@ class _OutShipmentsState extends State<OutShipments> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const EmptyState(
-            label: 'No Data ',
+           EmptyState(
+            label: 'NoData'.tr,
           ),
           MaterialButton(
             onPressed: () {
@@ -279,9 +279,9 @@ class _OutShipmentsState extends State<OutShipments> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children:  [
                 CustomText(
-                  text: 'Updated data ',
+                  text: 'Updateddata'.tr,
                   color: Colors.grey,
                   alignment: Alignment.center,
                   size: 12,

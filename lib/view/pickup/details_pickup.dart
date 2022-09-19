@@ -20,7 +20,7 @@ class PickupDetails extends StatelessWidget {
         backgroundColor: primaryColor,
         elevation: 0,
         title: CustomText(
-          text: 'Details Pickup',
+          text: 'DetailsPickup'.tr,
           color: whiteColor,
           size: 20,
           fontWeight: FontWeight.w500,
@@ -62,14 +62,14 @@ class PickupDetails extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   CustomText(
-                    text: 'Ref : $ref',
-                    size: 18,
+                    text: 'Ref'.tr + ' : $ref',
+                    size: 15,
                     color: primaryColor,
                     fontWeight: FontWeight.w500,
                   ),
                   CustomText(
-                    text: 'Date : $date',
-                    size: 18,
+                    text: 'Date'.tr + ' : $date',
+                    size: 15,
                     color: primaryColor,
                     fontWeight: FontWeight.w500,
                   ),
@@ -81,7 +81,7 @@ class PickupDetails extends StatelessWidget {
                 return controllerClass.pickupDetailsList.isEmpty
                     ? Expanded(
                         child:
-                            Center(child: new NoDataView(label: "No Orders")))
+                            Center(child: new NoDataView(label: "NoData".tr)))
                     : Expanded(
                         child: ListView.builder(
                             itemCount: controllerClass.pickupDetailsList.length,
@@ -92,109 +92,102 @@ class PickupDetails extends StatelessWidget {
                                   ),
                                   shadowColor: primaryColor.withOpacity(0.3),
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 15),
                                     child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Expanded(
-                                          flex: 3,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Get.to(() => ImageLib(
-                                                    galleryItems:
-                                                        controllerClass
-                                                            .pickupDetailsList,
-                                                    idex: i,
-                                                  ));
-                                            },
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 5.0),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                child: CachedNetworkImage(
-                                                  fadeOutDuration:
-                                                      Duration(seconds: 2),
-                                                  imageUrl: controllerClass
-                                                      .pickupDetailsList[i]
-                                                      .image
-                                                      .toString(),
-                                                  height: 70,
-                                                  width: 50,
-                                                  fit: BoxFit.cover,
-                                                  placeholder: (context, url) =>
-                                                      Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            15),
-                                                    child: Image.asset(
-                                                        'assets/images/dalilee.png'),
-                                                  ),
-                                                  errorWidget:
-                                                      (context, url, error) =>
-                                                          Container(
-                                                    color: Colors.black12,
-                                                    child: Icon(
-                                                      Icons.error,
-                                                      color: Colors.red[200],
-                                                    ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            CustomText(
+                                              text:
+                                                  '${controllerClass.pickupDetailsList[i].orderNo ?? "Pxxx"}',
+                                              fontWeight: FontWeight.bold,
+                                              size: 15,
+                                              color: primaryColor,
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            CustomText(
+                                              text: 'Weight'.tr +
+                                                  ' : ${controllerClass.pickupDetailsList[i].weight ?? 0} Kg',
+                                              fontWeight: FontWeight.w400,
+                                              size: 13,
+                                            ),
+                                            SizedBox(
+                                              height: 3,
+                                            ),
+                                            CustomText(
+                                              text: 'Shipping'.tr +
+                                                  ' : ${controllerClass.pickupDetailsList[i].shipping ?? 0}',
+                                              fontWeight: FontWeight.w400,
+                                              size: 13,
+                                            ),
+                                            SizedBox(
+                                              height: 3,
+                                            ),
+                                            CustomText(
+                                              text: 'Phone'.tr +
+                                                  ' : ${controllerClass.pickupDetailsList[i].phone ?? 00968}',
+                                              fontWeight: FontWeight.w400,
+                                              size: 13,
+                                            ),
+                                            SizedBox(
+                                              height: 3,
+                                            ),
+                                            CustomText(
+                                              text: 'Location'.tr +
+                                                  ' : ${controllerClass.pickupDetailsList[i].location ?? ""}',
+                                              fontWeight: FontWeight.w400,
+                                              size: 13,
+                                            ),
+                                          ],
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            Get.to(() => ImageLib(
+                                                  galleryItems: controllerClass
+                                                      .pickupDetailsList,
+                                                  idex: i,
+                                                ));
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 5.0),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              child: CachedNetworkImage(
+                                                fadeOutDuration:
+                                                    Duration(seconds: 2),
+                                                imageUrl: controllerClass
+                                                    .pickupDetailsList[i].image
+                                                    .toString(),
+                                                height: 100,
+                                                width: 90,
+                                                fit: BoxFit.cover,
+                                                placeholder: (context, url) =>
+                                                    Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(15),
+                                                  child: Image.asset(
+                                                      'assets/images/dalilee.png'),
+                                                ),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Container(
+                                                  color: Colors.black12,
+                                                  child: Icon(
+                                                    Icons.error,
+                                                    color: Colors.red[200],
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Expanded(
-                                          flex: 7,
-                                          child: Column(
-                                            children: [
-                                              CustomText(
-                                                text:
-                                                    '${controllerClass.pickupDetailsList[i].orderNo ?? "Pxxx"}',
-                                                fontWeight: FontWeight.bold,
-                                                size: 16,
-                                                color: primaryColor,
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              CustomText(
-                                                text:
-                                                    'Weight : ${controllerClass.pickupDetailsList[i].weight ?? 0} Kg',
-                                                fontWeight: FontWeight.w400,
-                                                size: 15,
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              CustomText(
-                                                text:
-                                                    'Shipping : ${controllerClass.pickupDetailsList[i].shipping ?? 0}',
-                                                fontWeight: FontWeight.w400,
-                                                size: 15,
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              CustomText(
-                                                text:
-                                                    'Phone : ${controllerClass.pickupDetailsList[i].phone ?? 00968}',
-                                                fontWeight: FontWeight.w400,
-                                                size: 15,
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              CustomText(
-                                                text:
-                                                    'Location : ${controllerClass.pickupDetailsList[i].location ?? ""}',
-                                                fontWeight: FontWeight.w400,
-                                                size: 15,
-                                              ),
-                                            ],
                                           ),
                                         ),
                                       ],

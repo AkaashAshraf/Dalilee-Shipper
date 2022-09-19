@@ -20,10 +20,10 @@ class ComplainOpendView extends StatelessWidget {
       required this.text})
       : super(key: key);
   final ComplainController controller;
- final void Function()? onPressed;
- final List<Ticket> listData;
-final  String text;
- final Color color1, color2;
+  final void Function()? onPressed;
+  final List<Ticket> listData;
+  final String text;
+  final Color color1, color2;
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -38,9 +38,9 @@ final  String text;
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   CustomText(
-                    text: 'Updated data ',
+                    text: 'Updateddata'.tr,
                     color: Colors.grey,
                     alignment: Alignment.center,
                     size: 11,
@@ -61,9 +61,10 @@ final  String text;
                 itemBuilder: (context, i) {
                   return InkWell(
                     onTap: () {
-                      Get.put(TicketDetailsController()).fetchTicketDatilsData("7");
-                      Get.to(() => ComplainDetails(id:listData[i].id.toString()));
-                      
+                      Get.put(TicketDetailsController())
+                          .fetchTicketDatilsData("7");
+                      Get.to(
+                          () => ComplainDetails(id: listData[i].id.toString()));
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -83,7 +84,7 @@ final  String text;
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             child: CustomText(
-                              text: 'Ticket No : ${listData[i].id}',
+                              text: 'TicketNo'.tr + ' : ${listData[i].id}',
                               color: primaryColor,
                               size: 16,
                               fontWeight: FontWeight.w600,
@@ -97,8 +98,9 @@ final  String text;
                           const SizedBox(
                             height: 5,
                           ),
-                          _buildRowText('Order No : ${listData[i].orderNo}',
-                              'Ticket Type : ${listData[i].categoryId}'),
+                          _buildRowText(
+                              'OrderNo'.tr + ' : ${listData[i].orderNo}',
+                              'TicketType'.tr + ' : ${listData[i].categoryId}'),
                           const SizedBox(
                             height: 5,
                           ),
@@ -109,15 +111,16 @@ final  String text;
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomText(
-                                  text: "Subject : ${listData[i].subject}",
+                                  text: "Subject".tr +
+                                      " : ${listData[i].subject}",
                                   fontWeight: FontWeight.w400,
                                   size: 12,
                                   color: text1Color,
                                 ),
                                 Row(
                                   children: [
-                                    const CustomText(
-                                      text: "status : ",
+                                    CustomText(
+                                      text: "status".tr + " : ",
                                       fontWeight: FontWeight.w400,
                                       color: text1Color,
                                       size: 14,
@@ -163,11 +166,11 @@ final  String text;
           ],
         );
       }
-    return  Column(
+      return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const EmptyState(
-            label: 'no Data ',
+          EmptyState(
+            label: 'NoData'.tr,
           ),
           MaterialButton(
             onPressed: () {
@@ -176,9 +179,9 @@ final  String text;
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 CustomText(
-                  text: 'Updated data ',
+                  text: 'Updateddata'.tr,
                   color: Colors.grey,
                   alignment: Alignment.center,
                   size: 12,
@@ -194,7 +197,6 @@ final  String text;
       );
     });
   }
-
 
   Widget _buildRowText(String title, String subTilte) {
     return Padding(

@@ -5,7 +5,6 @@ import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/my_input.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -46,8 +45,8 @@ class _LoginViewState extends State<LoginView> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const CustomText(
-                    text: 'WELCOME TO DALILEE SHIPPER',
+                  CustomText(
+                    text: 'WELCOMETODALILEE'.tr,
                     color: primaryColor,
                     fontWeight: FontWeight.bold,
                     alignment: Alignment.center,
@@ -61,9 +60,9 @@ class _LoginViewState extends State<LoginView> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: const EdgeInsets.only(right: 20, left: 20),
                         child:
-                            Text('Login with', style: TextStyle(fontSize: 18)),
+                            Text('Loginby'.tr, style: TextStyle(fontSize: 18)),
                       ),
                       Container(
                         child: Column(
@@ -76,7 +75,7 @@ class _LoginViewState extends State<LoginView> {
                                       value: 0,
                                       groupValue:
                                           _controller.isLoginWithEmail.value,
-                                      title: Text("Mobile No"),
+                                      title: Text("MobileNo".tr),
                                       onChanged: (newValue) {
                                         FocusManager.instance.primaryFocus
                                             ?.unfocus();
@@ -94,7 +93,7 @@ class _LoginViewState extends State<LoginView> {
                                       value: 1,
                                       groupValue:
                                           _controller.isLoginWithEmail.value,
-                                      title: Text("Email"),
+                                      title: Text("Email".tr),
                                       onChanged: (newValue) {
                                         FocusManager.instance.primaryFocus
                                             ?.unfocus();
@@ -126,9 +125,12 @@ class _LoginViewState extends State<LoginView> {
                             onChanged: (val) {
                               _controller.enteredEmail.value = val;
                             },
-                            hintText: 'Enter your mobile number',
-                            prefix: const Padding(
-                              padding: EdgeInsets.only(left: 5.0, top: 15),
+                            hintText: 'Entermobile'.tr,
+                            prefix: Padding(
+                              padding: EdgeInsets.only(
+                                  left: "ENORAR".tr == "en" ? 5.0 : 5,
+                                  right: "ENORAR".tr == "en" ? 5 : 5.0,
+                                  top: 15),
                               child: Text('+968'),
                             ),
                           ),
@@ -140,7 +142,7 @@ class _LoginViewState extends State<LoginView> {
                             validator: (x) => _controller.emailVild(x),
                             keyboardType: TextInputType.emailAddress,
                             limitCharacters: 100,
-                            hintText: 'Enter your email',
+                            hintText: 'Enteryouremail'.tr,
                             // prefix: Text(''),
                           ),
                         ),
@@ -179,13 +181,13 @@ class _LoginViewState extends State<LoginView> {
                               child: RichText(
                                 text: TextSpan(children: <TextSpan>[
                                   TextSpan(
-                                      text: "by clicking login I am agree with",
+                                      text: "clickingAgree".tr,
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.w300,
                                           fontSize: 15)),
                                   TextSpan(
-                                      text: " terms & conditions",
+                                      text: "terms&conditions".tr,
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontStyle: FontStyle.italic,
@@ -215,7 +217,7 @@ class _LoginViewState extends State<LoginView> {
                     child: _controller.isLoading.value
                         ? const WaiteImage()
                         : CustomButtom(
-                            text: 'login',
+                            text: 'Signin'.tr,
                             backgroundColor: _controller.isAgree.value
                                 ? primaryColor
                                 : Colors.grey,

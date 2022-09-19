@@ -159,8 +159,8 @@ class _ColusedViewState extends State<ColusedView> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const EmptyState(
-            label: 'no Data ',
+          EmptyState(
+            label: 'NoData'.tr,
           ),
           MaterialButton(
             onPressed: () {
@@ -169,9 +169,9 @@ class _ColusedViewState extends State<ColusedView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 CustomText(
-                  text: 'Updated data ',
+                  text: 'Updateddata'.tr,
                   color: Colors.grey,
                   alignment: Alignment.center,
                   size: 12,
@@ -193,7 +193,7 @@ class _ColusedViewState extends State<ColusedView> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomText(
-          text: 'Invoice : $text',
+          text: 'Invoice'.tr + ' : $text',
           color: primaryColor,
           size: 18,
           fontWeight: FontWeight.bold,
@@ -211,12 +211,12 @@ class _ColusedViewState extends State<ColusedView> {
             InkWell(
               onTap: () {
                 Get.defaultDialog(
-                    title: 'PDF File',
+                    title: 'PDF ' + 'File'.tr,
                     titlePadding: const EdgeInsets.all(15),
                     contentPadding: const EdgeInsets.all(5),
-                    middleText: 'Are you sure to download pdf file?',
-                    textCancel: 'Cancel',
-                    textConfirm: 'Ok',
+                    middleText: 'AreDownloadpdf'.tr,
+                    textCancel: 'Cancel'.tr,
+                    textConfirm: 'Ok'.tr,
                     buttonColor: primaryColor,
                     confirmTextColor: Colors.white,
                     cancelTextColor: Colors.black,

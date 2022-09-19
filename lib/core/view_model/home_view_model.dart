@@ -61,7 +61,7 @@ class HomeViewModel extends GetxController {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 buildMenu(Icons.monetization_on_outlined,
-                                    "Finance", context, () {
+                                    "Finance".tr, context, () {
                                   Get.back();
                                   _screen = const MenuPageView();
                                   _screenMenu = FinanceView();
@@ -69,16 +69,16 @@ class HomeViewModel extends GetxController {
                                   update();
                                 }),
 
-                                buildMenu(Icons.apartment_outlined, "Offices",
-                                    context, () {
+                                buildMenu(Icons.apartment_outlined,
+                                    "Offices".tr, context, () {
                                   Get.back();
                                   _screen = const MenuPageView();
                                   _screenMenu = OfficesView();
                                   update();
                                 }),
                                 // dlv
-                                buildMenu(Icons.settings_outlined, "Settings",
-                                    context, () {
+                                buildMenu(Icons.settings_outlined,
+                                    "Settings".tr, context, () {
                                   Get.back();
                                   _screen = const MenuPageView();
                                   _screenMenu = const ProfileView();
@@ -87,7 +87,7 @@ class HomeViewModel extends GetxController {
                                 }),
 
                                 buildMenu(MyTicket.fontisto_ticket_alt,
-                                    "Ticket", context, () {
+                                    "Ticket".tr, context, () {
                                   Get.back();
                                   _screen = const MenuPageView();
                                   _screenMenu = ComplainView();
@@ -101,24 +101,23 @@ class HomeViewModel extends GetxController {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                buildMenu(Icons.calculate_outlined, "Calculate",
-                                    context, () {
+                                buildMenu(Icons.calculate_outlined,
+                                    "Calculate".tr, context, () {
                                   Get.back();
                                   _screen = const MenuPageView();
                                   _screenMenu = const CalculateView();
                                   update();
                                 }),
                                 buildMenu(
-                                    Icons.logout_outlined, "Sign out", context,
+                                    Icons.logout_outlined, "Logout".tr, context,
                                     () {
                                   Get.defaultDialog(
-                                      title: 'Sgin Out',
+                                      title: "Logout".tr,
                                       titlePadding: const EdgeInsets.all(15),
                                       contentPadding: const EdgeInsets.all(5),
-                                      middleText:
-                                          'Are you sure you want to sign out ?',
-                                      textCancel: 'Cancel',
-                                      textConfirm: 'Ok',
+                                      middleText: 'Areyoulogout'.tr,
+                                      textCancel: 'Cancel'.tr,
+                                      textConfirm: 'Ok'.tr,
                                       buttonColor: primaryColor,
                                       confirmTextColor: Colors.white,
                                       cancelTextColor: Colors.black,
@@ -136,10 +135,10 @@ class HomeViewModel extends GetxController {
                                       });
                                 }),
                                 buildMenu(
-                                    Icons.delete, "Delete Account", context,
+                                    Icons.delete, "DeleteAccount".tr, context,
                                     () {
                                   Get.defaultDialog(
-                                      title: 'Delete Account',
+                                      title: 'DeleteAccount'.tr,
                                       titlePadding: const EdgeInsets.symmetric(
                                           horizontal: 25, vertical: 15),
                                       contentPadding: const EdgeInsets.only(
@@ -147,10 +146,9 @@ class HomeViewModel extends GetxController {
                                           right: 30,
                                           top: 0,
                                           bottom: 15),
-                                      middleText:
-                                          'Are you sure you want to delete your account ?',
-                                      textCancel: '  Cancel  ',
-                                      textConfirm: '  Delete  ',
+                                      middleText: 'Aredeleteaccount'.tr,
+                                      textCancel: 'Cancel'.tr,
+                                      textConfirm: 'Ok'.tr,
                                       buttonColor: primaryColor,
                                       confirmTextColor: Colors.white,
                                       cancelTextColor: Colors.black,

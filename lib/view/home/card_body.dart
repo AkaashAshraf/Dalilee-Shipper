@@ -153,20 +153,13 @@ class CardBody extends StatelessWidget {
             endIndent: 0,
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 15.0, right: 10, top: 10),
+            padding: const EdgeInsets.only(
+                left: 15.0, right: 15, top: 10, bottom: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  flex: 4,
-                  child: _buildRowText('Ref : $ref', '# : $number'),
-                ),
-                const Spacer(
-                  flex: 1,
-                ),
-                Expanded(
-                    flex: 3,
-                    child: _buildRowText('CC : $cc OMR', 'Date : $date ')),
+                _buildRowText('Ref'.tr + ' : $ref', 'Phone'.tr + ' : $number'),
+                _buildRowText('CC'.tr + ' : $cc OMR', 'Date'.tr + ' : $date '),
               ],
             ),
           ),
@@ -216,7 +209,7 @@ class CardBody extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomText(
-                  text: isOpen ? "Hide Details" : 'Show More Details',
+                  text: isOpen ? "HideDetails".tr : 'ShowMoreDetails'.tr,
                   color: textRedColor,
                   size: 11,
                   alignment: Alignment.centerRight,
@@ -253,7 +246,7 @@ class CardBody extends StatelessWidget {
         onTap: onPressedShowMore,
         child: Column(
           children: [
-            _rowWithnameline('Shipment Journey', primaryColor),
+            _rowWithnameline('ShipmentJourney'.tr, primaryColor),
             for (int q = 0; q < stutaus!.length; q++)
               Padding(
                 padding: const EdgeInsets.all(5),
@@ -276,12 +269,12 @@ class CardBody extends StatelessWidget {
                       const LineStyle(thickness: 1, color: primaryColor),
                 ),
               ),
-            _rowWithnameline('Payment Summary', primaryColor),
+            _rowWithnameline('PaymentSummary'.tr, primaryColor),
             _buildRowDown(
-                text1Color, 12, 'Shipping Cost ', '$shipmentCost OMR'),
-            _buildRowDown(text1Color, 12, 'COD ', '$cod OMR'),
+                text1Color, 12, 'ShippingCost'.tr, '$shipmentCost OMR'),
+            _buildRowDown(text1Color, 12, 'COD'.tr, '$cod OMR'),
             _buildRowDown(
-                primaryColor, 13, 'Total Charges ', ' $totalCharges OMR'),
+                primaryColor, 13, 'TotalCharges'.tr, ' $totalCharges OMR'),
           ],
         ),
       ),
@@ -345,7 +338,7 @@ class CardBody extends StatelessWidget {
           color: text1Color,
         ),
         const SizedBox(
-          height: 10,
+          height: 15,
         ),
         CustomText(
           text: subTilte,

@@ -65,7 +65,7 @@ class _InShipmentsState extends State<InShipments> {
                   height: 40,
                   child: MyInput(
                     keyboardType: TextInputType.text,
-                    hintText: 'Enter Shipment Number',
+                    hintText: 'EnterShipmentNumber'.tr,
                     onChanged: controller.onSearchTextChanged,
                     controller: controller.searchConter,
                     suffixIcon: MaterialButton(
@@ -165,8 +165,8 @@ class _InShipmentsState extends State<InShipments> {
                             ? Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const EmptyState(
-                                    label: 'no Data ',
+                                  EmptyState(
+                                    label: 'NoData'.tr,
                                   ),
                                   MaterialButton(
                                     onPressed: () {
@@ -176,9 +176,9 @@ class _InShipmentsState extends State<InShipments> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       mainAxisSize: MainAxisSize.min,
-                                      children: const [
+                                      children: [
                                         CustomText(
-                                          text: 'Updated data',
+                                          text: 'Updateddata'.tr,
                                           color: Colors.grey,
                                           alignment: Alignment.center,
                                           size: 12,
@@ -271,8 +271,8 @@ class _InShipmentsState extends State<InShipments> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const EmptyState(
-            label: 'no Data',
+          EmptyState(
+            label: 'NoData'.tr,
           ),
           MaterialButton(
             onPressed: () {
@@ -281,9 +281,9 @@ class _InShipmentsState extends State<InShipments> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 CustomText(
-                  text: 'Updated data',
+                  text: 'Updateddata'.tr,
                   color: Colors.grey,
                   alignment: Alignment.center,
                   size: 12,

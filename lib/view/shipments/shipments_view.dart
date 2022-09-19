@@ -3,7 +3,6 @@ import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
 import 'package:dalile_customer/view/shipments/in_view.dart';
 import 'package:dalile_customer/view/shipments/out_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
 import 'package:get/get.dart';
 
 class ShipmentView extends StatelessWidget {
@@ -16,7 +15,7 @@ class ShipmentView extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: primaryColor,
-        title: const Text("SHIPMENTS"),
+        title: Text("SHIPMENTS".tr),
         centerTitle: true,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -79,16 +78,19 @@ class ShipmentView extends StatelessWidget {
   _tabBarIndicatorShape() => TabBar(
         labelPadding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
         indicatorSize: TabBarIndicatorSize.tab,
-        labelStyle: const TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
-        unselectedLabelColor: primaryColor,
         physics: const CustomTabBarViewScrollPhysics(),
         indicatorWeight: 0.0,
         tabs: _tabTwoParameters(),
+        labelColor: whiteColor,
         padding: const EdgeInsets.all(5),
+        labelStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+        unselectedLabelColor: primaryColor,
+        unselectedLabelStyle:
+            const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
         indicator: ShapeDecoration(
           shape: RoundedRectangleBorder(
               side: const BorderSide(color: primaryColor),
-              borderRadius: BorderRadius.circular(25)),
+              borderRadius: BorderRadius.circular(30)),
           gradient: SweepGradient(
             colors: [
               primaryColor.withOpacity(0.75),
@@ -107,14 +109,14 @@ class ShipmentView extends StatelessWidget {
         },
       );
 
-  List<Widget> _tabTwoParameters() => const [
+  List<Widget> _tabTwoParameters() => [
         Tab(
           height: 20,
-          text: 'OUT',
+          text: 'OUT'.tr,
         ),
         Tab(
           height: 20,
-          text: 'IN',
+          text: 'IN'.tr,
         ),
       ];
 }

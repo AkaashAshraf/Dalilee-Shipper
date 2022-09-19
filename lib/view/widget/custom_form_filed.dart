@@ -2,6 +2,7 @@ import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:get/get.dart';
 
 class CustomFormFiled extends StatelessWidget {
   final String text, hint;
@@ -26,6 +27,9 @@ class CustomFormFiled extends StatelessWidget {
         CustomText(
           text: text,
           color: text1Color,
+          alignment: "ENORAR".tr == "ar"
+              ? Alignment.centerRight
+              : Alignment.centerLeft,
         ),
         const SizedBox(
           height: 10,

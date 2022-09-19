@@ -1,4 +1,5 @@
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/core/view_model/my_lang_controller.dart';
 import 'package:dalile_customer/view/menu/profiles/edit_profile.dart';
 import 'package:dalile_customer/view/menu/profiles/terms_Conditions_view.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
@@ -20,8 +21,8 @@ class ProfileView extends StatelessWidget {
         toolbarHeight: 70,
         backgroundColor: primaryColor,
         foregroundColor: whiteColor,
-        title: const CustomText(
-            text: 'SETTINGS',
+        title: CustomText(
+            text: 'Settings'.tr.toUpperCase(),
             color: whiteColor,
             size: 18,
             alignment: Alignment.center),
@@ -39,7 +40,7 @@ class ProfileView extends StatelessWidget {
             const SizedBox(
               height: 70,
             ),
-            _buildRows("Profile", Icons.account_circle_outlined, () {
+            _buildRows("Profile".tr, Icons.account_circle_outlined, () {
               Get.to(() => const EditProfile());
             }),
 
@@ -52,17 +53,17 @@ class ProfileView extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            _buildRows("About The App", Icons.phone_iphone_outlined, () {}),
+            _buildRows("AboutApp".tr, Icons.phone_iphone_outlined, () {}),
             const SizedBox(
               height: 20,
             ),
-            _buildRows("Terms & Conditions", Icons.summarize_outlined, () {
+            _buildRows("Terms&Conditions".tr, Icons.summarize_outlined, () {
               Get.to(() => const TermsConditions());
             }),
             const SizedBox(
               height: 20,
             ),
-            _buildRows("Rating", Icons.star_outlined, () {
+            _buildRows("Rating".tr, Icons.star_outlined, () {
               LaunchReview.launch(
                   androidAppId: "thiqatech.dalilee.shipper_app",
                   iOSAppId: "1633078775");
@@ -152,22 +153,22 @@ class ProfileView extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            // _buildRows("Language", Icons.language, () {
-            //   showDialog(
-            //     context: context,
-            //     builder: (_) => AlertDialog(
-            //       scrollable: true,
-            //       shape: const RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.all(
-            //           Radius.circular(5.0),
-            //         ),
-            //       ),
-            //       content: Builder(builder: (context) {
-            //         return const _Showlung();
-            //       }),
-            //     ),
-            //   );
-            // }),
+            _buildRows("Language".tr, Icons.language, () {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  scrollable: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5.0),
+                    ),
+                  ),
+                  content: Builder(builder: (context) {
+                    return _Showlung();
+                  }),
+                ),
+              );
+            }),
 
             const Spacer(),
           ],
@@ -211,10 +212,10 @@ class ProfileView extends StatelessWidget {
 }
 
 class _Showlung extends StatelessWidget {
-  const _Showlung({
+  _Showlung({
     Key? key,
   }) : super(key: key);
-
+  final MyLang controller = Get.put(MyLang());
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -223,8 +224,8 @@ class _Showlung extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const CustomText(
-                text: "Language",
+              CustomText(
+                text: "Language".tr,
                 alignment: Alignment.topRight,
                 color: primaryColor,
                 size: 15,
@@ -247,8 +248,13 @@ class _Showlung extends StatelessWidget {
           CustomFormFiled(
             select: "",
             hint: 'English',
-            text: 'Select Language',
+            text: 'SelectLanguage'.tr,
             onSaved: (val) {
+              if (val == "العربية") {
+                controller.changeLang('ar');
+              } else {
+                controller.changeLang('en');
+              }
               return null;
             },
             validator: (val) => val == null
@@ -256,14 +262,16 @@ class _Showlung extends StatelessWidget {
                 : val.length > 20
                     ? "max number 20"
                     : null,
-            items: const ["English", "Arabic"],
+            items: const ["English", "العربية"],
           ),
           const SizedBox(
             height: 15,
           ),
           CustomButtom(
-            text: 'Save',
-            onPressed: () {},
+            text: 'Save'.tr,
+            onPressed: () {
+              Get.back();
+            },
           ),
         ],
       ),

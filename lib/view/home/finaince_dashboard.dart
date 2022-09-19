@@ -41,7 +41,7 @@ class _FinanceDashState extends State<FinanceDash> {
             GestureDetector(
               onTap: () {
                 Get.to(FinanceDasboradListing(
-                    title: "All Orders",
+                    title: "AllOrders".tr,
                     type: Status.ALL,
                     subTitle_: fController.listAll.length.toString() +
                         '/' +
@@ -57,7 +57,7 @@ class _FinanceDashState extends State<FinanceDash> {
                       size: 50,
                     ),
                     // title: 'Total Orders',
-                    title: 'Total Orders Amount',
+                    title: 'TotalOrdersAmount'.tr,
                     numbers: '${widget.controller.totalAmount.value + " OMR"}',
                   ),
                   15.0,
@@ -103,12 +103,12 @@ class _FinanceDashState extends State<FinanceDash> {
                     _InsideSmallBox(
                       image: 'assets/images/delivered.png',
                       // title: 'Total collected',
-                      title: 'Paid Amount',
+                      title: 'PaidAmount'.tr,
 
                       numbers: '${widget.controller.paidAmount.value + " OMR"}',
                     ), () {
                   Get.to(FinanceDasboradListing(
-                      title: "Paid Orders",
+                      title: "PaidOrders".tr,
                       type: Status.PAID,
                       subTitle_: fController.listPaid.length.toString() +
                           '/' +
@@ -123,7 +123,7 @@ class _FinanceDashState extends State<FinanceDash> {
                       image: 'assets/images/delivered.png',
 
                       // title: 'COD Pending',
-                      title: 'Shipping Cost',
+                      title: 'ShippingCost'.tr,
 
                       numbers:
                           '${widget.controller.shipmentCost.value + " OMR"}',
@@ -140,13 +140,13 @@ class _FinanceDashState extends State<FinanceDash> {
                     _InsideSmallBox(
                       image: 'assets/images/tobepickup.png',
                       // title: 'Total collected',
-                      title: 'COD Pending',
+                      title: 'CODPending'.tr,
 
                       numbers:
                           '${widget.controller.codPendingAmount.value + " OMR"}',
                     ), () {
                   Get.to(FinanceDasboradListing(
-                      title: "COD Pending",
+                      title: "CODPending".tr,
                       type: Status.COD_PENDING,
                       subTitle_: fController.listCodPending.length.toString() +
                           '/' +
@@ -161,13 +161,13 @@ class _FinanceDashState extends State<FinanceDash> {
                       image: 'assets/images/delivered.png',
 
                       // title: 'COD Pending',
-                      title: 'Ready To Pay',
+                      title: 'ReadyToPay'.tr,
 
                       numbers:
                           '${widget.controller.readyToPayAmount.value + " OMR"}',
                     ), () {
                   Get.to(FinanceDasboradListing(
-                      title: "Ready To Pay",
+                      title: "ReadyToPay".tr,
                       type: Status.READY_TO_PAY,
                       subTitle_: fController.listReadyToPay.length.toString() +
                           '/' +
@@ -183,14 +183,14 @@ class _FinanceDashState extends State<FinanceDash> {
                 _buildsmallbox(
                     _InsideSmallBox(
                       image: 'assets/images/tobepickup.png',
-                      title: 'COD with Drivers',
+                      title: 'CODwithDrivers'.tr,
                       // title: 'Total with Driver',
 
                       numbers:
                           '${widget.controller.codWithDriversAmount.value + " OMR"}',
                     ), () {
                   Get.to(FinanceDasboradListing(
-                      title: "COD with Drivers",
+                      title: "CODwithDrivers".tr,
                       type: Status.COD_WITH_DRIVERS,
                       subTitle_: fController.listCodWithDrivers.length
                               .toString() +
@@ -203,13 +203,13 @@ class _FinanceDashState extends State<FinanceDash> {
                 _buildsmallbox(
                     _InsideSmallBox(
                       image: 'assets/images/delivered.png',
-                      title: 'COD Return',
+                      title: 'CODReturn'.tr,
                       // title: 'Total Returned',
 
                       numbers: '${widget.controller.codReturn.value + " OMR"}',
                     ), () {
                   Get.to(FinanceDasboradListing(
-                      title: "COD Return",
+                      title: "CODReturn".tr,
                       type: Status.COD_RETURN,
                       subTitle_: fController.listCodReturn.length.toString() +
                           '/' +

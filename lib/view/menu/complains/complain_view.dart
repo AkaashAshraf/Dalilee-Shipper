@@ -18,8 +18,8 @@ class ComplainView extends GetWidget<ComplainController> {
         backgroundColor: bgColor,
         appBar: AppBar(
           backgroundColor: primaryColor,
-          title: const CustomText(
-            text: 'TICKET',
+          title: CustomText(
+            text: 'Ticket'.tr.toUpperCase(),
             color: whiteColor,
             alignment: Alignment.center,
             size: 18,
@@ -30,8 +30,7 @@ class ComplainView extends GetWidget<ComplainController> {
         ),
         floatingActionButton: Padding(
           padding: const EdgeInsets.only(bottom: 15),
-          child: GetBuilder<ComplainController>(
-            builder: (_model) {
+          child: GetBuilder<ComplainController>(builder: (_model) {
             return FloatingActionButton(
               backgroundColor: primaryColor,
               onPressed: () {
@@ -40,7 +39,6 @@ class ComplainView extends GetWidget<ComplainController> {
                 _model.typeName.clear();
                 _model.orderID.clear();
                 _model.showD(context);
-                
               },
               child: const Icon(
                 Icons.add,
@@ -52,7 +50,6 @@ class ComplainView extends GetWidget<ComplainController> {
         body: NestedScrollView(
           headerSliverBuilder: (context, headerSliverBuilder) => [
             SliverAppBar(
-              
               toolbarHeight: 8,
               elevation: 0,
               backgroundColor: whiteColor,
@@ -60,20 +57,19 @@ class ComplainView extends GetWidget<ComplainController> {
             ),
           ],
           body: TabBarView(
-            
             children: [
               ComplainOpendView(
-                text: 'Opened',
+                text: 'Opened'.tr,
                 color1: textRedColor,
                 color2: textRedColor.withOpacity(0.6),
                 controller: _controller,
                 listData: _controller.comOpenData,
-                  onPressed: () {
+                onPressed: () {
                   _controller.fetchOpenComplainData();
                 },
               ),
               ComplainOpendView(
-                text: 'Closed',
+                text: 'Closed'.tr,
                 controller: _controller,
                 color1: primaryColor,
                 color2: primaryColor.withOpacity(0.5),
@@ -119,11 +115,11 @@ class ComplainView extends GetWidget<ComplainController> {
       );
 
   List<Widget> _tabTwoParameters() => [
-        const Tab(
-          text: 'Opened',
+        Tab(
+          text: 'Opened'.tr,
         ),
-        const Tab(
-          text: 'Closed',
+        Tab(
+          text: 'Closed'.tr,
         ),
       ];
 }

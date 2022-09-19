@@ -2,6 +2,7 @@ import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class MyInput extends StatelessWidget {
@@ -115,63 +116,63 @@ class CustomFormFiledWithTitle extends StatelessWidget {
         CustomText(
           text: text,
           color: text1Color,
+          alignment: "ENORAR".tr == "ar"
+              ? Alignment.centerRight
+              : Alignment.centerLeft,
           fontWeight: FontWeight.w400,
         ),
         const SizedBox(
           height: 12,
         ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.9,
-          child: TextFormField(
-            inputFormatters: [
-              new LengthLimitingTextInputFormatter(limitCharacters),
-            ],
-            autofocus: false,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            onEditingComplete: onEditingComplete,
-            readOnly: read,
-            onChanged: onChanged,
-            controller: controller,
-            initialValue: initialValue,
-            keyboardType: keyboardType,
-            validator: validator,
-            style: read == false
-                ? TextStyle(
-                    fontSize: 12,
-                    color: Colors.black,
-                  )
-                : TextStyle(
-                    fontSize: 12,
-                    color: Colors.blueGrey,
-                  ),
-            decoration: InputDecoration(
-              labelText: labelText,
-              isDense: true,
-              contentPadding: const EdgeInsets.all(15),
-              hintText: hintText,
-              labelStyle: const TextStyle(color: text1Color, fontSize: 12),
-              hintStyle:
-                  TextStyle(fontSize: 12, color: Colors.black.withOpacity(0.3)),
-              focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.blue, width: 1),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black.withOpacity(0.2)),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.red),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.red),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              filled: true,
-              fillColor: Colors.white,
-              prefixIcon: prefix,
-              suffixIcon: suffixIcon,
+        TextFormField(
+          inputFormatters: [
+            new LengthLimitingTextInputFormatter(limitCharacters),
+          ],
+          autofocus: false,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          onEditingComplete: onEditingComplete,
+          readOnly: read,
+          onChanged: onChanged,
+          controller: controller,
+          initialValue: initialValue,
+          keyboardType: keyboardType,
+          validator: validator,
+          style: read == false
+              ? TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                )
+              : TextStyle(
+                  fontSize: 12,
+                  color: Colors.blueGrey,
+                ),
+          decoration: InputDecoration(
+            labelText: labelText,
+            isDense: true,
+            contentPadding: const EdgeInsets.all(15),
+            hintText: hintText,
+            labelStyle: const TextStyle(color: text1Color, fontSize: 12),
+            hintStyle:
+                TextStyle(fontSize: 12, color: Colors.black.withOpacity(0.3)),
+            focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue, width: 1),
             ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black.withOpacity(0.2)),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            filled: true,
+            fillColor: Colors.white,
+            prefixIcon: prefix,
+            suffixIcon: suffixIcon,
           ),
         )
       ],
@@ -211,6 +212,9 @@ class CustomFormFiledAreaWithTitle extends StatelessWidget {
         CustomText(
           text: text,
           color: text1Color,
+          alignment: "ENORAR".tr == "ar"
+              ? Alignment.centerRight
+              : Alignment.centerLeft,
         ),
         const SizedBox(
           height: 10,

@@ -28,8 +28,8 @@ class _CalculateViewState extends State<CalculateView> {
         toolbarHeight: 70,
         backgroundColor: primaryColor,
         foregroundColor: whiteColor,
-        title: const CustomText(
-            text: 'CALCUATE',
+        title: CustomText(
+            text: 'Calculate'.tr.toUpperCase(),
             color: whiteColor,
             size: 18,
             alignment: Alignment.center),
@@ -74,8 +74,8 @@ class _CalculateViewState extends State<CalculateView> {
                                           ? StepState.complete
                                           : StepState.indexed,
                                   isActive: _controller.currentStep.value >= 0,
-                                  title: const CustomText(
-                                    text: 'FROM',
+                                  title: CustomText(
+                                    text: 'FROM'.tr,
                                     fontWeight: FontWeight.w500,
                                     size: 13,
                                   ),
@@ -92,8 +92,8 @@ class _CalculateViewState extends State<CalculateView> {
                                             : StepState.indexed,
                                     isActive:
                                         _controller.currentStep.value >= 1,
-                                    title: const CustomText(
-                                      text: 'TO',
+                                    title: CustomText(
+                                      text: 'TO'.tr,
                                       fontWeight: FontWeight.w500,
                                       size: 13,
                                     ),
@@ -105,8 +105,8 @@ class _CalculateViewState extends State<CalculateView> {
                                         : StepState.indexed,
                                     isActive:
                                         _controller.currentStep.value >= 2,
-                                    title: const CustomText(
-                                      text: 'WEIGHT',
+                                    title: CustomText(
+                                      text: 'Weight'.tr.toUpperCase(),
                                       fontWeight: FontWeight.w500,
                                       size: 13,
                                     ),
@@ -133,8 +133,9 @@ class _CalculateViewState extends State<CalculateView> {
                                       children: [
                                         Expanded(
                                           child: CustomButtom(
-                                            text:
-                                                isLastStep ? 'Proceed' : 'Next',
+                                            text: isLastStep
+                                                ? 'Proceed'.tr
+                                                : 'Next'.tr,
                                             onPressed: () {
                                               if (isLastStep) {
                                                 //send server
@@ -151,7 +152,7 @@ class _CalculateViewState extends State<CalculateView> {
                                         if (_controller.currentStep.value != 0)
                                           Expanded(
                                             child: CustomButtom(
-                                              text: 'Back',
+                                              text: 'Back'.tr,
                                               onPressed: _controller
                                                           .currentStep.value ==
                                                       0
@@ -179,10 +180,10 @@ class _CalculateViewState extends State<CalculateView> {
   Widget _buildFirstPage(BuildContext context) {
     return Column(
       children: [
-        const Padding(
+        Padding(
           padding: EdgeInsets.only(left: 5),
           child: CustomText(
-            text: 'Shipping Type',
+            text: 'ShippingType'.tr,
             fontWeight: FontWeight.w400,
             size: 13,
           ),
@@ -203,7 +204,7 @@ class _CalculateViewState extends State<CalculateView> {
           initialLabelIndex: 0,
           totalSwitches: 2,
           activeBgColor: [primaryColor, primaryColor.withOpacity(0.5)],
-          labels: const ['Domestic', 'International'],
+          labels: ['Domestic'.tr, 'International'.tr],
           onToggle: (index) {},
         ),
         const SizedBox(
@@ -213,32 +214,32 @@ class _CalculateViewState extends State<CalculateView> {
           select: _controller.muhafazaNameFrom.text.isEmpty
               ? null
               : _controller.muhafazaNameFrom.text,
-          text: 'Muhafaza',
+          text: 'Muhafaza'.tr,
           onSaved: (val) {
             _controller.muhafazaVal1(val);
             return null;
           },
           validator: (val) => val == null ? 'please select muhafaza' : null,
-          hint: 'Select Muhafaza',
+          hint: 'SelectMuhafaza'.tr,
           items:
               _controller.muhafazaList.map((element) => element!.name).toList(),
         ),
         CustomFormFiled(
           select:
               _controller.cWFrom.text.isEmpty ? null : _controller.cWFrom.text,
-          text: 'Wilaya',
+          text: 'Wilaya'.tr,
           onSaved: (val) {
             _controller.waliaVal1(val);
             return null;
           },
           validator: (val) => val == null ? 'please select wilaya' : null,
-          hint: 'select wilaya',
+          hint: 'wilayaregion'.tr,
           items: _controller.wilayaListFrom
               .map((element) => element!.name)
               .toList(),
         ),
         CustomFormFiled(
-          text: 'Region',
+          text: 'Region'.tr,
           select:
               _controller.cRFrom.text.isEmpty ? null : _controller.cRFrom.text,
           onSaved: (val) {
@@ -246,7 +247,7 @@ class _CalculateViewState extends State<CalculateView> {
             return null;
           },
           validator: (val) => val == null ? 'please select region' : null,
-          hint: 'select region',
+          hint: 'selectregion'.tr,
           items: _controller.regionListFrom
               .map((element) => element!.name)
               .toList(),
@@ -258,10 +259,10 @@ class _CalculateViewState extends State<CalculateView> {
   Widget _buildScandPage(BuildContext context) {
     return Column(
       children: [
-        const Padding(
+        Padding(
           padding: EdgeInsets.only(left: 5),
           child: CustomText(
-            text: 'Shipping Type',
+            text: 'ShippingType'.tr,
             fontWeight: FontWeight.w400,
             size: 13,
           ),
@@ -282,7 +283,7 @@ class _CalculateViewState extends State<CalculateView> {
           initialLabelIndex: 0,
           totalSwitches: 2,
           activeBgColor: [primaryColor, primaryColor.withOpacity(0.5)],
-          labels: const ['Domestic', 'International'],
+          labels: ['Domestic'.tr, 'International'.tr],
           onToggle: (index) {},
         ),
         const SizedBox(
@@ -292,37 +293,37 @@ class _CalculateViewState extends State<CalculateView> {
           select: _controller.muhafazaNameTo.text.isEmpty
               ? null
               : _controller.muhafazaNameTo.text,
-          text: 'Muhafaza',
+          text: 'Muhafaza'.tr,
           onSaved: (val) {
             _controller.muhafazaVal2(val);
             return null;
           },
           validator: (val) => val == null ? 'please select muhafaza' : null,
-          hint: 'Select Muhafaza',
+          hint: 'SelectMuhafaza'.tr,
           items:
               _controller.muhafazaList.map((element) => element!.name).toList(),
         ),
         CustomFormFiled(
-          text: 'Wilaya',
+          text: 'Wilaya'.tr,
           select: _controller.cWTo.text.isEmpty ? null : _controller.cWTo.text,
           onSaved: (val) {
             _controller.waliaVal2(val);
             return null;
           },
           validator: (val) => val == null ? 'please select wilaya' : null,
-          hint: 'select wilaya',
+          hint: 'wilayaregion'.tr,
           items:
               _controller.wilayaListTo.map((element) => element!.name).toList(),
         ),
         CustomFormFiled(
           select: _controller.cRTO.text.isEmpty ? null : _controller.cRTO.text,
-          text: 'Region',
+          text: 'Region'.tr,
           onSaved: (val) {
             _controller.regionVal2(val);
             return null;
           },
           validator: (val) => val == null ? 'please select region' : null,
-          hint: 'select region',
+          hint: 'selectregion'.tr,
           items:
               _controller.regionListTo.map((element) => element!.name).toList(),
         ),
@@ -406,10 +407,10 @@ class _CalculateViewState extends State<CalculateView> {
   Widget _buildThierdPage(BuildContext context) {
     return Column(
       children: [
-        const Padding(
+        Padding(
           padding: EdgeInsets.only(left: 5),
           child: CustomText(
-            text: 'Shipping Type',
+            text: 'ShippingType'.tr,
             fontWeight: FontWeight.w400,
             size: 13,
           ),
@@ -430,7 +431,7 @@ class _CalculateViewState extends State<CalculateView> {
           initialLabelIndex: 0,
           totalSwitches: 2,
           activeBgColor: [primaryColor, primaryColor.withOpacity(0.5)],
-          labels: const ['Domestic', 'International'],
+          labels: ['Domestic'.tr, 'International'.tr],
           onToggle: (index) {},
         ),
         const SizedBox(
@@ -439,8 +440,8 @@ class _CalculateViewState extends State<CalculateView> {
         CustomFormFiledWithTitle(
           read: _controller.isLoadingPrice.value ? true : false,
           keyboardType: TextInputType.phone,
-          text: 'New Weight',
-          hintText: 'Enter Shipment Weight',
+          text: 'NewWeight'.tr,
+          hintText: 'EnterShipmentWeight'.tr,
           suffixIcon: Padding(
             padding: const EdgeInsets.all(15),
             child: Image.asset(
@@ -488,18 +489,18 @@ class ComplatedScreen extends StatelessWidget {
                 ]),
             child: Column(
               children: [
-                _myListtile('assets/images/in.png', 'Shipping From',
+                _myListtile('assets/images/in.png', 'ShippingFrom'.tr,
                     ' ${_model.muhafazaNameFrom.text},  ${_model.cWFrom.text},  ${_model.cRFrom.text}',
                     () {
                   _model.first();
                 }),
-                _myListtile('assets/images/out.png', 'Shipping To',
+                _myListtile('assets/images/out.png', 'ShippingTo'.tr,
                     ' ${_model.muhafazaNameTo.text}, ${_model.cWTo.text}, ${_model.cRTO.text}',
                     () {
                   _model.second();
                   // _model.update();
                 }),
-                _myListtile('assets/images/kg.png', 'Weight',
+                _myListtile('assets/images/kg.png', 'Weight'.tr,
                     '${_model.wighetController.text} KG', () {
                   _model.thired();
                   // _model.update();
@@ -513,7 +514,7 @@ class ComplatedScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: Row(
-              children: const [
+              children: [
                 Icon(
                   Icons.info_outline_rounded,
                   color: textRedColor,
@@ -521,7 +522,7 @@ class ComplatedScreen extends StatelessWidget {
                 ),
                 SizedBox(width: 5),
                 CustomText(
-                  text: 'Rate is based on cash rate in Oman Currency',
+                  text: 'RateIsbased'.tr,
                   color: textRedColor,
                   size: 10,
                   fontWeight: FontWeight.w500,
@@ -568,7 +569,7 @@ class ComplatedScreen extends StatelessWidget {
                   height: 5,
                 ),
                 CustomText(
-                  text: '4-5 Days',
+                  text: '4-5 ' + 'Days'.tr,
                   fontWeight: FontWeight.w500,
                   color: Colors.grey.shade500,
                   size: 14,
@@ -580,8 +581,8 @@ class ComplatedScreen extends StatelessWidget {
           const SizedBox(
             height: 5,
           ),
-          const CustomText(
-            text: 'With Dalilee, there is no boundary for delivery',
+          CustomText(
+            text: 'WithDalilee'.tr,
             fontWeight: FontWeight.w500,
             size: 12,
             color: primaryColor,
@@ -590,7 +591,7 @@ class ComplatedScreen extends StatelessWidget {
           const Spacer(),
           SizedBox(
             width: 200,
-            child: CustomButtom(text: 'Proceed', onPressed: () {}),
+            child: CustomButtom(text: 'Proceed'.tr, onPressed: () {}),
           ),
           const Spacer(),
         ],
@@ -626,9 +627,9 @@ class ComplatedScreen extends StatelessWidget {
       width: 70,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: const [
+        children: [
           CustomText(
-            text: 'Change',
+            text: 'Change'.tr,
             alignment: Alignment.centerLeft,
             color: textRedColor,
             size: 10,

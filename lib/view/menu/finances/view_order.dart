@@ -79,8 +79,8 @@ class _ViewOrderViewState extends State<ViewOrderView> {
           foregroundColor: whiteColor,
           title: GetX<ViewOrderController>(builder: (_controller) {
             return CustomText(
-                text:
-                    'View Orders (${_controller.viewOrderData.length.toString()}/${_controller.totalOrders.value.toString()})',
+                text: 'ViewOrders'.tr +
+                    ' (${_controller.viewOrderData.length.toString()}/${_controller.totalOrders.value.toString()})',
                 color: whiteColor,
                 size: 18,
                 alignment: Alignment.center);
@@ -100,8 +100,8 @@ class _ViewOrderViewState extends State<ViewOrderView> {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const EmptyState(
-                      label: 'No Data ',
+                    EmptyState(
+                      label: 'NoData'.tr,
                     ),
                     MaterialButton(
                       onPressed: () {
@@ -111,9 +111,9 @@ class _ViewOrderViewState extends State<ViewOrderView> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
-                        children: const [
+                        children: [
                           CustomText(
-                            text: 'Updated data ',
+                            text: 'Updateddata'.tr,
                             color: Colors.grey,
                             alignment: Alignment.center,
                             size: 12,
