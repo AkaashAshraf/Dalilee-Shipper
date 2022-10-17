@@ -10,7 +10,10 @@ void main() async {
   try {
     await Firebase.initializeApp();
     FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-        alert: true, badge: true, sound: true,);
+      alert: true,
+      badge: true,
+      sound: true,
+    );
     await initService();
     // Get.put(FinanceListingController());
   } catch (e) {}

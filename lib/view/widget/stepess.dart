@@ -18,7 +18,7 @@ class StepProgressView extends StatelessWidget {
       : _icons = icons,
         _curStep = curStep,
         _activeColor = color,
-        assert(curStep > 0 == true && curStep <= icons.length),
+        assert(curStep > 0 && curStep <= icons.length),
         super(key: key);
 
   @override

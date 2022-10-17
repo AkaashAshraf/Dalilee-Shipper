@@ -106,6 +106,7 @@ class _OutShipmentsState extends State<OutShipments> {
                             itemBuilder: (context, i) {
                               return GetBuilder<ShipmentViewModel>(
                                 builder: (x) => CardBody(
+                                  shipment: controller.searchResult[i]!,
                                   willaya:
                                       controller.searchResult[i]!.wilayaName,
                                   area: controller.searchResult[i]!.areaName,
@@ -166,7 +167,7 @@ class _OutShipmentsState extends State<OutShipments> {
                             ? Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                   EmptyState(
+                                  EmptyState(
                                     label: 'noData'.tr,
                                   ),
                                   MaterialButton(
@@ -178,7 +179,7 @@ class _OutShipmentsState extends State<OutShipments> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       mainAxisSize: MainAxisSize.min,
-                                      children:  [
+                                      children: [
                                         CustomText(
                                           text: 'Updateddata'.tr,
                                           color: Colors.grey,
@@ -204,6 +205,7 @@ class _OutShipmentsState extends State<OutShipments> {
                                 itemBuilder: (context, i) {
                                   return GetBuilder<ShipmentViewModel>(
                                     builder: (x) => CardBody(
+                                      shipment: controller.outList[i]!,
                                       willaya:
                                           controller.outList[i]!.wilayaName,
                                       area: controller.outList[i]!.areaName,
@@ -275,7 +277,7 @@ class _OutShipmentsState extends State<OutShipments> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-           EmptyState(
+          EmptyState(
             label: 'NoData'.tr,
           ),
           MaterialButton(
@@ -285,7 +287,7 @@ class _OutShipmentsState extends State<OutShipments> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
-              children:  [
+              children: [
                 CustomText(
                   text: 'Updateddata'.tr,
                   color: Colors.grey,

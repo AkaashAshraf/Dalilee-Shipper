@@ -98,54 +98,57 @@ class PickupDetails extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            CustomText(
-                                              text:
-                                                  '${controllerClass.pickupDetailsList[i].orderNo ?? "Pxxx"}',
-                                              fontWeight: FontWeight.bold,
-                                              size: 15,
-                                              color: primaryColor,
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            CustomText(
-                                              text: 'Weight'.tr +
-                                                  ' : ${controllerClass.pickupDetailsList[i].weight ?? 0} Kg',
-                                              fontWeight: FontWeight.w400,
-                                              size: 13,
-                                            ),
-                                            SizedBox(
-                                              height: 3,
-                                            ),
-                                            CustomText(
-                                              text: 'Shipping'.tr +
-                                                  ' : ${controllerClass.pickupDetailsList[i].shipping ?? 0}',
-                                              fontWeight: FontWeight.w400,
-                                              size: 13,
-                                            ),
-                                            SizedBox(
-                                              height: 3,
-                                            ),
-                                            CustomText(
-                                              text: 'Phone'.tr +
-                                                  ' : ${controllerClass.pickupDetailsList[i].phone ?? 00968}',
-                                              fontWeight: FontWeight.w400,
-                                              size: 13,
-                                            ),
-                                            SizedBox(
-                                              height: 3,
-                                            ),
-                                            CustomText(
-                                              text: 'Location'.tr +
-                                                  ' : ${controllerClass.pickupDetailsList[i].location ?? ""}',
-                                              fontWeight: FontWeight.w400,
-                                              size: 13,
-                                            ),
-                                          ],
+                                        Expanded(
+                                          flex: 3,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CustomText(
+                                                text:
+                                                    '${controllerClass.pickupDetailsList[i].orderNo ?? "Pxxx"}',
+                                                fontWeight: FontWeight.bold,
+                                                size: 15,
+                                                color: primaryColor,
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              CustomText(
+                                                text: 'Weight'.tr +
+                                                    ' : ${controllerClass.pickupDetailsList[i].weight ?? 0} Kg',
+                                                fontWeight: FontWeight.w400,
+                                                size: 13,
+                                              ),
+                                              SizedBox(
+                                                height: 3,
+                                              ),
+                                              CustomText(
+                                                text: 'Shipping'.tr +
+                                                    ' : ${controllerClass.pickupDetailsList[i].shipping ?? 0}',
+                                                fontWeight: FontWeight.w400,
+                                                size: 13,
+                                              ),
+                                              SizedBox(
+                                                height: 3,
+                                              ),
+                                              CustomText(
+                                                text: 'Phone'.tr +
+                                                    ' : ${controllerClass.pickupDetailsList[i].phone ?? 00968}',
+                                                fontWeight: FontWeight.w400,
+                                                size: 13,
+                                              ),
+                                              SizedBox(
+                                                height: 3,
+                                              ),
+                                              CustomText(
+                                                text: 'Location'.tr +
+                                                    ' : ${controllerClass.pickupDetailsList[i].location ?? ""}',
+                                                fontWeight: FontWeight.w400,
+                                                size: 13,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         InkWell(
                                           onTap: () {

@@ -1,5 +1,4 @@
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/model/login_data_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 

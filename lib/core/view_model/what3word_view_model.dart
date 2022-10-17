@@ -15,24 +15,27 @@ class What3WordController extends GetxController {
   String long = '';
   String lat = '';
   RxString currentWords = ''.obs;
-  RxList<String> suggestions = [
-    "oman.muscat.mabela",
-    "oman.muscat.seeb",
-    "oman.barka.sawadi",
-    "oman.sohar.sur",
-    "oman.salalah.tamrid",
-    "oman.nizwa.sur",
-  ].obs;
+  RxString readyToSubmitWords = ''.obs;
+
+  RxList suggestions = [].obs;
+  RxList<Suggestion> list = [Suggestion()].obs;
+
   final formKeyG = GlobalKey<FormState>();
 
-  chickWhat3Word(context) async {
+  @override
+  void onInit() {
+    getMyWords(words: "..");
+
+    super.onInit();
+  }
+
+  chickWhat3Word(context, {required String words}) async {
     isWaiting = true;
     update();
     // var _url =
     //     "http://shaheen-test2.dalilee.om/api/w3w/convert-to-coordinates/?words=${twaController.text}";
 
-    var _url =
-        "$base_url/w3w/convert-to-coordinates/?words=${twaController.text}";
+    var _url = "$base_url/w3w/convert-to-coordinates/?words=$words";
     try {
       var response = await http.get(
         Uri.parse(_url),
@@ -74,13 +77,17 @@ class What3WordController extends GetxController {
     }
   }
 
-  getMyWords() async {
+  getMyWords({required String words}) async {
     try {
-      final response = await getWithUrl("$base_url/w3w/get-w3words_addresses");
+      final response =
+          await getWithUrl("$base_url/w3w/auto-suggest/?words=$words");
       if (response != null) {
         final jsonData = w3WordsModelFromJson(response.body);
-        final words = List<String>.from(jsonData.words.map((e) => (e.words)));
+
+        final words = List<String>.from(
+            jsonData.suggestions!.map((e) => (e.words.toString())));
         suggestions.value = words;
+        list.value = jsonData.suggestions ?? [];
       }
     } catch (e) {
     } finally {

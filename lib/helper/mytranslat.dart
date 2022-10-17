@@ -4,6 +4,12 @@ class MyTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         "ar": {
+          "Solve": "Solve",
+          "ProblemImage": "Problem Image",
+
+          "Add": "Add",
+          "AddOrder": "Add Order",
+
           //Ar
           //sing in screen with otp screen --->start
 
@@ -224,6 +230,12 @@ class MyTranslations extends Translations {
         },
         "en": {
           //En
+          "Solve": "Solve",
+          "ProblemImage": "Problem Image",
+
+          "AddOrder": "Add Order",
+          "Add": "Add",
+
 //sing in screen with otp screen --->Start
           "Filed": "Filed",
           "somedatamissing": "some data was missing",

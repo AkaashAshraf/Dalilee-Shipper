@@ -54,32 +54,36 @@ class Data {
 }
 
 class Shipment {
-  Shipment({
-    this.orderId,
-    this.orderNo,
-    this.refId,
-    this.cop,
-    this.customerNo,
-    this.customerName,
-    this.cc,
-    this.orderStatusName,
-    this.orderStatusKey,
-    this.orderPickupImage,
-    this.orderDeliverImage,
-    this.orderUndeliverImage,
-    this.weight,
-    this.phone,
-    this.shippingPrice,
-    this.cod,
-    this.createdAt,
-    this.updatedAt,
-    this.orderActivities,
-    this.status,
-    this.currentStatus,
-    this.isOpen: false,
-    this.wilayaName,
-    this.areaName,
-  });
+  Shipment(
+      {this.orderId,
+      this.orderNo,
+      this.refId,
+      this.cop,
+      this.customerNo,
+      this.customerName,
+      this.cc,
+      this.orderStatusName,
+      this.orderStatusKey,
+      this.orderPickupImage,
+      this.orderDeliverImage,
+      this.orderUndeliverImage,
+      this.weight,
+      this.phone,
+      this.shippingPrice,
+      this.cod,
+      this.createdAt,
+      this.updatedAt,
+      this.orderActivities,
+      this.status,
+      this.currentStatus,
+      this.isOpen: false,
+      this.wilayaName,
+      this.areaName,
+      this.isProblem: true,
+      this.problemImage:
+          "https://dalilee.net/cpdNew/app-api/uploads/2022/09/L27IGdT5ow7mwXeD-20220925082355PM.png",
+      this.problemText:
+          "Customer is not responding. Please contact with him if it ispossible. Customer is not responding. Please contact with him if it ispossible. Customer is not responding. Please contact with him if it ispossible. Customer is not responding. Please contact with him if it ispossible"});
 
   int? orderId;
   String? orderNo;
@@ -89,7 +93,9 @@ class Shipment {
   String? customerName;
   dynamic cc;
   bool isOpen;
-
+  bool isProblem;
+  String problemImage;
+  String problemText;
   String? orderStatusName;
   String? orderStatusKey;
   String? orderPickupImage;
@@ -210,7 +216,7 @@ class Shipment {
             ? []
             : List<dynamic>.from(orderActivities!.map((x) => x.toJson())),
         "status": status,
-        "current_status": currentStatus == null ? "" : currentStatus,
+        "current_status": currentStatus == null ? 0 : currentStatus,
       };
 }
 

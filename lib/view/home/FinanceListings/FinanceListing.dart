@@ -278,7 +278,7 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
                 children: [
                   // NoDataView(label: "No Data" + widget.type.toString()),
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.85,
+                    height: MediaQuery.of(context).size.height * 0.82,
                     child: Stack(
                       children: [
                         Container(
@@ -479,6 +479,7 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
     List<TrackingStatus> trackingStatus,
   ) {
     return CardBody(
+      shipment: shipment,
       willaya: shipment.wilayaName,
       area: shipment.areaName,
       orderId: shipment.orderId ?? 00,

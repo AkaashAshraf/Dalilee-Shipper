@@ -4,6 +4,8 @@ import 'package:dalile_customer/view/home/home_view.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
 import 'package:dalile_customer/view/menu/calculate/calculate_view.dart';
 import 'package:dalile_customer/view/menu/complains/complain_view.dart';
+import 'package:dalile_customer/view/menu/dispatcher/AddOrder.dart';
+import 'package:dalile_customer/view/menu/dispatcher/my_orders.dart';
 import 'package:dalile_customer/view/menu/finances/finance.dart';
 import 'package:dalile_customer/view/menu/profiles/profile.dart';
 import 'package:dalile_customer/view/offices_view.dart/offices_view.dart';
@@ -108,6 +110,16 @@ class HomeViewModel extends GetxController {
                                 //   _screenMenu = const CalculateView();
                                 //   update();
                                 // }),
+                                buildMenu(Icons.add_box_outlined, "AddOrder".tr,
+                                    context, () {
+                                  Get.to(AddOrder());
+                                }),
+
+                                buildMenu(Icons.my_library_books_outlined,
+                                    "My Orders".tr, context, () {
+                                  Get.to(MyOrders());
+                                }),
+
                                 buildMenu(
                                     Icons.logout_outlined, "Logout".tr, context,
                                     () {

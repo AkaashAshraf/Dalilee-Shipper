@@ -104,6 +104,7 @@ class _InShipmentsState extends State<InShipments> {
                               itemBuilder: (context, i) {
                                 return GetBuilder<ShipmentViewModel>(
                                   builder: (x) => CardBody(
+                                    shipment: controller.searchResult[i]!,
                                     willaya:
                                         controller.searchResult[i]!.wilayaName,
                                     area: controller.searchResult[i]!.areaName,
@@ -205,6 +206,7 @@ class _InShipmentsState extends State<InShipments> {
                                 itemBuilder: (context, i) {
                                   return GetBuilder<ShipmentViewModel>(
                                     builder: (x) => CardBody(
+                                      shipment: controller.inList[i]!,
                                       willaya: controller.inList[i]!.wilayaName,
                                       area: controller.inList[i]!.areaName,
                                       date: controller.inList[i]!.updatedAt,

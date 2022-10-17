@@ -75,9 +75,11 @@ Future<dynamic> post(String url, dynamic body) async {
   try {
     var response = await http.post(Uri.parse(_url), body: body, headers: {
       "Accept": "application/json",
+      // 'Content-Type': 'application/json; charset=UTF-8',
       "Authorization": "Bearer $token"
     });
     // return response.body;
+    // print(response.body);
     if (response.statusCode == 200) {
       return response;
     } else if (response.statusCode == 401) {
@@ -91,6 +93,39 @@ Future<dynamic> post(String url, dynamic body) async {
       return null;
     }
   } catch (e) {
+    print(e.toString());
+    return null;
+  }
+}
+
+Future<dynamic> postWithJsonBody(String url, dynamic body) async {
+  var _url = like + url;
+  final prefs = await SharedPreferences.getInstance();
+
+  String token = prefs.getString('token') ?? '';
+
+  try {
+    var response = await http.post(Uri.parse(_url), body: body, headers: {
+      "Accept": "application/json",
+      'Content-Type': 'application/json; charset=UTF-8',
+      "Authorization": "Bearer $token"
+    });
+    // return response.body;
+    // print(response.body);
+    if (response.statusCode == 200) {
+      return response;
+    } else if (response.statusCode == 401) {
+      prefs.remove("loginData");
+      prefs.remove("token");
+      prefs.clear();
+      Get.deleteAll();
+      Get.offAll(() => LoginView());
+      return null;
+    } else {
+      return null;
+    }
+  } catch (e) {
+    print(e.toString());
     return null;
   }
 }

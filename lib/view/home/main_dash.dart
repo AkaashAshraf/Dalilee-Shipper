@@ -840,6 +840,7 @@ class _MainDashState extends State<MainDash> {
   CardBody dashBoardCard(
       DashbordController controller, Shipment shipment, DashbordController x) {
     return CardBody(
+      shipment: shipment,
       willaya: shipment.wilayaName,
       area: shipment.areaName,
       date: shipment.updatedAt,

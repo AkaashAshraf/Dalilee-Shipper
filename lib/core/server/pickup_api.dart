@@ -106,8 +106,9 @@ class PickupApi {
         "Accept": "application/json",
         "Authorization": "Bearer $token"
       }, body: {
-        "governate_id": "$muhafazaid"
+        "governate_id": muhafazaid > 0 ? muhafazaid.toString() : ""
       });
+      // print(response.body);
       if (response.statusCode == 200) {
         var data = wilayasModelFromJson(response.body);
 
@@ -121,6 +122,7 @@ class PickupApi {
       }
     } catch (e) {
       mass = 'Network error';
+      // print(e.toString());
       return null;
     }
   }

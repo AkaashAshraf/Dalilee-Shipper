@@ -177,6 +177,7 @@ CardBody card(
   DashbordController x,
 ) {
   return CardBody(
+    shipment: shipment,
     willaya: shipment.wilayaName,
     area: shipment.areaName,
     date: shipment.updatedAt,

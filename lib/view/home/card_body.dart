@@ -1,7 +1,13 @@
+import 'package:dalile_customer/components/generalModel.dart';
 import 'package:dalile_customer/components/popups/ImagesViewModal.dart';
+import 'package:dalile_customer/components/popups/ProblemViewModal.dart';
+import 'package:dalile_customer/components/popups/edit_order_model.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/complain_view_model.dart';
 import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
+import 'package:dalile_customer/model/Dispatcher/Orders.dart';
+import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
+import 'package:dalile_customer/view/menu/dispatcher/EditOrder.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/stepess.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +38,10 @@ class CardBody extends StatelessWidget {
       required this.status_key,
       required this.customer_name,
       this.orderNumber,
+      this.isMyOrder: false,
       required this.currentStep,
       required this.onPressedShowMore,
+      required this.shipment,
       required this.isOpen})
       : super(key: key);
 
@@ -55,9 +63,11 @@ class CardBody extends StatelessWidget {
       date,
       cod,
       willaya,
+      isMyOrder,
       area;
 
   final List<dynamic>? stutaus;
+  final Shipment shipment;
   final int currentStep;
   final bool isOpen;
   final List<String>? icon;
@@ -100,30 +110,56 @@ class CardBody extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    InkWell(
-                      onTap: () {
-                        Get.put(ShipmentViewModel())
-                            .callAlert(context, number ?? "123");
-                      },
-                      child: const Icon(
-                        Icons.call_outlined,
-                        color: primaryColor,
-                        size: 25,
+                    if (!isMyOrder)
+                      InkWell(
+                        onTap: () {
+                          Get.put(ShipmentViewModel())
+                              .callAlert(context, number ?? "123");
+                        },
+                        child: const Icon(
+                          Icons.call_outlined,
+                          color: primaryColor,
+                          size: 25,
+                        ),
                       ),
-                    ),
+                    // else
+                    // InkWell(
+                    //   onTap: () {
+                    //     Get.to(EditOrder(
+                    //       order: new Order(),
+                    //     ));
+                    //   },
+                    //   child: const Icon(
+                    //     Icons.edit,
+                    //     color: primaryColor,
+                    //     size: 25,
+                    //   ),
+                    // ),
                     const SizedBox(
                       width: 10,
                     ),
-                    InkWell(
-                      onTap: () {
-                        imagesViewModal(context, images, orderNumber).show();
-                      },
-                      child: const Icon(
-                        Icons.remove_red_eye,
-                        color: primaryColor,
-                        size: 25,
+                    if (!isMyOrder)
+                      InkWell(
+                        onTap: () {
+                          if (shipment.isProblem)
+                            problemViewModal(context, images, orderNumber,
+                                    shipment: shipment)
+                                .show();
+                          else
+                            imagesViewModal(
+                              context,
+                              images,
+                              orderNumber,
+                            ).show();
+                        },
+                        child: Icon(
+                          Icons.remove_red_eye,
+                          color: shipment.isProblem == true
+                              ? Colors.red
+                              : primaryColor,
+                          size: 25,
+                        ),
                       ),
-                    ),
                     const SizedBox(
                       width: 10,
                     ),
@@ -192,7 +228,7 @@ class CardBody extends StatelessWidget {
             height: 5,
           ),
           _rowWithnameline(
-              Order_current_Status,
+              Order_current_Status ?? "",
               status_key == 'return'
                   ? Colors.red
                   : status_key == 'F' || status_key == "FW"
@@ -207,8 +243,17 @@ class CardBody extends StatelessWidget {
               top: 10,
             ),
             child: StepProgressView(
-              icons: icon ?? [],
-              curStep: currentStep,
+              icons: icon ??
+                  [
+                    "https://shaheen-oman.dalilee.om/storage/order-icons/pickup.png",
+                    "https://shaheen-oman.dalilee.om/storage/order-icons/send.png",
+                    "https://shaheen-oman.dalilee.om/storage/order-icons/received.png",
+                    "https://shaheen-oman.dalilee.om/storage/order-icons/assigned.png",
+                    "https://shaheen-oman.dalilee.om/storage/order-icons/process.png",
+                    "https://shaheen-oman.dalilee.om/storage/order-icons/un-delivered.png",
+                    "https://shaheen-oman.dalilee.om/storage/order-icons/delivered.png"
+                  ],
+              curStep: currentStep > 0 ? currentStep : 1,
               color: primaryColor,
             ),
           ),
@@ -324,7 +369,7 @@ class CardBody extends StatelessWidget {
           ),
         ),
         CustomText(
-          text: title,
+          text: title ?? "",
           color: color,
           fontWeight: FontWeight.bold,
         ),

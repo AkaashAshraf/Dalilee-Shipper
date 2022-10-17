@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final w3WordsModel = w3WordsModelFromJson(jsonString);
+
 import 'dart:convert';
 
 W3WordsModel w3WordsModelFromJson(String str) =>
@@ -7,56 +11,54 @@ String w3WordsModelToJson(W3WordsModel data) => json.encode(data.toJson());
 
 class W3WordsModel {
   W3WordsModel({
-    required this.status,
-    required this.words,
+    this.suggestions,
   });
 
-  String status;
-  List<Word> words;
+  List<Suggestion>? suggestions;
 
   factory W3WordsModel.fromJson(Map<String, dynamic> json) => W3WordsModel(
-        status: json["status"] == null ? null : json["status"],
-        words: json["words"] == null
-            ? []
-            : List<Word>.from(json["words"].map((x) => Word.fromJson(x))),
+        suggestions: json["suggestions"] == null
+            ? null
+            : List<Suggestion>.from(
+                json["suggestions"].map((x) => Suggestion.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "status": status == null ? "" : status,
-        "words": words == null
-            ? []
-            : List<dynamic>.from(words.map((x) => x.toJson())),
+        "suggestions": suggestions == null
+            ? null
+            : List<dynamic>.from(suggestions!.map((x) => x.toJson())),
       };
 }
 
-class Word {
-  Word({
-    required this.id,
-    required this.shipperId,
-    required this.words,
-    required this.createdAt,
-    required this.updatedAt,
+class Suggestion {
+  Suggestion({
+    this.country,
+    this.nearestPlace,
+    this.words,
+    this.rank,
+    this.language,
   });
 
-  int id;
-  int shipperId;
-  String words;
-  String createdAt;
-  String updatedAt;
+  String? country;
+  String? nearestPlace;
+  String? words;
+  int? rank;
+  String? language;
 
-  factory Word.fromJson(Map<String, dynamic> json) => Word(
-        id: json["id"] == null ? 0 : json["id"],
-        shipperId: json["shipper_id"] == null ? 0 : json["shipper_id"],
-        words: json["words"] == null ? [] : json["words"],
-        createdAt: json["created_at"] == null ? "" : json["created_at"],
-        updatedAt: json["updated_at"] == null ? "" : json["updated_at"],
+  factory Suggestion.fromJson(Map<String, dynamic> json) => Suggestion(
+        country: json["country"] == null ? null : json["country"],
+        nearestPlace:
+            json["nearestPlace"] == null ? null : json["nearestPlace"],
+        words: json["words"] == null ? null : json["words"],
+        rank: json["rank"] == null ? null : json["rank"],
+        language: json["language"] == null ? null : json["language"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id == null ? 0 : id,
-        "shipper_id": shipperId == 0 ? null : shipperId,
-        "words": words == null ? [] : words,
-        "created_at": createdAt == null ? "" : createdAt,
-        "updated_at": updatedAt == null ? "" : updatedAt,
+        "country": country == null ? null : country,
+        "nearestPlace": nearestPlace == null ? null : nearestPlace,
+        "words": words == null ? null : words,
+        "rank": rank == null ? null : rank,
+        "language": language == null ? null : language,
       };
 }
