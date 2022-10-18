@@ -18,9 +18,12 @@ class AddOrder extends StatefulWidget {
 }
 
 class _AddOrder extends State<AddOrder> {
+  final _controller = Get.put(DispatcherController());
+
   @override
   void initState() {
     super.initState();
+    _controller.addList.value = [new Order()];
   }
 
   @override
@@ -29,8 +32,6 @@ class _AddOrder extends State<AddOrder> {
   }
 
   _checkValidtion() async {
-    final _controller = Get.put(DispatcherController());
-
     bool isValid = true;
     Order order;
     List<Order> tempList = [];

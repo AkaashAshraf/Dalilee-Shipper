@@ -7,6 +7,7 @@ import 'package:dalile_customer/model/Dispatcher/Orders.dart';
 import 'package:dalile_customer/model/Dispatcher/add_orders_response.dart';
 import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
 import 'package:dalile_customer/model/wilayas_model.dart';
+import 'package:dalile_customer/view/menu/dispatcher/my_orders.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,6 +16,7 @@ class DispatcherController extends GetxController {
   void onInit() {
     super.onInit();
     fetchWillaya();
+    fetchMyOrders();
   }
 
   RxList<WilayaOM> willayas = <WilayaOM>[].obs;
@@ -58,8 +60,10 @@ class DispatcherController extends GetxController {
       if (res != null) {
         var response = addOrderResponseFromJson(res.body);
         Get.snackbar('Successfull', response.message ?? "");
+        // fetchMyOrders();
         Navigator.pop(context);
         Navigator.pop(context);
+        Get.to(MyOrders());
 
         // print(response.message);
       }
@@ -78,8 +82,7 @@ class DispatcherController extends GetxController {
       if (isRefresh) {
         limit = "500";
         offset = "0";
-      } else
-        loadingMyOrders(true);
+      } else if (myOders.length < 1) loadingMyOrders(true);
       var body = {
         "limit": limit,
         "offset": offset,
@@ -89,7 +92,7 @@ class DispatcherController extends GetxController {
 
       if (data != null) {
         final jsonData = shipmentListingFromJson(data.body);
-
+        totalOrder.value = jsonData.data?.totalShipments ?? 0;
         if (isRefresh)
           myOders.value = jsonData.data?.shipments ?? [];
         else

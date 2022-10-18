@@ -1,4 +1,5 @@
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/core/view_model/DispatcherController.dart';
 import 'package:dalile_customer/view/calculable_view.dart';
 import 'package:dalile_customer/view/home/home_view.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
@@ -117,6 +118,7 @@ class HomeViewModel extends GetxController {
 
                                 buildMenu(Icons.my_library_books_outlined,
                                     "My Orders".tr, context, () {
+                                  Get.put(DispatcherController());
                                   Get.to(MyOrders());
                                 }),
 

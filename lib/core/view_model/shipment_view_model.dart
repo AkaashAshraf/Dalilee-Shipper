@@ -126,13 +126,13 @@ class ShipmentViewModel extends GetxController {
   }
 
   menuAlert(context, number, orderN, dImage, undImage, pickupImage) async {
-    final ReceivePort _port = ReceivePort();
+    // final ReceivePort _port = ReceivePort();
 
-    _port.listen((dynamic data) {
-      String id = data[0];
-      DownloadTaskStatus status = data[1];
-      int progress = data[2];
-    });
+    // _port.listen((dynamic data) {
+    //   String id = data[0];
+    //   DownloadTaskStatus status = data[1];
+    //   int progress = data[2];
+    // });
 
     return showDialog(
         context: context,

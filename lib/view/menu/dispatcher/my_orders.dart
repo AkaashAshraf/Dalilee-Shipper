@@ -36,7 +36,7 @@ class _MyOrders extends State<MyOrders> {
 
   @override
   void initState() {
-    controller.fetchMyOrders();
+    // controller.fetchMyOrders();
     scrollController = ScrollController()
       ..addListener(() {
         _loadMore();
@@ -61,7 +61,7 @@ class _MyOrders extends State<MyOrders> {
   }
 
   _loadMore() async {
-    print(controller.totalOrder.value > controller.myOders.length);
+    // print(controller.totalOrder.value > controller.myOders.length);
 
     if (controller.loadingMyOrders.value) return;
     if ((controller.totalOrder.value > controller.myOders.length) &&
