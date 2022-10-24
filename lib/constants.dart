@@ -21,3 +21,6 @@ String like = '$base_url/v1/store'; //live
 String image = "$domain/storage/uploads/branches/"; // live
 String dalileeOldBaseUrl =
     "https://api.dalilee.net/test2-test/public/api/shaheen-api";
+
+String thawaniPaymentLink =
+    "https://api.dalilee.net/test2-test/public/thawanipage?order_no=";

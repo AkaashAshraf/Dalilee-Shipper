@@ -303,7 +303,7 @@ class _GMapState extends State<GMap> {
                   child: iswithing
                       ? WaiteImage()
                       : CustomButtom(
-                          text: 'Pick Address',
+                          text: 'PickAddress'.tr,
                           onPressed: () {
                             _apiData();
                           },

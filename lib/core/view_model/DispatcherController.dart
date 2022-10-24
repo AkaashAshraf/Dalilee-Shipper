@@ -24,6 +24,8 @@ class DispatcherController extends GetxController {
   RxList<Area> regions = <Area>[].obs;
   RxBool loading = false.obs;
   RxBool loadingMyOrders = false.obs;
+  RxBool loadingPaymentView = false.obs;
+
   RxInt totalOrder = 0.obs;
 
   RxList<Order> addList = <Order>[new Order()].obs;

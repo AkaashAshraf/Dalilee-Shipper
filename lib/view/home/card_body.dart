@@ -1,18 +1,18 @@
-import 'package:dalile_customer/components/generalModel.dart';
 import 'package:dalile_customer/components/popups/ImagesViewModal.dart';
 import 'package:dalile_customer/components/popups/ProblemViewModal.dart';
-import 'package:dalile_customer/components/popups/edit_order_model.dart';
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/core/view_model/DispatcherController.dart';
 import 'package:dalile_customer/core/view_model/complain_view_model.dart';
 import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
-import 'package:dalile_customer/model/Dispatcher/Orders.dart';
 import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
-import 'package:dalile_customer/view/menu/dispatcher/EditOrder.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/stepess.dart';
+import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class CardBody extends StatelessWidget {
   CardBody(
@@ -27,6 +27,7 @@ class CardBody extends StatelessWidget {
       this.stutaus,
       this.totalCharges,
       this.weight,
+      this.onPaymentSuccess,
       required this.area,
       required this.willaya,
       required this.date,
@@ -49,6 +50,7 @@ class CardBody extends StatelessWidget {
       ref,
       number,
       cop,
+      onPaymentSuccess,
       status_key,
       weight,
       orderNumber,
@@ -65,7 +67,6 @@ class CardBody extends StatelessWidget {
       willaya,
       isMyOrder,
       area;
-
   final List<dynamic>? stutaus;
   final Shipment shipment;
   final int currentStep;
@@ -75,6 +76,7 @@ class CardBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final COD = double.tryParse(shipment.cod ?? "") ?? 0;
     List<OrderImages> images = [];
     if (pickup_image != "")
       images.add(OrderImages(pickup_image, 'Pickup Image'));
@@ -98,7 +100,7 @@ class CardBody extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10),
+            padding: EdgeInsets.only(left: 15.0, right: 15, top: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -116,7 +118,7 @@ class CardBody extends StatelessWidget {
                           Get.put(ShipmentViewModel())
                               .callAlert(context, number ?? "123");
                         },
-                        child: const Icon(
+                        child: Icon(
                           Icons.call_outlined,
                           color: primaryColor,
                           size: 25,
@@ -159,10 +161,85 @@ class CardBody extends StatelessWidget {
                               : primaryColor,
                           size: 25,
                         ),
+                      )
+                    else if (isMyOrder && COD > 0)
+                      InkWell(
+                        onTap: () async {
+                          final _url = '$thawaniPaymentLink${shipment.orderId}';
+                          // Share.share("Sample Share Text");
+                          FlutterShare.share(
+                            title: ' ',
+                            text: "Click here to pay for your order\n$_url",
+                          );
+                        },
+                        child: Icon(
+                          Icons.attachment,
+                          color: primaryColor,
+                          size: 20,
+                        ),
                       ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+
+                    if (isMyOrder && COD > 0)
+                      SizedBox(
+                        width: 10,
+                      ),
+                    if (isMyOrder && COD > 0)
+                      InkWell(
+                        onTap: () async {
+                          final _url = '$thawaniPaymentLink${shipment.orderId}';
+                          Get.put(DispatcherController())
+                              .loadingPaymentView
+                              .value = true;
+                          showModalBottomSheet<void>(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.75,
+                                  color: Colors.white,
+                                  child: GetX<DispatcherController>(
+                                      builder: (dispatcherController) {
+                                    return new Stack(
+                                      children: [
+                                        WebView(
+                                          initialUrl: _url,
+                                          onWebViewCreated: (controller) {},
+                                          javascriptMode:
+                                              JavascriptMode.unrestricted,
+                                          gestureNavigationEnabled: true,
+                                          onPageFinished: (_) {
+                                            dispatcherController
+                                                .loadingPaymentView
+                                                .value = false;
+
+                                            if (_.contains(
+                                                "thawanipage_error")) {
+                                              Navigator.pop(context);
+                                            } else if (_.contains(
+                                                "thawanipage_success")) {
+                                              onPaymentSuccess();
+                                            }
+                                          },
+                                        ),
+                                        dispatcherController
+                                                .loadingPaymentView.value
+                                            ? Center(
+                                                child: WaiteImage(),
+                                              )
+                                            : Stack()
+                                      ],
+                                    );
+                                  }));
+                            },
+                          );
+                        },
+                        child: Icon(
+                          Icons.attach_money_sharp,
+                          color: primaryColor,
+                          size: 20,
+                        ),
+                      ),
                     InkWell(
                       onTap: () async {
                         Get.put(ComplainController()).fetchTypeComplainData();

@@ -147,7 +147,10 @@ class _MyOrders extends State<MyOrders> {
                                             controller,
                                             controller.myOders[i],
                                             x,
-                                            dashboardController),
+                                            dashboardController,
+                                            context,
+                                            refreshController:
+                                                refreshController),
                                       );
                                     },
                                   ),
@@ -175,10 +178,22 @@ class _MyOrders extends State<MyOrders> {
 
 }
 
-CardBody card(DispatcherController controller, Shipment shipment,
-    DispatcherController x, DashbordController dashbordController) {
+CardBody card(
+    DispatcherController controller,
+    Shipment shipment,
+    DispatcherController x,
+    DashbordController dashbordController,
+    BuildContext context,
+    {required RefreshController refreshController}) {
   return CardBody(
     isMyOrder: true,
+    onPaymentSuccess: () async {
+      Get.snackbar('Successfull', "Payment has been transfered successfully");
+      refreshController.requestRefresh();
+      // controller.fetchMyOrders(isRefresh: true);
+
+      Navigator.pop(context);
+    },
     shipment: shipment,
     willaya: shipment.wilayaName,
     area: shipment.areaName,

@@ -1,4 +1,8 @@
 {
-  "dart.flutterSdkPaths": ["/Users/testuser/flutter_3_0_1"],
-  "dart.flutterSdkPath": "/Users/testuser/flutter_3_0_1"
+  "dart.flutterSdkPaths": ["/Users/testuser/flutter_3_3_0"],
+  "dart.flutterSdkPath": "/Users/testuser/flutter_3_3_0",
+  "launch": {
+    "configurations": [],
+    "compounds": []
+  }
 }

@@ -1,4 +1,6 @@
+import 'package:dalile_customer/components/generalModel.dart';
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/core/view_model/pickup_view_model.dart';
 import 'package:dalile_customer/core/view_model/qrcode_model_view.dart';
 import 'package:dalile_customer/view/pickup/all_pickup.dart';
 import 'package:dalile_customer/view/pickup/location_view.dart';
@@ -6,7 +8,6 @@ import 'package:dalile_customer/view/pickup/tody_pickup.dart';
 import 'package:dalile_customer/view/pickup/what3words_view.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
 import 'package:get/get.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -33,7 +34,6 @@ class PickupView extends StatelessWidget {
 
           children: [
             SpeedDialChild(
-//backgroundColor: primaryColor,
                 child: Icon(
                   Icons.location_on_outlined,
                   color: primaryColor,
@@ -44,6 +44,156 @@ class PickupView extends StatelessWidget {
                   Get.to(() => GMap(),
                       transition: Transition.downToUp,
                       duration: Duration(milliseconds: 500));
+                }),
+            SpeedDialChild(
+                child: Icon(
+                  Icons.rotate_left,
+                  color: primaryColor,
+                  size: 30,
+                ),
+                label: 'DailyPickup'.tr,
+                onTap: () {
+                  // Navigator.of(context).push(showPicker(
+                  //   context: context,
+                  //   value: TimeOfDay(hour: 12, minute: 40),
+                  //   onChange: (value) {},
+                  // ));
+
+                  modal(
+                      context,
+                      Column(
+                        children: [
+                          GetX<PickupController>(builder: (controller) {
+                            return Column(
+                              children: [
+                                Text(
+                                  "AutoCreatePickup".tr,
+                                  style: TextStyle(
+                                      fontSize: 20, color: primaryColor),
+                                  textAlign: TextAlign.left,
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.9,
+                                  child: Text(
+                                    "Note".tr,
+                                    style: TextStyle(fontSize: 18),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  "DailyPickupNote".tr,
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "PickupTime".tr,
+                                      style: TextStyle(fontSize: 14),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.9,
+                                  child: GestureDetector(
+                                    onTap: (() async {
+                                      var time = await showTimePicker(
+                                        initialTime: TimeOfDay.fromDateTime(
+                                            new DateTime(
+                                                2022,
+                                                1,
+                                                1,
+                                                int.tryParse(controller
+                                                        .pickupTime
+                                                        .split(":")[0]) ??
+                                                    8,
+                                                int.tryParse(controller
+                                                        .pickupTime
+                                                        .split(":")[1]) ??
+                                                    0)),
+                                        context: context,
+                                      );
+                                      controller.pickupTime.value =
+                                          "${time!.hour < 10 ? "0" : time.hour == 0 ? "00" : ""}${time.hour.toString()}:${time.minute < 10 ? "0" : ""}${time.minute.toString()}";
+                                      // print(time);
+                                    }),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: primaryColor),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(
+                                                5.0) //                 <--- border radius here
+                                            ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          controller.pickupTime.value,
+                                          style: TextStyle(fontSize: 16),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Checkbox(
+                                      checkColor: Colors.white,
+                                      // fillColor: MaterialStateProperty.resolveWith(primaryColor),
+                                      value: controller.isAutoDailyPickup.value,
+                                      onChanged: (bool? value) {
+                                        controller.isAutoDailyPickup.value =
+                                            value ?? false;
+                                      },
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      "DailyPickup".tr,
+                                      style: TextStyle(fontSize: 14),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.9,
+                                  child: ElevatedButton(
+                                      onPressed: () {},
+                                      child: Text(
+                                        "Proceed".tr,
+                                        style: TextStyle(
+                                            color: whiteColor, fontSize: 14),
+                                      )),
+                                )
+                              ],
+                            );
+                          }),
+                        ],
+                      )).show();
+
+                  //   Get.to(() => GMap(),
+                  //       transition: Transition.downToUp,
+                  //       duration: Duration(milliseconds: 500));
                 }),
             SpeedDialChild(
                 //   backgroundColor: primaryColor,

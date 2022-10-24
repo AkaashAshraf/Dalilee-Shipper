@@ -21,7 +21,10 @@ class PickupController extends GetxController {
   final GlobalKey<FormState> _formKeyRequest = GlobalKey<FormState>();
   GlobalKey<FormState> get formKeyRequest => _formKeyRequest;
   RxBool loadMoreAllPickup = false.obs;
+  RxString pickupTime = "08:00".obs;
   RxBool loadMoreTodayPickup = false.obs;
+  RxBool isAutoDailyPickup = false.obs;
+
   RxInt totalAllPickup = 0.obs;
   RxInt totalTodayPickup = 0.obs;
 

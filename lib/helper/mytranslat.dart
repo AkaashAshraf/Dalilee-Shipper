@@ -4,6 +4,14 @@ class MyTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         "ar": {
+          "PickupTime": "PickupTime:",
+          "AutoCreatePickup": "Auto Create Pickup",
+          "Note": "Note",
+          "DailyPickupNote":
+              "Your pickup reference will be created automatically on daily basis",
+          "Proceed": "Proceed",
+          "PickAddress": "Pick Address",
+          "DailyPickup": "Daily Pickup",
           "Solve": "Solve",
           "ProblemImage": "Problem Image",
 
@@ -230,6 +238,15 @@ class MyTranslations extends Translations {
         },
         "en": {
           //En
+
+          "PickupTime": "PickupTime:",
+          "AutoCreatePickup": "Auto Create Pickup",
+          "Note": "Note",
+          "DailyPickupNote":
+              "Your pickup reference will be created automatically on daily basis",
+          "Proceed": "Proceed",
+          "PickAddress": "Pick Address",
+          "DailyPickup": "Daily Pickup",
           "Solve": "Solve",
           "ProblemImage": "Problem Image",
 
