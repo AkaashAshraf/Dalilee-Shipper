@@ -21,8 +21,8 @@ import 'package:map_picker/map_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GMap extends StatefulWidget {
-  const GMap({Key? key}) : super(key: key);
-
+  const GMap({Key? key, required this.isDailyPickup}) : super(key: key);
+  final bool isDailyPickup;
   @override
   State<GMap> createState() => _GMapState();
 }
@@ -134,7 +134,14 @@ class _GMapState extends State<GMap> {
         barrierDismissible: true);
     try {
       await PickupApi.fetchlocationData(
-              lat.text.toString(), long.text.toString())
+              lat.text.toString(), long.text.toString(),
+              url: widget.isDailyPickup
+                  ? "/pickup/create-pickup-auto"
+                  : "/pickup/create-pickup",
+              isAutoDailyPickup: widget.isDailyPickup,
+              time: widget.isDailyPickup
+                  ? Get.put(PickupController()).pickupTime.toString()
+                  : "")
           .then((value) {
         if (Get.isDialogOpen == true) {
           Get.back();
@@ -153,64 +160,15 @@ class _GMapState extends State<GMap> {
         _controller.fetchAllPickupData();
         _controller.fetchTodayPickupData();
 
-        // var temp = Get.find<PickupController>;
-        // Navigator.pop(context);
-
-        // Get.put(PickupController()).fetchTodayPickupData();
-        // Navigator.pop(context);
-        // w3WordsPopup(context, "word3");
-
         await what3WordApi(
           long.text.toString(),
           lat.text.toString(),
         );
-        // log("-----------lat===>${lat.text.toString()}");
-        // log("-----------long===>${long.text.toString()}");
         Navigator.pop(context);
 
         w3WordsPopup(context, word3);
-
-        // .whenComplete(() {
-        //   if (word3.isNotEmpty) {
-        //     w3WordsPopup(context, word3);
-
-        //     // showDialog(
-        //     //     useRootNavigator: true,
-        //     //     barrierDismissible: true,
-        //     //     barrierColor: Colors.transparent,
-        //     //     context: context,
-        //     //     builder: (BuildContext context) {
-        //     //       return CustomDialogBoxAl(
-        //     //         title: "What3Word",
-        //     //         des: "3 word = $word3",
-        //     //         icon: Icons.map,
-        //     //       );
-        //     //     });
-        //   }
-        // });
-
-        // return true;
       });
-    } finally {
-      // what3WordApi(
-      //   long.text.toString(),
-      //   lat.text.toString(),
-      // ).whenComplete(() {
-      //   if (word3.isNotEmpty) {
-      //     showDialog(
-      //         barrierDismissible: true,
-      //         barrierColor: Colors.transparent,
-      //         context: context,
-      //         builder: (BuildContext context) {
-      //           return CustomDialogBoxAl(
-      //             title: "What3Word",
-      //             des: "3 word = $word3",
-      //             icon: Icons.map,
-      //           );
-      //         });
-      //   }
-      // });
-    }
+    } finally {}
   }
 
   MapPickerController mapPickerController = MapPickerController();

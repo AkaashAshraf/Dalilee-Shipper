@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/core/server/pickup_api.dart';
 import 'package:dalile_customer/model/Pickup/PickupModel.dart';
+import 'package:dalile_customer/model/Pickup/fetch_auto_pickup_status.dart';
 import 'package:dalile_customer/model/muhafaza_model.dart';
 import 'package:dalile_customer/model/pickup_deatils.dart';
 import 'package:dalile_customer/model/region_model.dart';
@@ -24,6 +26,7 @@ class PickupController extends GetxController {
   RxString pickupTime = "08:00".obs;
   RxBool loadMoreTodayPickup = false.obs;
   RxBool isAutoDailyPickup = false.obs;
+  RxBool autoPickupLoading = false.obs;
 
   RxInt totalAllPickup = 0.obs;
   RxInt totalTodayPickup = 0.obs;
@@ -136,6 +139,23 @@ class PickupController extends GetxController {
       loadMoreAllPickup.value = false;
 
       isLoadingAll(false);
+    }
+  }
+
+  fetchAutoPickupStatus() async {
+    autoPickupLoading(true);
+    try {
+      final result = await post("/pickup/trader-pickup-time", {});
+      if (result != null) {
+        final jsonData = fetchAutoPickupResponseFromJson(result?.body);
+        // print(jsonData.data?.isActive);
+        pickupTime.value = jsonData.data?.pickupTime ?? "08:00";
+        isAutoDailyPickup.value = jsonData.data?.isActive ?? false;
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      autoPickupLoading(false);
     }
   }
 

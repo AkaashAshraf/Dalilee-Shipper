@@ -1,13 +1,14 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/http/FromDalilee.dart';
+import 'package:dalile_customer/core/view_model/pickup_view_model.dart';
 import 'package:dalile_customer/model/Pickup/PickupModel.dart';
 import 'package:dalile_customer/model/muhafaza_model.dart';
 import 'package:dalile_customer/model/pickup_deatils.dart';
 import 'package:dalile_customer/model/region_model.dart';
 import 'package:dalile_customer/model/wilayas_model.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -63,25 +64,50 @@ class PickupApi {
     }
   }
 
-  static Future<bool> fetchlocationData(lat, lng) async {
-    var url = "$like/pickup/create-pickup";
+  static Future<bool> fetchlocationData(lat, lng,
+      {required String url,
+      required String time,
+      required isAutoDailyPickup}) async {
+    var _url = "$like$url";
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? '';
 
     try {
-      var response = await http.post(Uri.parse(url), headers: {
+      // print("------------params of create pickup");
+
+      // print({
+      //   "lat": "$lat",
+      //   "url": _url,
+      //   "pickup_time": "$time",
+      //   "lng": "$lng",
+      //   "is_cron_active": "${time != "" ? 1 : 0}"
+      // });
+      // print("------------end params");
+      // return false;
+      var response = await http.post(Uri.parse(_url), headers: {
         "Accept": "application/json",
         "Authorization": "Bearer $token",
       }, body: {
         "lat": "$lat",
-        "lng": "$lng"
+        "pickup_time": "$time",
+        "lng": "$lng",
+        "is_cron_active":
+            Get.put(PickupController()).isAutoDailyPickup.value ? "1" : "0"
+        // "is_cron_active": "${time != "" ? 1 : 0}"
       });
+
       // log(response.toString());
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
 
         success = '${data["message"] ?? "has been added"}';
-
+        if (isAutoDailyPickup) {
+          // final jsonResponse = autoPickupResponseFromJson(response.body);
+          if (data["data"]["store_pickup"]["is_cron_active"] == true) {
+            success = "Auto create pickup has been enabled";
+          } else
+            success = "Auto create pickup has been disabled";
+        }
         return true;
       } else {
         var err = json.decode(response.body);
@@ -91,7 +117,8 @@ class PickupApi {
         return false;
       }
     } catch (e) {
-      mass = 'Network error';
+      mass = 'Network error' + e.toString();
+      print(mass);
       return false;
     }
   }

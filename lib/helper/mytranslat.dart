@@ -246,10 +246,9 @@ class MyTranslations extends Translations {
               "Your pickup reference will be created automatically on daily basis",
           "Proceed": "Proceed",
           "PickAddress": "Pick Address",
-          "DailyPickup": "Daily Pickup",
+          "DailyPickup": "Daily Auto Pickup",
           "Solve": "Solve",
           "ProblemImage": "Problem Image",
-
           "AddOrder": "Add Order",
           "Add": "Add",
 

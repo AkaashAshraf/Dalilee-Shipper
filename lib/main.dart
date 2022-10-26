@@ -15,6 +15,7 @@ void main() async {
       sound: true,
     );
     await initService();
+
     // Get.put(FinanceListingController());
   } catch (e) {}
   runApp(const MyApp());
