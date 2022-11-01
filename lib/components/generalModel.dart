@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-Alert modal(BuildContext context, Column content) {
+Alert modal(BuildContext context, Widget content) {
   return Alert(
       style: AlertStyle(
           isOverlayTapDismiss: true,

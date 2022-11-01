@@ -13,14 +13,17 @@ class MainCardBodyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: primaryColor,
+        // backgroundColor: primaryColor,
         appBar: _buildAppBar(),
-        body: Container(
-          padding: EdgeInsets.only(top: 25),
-          decoration: const BoxDecoration(
-              color: bgColor,
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
-          child: controller,
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            padding: EdgeInsets.only(top: 25),
+            decoration: const BoxDecoration(
+                color: bgColor,
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
+            child: controller,
+          ),
         ));
   }
 

@@ -12,7 +12,6 @@ import 'package:image_picker/image_picker.dart';
 
 class ProfileController extends GetxController {
   Rx<Data> profile = new Data().obs;
-
   RxBool profileLoading = false.obs;
   RxBool isEditinig = false.obs;
   RxBool askOtp = false.obs;

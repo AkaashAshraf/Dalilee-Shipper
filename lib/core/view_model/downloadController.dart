@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/core/http/FromDalilee.dart';
 import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/model/export_model.dart';
 import 'package:image_downloader/image_downloader.dart';
@@ -15,12 +16,15 @@ import 'package:url_launcher/url_launcher.dart';
 
 class DownloadController extends GetxController {
   Rx<bool> isDownloading = false.obs;
+  Rx<bool> loading = false.obs;
+
   Rx<bool> isEmail = false.obs;
 
   Rx<OrderTypes> selectedOrderType = OrderTypes('', '').obs;
 
   Rx<String> startDate = "".obs;
   Rx<String> endDate = "".obs;
+  Rx<String> comments = "".obs;
 
   List<OrderTypes> orderTypes = [
     OrderTypes('shipments', "All Orders"),
@@ -72,6 +76,31 @@ class DownloadController extends GetxController {
       // Get.back();
     }
   } //startDownloadingImage
+
+  addComment({required String problemId, required BuildContext context}) async {
+    loading(true);
+
+    try {
+      final response = await dalileePost("/update_shipper_comments",
+          {"problem_id": problemId, "trader_comments": comments.value});
+      // print(response.body);
+      if (response.statusCode == 200) {
+        Get.snackbar(
+            'Success'.tr, "Problem comments has been updated successfully".tr);
+        Navigator.pop(context);
+        // print(response.body["data"]["message"]);
+      } else
+        Get.snackbar(
+            'Failed'.tr, "Something went wront. Please try again later".tr);
+    } catch (e) {
+      Get.snackbar(
+          'Failed'.tr, "Something went wront. Please try again later".tr);
+
+      // print(e.toString());
+    } finally {
+      loading(false);
+    }
+  }
 
   String hotfixYear(String _) =>
       _.substring(0, _.length - 2) +

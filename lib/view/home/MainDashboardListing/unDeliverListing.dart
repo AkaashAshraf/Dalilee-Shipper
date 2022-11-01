@@ -103,61 +103,65 @@ class _UndeliverListing extends State<UndeliverListing> {
           decoration: const BoxDecoration(
               color: bgColor,
               borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
-          child: GetX<DashbordController>(builder: (controller) {
-            return Container(
-              height: MediaQuery.of(context).size.height,
-              child: controller.undeliverShipemet.isEmpty
-                  ? controller.inViewLoadingUndeliver.value
-                      ? WaiteImage()
-                      : NoDataView(label: "NoData".tr)
-                  : Column(
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.85,
-                          child: Stack(
-                            children: [
-                              Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.85,
-                                child: SmartRefresher(
-                                  header: WaterDropHeader(
-                                    waterDropColor: primaryColor,
-                                  ),
-                                  controller: refreshController,
-                                  onRefresh: () async {
-                                    _refresh();
-                                  },
-                                  child: ListView.separated(
-                                    // shrinkWrap: false,
-                                    controller: scrollController,
-                                    separatorBuilder: (context, i) =>
-                                        const SizedBox(height: 15),
-                                    itemCount:
-                                        controller.undeliverShipemet.length,
-
-                                    padding: const EdgeInsets.only(
-                                        left: 15,
-                                        right: 15,
-                                        bottom: 10,
-                                        top: 5),
-                                    itemBuilder: (context, i) {
-                                      return GetBuilder<DashbordController>(
-                                        builder: (x) => card(controller,
-                                            controller.undeliverShipemet[i], x),
-                                      );
+          child: SingleChildScrollView(
+            child: GetX<DashbordController>(builder: (controller) {
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                child: controller.undeliverShipemet.isEmpty
+                    ? controller.inViewLoadingUndeliver.value
+                        ? WaiteImage()
+                        : NoDataView(label: "NoData".tr)
+                    : Column(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.85,
+                            child: Stack(
+                              children: [
+                                Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.85,
+                                  child: SmartRefresher(
+                                    header: WaterDropHeader(
+                                      waterDropColor: primaryColor,
+                                    ),
+                                    controller: refreshController,
+                                    onRefresh: () async {
+                                      _refresh();
                                     },
+                                    child: ListView.separated(
+                                      // shrinkWrap: false,
+                                      controller: scrollController,
+                                      separatorBuilder: (context, i) =>
+                                          const SizedBox(height: 15),
+                                      itemCount:
+                                          controller.undeliverShipemet.length,
+
+                                      padding: const EdgeInsets.only(
+                                          left: 15,
+                                          right: 15,
+                                          bottom: 10,
+                                          top: 5),
+                                      itemBuilder: (context, i) {
+                                        return GetBuilder<DashbordController>(
+                                          builder: (x) => card(
+                                              controller,
+                                              controller.undeliverShipemet[i],
+                                              x),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
-                              ),
-                              loadMoreIndicator(),
-                            ],
+                                loadMoreIndicator(),
+                              ],
+                            ),
                           ),
-                        ),
-                        // loadMoreIndicator(),
-                      ],
-                    ),
-            );
-          }),
+                          // loadMoreIndicator(),
+                        ],
+                      ),
+              );
+            }),
+          ),
         ));
   }
 

@@ -1,5 +1,6 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/login_view_model.dart';
+import 'package:dalile_customer/view/login/terms_conditions.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/my_input.dart';
@@ -175,8 +176,9 @@ class _LoginViewState extends State<LoginView> {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () async {
-                                if (await canLaunch(terms_url))
-                                  await launch(terms_url);
+                                Get.to(TermsCondition());
+                                // if (await canLaunch(terms_url))
+                                //   await launch(terms_url);
                               },
                               child: RichText(
                                 text: TextSpan(children: <TextSpan>[

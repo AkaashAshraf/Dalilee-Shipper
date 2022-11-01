@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dalile_customer/components/popups/ProblemResolveViewModal.dart';
 import 'package:dalile_customer/config/localNotificationService.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/dashbordController.dart';
@@ -11,9 +14,13 @@ import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/empty.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:bluetooth_print/bluetooth_print.dart';
+import 'package:bluetooth_print/bluetooth_print_model.dart';
 
 class MainDash extends StatefulWidget {
   MainDash({Key? key, required this.controller}) : super(key: key);
@@ -224,6 +231,58 @@ class _MainDashState extends State<MainDash> {
     } //switch
   }
 
+  BluetoothPrint bluetoothPrint = BluetoothPrint.instance;
+
+  print_r() async {
+    await bluetoothPrint.disconnect();
+
+    var devices = await bluetoothPrint.startScan(timeout: Duration(seconds: 6));
+    print("-------------devices-----");
+    print(devices.length);
+    print("=--=-=-=-=-=-=-=-devices-----");
+    var res = await bluetoothPrint.connect(devices[0]);
+    print("-------------res-----");
+    // print(res);
+    print("=--=-=-=-=-=-=-=-res-----");
+    // return;
+    Map<String, dynamic> config = Map();
+    List<LineText> list = [];
+    list.add(LineText(
+        type: LineText.TYPE_TEXT,
+        content: 'A Title',
+        weight: 1,
+        align: LineText.ALIGN_CENTER,
+        linefeed: 1));
+    list.add(LineText(
+        type: LineText.TYPE_TEXT,
+        content: 'this is conent left',
+        weight: 0,
+        align: LineText.ALIGN_LEFT,
+        linefeed: 1));
+    list.add(LineText(
+        type: LineText.TYPE_TEXT,
+        content: 'this is conent right',
+        align: LineText.ALIGN_RIGHT,
+        linefeed: 1));
+    list.add(LineText(linefeed: 1));
+    list.add(LineText(
+        type: LineText.TYPE_BARCODE,
+        content: 'A12312112',
+        size: 10,
+        align: LineText.ALIGN_CENTER,
+        linefeed: 1));
+    list.add(LineText(linefeed: 1));
+    list.add(LineText(
+        type: LineText.TYPE_QRCODE,
+        content: 'qrcode i',
+        size: 10,
+        align: LineText.ALIGN_CENTER,
+        linefeed: 1));
+    list.add(LineText(linefeed: 1));
+
+    await bluetoothPrint.printReceipt(config, list);
+  }
+
   @override
   Widget build(BuildContext context) {
     Get.put(ShipmentViewModel());
@@ -231,517 +290,49 @@ class _MainDashState extends State<MainDash> {
       () => ViewOrderController(),
     );
 
-    return Container(
-      width: double.infinity,
-      color: bgColor,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Obx(
-        () => SmartRefresher(
-          header: WaterDropMaterialHeader(
-            backgroundColor: primaryColor,
-          ),
-          onRefresh: () async {
-            await widget.controller.fetchMainDashBoardData();
-            mainScreenRefreshController.refreshCompleted();
-          },
-          controller: mainScreenRefreshController,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            InkWell(
-              onTap: () {
-                _refresh(type: Status.ALL);
-                Get.to(
-                    () => GetX<DashbordController>(builder: (controller) {
-                          return controller.allShipemet.isEmpty
-                              ? MainCardBodyView(
-                                  controller:
-                                      controller.inViewLoadingallShipments.value
-                                          ? WaiteImage()
-                                          : EmptyState(
-                                              label: 'NoData'.tr,
-                                            ),
-                                  title: "Shipments".tr)
-                              : MainCardBodyView(
-                                  title: 'AllShipments'.tr +
-                                      ' (' +
-                                      controller.allShipemet.length.toString() +
-                                      "/" +
-                                      controller.dashboardAllShiments.value
-                                          .toString() +
-                                      ")",
-                                  controller: Container(
-                                    height: MediaQuery.of(context).size.height,
-                                    child: Stack(
-                                      children: [
-                                        Column(
-                                          children: [
-                                            Container(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.81,
-                                              child: SmartRefresher(
-                                                header: WaterDropHeader(),
-                                                controller:
-                                                    allShipmentRefreshController,
-                                                onRefresh: () async {
-                                                  _refresh(type: Status.ALL);
-                                                },
-                                                child: ListView.separated(
-                                                  controller:
-                                                      allShipmentScrollController,
-                                                  separatorBuilder:
-                                                      (context, i) =>
-                                                          const SizedBox(
-                                                              height: 15),
-                                                  itemCount: controller
-                                                      .allShipemet.length,
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 15,
-                                                          right: 15,
-                                                          bottom: 10,
-                                                          top: 5),
-                                                  itemBuilder: (context, i) {
-                                                    return GetBuilder<
-                                                        DashbordController>(
-                                                      builder: (x) =>
-                                                          dashBoardCard(
-                                                              controller,
-                                                              controller
-                                                                  .allShipemet[i],
-                                                              x),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        if (controller.loadMore.value)
-                                          bottomLoadingIndicator()
-                                      ],
-                                    ),
-                                  ),
-                                );
-                        }),
-                    transition: Transition.upToDown,
-                    duration: const Duration(milliseconds: 400));
-              },
-              child: buildCard(
-                  context,
-                  _InsideShape(
-                    image: 'assets/images/allshipment.png',
-                    title: 'AllShipments'.tr,
-                    numbers: '${widget.controller.dashboardAllShiments.value}',
-                  ),
-                  15.0,
-                  15.0,
-                  0.0,
-                  0.0),
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        color: bgColor,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Obx(
+          () => SmartRefresher(
+            header: WaterDropMaterialHeader(
+              backgroundColor: primaryColor,
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                _buildsmallbox(
-                  InkWell(
-                    onTap: () {
-                      Get.to(
-                          () => GetX<DashbordController>(builder: (controller) {
-                                return widget.controller.deliverShipemet.isEmpty
-                                    ? MainCardBodyView(
-                                        controller: controller
-                                                .inViewLoadingdeliveredShipments
-                                                .value
-                                            ? WaiteImage()
-                                            : EmptyState(
-                                                label: 'NoData'.tr,
-                                              ),
-                                        title: 'DeliveredShipments'.tr +
-                                            ' (' +
-                                            controller.deliverShipemet.length
-                                                .toString() +
-                                            "/" +
-                                            controller
-                                                .dashboardDeliveredShipments
-                                                .toString() +
-                                            ")",
-                                      )
-                                    : Container(
-                                        color: Colors.white,
-                                        height:
-                                            MediaQuery.of(context).size.height,
-                                        child: Stack(
-                                          children: [
-                                            Column(
-                                              children: [
-                                                Container(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      1,
-                                                  child: MainCardBodyView(
-                                                    title: 'DeliveredShipments'
-                                                            .tr +
-                                                        ' (' +
-                                                        controller
-                                                            .deliverShipemet
-                                                            .length
-                                                            .toString() +
-                                                        "/" +
-                                                        controller
-                                                            .dashboardDeliveredShipments
-                                                            .toString() +
-                                                        ")",
-                                                    controller: SmartRefresher(
-                                                      header: WaterDropHeader(
-                                                        waterDropColor:
-                                                            primaryColor,
-                                                      ),
-                                                      controller:
-                                                          deliveredShipmentRefreshController,
-                                                      onRefresh: () async {
-                                                        _refresh(
-                                                            type: Status
-                                                                .DELIVERED);
-                                                      },
-                                                      child: ListView.separated(
-                                                        controller:
-                                                            deliveredShipmentScrollController,
-                                                        separatorBuilder:
-                                                            (context, i) =>
-                                                                const SizedBox(
-                                                                    height: 15),
-                                                        itemCount: controller
-                                                            .deliverShipemet
-                                                            .length,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 15,
-                                                                right: 15,
-                                                                bottom: 10,
-                                                                top: 5),
-                                                        itemBuilder:
-                                                            (context, i) {
-                                                          return GetBuilder<
-                                                              DashbordController>(
-                                                            builder: (x) =>
-                                                                dashBoardCard(
-                                                                    controller,
-                                                                    controller
-                                                                        .deliverShipemet[i],
-                                                                    x),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            if (controller
-                                                .loadMoreDeliveredShipments
-                                                .value)
-                                              bottomLoadingIndicator()
-                                          ],
-                                        ),
-                                      );
-                              }),
-                          transition: Transition.downToUp,
-                          duration: const Duration(milliseconds: 400));
-                    },
-                    child: _InsideSmallBox(
-                      image: 'assets/images/delivered.png',
-                      title: 'DeliverednShipments'.tr,
-                      numbers:
-                          '${widget.controller.dashboardDeliveredShipments.value}',
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                _buildsmallbox(
-                  InkWell(
-                    onTap: () {
-                      Get.to(UndeliverListing());
-                    },
-                    child: _InsideSmallBox(
-                      image: 'assets/images/tobepickup.png',
-                      // title: 'To Be\nPickup',
-                      title: 'Un-DeliverednShipments'.tr,
-
-                      // numbers: ' ${widget.controller.dashboard_to_b_Pichup}',
-                      numbers:
-                          ' ${widget.controller.dashboardUndeliverdShiments}',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Row(
-              children: [
-                _buildsmallbox(
-                  InkWell(
-                    onTap: () {
-                      Get.to(
-                          () => GetX<DashbordController>(builder: (controller) {
-                                return widget.controller.ofdShipemet.isEmpty
-                                    ? MainCardBodyView(
-                                        controller: controller
-                                                .inViewLoadingOFDShipments.value
-                                            ? WaiteImage()
-                                            : EmptyState(
-                                                label: 'NoData'.tr,
-                                              ),
-                                        // title: "To Be Delivered")
-                                        title: "OFD".tr +
-                                            " (" +
-                                            controller.ofdShipemet.length
-                                                .toString() +
-                                            "/" +
-                                            controller.dashboardOFDShiments
-                                                .toString() +
-                                            ")")
-                                    : Container(
-                                        color: Colors.white,
-                                        height:
-                                            MediaQuery.of(context).size.height,
-                                        child: Stack(
-                                          children: [
-                                            Column(
-                                              children: [
-                                                Container(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      1,
-                                                  child: MainCardBodyView(
-                                                    title: "OFD".tr +
-                                                        " (" +
-                                                        controller
-                                                            .ofdShipemet.length
-                                                            .toString() +
-                                                        "/" +
-                                                        controller
-                                                            .dashboardOFDShiments
-                                                            .toString() +
-                                                        ")",
-                                                    controller: SmartRefresher(
-                                                      header: WaterDropHeader(
-                                                        waterDropColor:
-                                                            primaryColor,
-                                                      ),
-                                                      controller:
-                                                          ofdRefreshController,
-                                                      onRefresh: () async {
-                                                        _refresh(
-                                                            type: Status.OFD);
-                                                      },
-                                                      child: ListView.separated(
-                                                        controller:
-                                                            ofdScrollController,
-                                                        separatorBuilder:
-                                                            (context, i) =>
-                                                                const SizedBox(
-                                                                    height: 15),
-                                                        itemCount: controller
-                                                            .ofdShipemet.length,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 15,
-                                                                right: 15,
-                                                                bottom: 10,
-                                                                top: 5),
-                                                        itemBuilder:
-                                                            (context, i) {
-                                                          return GetBuilder<
-                                                              DashbordController>(
-                                                            builder: (x) =>
-                                                                dashBoardCard(
-                                                                    controller,
-                                                                    controller
-                                                                        .ofdShipemet[i],
-                                                                    x),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            if (controller
-                                                .loadMoreOFDShipments.value)
-                                              bottomLoadingIndicator()
-                                          ],
-                                        ),
-                                      );
-                              }),
-                          transition: Transition.downToUp,
-                          duration: const Duration(milliseconds: 400));
-                    },
-                    child: _InsideSmallBox(
-                      image: 'assets/images/tobedelivered.png',
-                      title: "OFD".tr,
-                      numbers:
-                          // '${widget.controller.dashboard_to_b_Delivered.value}',
-                          '${widget.controller.dashboardOFDShiments.value}',
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                _buildsmallbox(
-                  InkWell(
-                    onTap: () {
-                      Get.to(
-                          () => GetX<DashbordController>(builder: (controller) {
-                                return widget.controller.cancellShipemet.isEmpty
-                                    ? MainCardBodyView(
-                                        controller: controller
-                                                .inViewLoadingCancelledShipments
-                                                .value
-                                            ? WaiteImage()
-                                            : EmptyState(
-                                                label: 'NoData'.tr,
-                                              ),
-                                        title: "CancelShipments".tr +
-                                            " (" +
-                                            controller.cancellShipemet.length
-                                                .toString() +
-                                            "/" +
-                                            controller
-                                                .dashboardCancelledShiments
-                                                .value
-                                                .toString() +
-                                            ")")
-                                    : Container(
-                                        height:
-                                            MediaQuery.of(context).size.height,
-                                        color: Colors.white,
-                                        child: Stack(
-                                          children: [
-                                            Column(
-                                              children: [
-                                                Container(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      1,
-                                                  child: MainCardBodyView(
-                                                    title: "CancelShipments"
-                                                            .tr +
-                                                        " (" +
-                                                        controller
-                                                            .cancellShipemet
-                                                            .length
-                                                            .toString() +
-                                                        "/" +
-                                                        controller
-                                                            .dashboardCancelledShiments
-                                                            .value
-                                                            .toString() +
-                                                        ")",
-                                                    controller: SmartRefresher(
-                                                      header: WaterDropHeader(
-                                                        waterDropColor:
-                                                            primaryColor,
-                                                      ),
-                                                      controller:
-                                                          cancelShipmentRefreshController,
-                                                      onRefresh: () async {
-                                                        _refresh(
-                                                            type: Status
-                                                                .CENCELLED_SHIPMENTS);
-                                                      },
-                                                      child: ListView.separated(
-                                                        controller:
-                                                            cancelScrollController,
-                                                        separatorBuilder:
-                                                            (context, i) =>
-                                                                const SizedBox(
-                                                                    height: 15),
-                                                        itemCount: controller
-                                                            .cancellShipemet
-                                                            .length,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 15,
-                                                                right: 15,
-                                                                bottom: 10,
-                                                                top: 5),
-                                                        itemBuilder:
-                                                            (context, i) {
-                                                          return dashBoardCard(
-                                                              controller,
-                                                              controller
-                                                                  .cancellShipemet[i],
-                                                              controller);
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            if (controller
-                                                .loadMoreCancelShipments.value)
-                                              bottomLoadingIndicator()
-                                          ],
-                                        ),
-                                      );
-                              }),
-                          transition: Transition.downToUp,
-                          duration: const Duration(milliseconds: 400));
-                    },
-                    child: _InsideSmallBox(
-                      image: 'assets/images/cancell.png',
-                      title: 'CancelShipments'.tr,
-                      numbers:
-                          '${widget.controller.dashboardCancelledShiments.value}',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            buildCard(
-                context,
-                InkWell(
-                  onTap: () {
-                    Get.to(
-                        () => GetX<DashbordController>(builder: (controller) {
-                              return widget.controller.returnShipemet.isEmpty
-                                  ? MainCardBodyView(
-                                      controller: controller
-                                              .inViewLoadingReturnedShipments
-                                              .value
-                                          ? WaiteImage()
-                                          : EmptyState(
-                                              label: 'NoData'.tr,
-                                            ),
-                                      title: "ReturnShipments".tr +
-                                          " (" +
-                                          controller.returnShipemet.length
-                                              .toString() +
-                                          "/" +
-                                          controller
-                                              .dashboardReturnedShipment.value
-                                              .toString() +
-                                          ")")
-                                  : Container(
-                                      color: Colors.white,
+            onRefresh: () async {
+              await widget.controller.fetchMainDashBoardData();
+              mainScreenRefreshController.refreshCompleted();
+            },
+            controller: mainScreenRefreshController,
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              InkWell(
+                onTap: () {
+                  // print_r();
+                  // return;
+                  _refresh(type: Status.ALL);
+                  Get.to(
+                      () => GetX<DashbordController>(builder: (controller) {
+                            return controller.allShipemet.isEmpty
+                                ? MainCardBodyView(
+                                    controller: controller
+                                            .inViewLoadingallShipments.value
+                                        ? WaiteImage()
+                                        : EmptyState(
+                                            label: 'NoData'.tr,
+                                          ),
+                                    title: "Shipments".tr)
+                                : MainCardBodyView(
+                                    title: 'AllShipments'.tr +
+                                        ' (' +
+                                        controller.allShipemet.length
+                                            .toString() +
+                                        "/" +
+                                        controller.dashboardAllShiments.value
+                                            .toString() +
+                                        ")",
+                                    controller: Container(
                                       height:
                                           MediaQuery.of(context).size.height,
                                       child: Stack(
@@ -752,86 +343,588 @@ class _MainDashState extends State<MainDash> {
                                                 height: MediaQuery.of(context)
                                                         .size
                                                         .height *
-                                                    1,
-                                                child: MainCardBodyView(
-                                                  title: "ReturnShipments".tr +
-                                                      " (" +
-                                                      controller
-                                                          .returnShipemet.length
-                                                          .toString() +
-                                                      "/" +
-                                                      controller
-                                                          .dashboardReturnedShipment
-                                                          .value
-                                                          .toString() +
-                                                      ")",
-                                                  controller: SmartRefresher(
-                                                    header: WaterDropHeader(
-                                                      waterDropColor:
-                                                          primaryColor,
-                                                    ),
+                                                    0.81,
+                                                child: SmartRefresher(
+                                                  header: WaterDropHeader(),
+                                                  controller:
+                                                      allShipmentRefreshController,
+                                                  onRefresh: () async {
+                                                    _refresh(type: Status.ALL);
+                                                  },
+                                                  child: ListView.separated(
                                                     controller:
-                                                        returnedShipmentRefreshController,
-                                                    onRefresh: () async {
-                                                      _refresh(
-                                                          type: Status
-                                                              .RETURNED_SHIPMENTS);
+                                                        allShipmentScrollController,
+                                                    separatorBuilder:
+                                                        (context, i) =>
+                                                            const SizedBox(
+                                                                height: 15),
+                                                    itemCount: controller
+                                                        .allShipemet.length,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 15,
+                                                            right: 15,
+                                                            bottom: 10,
+                                                            top: 5),
+                                                    itemBuilder: (context, i) {
+                                                      return GetBuilder<
+                                                          DashbordController>(
+                                                        builder: (x) =>
+                                                            dashBoardCard(
+                                                                controller,
+                                                                controller
+                                                                    .allShipemet[i],
+                                                                x),
+                                                      );
                                                     },
-                                                    child: ListView.separated(
-                                                      controller:
-                                                          returenedScrollController,
-                                                      separatorBuilder:
-                                                          (context, i) =>
-                                                              const SizedBox(
-                                                                  height: 15),
-                                                      itemCount: controller
-                                                          .returnShipemet
-                                                          .length,
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 15,
-                                                              right: 15,
-                                                              bottom: 10,
-                                                              top: 5),
-                                                      itemBuilder:
-                                                          (context, i) {
-                                                        return GetBuilder<
-                                                            DashbordController>(
-                                                          builder: (x) =>
-                                                              dashBoardCard(
-                                                                  controller,
-                                                                  controller
-                                                                      .returnShipemet[i],
-                                                                  x),
-                                                        );
-                                                      },
-                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ],
                                           ),
-                                          if (controller
-                                              .loadMoreReturnShipments.value)
+                                          if (controller.loadMore.value)
                                             bottomLoadingIndicator()
                                         ],
                                       ),
-                                    );
-                            }),
-                        transition: Transition.downToUp,
-                        duration: const Duration(milliseconds: 400));
-                  },
-                  child: _InsideShape(
-                      image: 'assets/images/returnshipment.png',
-                      title: 'ReturnednShipments'.tr,
+                                    ),
+                                  );
+                          }),
+                      transition: Transition.upToDown,
+                      duration: const Duration(milliseconds: 400));
+                },
+                child: buildCard(
+                    context,
+                    _InsideShape(
+                      image: 'assets/images/allshipment.png',
+                      title: 'AllShipments'.tr,
                       numbers:
-                          '${widget.controller.dashboardReturnedShipment}'),
-                ),
-                0.0,
-                0.0,
-                15.0,
-                15.0),
-          ]),
+                          '${widget.controller.dashboardAllShiments.value}',
+                    ),
+                    15.0,
+                    15.0,
+                    0.0,
+                    0.0),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  _buildsmallbox(
+                    InkWell(
+                      onTap: () {
+                        Get.to(
+                            () =>
+                                GetX<DashbordController>(builder: (controller) {
+                                  return widget
+                                          .controller.deliverShipemet.isEmpty
+                                      ? MainCardBodyView(
+                                          controller: controller
+                                                  .inViewLoadingdeliveredShipments
+                                                  .value
+                                              ? WaiteImage()
+                                              : EmptyState(
+                                                  label: 'NoData'.tr,
+                                                ),
+                                          title: 'DeliveredShipments'.tr +
+                                              ' (' +
+                                              controller.deliverShipemet.length
+                                                  .toString() +
+                                              "/" +
+                                              controller
+                                                  .dashboardDeliveredShipments
+                                                  .toString() +
+                                              ")",
+                                        )
+                                      : Container(
+                                          color: Colors.white,
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height,
+                                          child: Stack(
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Container(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            1,
+                                                    child: MainCardBodyView(
+                                                      title: 'DeliveredShipments'
+                                                              .tr +
+                                                          ' (' +
+                                                          controller
+                                                              .deliverShipemet
+                                                              .length
+                                                              .toString() +
+                                                          "/" +
+                                                          controller
+                                                              .dashboardDeliveredShipments
+                                                              .toString() +
+                                                          ")",
+                                                      controller:
+                                                          SmartRefresher(
+                                                        header: WaterDropHeader(
+                                                          waterDropColor:
+                                                              primaryColor,
+                                                        ),
+                                                        controller:
+                                                            deliveredShipmentRefreshController,
+                                                        onRefresh: () async {
+                                                          _refresh(
+                                                              type: Status
+                                                                  .DELIVERED);
+                                                        },
+                                                        child:
+                                                            ListView.separated(
+                                                          controller:
+                                                              deliveredShipmentScrollController,
+                                                          separatorBuilder:
+                                                              (context, i) =>
+                                                                  const SizedBox(
+                                                                      height:
+                                                                          15),
+                                                          itemCount: controller
+                                                              .deliverShipemet
+                                                              .length,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 15,
+                                                                  right: 15,
+                                                                  bottom: 10,
+                                                                  top: 5),
+                                                          itemBuilder:
+                                                              (context, i) {
+                                                            return GetBuilder<
+                                                                DashbordController>(
+                                                              builder: (x) =>
+                                                                  dashBoardCard(
+                                                                      controller,
+                                                                      controller
+                                                                          .deliverShipemet[i],
+                                                                      x),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              if (controller
+                                                  .loadMoreDeliveredShipments
+                                                  .value)
+                                                bottomLoadingIndicator()
+                                            ],
+                                          ),
+                                        );
+                                }),
+                            transition: Transition.downToUp,
+                            duration: const Duration(milliseconds: 400));
+                      },
+                      child: _InsideSmallBox(
+                        image: 'assets/images/delivered.png',
+                        title: 'DeliverednShipments'.tr,
+                        numbers:
+                            '${widget.controller.dashboardDeliveredShipments.value}',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  _buildsmallbox(
+                    InkWell(
+                      onTap: () {
+                        Get.to(UndeliverListing());
+                      },
+                      child: _InsideSmallBox(
+                        image: 'assets/images/tobepickup.png',
+                        // title: 'To Be\nPickup',
+                        title: 'Un-DeliverednShipments'.tr,
+
+                        // numbers: ' ${widget.controller.dashboard_to_b_Pichup}',
+                        numbers:
+                            ' ${widget.controller.dashboardUndeliverdShiments}',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Row(
+                children: [
+                  _buildsmallbox(
+                    InkWell(
+                      onTap: () {
+                        Get.to(
+                            () =>
+                                GetX<DashbordController>(builder: (controller) {
+                                  return widget.controller.ofdShipemet.isEmpty
+                                      ? MainCardBodyView(
+                                          controller: controller
+                                                  .inViewLoadingOFDShipments
+                                                  .value
+                                              ? WaiteImage()
+                                              : EmptyState(
+                                                  label: 'NoData'.tr,
+                                                ),
+                                          // title: "To Be Delivered")
+                                          title: "OFD".tr +
+                                              " (" +
+                                              controller.ofdShipemet.length
+                                                  .toString() +
+                                              "/" +
+                                              controller.dashboardOFDShiments
+                                                  .toString() +
+                                              ")")
+                                      : Container(
+                                          color: Colors.white,
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height,
+                                          child: Stack(
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Container(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            1,
+                                                    child: MainCardBodyView(
+                                                      title: "OFD".tr +
+                                                          " (" +
+                                                          controller.ofdShipemet
+                                                              .length
+                                                              .toString() +
+                                                          "/" +
+                                                          controller
+                                                              .dashboardOFDShiments
+                                                              .toString() +
+                                                          ")",
+                                                      controller:
+                                                          SmartRefresher(
+                                                        header: WaterDropHeader(
+                                                          waterDropColor:
+                                                              primaryColor,
+                                                        ),
+                                                        controller:
+                                                            ofdRefreshController,
+                                                        onRefresh: () async {
+                                                          _refresh(
+                                                              type: Status.OFD);
+                                                        },
+                                                        child:
+                                                            ListView.separated(
+                                                          controller:
+                                                              ofdScrollController,
+                                                          separatorBuilder:
+                                                              (context, i) =>
+                                                                  const SizedBox(
+                                                                      height:
+                                                                          15),
+                                                          itemCount: controller
+                                                              .ofdShipemet
+                                                              .length,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 15,
+                                                                  right: 15,
+                                                                  bottom: 10,
+                                                                  top: 5),
+                                                          itemBuilder:
+                                                              (context, i) {
+                                                            return GetBuilder<
+                                                                DashbordController>(
+                                                              builder: (x) =>
+                                                                  dashBoardCard(
+                                                                      controller,
+                                                                      controller
+                                                                          .ofdShipemet[i],
+                                                                      x),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              if (controller
+                                                  .loadMoreOFDShipments.value)
+                                                bottomLoadingIndicator()
+                                            ],
+                                          ),
+                                        );
+                                }),
+                            transition: Transition.downToUp,
+                            duration: const Duration(milliseconds: 400));
+                      },
+                      child: _InsideSmallBox(
+                        image: 'assets/images/tobedelivered.png',
+                        title: "OFD".tr,
+                        numbers:
+                            // '${widget.controller.dashboard_to_b_Delivered.value}',
+                            '${widget.controller.dashboardOFDShiments.value}',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  _buildsmallbox(
+                    InkWell(
+                      onTap: () {
+                        Get.to(
+                            () =>
+                                GetX<DashbordController>(builder: (controller) {
+                                  return widget
+                                          .controller.cancellShipemet.isEmpty
+                                      ? MainCardBodyView(
+                                          controller: controller
+                                                  .inViewLoadingCancelledShipments
+                                                  .value
+                                              ? WaiteImage()
+                                              : EmptyState(
+                                                  label: 'NoData'.tr,
+                                                ),
+                                          title: "CancelShipments".tr +
+                                              " (" +
+                                              controller.cancellShipemet.length
+                                                  .toString() +
+                                              "/" +
+                                              controller
+                                                  .dashboardCancelledShiments
+                                                  .value
+                                                  .toString() +
+                                              ")")
+                                      : Container(
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height,
+                                          color: Colors.white,
+                                          child: Stack(
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Container(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            1,
+                                                    child: MainCardBodyView(
+                                                      title: "CancelShipments"
+                                                              .tr +
+                                                          " (" +
+                                                          controller
+                                                              .cancellShipemet
+                                                              .length
+                                                              .toString() +
+                                                          "/" +
+                                                          controller
+                                                              .dashboardCancelledShiments
+                                                              .value
+                                                              .toString() +
+                                                          ")",
+                                                      controller:
+                                                          SmartRefresher(
+                                                        header: WaterDropHeader(
+                                                          waterDropColor:
+                                                              primaryColor,
+                                                        ),
+                                                        controller:
+                                                            cancelShipmentRefreshController,
+                                                        onRefresh: () async {
+                                                          _refresh(
+                                                              type: Status
+                                                                  .CENCELLED_SHIPMENTS);
+                                                        },
+                                                        child:
+                                                            ListView.separated(
+                                                          controller:
+                                                              cancelScrollController,
+                                                          separatorBuilder:
+                                                              (context, i) =>
+                                                                  const SizedBox(
+                                                                      height:
+                                                                          15),
+                                                          itemCount: controller
+                                                              .cancellShipemet
+                                                              .length,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 15,
+                                                                  right: 15,
+                                                                  bottom: 10,
+                                                                  top: 5),
+                                                          itemBuilder:
+                                                              (context, i) {
+                                                            return dashBoardCard(
+                                                                controller,
+                                                                controller
+                                                                    .cancellShipemet[i],
+                                                                controller);
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              if (controller
+                                                  .loadMoreCancelShipments
+                                                  .value)
+                                                bottomLoadingIndicator()
+                                            ],
+                                          ),
+                                        );
+                                }),
+                            transition: Transition.downToUp,
+                            duration: const Duration(milliseconds: 400));
+                      },
+                      child: _InsideSmallBox(
+                        image: 'assets/images/cancell.png',
+                        title: 'CancelShipments'.tr,
+                        numbers:
+                            '${widget.controller.dashboardCancelledShiments.value}',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              buildCard(
+                  context,
+                  InkWell(
+                    onTap: () {
+                      Get.to(
+                          () => GetX<DashbordController>(builder: (controller) {
+                                return widget.controller.returnShipemet.isEmpty
+                                    ? MainCardBodyView(
+                                        controller: controller
+                                                .inViewLoadingReturnedShipments
+                                                .value
+                                            ? WaiteImage()
+                                            : EmptyState(
+                                                label: 'NoData'.tr,
+                                              ),
+                                        title: "ReturnShipments".tr +
+                                            " (" +
+                                            controller.returnShipemet.length
+                                                .toString() +
+                                            "/" +
+                                            controller
+                                                .dashboardReturnedShipment.value
+                                                .toString() +
+                                            ")")
+                                    : Container(
+                                        color: Colors.white,
+                                        height:
+                                            MediaQuery.of(context).size.height,
+                                        child: Stack(
+                                          children: [
+                                            Column(
+                                              children: [
+                                                Container(
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      1,
+                                                  child: MainCardBodyView(
+                                                    title: "ReturnShipments"
+                                                            .tr +
+                                                        " (" +
+                                                        controller
+                                                            .returnShipemet
+                                                            .length
+                                                            .toString() +
+                                                        "/" +
+                                                        controller
+                                                            .dashboardReturnedShipment
+                                                            .value
+                                                            .toString() +
+                                                        ")",
+                                                    controller: SmartRefresher(
+                                                      header: WaterDropHeader(
+                                                        waterDropColor:
+                                                            primaryColor,
+                                                      ),
+                                                      controller:
+                                                          returnedShipmentRefreshController,
+                                                      onRefresh: () async {
+                                                        _refresh(
+                                                            type: Status
+                                                                .RETURNED_SHIPMENTS);
+                                                      },
+                                                      child: ListView.separated(
+                                                        controller:
+                                                            returenedScrollController,
+                                                        separatorBuilder:
+                                                            (context, i) =>
+                                                                const SizedBox(
+                                                                    height: 15),
+                                                        itemCount: controller
+                                                            .returnShipemet
+                                                            .length,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 15,
+                                                                right: 15,
+                                                                bottom: 10,
+                                                                top: 5),
+                                                        itemBuilder:
+                                                            (context, i) {
+                                                          return GetBuilder<
+                                                              DashbordController>(
+                                                            builder: (x) =>
+                                                                dashBoardCard(
+                                                                    controller,
+                                                                    controller
+                                                                        .returnShipemet[i],
+                                                                    x),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            if (controller
+                                                .loadMoreReturnShipments.value)
+                                              bottomLoadingIndicator()
+                                          ],
+                                        ),
+                                      );
+                              }),
+                          transition: Transition.downToUp,
+                          duration: const Duration(milliseconds: 400));
+                    },
+                    child: _InsideShape(
+                        image: 'assets/images/returnshipment.png',
+                        title: 'ReturnednShipments'.tr,
+                        numbers:
+                            '${widget.controller.dashboardReturnedShipment}'),
+                  ),
+                  0.0,
+                  0.0,
+                  15.0,
+                  15.0),
+            ]),
+          ),
         ),
       ),
     );

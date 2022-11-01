@@ -143,8 +143,9 @@ class CardBody extends StatelessWidget {
                     if (!isMyOrder)
                       InkWell(
                         onTap: () {
-                          if (shipment.isProblem)
-                            problemViewModal(context, images, orderNumber,
+                          if (shipment.probllemId! > 0 &&
+                              shipment.problemResponse != "corect")
+                            problemViewModal(context, orderNumber,
                                     shipment: shipment)
                                 .show();
                           else
@@ -156,7 +157,8 @@ class CardBody extends StatelessWidget {
                         },
                         child: Icon(
                           Icons.remove_red_eye,
-                          color: shipment.isProblem == true
+                          color: shipment.probllemId! > 0 &&
+                                  shipment.problemResponse != "corect"
                               ? Colors.red
                               : primaryColor,
                           size: 25,
@@ -275,8 +277,10 @@ class CardBody extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildRowText('Ref'.tr + ' : $ref', 'Phone'.tr + ' : $number'),
-                _buildRowText('CC'.tr + ' : $cc OMR', 'Date'.tr + ' : $date '),
+                _buildRowText('Ref'.tr + ' : $ref', 'Phone'.tr + ' : $number',
+                    context: context),
+                _buildRowText('CC'.tr + ' : $cc OMR', 'Date'.tr + ' : $date ',
+                    context: context),
               ],
             ),
           ),
@@ -460,22 +464,31 @@ class CardBody extends StatelessWidget {
     );
   }
 
-  Widget _buildRowText(String title, String subTilte) {
+  Widget _buildRowText(String title, String subTilte,
+      {required BuildContext context}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomText(
-          text: title,
-          fontWeight: FontWeight.w400,
-          color: text1Color,
+        Container(
+          width: MediaQuery.of(context).size.width * 0.4,
+          child: CustomText(
+            maxLines: 1,
+            text: title,
+            fontWeight: FontWeight.w400,
+            color: text1Color,
+          ),
         ),
         const SizedBox(
           height: 15,
         ),
-        CustomText(
-          text: subTilte,
-          fontWeight: FontWeight.w400,
-          color: text1Color,
+        Container(
+          width: MediaQuery.of(context).size.width * 0.42,
+          child: CustomText(
+            maxLines: 1,
+            text: subTilte,
+            fontWeight: FontWeight.w400,
+            color: text1Color,
+          ),
         ),
       ],
     );

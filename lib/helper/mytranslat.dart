@@ -4,20 +4,28 @@ class MyTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         "ar": {
-          "PickupTime": "PickupTime:",
-          "AutoCreatePickup": "Auto Create Pickup",
-          "Note": "Note",
-          "DailyPickupNote":
-              "Your pickup reference will be created automatically on daily basis",
-          "Proceed": "Proceed",
-          "PickAddress": "Pick Address",
-          "DailyPickup": "Daily Pickup",
-          "Solve": "Solve",
-          "ProblemImage": "Problem Image",
+          "PickupTime": "وقت الاستلام",
+          "AutoCreatePickup": "طلب استلام تلقائي",
+          "Note": "ملاحظة",
+          "DailyPickupNote": "سيتم انشاء طلب استلام يوميا بشكل تلقائي",
+          "Proceed": "موافق",
+          "PickAddress": "عنوان طلب الاستلام",
+          "DailyPickup": "طلب استلام يومي",
+          "Solve": "حل",
+          "ProblemImage": "صورة المشكلة",
 
-          "Add": "Add",
-          "AddOrder": "Add Order",
+          "Add": "إضافة",
+          "AddOrder": "إضافة طلب جديد",
 
+          // //////new words for mishwar
+          "AddItem": "إضافة منتج",
+          "Update": "تحديث",
+          "Something went wront. Please try again later":
+              "حدث خطأ , الرجاء المحاولة لاحقا",
+          "Problem comments has been updated successfully":
+              "تم تحديث المشكلة بنجاح",
+          "Failed": "فشل",
+          "Success": "نجاح",
           //Ar
           //sing in screen with otp screen --->start
 
@@ -102,7 +110,6 @@ class MyTranslations extends Translations {
           "Phone": "رقم الهاتف",
           "Location": "الموقع",
           "Pick": "حدد",
-          "PickAddress": "حدد الموقع",
           "Muhafaza": "المحافظة",
           "SelectMuhafaza": "حدد المحافظة",
           "Wilaya": "الولاية",
@@ -252,6 +259,16 @@ class MyTranslations extends Translations {
           "AddOrder": "Add Order",
           "Add": "Add",
 
+          // //////new words for mishwar
+          "AddItem": "Add Item",
+          "Update": "Update",
+          "Something went wront. Please try again later":
+              "Something went wront. Please try again later",
+          "Problem comments has been updated successfully":
+              "Problem comments has been updated successfully",
+          "Failed": "Failed",
+          "Success": "Success",
+
 //sing in screen with otp screen --->Start
           "Filed": "Filed",
           "somedatamissing": "some data was missing",
@@ -339,7 +356,6 @@ class MyTranslations extends Translations {
           "Phone": "Phone",
           "Location": "Location",
           "Pick": "Pick",
-          "PickAddress": "Pick Address",
           "Muhafaza": "Muhafaza",
           "SelectMuhafaza": "Select Muhafaza",
           "Wilaya": "Wilaya",

@@ -65,6 +65,7 @@ class DispatcherController extends GetxController {
         // fetchMyOrders();
         Navigator.pop(context);
         Navigator.pop(context);
+        fetchMyOrders();
         Get.to(MyOrders());
 
         // print(response.message);

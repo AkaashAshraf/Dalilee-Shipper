@@ -67,6 +67,13 @@ class Shipment {
       this.orderPickupImage,
       this.orderDeliverImage,
       this.orderUndeliverImage,
+      this.orderUndeliverImage2,
+      this.orderUndeliverImage3,
+      this.problemReasonId,
+      this.problemReasons,
+      this.traderComments,
+      this.probllemId,
+      this.problemResponse,
       this.weight,
       this.phone,
       this.shippingPrice,
@@ -101,6 +108,15 @@ class Shipment {
   String? orderPickupImage;
   String? orderDeliverImage;
   String? orderUndeliverImage;
+  String? orderUndeliverImage2;
+  String? orderUndeliverImage3;
+
+  dynamic problemReasonId;
+  dynamic problemReasons;
+  dynamic traderComments;
+  int? probllemId;
+  String? problemResponse;
+
   dynamic weight;
   String? phone;
   String? shippingPrice;
@@ -141,9 +157,14 @@ class Shipment {
         orderDeliverImage: json["order_deliver_image"] == null
             ? ""
             : json["order_deliver_image"],
-        orderUndeliverImage: json["order_undeliver_image"] == null
-            ? ""
-            : json["order_undeliver_image"],
+        orderUndeliverImage: json["order_undeliver_image"] ?? "",
+        orderUndeliverImage2: json["order_undeliver_image2"] ?? "",
+        orderUndeliverImage3: json["order_undeliver_image3"] ?? "",
+        problemReasonId: json["problem_reason_id"] ?? "",
+        problemReasons: json["problem_reasons"] ?? "",
+        traderComments: json["trader_comments"] ?? "",
+        probllemId: json["problem_id"] ?? 0,
+        problemResponse: json["problem_response"] ?? "",
         wilayaName: json["wilaya_name"] ?? "",
         areaName: json["area_name"] ?? "",
         weight: json["weight"] == null
@@ -194,8 +215,14 @@ class Shipment {
         "order_pickup_image": orderPickupImage == null ? "" : orderPickupImage,
         "order_deliver_image":
             orderDeliverImage == null ? "" : orderDeliverImage,
-        "order_undeliver_image":
-            orderUndeliverImage == null ? "" : orderUndeliverImage,
+        "order_undeliver_image": orderUndeliverImage ?? "",
+        "order_undeliver_image2": orderUndeliverImage2 ?? "",
+        "order_undeliver_image3": orderUndeliverImage3 ?? "",
+        "problem_reason_id": problemReasonId ?? "",
+        "problem_reasons": problemReasons ?? "",
+        "trader_comments": traderComments ?? "",
+        "problem_id": probllemId ?? 0,
+        "problem_response": problemResponse ?? "",
         "weight": weight == null ? 0 : weight,
         "phone": phone == null ? "" : phone,
         "wilaya_name": wilayaName == null ? "" : wilayaName,
