@@ -2,14 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
- <key>NSBluetoothAlwaysUsageDescription</key>  
-	    <string>Need BLE permission</string>  
-	    <key>NSBluetoothPeripheralUsageDescription</key>  
-	    <string>Need BLE permission</string>  
-	    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>  
-	    <string>Need Location permission</string>  
-	     
-	 
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -39,8 +31,14 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Need BLE permission</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Need BLE permission</string>
 	<key>NSCameraUsageDescription</key>
 	<string>App need camera permission to allow you to capture images of your orders </string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Need Location permission</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>App need location permission to allow you to create referenece so driver can pick orders from your location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

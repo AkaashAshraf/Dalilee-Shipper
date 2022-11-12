@@ -57,8 +57,7 @@ class _UndeliverListing extends State<UndeliverListing> {
   }
 
   _loadMore() async {
-    print(controller.dashboardUndeliver.value >
-        controller.undeliverShipemet.length);
+    print(controller.undeliverShipemet[0].toJson());
 
     if (controller.loadMoreUndeliver.value) return;
     if ((controller.dashboardUndeliver.value >

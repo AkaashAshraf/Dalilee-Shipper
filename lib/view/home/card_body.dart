@@ -76,7 +76,7 @@ class CardBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final COD = double.tryParse(shipment.cod ?? "") ?? 0;
+    final cod = double.tryParse(shipment.cod ?? "") ?? 0;
     List<OrderImages> images = [];
     if (pickup_image != "")
       images.add(OrderImages(pickup_image, 'Pickup Image'));
@@ -116,7 +116,7 @@ class CardBody extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           Get.put(ShipmentViewModel())
-                              .callAlert(context, number ?? "123");
+                              .callAlert(context, number ?? "0");
                         },
                         child: Icon(
                           Icons.call_outlined,
@@ -164,7 +164,7 @@ class CardBody extends StatelessWidget {
                           size: 25,
                         ),
                       )
-                    else if (isMyOrder && COD > 0)
+                    else if (isMyOrder && cod > 0)
                       InkWell(
                         onTap: () async {
                           final _url = '$thawaniPaymentLink${shipment.orderId}';
@@ -181,11 +181,11 @@ class CardBody extends StatelessWidget {
                         ),
                       ),
 
-                    if (isMyOrder && COD > 0)
+                    if (isMyOrder && cod > 0)
                       SizedBox(
                         width: 10,
                       ),
-                    if (isMyOrder && COD > 0)
+                    if (isMyOrder && cod > 0)
                       InkWell(
                         onTap: () async {
                           final _url = '$thawaniPaymentLink${shipment.orderId}';
@@ -279,20 +279,20 @@ class CardBody extends StatelessWidget {
               children: [
                 _buildRowText('Ref'.tr + ' : $ref', 'Phone'.tr + ' : $number',
                     context: context),
-                _buildRowText('CC'.tr + ' : $cc OMR', 'Date'.tr + ' : $date ',
+                _buildRowText('COD'.tr + ' : $cod OMR', 'Date'.tr + ' : $date ',
                     context: context),
               ],
             ),
           ),
-          if (willaya != "")
-            Padding(
-              padding: const EdgeInsets.only(left: 15, top: 8),
-              child: CustomText(
-                text: "Address: $willaya $area",
-                fontWeight: FontWeight.w400,
-                color: text1Color,
-              ),
+          // if (willaya != "")
+          Padding(
+            padding: const EdgeInsets.only(left: 15, top: 8),
+            child: CustomText(
+              text: "Address: $willaya $area",
+              fontWeight: FontWeight.w400,
+              color: text1Color,
             ),
+          ),
           if (customer_name != "")
             Padding(
               padding: const EdgeInsets.only(left: 15.0, right: 10, top: 10),
@@ -408,9 +408,10 @@ class CardBody extends StatelessWidget {
             _rowWithnameline('PaymentSummary'.tr, primaryColor),
             _buildRowDown(
                 text1Color, 12, 'ShippingCost'.tr, '$shipmentCost OMR'),
+            _buildRowDown(text1Color, 12, 'CC'.tr, '$cc OMR'),
             _buildRowDown(text1Color, 12, 'COD'.tr, '$cod OMR'),
-            _buildRowDown(
-                primaryColor, 13, 'TotalCharges'.tr, ' $totalCharges OMR'),
+            _buildRowDown(primaryColor, 13, 'TotalCharges'.tr,
+                ' ${(double.tryParse(shipment.cc.toString()) ?? 0.0) + (double.tryParse(totalCharges.toString()) ?? 0.0)}'),
           ],
         ),
       ),

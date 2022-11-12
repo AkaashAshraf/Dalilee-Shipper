@@ -1,4 +1,6 @@
 PODS:
+  - bluetooth_print (0.0.1):
+    - Flutter
   - device_info (0.0.1):
     - Flutter
   - DKImagePickerController/Core (4.3.3):
@@ -214,6 +216,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - bluetooth_print (from `.symlinks/plugins/bluetooth_print/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
@@ -265,6 +268,8 @@ SPEC REPOS:
     - SwiftyGif
 
 EXTERNAL SOURCES:
+  bluetooth_print:
+    :path: ".symlinks/plugins/bluetooth_print/ios"
   device_info:
     :path: ".symlinks/plugins/device_info/ios"
   file_picker:
@@ -321,6 +326,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
+  bluetooth_print: da8f47e8881a0b1f0fd8d73cd6fa84c9bd41ac28
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   DKImagePickerController: 72fd378f244cef3d27288e0aebf217a4467e4012
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179

@@ -52,7 +52,7 @@ abstract class DashboardApi {
   static Future<MainDashboard?> fetchMainDashBoardData(type) async {
     try {
       final response = await dalileePost("/getStoresOrdersCount", {});
-      log("------------>$response");
+      // log("------------>$response");
       if (response != null) {
         var data = mainDashboardFromJson(response.body);
 
