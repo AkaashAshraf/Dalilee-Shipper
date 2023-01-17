@@ -7,17 +7,16 @@ import 'package:photo_view/photo_view_gallery.dart';
 
 // ignore: must_be_immutable
 class ImageLib extends StatefulWidget {
-  ImageLib({Key? key, required this.galleryItems,required this.idex}) : super(key: key);
+  ImageLib({Key? key, required this.galleryItems, required this.idex})
+      : super(key: key);
   final List galleryItems;
-   int idex;
+  int idex;
 
   @override
   State<ImageLib> createState() => _ImageLibState();
 }
 
 class _ImageLibState extends State<ImageLib> {
- 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,11 +45,12 @@ class _ImageLibState extends State<ImageLib> {
           Container(
               height: MediaQuery.of(context).size.height * 0.7,
               child: PhotoViewGallery.builder(
+                enableRotation: true,
                 scrollPhysics: const BouncingScrollPhysics(),
                 builder: (BuildContext context, int index) {
                   return PhotoViewGalleryPageOptions(
-                      imageProvider:
-                          NetworkImage(widget.galleryItems[widget.idex].image),
+                      imageProvider: NetworkImage(
+                          widget.galleryItems[widget.idex].image.toString()),
                       maxScale: PhotoViewComputedScale.contained * 4,
                       minScale: PhotoViewComputedScale.contained
                       //   heroAttributes: PhotoViewHeroAttributes(tag: galleryItems[index]),
@@ -62,7 +62,7 @@ class _ImageLibState extends State<ImageLib> {
                 }),
               )),
           CustomText(
-            text: "${widget.idex+1}/${widget.galleryItems.length}",
+            text: "${widget.idex + 1}/${widget.galleryItems.length}",
             alignment: Alignment.bottomCenter,
             size: 18,
             color: whiteColor,

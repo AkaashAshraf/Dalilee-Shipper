@@ -1,5 +1,6 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/finance_view_model.dart';
+import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/empty.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
@@ -18,6 +19,7 @@ class ColusedView extends StatefulWidget {
 
 class _ColusedViewState extends State<ColusedView> {
   ScrollController? scrollController;
+  HelperController helperController = Get.put(HelperController());
   @override
   void initState() {
     scrollController = ScrollController()
@@ -107,31 +109,40 @@ class _ColusedViewState extends State<ColusedView> {
                                   indent: 0,
                                   endIndent: 0,
                                 ),
-                                _buildRowText('Closing Date :',
+                                _buildRowText('closingDate'.tr,
                                     '${widget.c.closeData[i].closingDate}'),
-                                _buildRowText('Total Orders Delivered :',
+                                _buildRowText('totalOrderDeliver'.tr,
                                     '${widget.c.closeData[i].totalOrders}'),
-                                _buildRowText('COD :',
-                                    '${widget.c.closeData[i].cod} OMR'),
-                                _buildRowText('Shipping Cost :',
-                                    '${widget.c.closeData[i].shippingCost} OMR'),
                                 _buildRowText(
-                                    'CC :', '${widget.c.closeData[i].cc} OMR'),
+                                    'COD'.tr,
+                                    helperController.getCurrencyInFormat(
+                                        widget.c.closeData[i].cod)),
+                                _buildRowText(
+                                    'ShippingCost'.tr,
+                                    helperController.getCurrencyInFormat(
+                                        widget.c.closeData[i].shippingCost)),
+                                _buildRowText(
+                                    'CC'.tr,
+                                    helperController.getCurrencyInFormat(
+                                        widget.c.closeData[i].cc)),
                                 Padding(
                                   padding: const EdgeInsets.all(3),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const CustomText(
-                                        text: 'Invoices Amount :',
+                                      CustomText(
+                                        text: 'invoiceAmoint'.tr,
                                         fontWeight: FontWeight.w500,
                                         color: primaryColor,
                                         size: 14,
                                       ),
                                       CustomText(
-                                        text:
-                                            '${widget.c.closeData[i].amountTransferred ?? 0.00} OMR',
+                                        text: helperController
+                                            .getCurrencyInFormat(widget
+                                                .c
+                                                .closeData[i]
+                                                .amountTransferred),
                                         fontWeight: FontWeight.w500,
                                         color: primaryColor,
                                         size: 14,
@@ -195,7 +206,7 @@ class _ColusedViewState extends State<ColusedView> {
         CustomText(
           text: 'Invoice'.tr + ' : $text',
           color: primaryColor,
-          size: 18,
+          size: Get.locale.toString() == "ar" ? 14 : 18,
           fontWeight: FontWeight.bold,
         ),
         Row(
@@ -208,7 +219,6 @@ class _ColusedViewState extends State<ColusedView> {
             // const SizedBox(
             //   width: 10,
             // ),
-
             InkWell(
               onTap: () {
                 Get.defaultDialog(
@@ -246,11 +256,13 @@ class _ColusedViewState extends State<ColusedView> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomText(
+            size: Get.locale.toString() == "ar" ? 10 : 12,
             text: title,
             fontWeight: FontWeight.w500,
             color: text1Color,
           ),
           CustomText(
+            size: Get.locale.toString() == "ar" ? 10 : 12,
             text: subTilte,
             fontWeight: FontWeight.w500,
             color: text1Color,

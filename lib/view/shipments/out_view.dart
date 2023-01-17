@@ -1,9 +1,9 @@
-import 'dart:developer';
-
+import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/dashbordController.dart';
 import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
 import 'package:dalile_customer/view/home/card_body.dart';
+import 'package:dalile_customer/view/shipments/listView.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/my_input.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
@@ -52,225 +52,241 @@ class _OutShipmentsState extends State<OutShipments> {
     super.dispose();
   }
 
+  final List<Tab> myTabs = <Tab>[];
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      if (controller.isLoadingOut.value) {
-        return const WaiteImage();
-      }
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
 
-      if (controller.outList.isNotEmpty) {
+    return Obx(() {
+      if (true) {
         return Stack(
           children: [
             Column(
               children: [
-                SizedBox(
-                  height: 40,
-                  child: MyInput(
-                    keyboardType: TextInputType.number,
-                    hintText: 'EnterShipmentNumber'.tr,
-                    onChanged: controller.onSearchTextChanged2,
-                    controller: controller.searchConter,
-                    suffixIcon: MaterialButton(
-                        minWidth: 5,
-                        color: primaryColor,
-                        onPressed: () {},
-                        child: const Icon(
-                          Icons.search,
-                          color: whiteColor,
-                        )),
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
+                if (controller.isLoadingOut.value) Container(),
                 Expanded(
-                  flex: 12,
-                  child: SmartRefresher(
-                    header: WaterDropHeader(
-                      waterDropColor: primaryColor,
+                  child: ShipmentListView(),
+                ),
+                if (false)
+                  SizedBox(
+                    height: 40,
+                    child: MyInput(
+                      keyboardType: TextInputType.number,
+                      hintText: 'EnterShipmentNumber'.tr,
+                      onChanged: controller.onSearchTextChanged2,
+                      controller: controller.searchConter,
+                      suffixIcon: MaterialButton(
+                          minWidth: 5,
+                          color: primaryColor,
+                          onPressed: () {},
+                          child: const Icon(
+                            Icons.search,
+                            color: whiteColor,
+                          )),
                     ),
-                    controller: refreshController,
-                    onRefresh: () async {
-                      await controller.fetchOutShipemetData(isRefresh: true);
-                      refreshController.refreshCompleted();
-                    },
-                    child: controller.searchResult.isNotEmpty
-                        ? ListView.separated(
-                            controller: scrollController,
-                            separatorBuilder: (context, i) =>
-                                const SizedBox(height: 15),
-                            itemCount: controller.searchResult.length,
-                            padding: const EdgeInsets.only(
-                                left: 15, right: 15, bottom: 10, top: 5),
-                            itemBuilder: (context, i) {
-                              return GetBuilder<ShipmentViewModel>(
-                                builder: (x) => CardBody(
-                                  shipment: controller.searchResult[i]!,
-                                  willaya:
-                                      controller.searchResult[i]!.wilayaName,
-                                  area: controller.searchResult[i]!.areaName,
-                                  date: controller.searchResult[i]!.updatedAt,
-                                  customer_name:
-                                      controller.searchResult[i]!.customerName,
-                                  deleiver_image: controller
-                                      .searchResult[i]!.orderDeliverImage,
-                                  undeleiver_image: controller
-                                      .searchResult[i]!.orderUndeliverImage,
-                                  pickup_image: controller
-                                      .searchResult[i]!.orderPickupImage,
-                                  orderId:
-                                      controller.searchResult[i]!.orderId ??
-                                          "00",
-                                  number: controller.searchResult[i]!.phone ??
-                                      "+968",
-                                  cod:
-                                      controller.searchResult[i]!.cod ?? "0.00",
-                                  orderNumber:
-                                      controller.searchResult[i]!.orderNo,
-                                  cop:
-                                      controller.searchResult[i]!.cop ?? "0.00",
-                                  shipmentCost: controller
-                                          .searchResult[i]!.shippingPrice ??
-                                      "0.00",
-                                  totalCharges:
-                                      '${double.parse(controller.searchResult[i]!.cod.toString()) - double.parse(controller.searchResult[i]!.shippingPrice.toString())}',
-                                  stutaus: controller
-                                      .searchResult[i]!.orderActivities,
-                                  icon: dashboardController.trackingStatuses
-                                      .map((element) => element.icon.toString())
-                                      .toList(),
-                                  ref: controller.searchResult[i]!.refId ?? "0",
-                                  status_key: controller
-                                      .searchResult[i]!.orderStatusKey,
-                                  Order_current_Status: controller
-                                      .searchResult[i]!.orderStatusName,
-                                  weight: controller.searchResult[i]!.weight ??
-                                      "0.00",
-                                  currentStep: controller
-                                          .searchResult[i]!.currentStatus ??
-                                      1,
-                                  isOpen: controller.searchResult[i]!.isOpen,
-                                  onPressedShowMore: () {
-                                    controller.searchResult[i]!.isOpen =
-                                        !controller.searchResult[i]!.isOpen;
-                                    x.update();
-                                    print(controller.searchResult[i]!.isOpen
-                                        .toString());
+                  ),
+                if (false)
+                  const SizedBox(
+                    height: 5,
+                  ),
+                if (false)
+                  Expanded(
+                    flex: 12,
+                    child: SmartRefresher(
+                      header: WaterDropHeader(
+                        waterDropColor: primaryColor,
+                      ),
+                      controller: refreshController,
+                      onRefresh: () async {
+                        await controller.fetchOutShipemetData(isRefresh: true);
+                        refreshController.refreshCompleted();
+                      },
+                      child: controller.searchResult.isNotEmpty
+                          ? ListView.separated(
+                              controller: scrollController,
+                              separatorBuilder: (context, i) =>
+                                  const SizedBox(height: 15),
+                              itemCount: controller.searchResult.length,
+                              padding: const EdgeInsets.only(
+                                  left: 15, right: 15, bottom: 10, top: 5),
+                              itemBuilder: (context, i) {
+                                return GetBuilder<ShipmentViewModel>(
+                                  builder: (x) => CardBody(
+                                    shipment: controller.searchResult[i]!,
+                                    willaya:
+                                        controller.searchResult[i]!.wilayaName,
+                                    area: controller.searchResult[i]!.areaName,
+                                    date: controller.searchResult[i]!.updatedAt,
+                                    customer_name: controller
+                                        .searchResult[i]!.customerName,
+                                    deleiver_image: controller
+                                        .searchResult[i]!.orderDeliverImage,
+                                    undeleiver_image: controller
+                                        .searchResult[i]!.orderUndeliverImage,
+                                    pickup_image: controller
+                                        .searchResult[i]!.orderPickupImage,
+                                    orderId:
+                                        controller.searchResult[i]!.orderId ??
+                                            "00",
+                                    number: controller.searchResult[i]!.phone ??
+                                        "+968",
+                                    cod: controller.searchResult[i]!.cod ??
+                                        "0.00",
+                                    orderNumber:
+                                        controller.searchResult[i]!.orderNo,
+                                    cop: controller.searchResult[i]!.cop ??
+                                        "0.00",
+                                    shipmentCost: controller
+                                            .searchResult[i]!.shippingPrice ??
+                                        "0.00",
+                                    totalCharges:
+                                        '${double.parse(controller.searchResult[i]!.cod.toString()) - double.parse(controller.searchResult[i]!.shippingPrice.toString())}',
+                                    stutaus: controller
+                                        .searchResult[i]!.orderActivities,
+                                    icon: dashboardController.trackingStatuses
+                                        .map((element) =>
+                                            element.icon.toString())
+                                        .toList(),
+                                    ref: controller.searchResult[i]!.refId ??
+                                        "0",
+                                    status_key: controller
+                                        .searchResult[i]!.orderStatusKey,
+                                    Order_current_Status: controller
+                                        .searchResult[i]!.orderStatusName,
+                                    weight:
+                                        controller.searchResult[i]!.weight ??
+                                            "0.00",
+                                    currentStep: controller
+                                            .searchResult[i]!.currentStatus ??
+                                        1,
+                                    isOpen: controller.searchResult[i]!.isOpen,
+                                    onPressedShowMore: () {
+                                      controller.searchResult[i]!.isOpen =
+                                          !controller.searchResult[i]!.isOpen;
+                                      x.update();
+                                      print(controller.searchResult[i]!.isOpen
+                                          .toString());
+                                    },
+                                  ),
+                                );
+                              },
+                            )
+                          : controller.searchResult.isEmpty &&
+                                  controller.searchConter.text.isNotEmpty
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    EmptyState(
+                                      label: 'noData'.tr,
+                                    ),
+                                    MaterialButton(
+                                      onPressed: () {
+                                        controller.fetchOutShipemetData();
+                                        print('ok');
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          CustomText(
+                                            text: 'Updateddata'.tr,
+                                            color: Colors.grey,
+                                            alignment: Alignment.center,
+                                            size: 12,
+                                          ),
+                                          Icon(
+                                            Icons.refresh,
+                                            color: Colors.grey,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : ListView.separated(
+                                  controller: scrollController,
+                                  separatorBuilder: (context, i) =>
+                                      const SizedBox(height: 15),
+                                  itemCount: controller.outList.length,
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 15, bottom: 10, top: 5),
+                                  itemBuilder: (context, i) {
+                                    return GetBuilder<ShipmentViewModel>(
+                                      builder: (x) => CardBody(
+                                        shipment: controller.outList[i]!,
+                                        willaya:
+                                            controller.outList[i]!.wilayaName,
+                                        area: controller.outList[i]!.areaName,
+                                        customer_name:
+                                            controller.outList[i]!.customerName,
+                                        deleiver_image: controller
+                                            .outList[i]!.orderDeliverImage,
+                                        undeleiver_image: controller
+                                            .outList[i]!.orderUndeliverImage,
+                                        pickup_image: controller
+                                            .outList[i]!.orderPickupImage,
+                                        orderId:
+                                            controller.outList[i]!.orderId ??
+                                                "00",
+                                        number: controller.outList[i]!.phone ??
+                                            "+968",
+                                        cod: controller.outList[i]!.cod ??
+                                            "0.00",
+                                        cop: controller.outList[i]!.cop ??
+                                            "0.00",
+                                        orderNumber:
+                                            controller.outList[i]!.orderNo,
+                                        shipmentCost: controller
+                                                .outList[i]!.shippingPrice ??
+                                            "0.00",
+                                        date: controller.outList[i]!.updatedAt,
+                                        totalCharges:
+                                            '${double.parse(controller.outList[i]!.cod.toString()) - double.parse(controller.outList[i]!.shippingPrice.toString())}',
+                                        stutaus: controller
+                                            .outList[i]!.orderActivities,
+                                        icon: dashboardController
+                                            .trackingStatuses
+                                            .map((element) =>
+                                                element.icon.toString())
+                                            .toList(),
+                                        ref:
+                                            controller.outList[i]!.refId ?? "0",
+                                        weight: controller.outList[i]!.weight ??
+                                            "0.00",
+                                        status_key: controller
+                                            .outList[i]!.orderStatusKey,
+                                        Order_current_Status: controller
+                                            .outList[i]!.orderStatusName,
+                                        currentStep: controller
+                                                .outList[i]!.currentStatus ??
+                                            1,
+                                        isOpen: controller.outList[i]!.isOpen,
+                                        onPressedShowMore: () {
+                                          if (controller.outList[i]!.isOpen ==
+                                              false) {
+                                            controller.outList.forEach(
+                                                (element) =>
+                                                    element!.isOpen = false);
+                                            controller.outList[i]!.isOpen =
+                                                !controller.outList[i]!.isOpen;
+                                            x.update();
+                                          } else {
+                                            controller.outList[i]!.isOpen =
+                                                false;
+                                            x.update();
+                                          }
+                                        },
+                                      ),
+                                    );
                                   },
                                 ),
-                              );
-                            },
-                          )
-                        : controller.searchResult.isEmpty &&
-                                controller.searchConter.text.isNotEmpty
-                            ? Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  EmptyState(
-                                    label: 'noData'.tr,
-                                  ),
-                                  MaterialButton(
-                                    onPressed: () {
-                                      controller.fetchOutShipemetData();
-                                      print('ok');
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        CustomText(
-                                          text: 'Updateddata'.tr,
-                                          color: Colors.grey,
-                                          alignment: Alignment.center,
-                                          size: 12,
-                                        ),
-                                        Icon(
-                                          Icons.refresh,
-                                          color: Colors.grey,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : ListView.separated(
-                                controller: scrollController,
-                                separatorBuilder: (context, i) =>
-                                    const SizedBox(height: 15),
-                                itemCount: controller.outList.length,
-                                padding: const EdgeInsets.only(
-                                    left: 15, right: 15, bottom: 10, top: 5),
-                                itemBuilder: (context, i) {
-                                  return GetBuilder<ShipmentViewModel>(
-                                    builder: (x) => CardBody(
-                                      shipment: controller.outList[i]!,
-                                      willaya:
-                                          controller.outList[i]!.wilayaName,
-                                      area: controller.outList[i]!.areaName,
-                                      customer_name:
-                                          controller.outList[i]!.customerName,
-                                      deleiver_image: controller
-                                          .outList[i]!.orderDeliverImage,
-                                      undeleiver_image: controller
-                                          .outList[i]!.orderUndeliverImage,
-                                      pickup_image: controller
-                                          .outList[i]!.orderPickupImage,
-                                      orderId: controller.outList[i]!.orderId ??
-                                          "00",
-                                      number: controller.outList[i]!.phone ??
-                                          "+968",
-                                      cod: controller.outList[i]!.cod ?? "0.00",
-                                      cop: controller.outList[i]!.cop ?? "0.00",
-                                      orderNumber:
-                                          controller.outList[i]!.orderNo,
-                                      shipmentCost: controller
-                                              .outList[i]!.shippingPrice ??
-                                          "0.00",
-                                      date: controller.outList[i]!.updatedAt,
-                                      totalCharges:
-                                          '${double.parse(controller.outList[i]!.cod.toString()) - double.parse(controller.outList[i]!.shippingPrice.toString())}',
-                                      stutaus: controller
-                                          .outList[i]!.orderActivities,
-                                      icon: dashboardController.trackingStatuses
-                                          .map((element) =>
-                                              element.icon.toString())
-                                          .toList(),
-                                      ref: controller.outList[i]!.refId ?? "0",
-                                      weight: controller.outList[i]!.weight ??
-                                          "0.00",
-                                      status_key:
-                                          controller.outList[i]!.orderStatusKey,
-                                      Order_current_Status: controller
-                                          .outList[i]!.orderStatusName,
-                                      currentStep: controller
-                                              .outList[i]!.currentStatus ??
-                                          1,
-                                      isOpen: controller.outList[i]!.isOpen,
-                                      onPressedShowMore: () {
-                                        if (controller.outList[i]!.isOpen ==
-                                            false) {
-                                          controller.outList.forEach(
-                                              (element) =>
-                                                  element!.isOpen = false);
-                                          controller.outList[i]!.isOpen =
-                                              !controller.outList[i]!.isOpen;
-                                          x.update();
-                                        } else {
-                                          controller.outList[i]!.isOpen = false;
-                                          x.update();
-                                        }
-                                      },
-                                    ),
-                                  );
-                                },
-                              ),
+                    ),
                   ),
-                ),
               ],
             ),
-            if (controller.outLoadMore.value) bottomLoadingIndicator()
+            if (false && controller.outLoadMore.value) bottomLoadingIndicator()
           ],
         );
       }

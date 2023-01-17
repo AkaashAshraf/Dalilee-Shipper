@@ -4,8 +4,6 @@ import 'package:dalile_customer/view/menu/finances/closeed.dart';
 import 'package:dalile_customer/view/menu/finances/open.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
-
 import 'package:get/get.dart';
 
 class FinanceView extends GetWidget<FinanceController> {
@@ -69,7 +67,7 @@ class FinanceView extends GetWidget<FinanceController> {
         ],
         indicator: ShapeDecoration(
           shape: RoundedRectangleBorder(
-              side: const BorderSide(color: primaryColor),
+              side: BorderSide(color: primaryColor),
               borderRadius: BorderRadius.circular(25)),
           gradient: SweepGradient(
             colors: [

@@ -1,5 +1,6 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/DispatcherController.dart';
+import 'package:dalile_customer/core/view_model/OrderController.dart';
 import 'package:dalile_customer/view/calculable_view.dart';
 import 'package:dalile_customer/view/home/home_view.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
@@ -8,6 +9,7 @@ import 'package:dalile_customer/view/menu/dispatcher/AddOrder.dart';
 import 'package:dalile_customer/view/menu/dispatcher/my_orders.dart';
 import 'package:dalile_customer/view/menu/finances/finance.dart';
 import 'package:dalile_customer/view/menu/mishwar/AddItem.dart';
+import 'package:dalile_customer/view/menu/profiles/my_shop.dart';
 import 'package:dalile_customer/view/menu/profiles/profile.dart';
 import 'package:dalile_customer/view/offices_view.dart/offices_view.dart';
 import 'package:dalile_customer/view/pickup/pickup_view.dart';
@@ -40,7 +42,7 @@ class HomeViewModel extends GetxController {
         backgroundColor: Colors.transparent,
         builder: (context) {
           return DraggableScrollableSheet(
-              initialChildSize: 0.32,
+              initialChildSize: 0.42,
               builder: (context, controller2) => Container(
                     decoration: const BoxDecoration(
                       color: whiteColor,
@@ -91,10 +93,15 @@ class HomeViewModel extends GetxController {
 
                                 buildMenu(MyTicket.fontisto_ticket_alt,
                                     "Ticket".tr, context, () {
-                                  Get.back();
-                                  _screen = const MenuPageView();
-                                  _screenMenu = ComplainView();
-                                  update();
+                                  if (false) {
+                                    Get.back();
+                                    _screen = const MenuPageView();
+                                    _screenMenu = ComplainView();
+                                    update();
+                                  } else {
+                                    Get.snackbar('soon_available'.tr, " ",
+                                        colorText: Colors.orange);
+                                  }
                                 }),
                               ],
                             ),
@@ -113,11 +120,16 @@ class HomeViewModel extends GetxController {
                                 // }),
                                 buildMenu(Icons.add_box_outlined, "AddOrder".tr,
                                     context, () {
-                                  Get.to(AddOrder());
+                                  Get.snackbar('soon_available'.tr, " ",
+                                      colorText: Colors.orange);
+                                  if (false) Get.to(AddOrder());
                                 }),
 
                                 buildMenu(Icons.my_library_books_outlined,
-                                    "My Orders".tr, context, () {
+                                    "myOrders".tr, context, () {
+                                  Get.snackbar('soon_available'.tr, " ",
+                                      colorText: Colors.orange);
+                                  return;
                                   Get.put(DispatcherController())
                                       .fetchMyOrders();
                                   Get.to(MyOrders());
@@ -199,6 +211,11 @@ class HomeViewModel extends GetxController {
                                   buildMenu(Icons.add_box_outlined,
                                       "AddItem".tr, context, () {
                                     Get.to(AddItem());
+                                  }),
+                                  buildMenu(Icons.add_box_outlined, "MyShop".tr,
+                                      context, () {
+                                    Get.put(ShopController());
+                                    Get.to(MyShop());
                                   }),
                                 ],
                               ),

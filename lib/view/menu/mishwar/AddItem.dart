@@ -4,7 +4,6 @@ import 'package:dalile_customer/core/view_model/DispatcherController.dart';
 import 'package:dalile_customer/model/Dispatcher/Orders.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -58,7 +57,7 @@ class _AddItem extends State<AddItem> {
                       Container(
                           width: width * 0.92,
                           child: textInputCustom(
-                              isElevation: true,
+                              // isElevation: true,
                               onTextChange: (val) {},
                               label: "Food Name *",
                               validator: (_value) {
@@ -76,7 +75,7 @@ class _AddItem extends State<AddItem> {
                       Container(
                           width: width * 0.92,
                           child: textInputCustom(
-                              isElevation: true,
+                              // isElevation: true,
                               onTextChange: (val) {},
                               label: "Price *",
                               validator: (_value) {
@@ -97,7 +96,7 @@ class _AddItem extends State<AddItem> {
                           Container(
                               width: width * 0.45,
                               child: textInputCustom(
-                                  isElevation: true,
+                                  // isElevation: true,
                                   onTextChange: (val) {},
                                   label: "Discount *",
                                   validator: (_value) {
@@ -113,7 +112,7 @@ class _AddItem extends State<AddItem> {
                               width: width * 0.45,
                               child: Expanded(
                                 child: Card(
-                                  elevation: 2,
+                                  // elevation: 2,
                                   color: Colors.white,
                                   child: DropdownSearch<String>(
                                     label: "Discount Type *",
@@ -142,7 +141,7 @@ class _AddItem extends State<AddItem> {
                               width: width * 0.45,
                               child: Expanded(
                                 child: Card(
-                                  elevation: 2,
+                                  // elevation: 2,
                                   color: Colors.white,
                                   child: DropdownSearch<String>(
                                     label: "Category *",
@@ -163,7 +162,7 @@ class _AddItem extends State<AddItem> {
                               width: width * 0.45,
                               child: Expanded(
                                 child: Card(
-                                  elevation: 2,
+                                  // elevation: 2,
                                   color: Colors.white,
                                   child: DropdownSearch<String>(
                                     label: "Sub Category *",
@@ -188,7 +187,7 @@ class _AddItem extends State<AddItem> {
                       Container(
                           width: width * 0.92,
                           child: textInputCustom(
-                              isElevation: true,
+                              // isElevation: true,
                               onTextChange: (val) {},
                               label: "Addons ",
                               validator: (_value) {

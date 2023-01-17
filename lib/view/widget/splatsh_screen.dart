@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:dalile_customer/core/server/auth.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
 import 'package:dalile_customer/view/widget/controller_view.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -15,9 +19,29 @@ class _SplashScreenState extends State<SplashScreen> {
   bool status = false;
   @override
   void initState() {
+    player = VideoPlayerController.asset("assets/images/splash.mp4");
+
     loginControlfff();
+    player.addListener(() {});
+    player.setLooping(false);
+    player.initialize();
+    player.play().then((value) => {
+          Timer(const Duration(milliseconds: 5000), () {
+            Get.offAll(status ? ControllerView() : LoginView());
+          })
+        });
+    // .then((value) => {Get.offAll(status ? ControllerView() : LoginView())});
+
     super.initState();
   }
+
+  @override
+  void dispose() {
+    player.dispose();
+    super.dispose();
+  }
+
+  late VideoPlayerController player;
 
   loginControlfff() async {
     await AuthController.isLoginUser().whenComplete(() {
@@ -36,15 +60,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     // print(status.toString());
-    return AnimatedSplashScreen(
-        splashIconSize: 250,
-        splash: Image.asset(
-          "assets/images/dalilees.png",
-          height: 300,
-          width: 250,
-        ),
-        nextScreen: status ? ControllerView() : LoginView(),
-        splashTransition: SplashTransition.fadeTransition,
-        backgroundColor: Colors.white);
+    return Container(
+      child: VideoPlayer(player),
+    );
   }
 }

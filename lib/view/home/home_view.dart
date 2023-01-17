@@ -4,6 +4,8 @@ import 'package:dalile_customer/core/view_model/dashbordController.dart';
 import 'package:dalile_customer/core/view_model/downloadController.dart';
 import 'package:dalile_customer/view/home/finaince_dashboard.dart';
 import 'package:dalile_customer/view/home/main_dash.dart';
+import 'package:dalile_customer/view/home/notifications/notifications_list.dart';
+import 'package:dalile_customer/view/home/search/search_screen.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -23,6 +25,32 @@ class HomeView extends StatelessWidget {
           toolbarHeight: 70,
           backgroundColor: primaryColor,
           foregroundColor: whiteColor,
+          leading: GestureDetector(
+            onTap: () {
+              Get.to(SearchScreen());
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          actions: [
+            GestureDetector(
+              onTap: () {
+                Get.to(NotificationList());
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Icon(
+                  Icons.notifications,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
           title: CustomText(
             text: 'DASHBOARD'.tr,
             color: whiteColor,
@@ -105,7 +133,7 @@ class HomeView extends StatelessWidget {
             const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
         indicator: ShapeDecoration(
           shape: RoundedRectangleBorder(
-              side: const BorderSide(color: primaryColor),
+              side: BorderSide(color: primaryColor),
               borderRadius: BorderRadius.circular(30)),
           gradient: SweepGradient(
             colors: [

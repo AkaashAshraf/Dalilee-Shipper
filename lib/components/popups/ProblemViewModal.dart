@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dalile_customer/components/generalModel.dart';
 import 'package:dalile_customer/components/popups/ProblemResolveViewModal.dart';
+import 'package:dalile_customer/components/popups/image_view_modal.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/downloadController.dart';
 import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
@@ -64,17 +65,25 @@ Alert problemViewModal(BuildContext context, String orderNo,
                           items: images.reversed
                               .map((subItem) => Stack(children: [
                                     Center(
-                                        child: CachedNetworkImage(
-                                      imageUrl: subItem.toString(),
-                                      width: MediaQuery.of(context).size.width *
-                                          0.75,
-                                      height:
-                                          MediaQuery.of(context).size.width *
-                                              0.75,
-                                      fit: BoxFit.cover,
-                                      placeholder: (context, url) => Text(''),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
+                                        child: GestureDetector(
+                                      onDoubleTap: () {
+                                        imageViewModal(context,
+                                                imagePath: subItem.toString())
+                                            .show();
+                                      },
+                                      child: CachedNetworkImage(
+                                        imageUrl: subItem.toString(),
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.75,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.75,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) => Text(''),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      ),
                                     )),
                                     Positioned(
                                         bottom: 0,

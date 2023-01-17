@@ -77,7 +77,7 @@ class ManageAccountsView extends StatelessWidget {
                                         decoration: BoxDecoration(
                                             color: whiteColor,
                                             borderRadius:
-                                                BorderRadius.circular(20),
+                                                BorderRadius.circular(10),
                                             boxShadow: [
                                               BoxShadow(
                                                 spreadRadius: 1,
@@ -85,38 +85,72 @@ class ManageAccountsView extends StatelessWidget {
                                                 color: Colors.grey.shade300,
                                               ),
                                             ]),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                CustomText(
-                                                  text:
-                                                      'Mr. ${controller.accountData[i].holderName}',
-                                                  color: primaryColor,
-                                                  fontWeight: FontWeight.w500,
-                                                  size: 16,
-                                                ),
-                                                InkWell(
-                                                  onTap: () {},
-                                                  child: Image.asset(
-                                                    'assets/images/edits.png',
-                                                    height: 20,
-                                                    width: 20,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.8,
+                                                    child: CustomText(
+                                                      direction:
+                                                          TextDirection.ltr,
+                                                      text:
+                                                          'Mr. ${controller.accountData[i].name}',
+                                                      color: primaryColor,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      size: 16,
+                                                    ),
                                                   ),
+                                                  // InkWell(
+                                                  //   onTap: () {},
+                                                  //   child: Image.asset(
+                                                  //     'assets/images/edits.png',
+                                                  //     height: 20,
+                                                  //     width: 20,
+                                                  //   ),
+                                                  // ),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.8,
+                                                child: CustomText(
+                                                  direction: TextDirection.ltr,
+                                                  text:
+                                                      '${controller.accountData[i].bankName}',
                                                 ),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            CustomText(
-                                              text:
-                                                  '${controller.accountData[i].bankName}, ${controller.accountData[i].accountNumber}',
-                                            ),
-                                          ],
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.8,
+                                                child: CustomText(
+                                                  direction: TextDirection.ltr,
+                                                  text:
+                                                      "Account Number: ${controller.accountData[i].accounttNo.toString()}",
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ));
                                   },
                                 )),

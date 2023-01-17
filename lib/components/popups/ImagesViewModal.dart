@@ -3,6 +3,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dalile_customer/components/generalModel.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/downloadController.dart';
+import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
+import 'package:dalile_customer/view/pickup/image_libar.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +12,19 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'package:get/get.dart';
 
-Alert imagesViewModal(
-    BuildContext context, List<OrderImages> images, String orderNo) {
+Alert imagesViewModal(BuildContext context, String orderNo,
+    {required Shipment shipment}) {
+  List<OrderImages> images = [];
+  if (shipment.pickupImage != "")
+    images.add(OrderImages(shipment.pickupImage, 'pickupImage'.tr));
+  if (shipment.orderImage != "")
+    images.add(OrderImages(shipment.orderImage, 'deliveredImage'.tr));
+  if (shipment.undeliverImage != "")
+    images.add(OrderImages(shipment.undeliverImage, 'undeliverImage'.tr));
+  if (shipment.undeliverImage2 != "")
+    images.add(OrderImages(shipment.undeliverImage2, 'undeliverImage'.tr));
+  if (shipment.undeliverImage3 != "")
+    images.add(OrderImages(shipment.undeliverImage3, 'undeliverImage'.tr));
   return modal(
     context,
     Column(
@@ -40,17 +53,28 @@ Alert imagesViewModal(
                           items: images.reversed
                               .map((subItem) => Stack(children: [
                                     Center(
-                                        child: CachedNetworkImage(
-                                      imageUrl: subItem.image.toString(),
-                                      width: MediaQuery.of(context).size.width *
-                                          0.75,
-                                      height:
-                                          MediaQuery.of(context).size.width *
-                                              0.75,
-                                      fit: BoxFit.cover,
-                                      placeholder: (context, url) => Text(''),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
+                                        child: GestureDetector(
+                                      onTap: () {
+                                        Get.to(() => ImageLib(
+                                              galleryItems: [
+                                                ...images.reversed,
+                                              ],
+                                              idex: images.indexOf(subItem),
+                                            ));
+                                      },
+                                      child: CachedNetworkImage(
+                                        imageUrl: subItem.image.toString(),
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.75,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.75,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) => Text(''),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      ),
                                     )),
                                     Positioned(
                                         bottom: 0,

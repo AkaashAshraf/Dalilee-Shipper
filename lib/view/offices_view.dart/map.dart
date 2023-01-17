@@ -23,6 +23,7 @@ class _MapsOfficesState extends State<MapsOffices> {
     _disp();
     super.dispose();
   }
+
   final Completer<GoogleMapController> controller = Completer();
   Future<void> _disp() async {
     final GoogleMapController controller1 = await controller.future;
@@ -51,7 +52,7 @@ class _MapsOfficesState extends State<MapsOffices> {
                       LatLng(widget.model.lat.value, widget.model.lng.value),
                   zoom: 14),
               onMapCreated: (GoogleMapController controller1) {
-             controller.complete(controller1);
+                controller.complete(controller1);
               },
               markers: widget.model.markers,
             ),
@@ -68,8 +69,8 @@ class _MapsOfficesState extends State<MapsOffices> {
     return Align(
       alignment: Alignment.topLeft,
       child: IconButton(
-          icon: const Icon(FontAwesomeIcons.magnifyingGlassMinus,
-              color: primaryColor),
+          icon:
+              Icon(FontAwesomeIcons.magnifyingGlassMinus, color: primaryColor),
           onPressed: () {
             zoomVal--;
             _minus(zoomVal);
@@ -81,8 +82,7 @@ class _MapsOfficesState extends State<MapsOffices> {
     return Align(
       alignment: Alignment.topRight,
       child: IconButton(
-          icon: const Icon(FontAwesomeIcons.magnifyingGlassPlus,
-              color: primaryColor),
+          icon: Icon(FontAwesomeIcons.magnifyingGlassPlus, color: primaryColor),
           onPressed: () {
             zoomVal++;
             _plus(zoomVal);
@@ -169,9 +169,8 @@ class _MapsOfficesState extends State<MapsOffices> {
                               size: 18.0,
                               alignment: Alignment.topCenter,
                               fontWeight: FontWeight.bold),
-                          
-                          const SizedBox(height:7.0),
-                          const CustomText(
+                          const SizedBox(height: 7.0),
+                          CustomText(
                             text: "Working Hours",
                             color: primaryColor,
                             size: 16.0,
@@ -277,9 +276,7 @@ class _MapsOfficesState extends State<MapsOffices> {
                     size: 14,
                     alignment: Alignment.topCenter,
                     fontWeight: FontWeight.w500),
-                
                 Row(
-                 
                   children: [
                     InkWell(
                       onTap: () {
@@ -302,7 +299,7 @@ class _MapsOfficesState extends State<MapsOffices> {
                             });
                       },
                       child: Row(
-                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomText(
                             text: 'GoLocation'.tr,
@@ -316,7 +313,6 @@ class _MapsOfficesState extends State<MapsOffices> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    
                     InkWell(
                       onTap: () {
                         Get.defaultDialog(
@@ -342,7 +338,7 @@ class _MapsOfficesState extends State<MapsOffices> {
                         width: 20,
                       ),
                     ),
-                   const SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     InkWell(
                       onTap: () {
                         Get.defaultDialog(
@@ -373,7 +369,7 @@ class _MapsOfficesState extends State<MapsOffices> {
               ],
             ),
             const SizedBox(height: 7),
-             CustomText(
+            CustomText(
               text: "WorkingHours".tr,
               color: primaryColor,
               size: 12.0,
@@ -381,14 +377,17 @@ class _MapsOfficesState extends State<MapsOffices> {
             ),
             const SizedBox(height: 5.0),
             _buildRowDays("Sunday".tr, "08:00 am-10:00 pm"),
-             const SizedBox(height: 5.0),
+            const SizedBox(height: 5.0),
             _buildRowDays("Monday".tr, "08:00 am-10:00 pm"),
-             const SizedBox(height: 5.0),
+            const SizedBox(height: 5.0),
             _buildRowDays("Tuesday".tr, "08:00 am-10:00 pm"),
-             const SizedBox(height: 5.0),
-            _buildRowDays("WenDay".tr, "08:00 am-10:00 pm"), const SizedBox(height: 5.0),
-            _buildRowDays("Thursday".tr, "08:00 am-10:00 pm"), const SizedBox(height: 5.0),
-            _buildRowDays("Friday".tr, "Closed".tr), const SizedBox(height: 5.0),
+            const SizedBox(height: 5.0),
+            _buildRowDays("WenDay".tr, "08:00 am-10:00 pm"),
+            const SizedBox(height: 5.0),
+            _buildRowDays("Thursday".tr, "08:00 am-10:00 pm"),
+            const SizedBox(height: 5.0),
+            _buildRowDays("Friday".tr, "Closed".tr),
+            const SizedBox(height: 5.0),
             _buildRowDays("Saturday".tr, "08:00 am-10:00 pm"),
           ],
         ));

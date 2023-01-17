@@ -2,14 +2,15 @@ import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/dashbordController.dart';
 import 'package:dalile_customer/core/view_model/financeListingController.dart';
 import 'package:dalile_customer/model/Dashboard/MainDashboardModel.dart';
-import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
-import 'package:dalile_customer/view/home/card_body.dart';
+import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import '../card_body_new_log.dart';
 
 enum Status {
   ALL,
@@ -152,7 +153,7 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       case Status.ALL:
         {
           if (controller.loadMoreAll.value) return;
-          if ((controller.listAll.length <= controller.totalAll.value) &&
+          if ((controller.listAll.length < controller.totalAll.value) &&
               scrollController!.position.extentAfter < 1000.0) {
             controller.loadMoreAll.value = true;
             await controller.getAllOrders();
@@ -168,7 +169,7 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       case Status.PAID:
         {
           if (controller.loadMorePaid.value) return;
-          if ((controller.listPaid.length <= controller.totalPaid.value) &&
+          if ((controller.listPaid.length < controller.totalPaid.value) &&
               scrollController!.position.extentAfter < 1000.0) {
             controller.loadMorePaid.value = true;
             await controller.getPaidOrders();
@@ -185,7 +186,7 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       case Status.COD_PENDING:
         {
           if (controller.loadMoreCodPending.value) return;
-          if ((controller.listCodPending.length <=
+          if ((controller.listCodPending.length <
                   controller.totalCodPending.value) &&
               scrollController!.position.extentAfter < 1000.0) {
             controller.loadMoreCodPending.value = true;
@@ -203,7 +204,7 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       case Status.READY_TO_PAY:
         {
           if (controller.loadMoreReadyToPay.value) return;
-          if ((controller.listReadyToPay.length <=
+          if ((controller.listReadyToPay.length <
                   controller.totalReadyToPay.value) &&
               scrollController!.position.extentAfter < 1000.0) {
             // bool isTop = scrollController!.position.pixels == 0;
@@ -222,7 +223,7 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       case Status.COD_WITH_DRIVERS:
         {
           if (controller.loadMoreCodWithDrivers.value) return;
-          if ((controller.listCodWithDrivers.length <=
+          if ((controller.listCodWithDrivers.length <
                   controller.totalCodWithDrivers.value) &&
               scrollController!.position.extentAfter < 1000.0) {
             // bool isTop = scrollController!.position.pixels == 0;
@@ -241,7 +242,7 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       case Status.COD_RETURN:
         {
           if (controller.loadMoreCodReturn.value) return;
-          if ((controller.listCodReturn.length <=
+          if ((controller.listCodReturn.length <
                   controller.totalCodReturn.value) &&
               scrollController!.position.extentAfter < 1000.0) {
             // bool isTop = scrollController!.position.pixels == 0;
@@ -272,124 +273,126 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
               color: bgColor,
               borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
           child: GetX<FinanceListingController>(builder: (controller) {
-            return Container(
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                children: [
-                  // NoDataView(label: "No Data" + widget.type.toString()),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.82,
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.85,
-                          child: SmartRefresher(
-                            header: WaterDropHeader(
-                              waterDropColor: primaryColor,
-                            ),
-                            controller: refreshController,
-                            onRefresh: () async {
-                              _refresh(type: widget.type);
-                            },
-                            child: widget.type == Status.ALL &&
-                                    controller.inViewLoadingAll.value &&
+            return Column(
+              children: [
+                Flexible(
+                  child: SmartRefresher(
+                    header: WaterDropHeader(
+                      waterDropColor: primaryColor,
+                    ),
+                    controller: refreshController,
+                    onRefresh: () async {
+                      _refresh(type: widget.type);
+                    },
+                    child:
+                        widget.type == Status.ALL &&
+                                controller.inViewLoadingAll.value &&
+                                controller.listAll.isEmpty
+                            ? WaiteImage()
+                            : widget.type == Status.ALL &&
                                     controller.listAll.isEmpty
-                                ? WaiteImage()
-                                : widget.type == Status.ALL &&
-                                        controller.listAll.isEmpty
-                                    ? NoDataView(label: "No Data")
+                                ? NoDataView(label: "No Data")
+                                : widget.type == Status.COD_PENDING &&
+                                        controller
+                                            .inViewLoadingCodPending.value &&
+                                        controller.listCodPending.isEmpty
+                                    ? WaiteImage()
                                     : widget.type == Status.COD_PENDING &&
-                                            controller.inViewLoadingCodPending
-                                                .value &&
                                             controller.listCodPending.isEmpty
-                                        ? WaiteImage()
-                                        : widget.type == Status.COD_PENDING &&
+                                        ? NoDataView(label: "No Data")
+                                        : widget.type == Status.COD_RETURN &&
                                                 controller
-                                                    .listCodPending.isEmpty
-                                            ? NoDataView(label: "No Data")
+                                                    .inViewLoadingCodReturn
+                                                    .value &&
+                                                controller.listCodReturn.isEmpty
+                                            ? WaiteImage()
                                             : widget.type == Status.COD_RETURN &&
                                                     controller
-                                                        .inViewLoadingCodReturn
-                                                        .value &&
-                                                    controller
                                                         .listCodReturn.isEmpty
-                                                ? WaiteImage()
-                                                : widget.type == Status.COD_RETURN &&
-                                                        controller.listCodReturn
+                                                ? NoDataView(label: "No Data")
+                                                : widget.type == Status.COD_WITH_DRIVERS &&
+                                                        controller
+                                                            .inViewLoadingCodWithDrivers
+                                                            .value &&
+                                                        controller
+                                                            .listCodWithDrivers
                                                             .isEmpty
-                                                    ? NoDataView(
-                                                        label: "No Data")
+                                                    ? WaiteImage()
                                                     : widget.type == Status.COD_WITH_DRIVERS &&
-                                                            controller
-                                                                .inViewLoadingCodWithDrivers
-                                                                .value &&
                                                             controller
                                                                 .listCodWithDrivers
                                                                 .isEmpty
-                                                        ? WaiteImage()
-                                                        : widget.type == Status.COD_WITH_DRIVERS &&
+                                                        ? NoDataView(
+                                                            label: "No Data")
+                                                        : widget.type == Status.PAID &&
                                                                 controller
-                                                                    .listCodWithDrivers
+                                                                    .inViewLoadingPaid
+                                                                    .value &&
+                                                                controller
+                                                                    .listPaid
                                                                     .isEmpty
-                                                            ? NoDataView(
-                                                                label:
-                                                                    "No Data")
+                                                            ? WaiteImage()
                                                             : widget.type == Status.PAID &&
-                                                                    controller.inViewLoadingPaid.value &&
-                                                                    controller.listPaid.isEmpty
-                                                                ? WaiteImage()
-                                                                : widget.type == Status.PAID && controller.listPaid.isEmpty
-                                                                    ? NoDataView(label: "No Data")
-                                                                    : widget.type == Status.READY_TO_PAY && controller.inViewLoadingReadyToPay.value && controller.listReadyToPay.isEmpty
-                                                                        ? WaiteImage()
-                                                                        : widget.type == Status.READY_TO_PAY && controller.listReadyToPay.isEmpty
-                                                                            ? NoDataView(label: "No Data")
-                                                                            : ListView.separated(
-                                                                                // shrinkWrap: false,
-                                                                                controller: scrollController,
-                                                                                separatorBuilder: (context, i) => const SizedBox(height: 15),
-                                                                                itemCount: widget.type == Status.ALL
-                                                                                    ? controller.listAll.length
-                                                                                    : widget.type == Status.PAID
-                                                                                        ? controller.listPaid.length
-                                                                                        : widget.type == Status.COD_PENDING
-                                                                                            ? controller.listCodPending.length
-                                                                                            : widget.type == Status.READY_TO_PAY
-                                                                                                ? controller.listReadyToPay.length
-                                                                                                : widget.type == Status.COD_WITH_DRIVERS
-                                                                                                    ? controller.listCodWithDrivers.length
-                                                                                                    : controller.listCodReturn.length,
-                                                                                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 5),
-                                                                                itemBuilder: (context, i) {
-                                                                                  return GetBuilder<FinanceListingController>(
-                                                                                    builder: (x) => card(
-                                                                                      controller,
-                                                                                      widget.type == Status.ALL
-                                                                                          ? controller.listAll[i]
-                                                                                          : widget.type == Status.PAID
-                                                                                              ? controller.listPaid[i]
-                                                                                              : widget.type == Status.COD_PENDING
-                                                                                                  ? controller.listCodPending[i]
-                                                                                                  : widget.type == Status.READY_TO_PAY
-                                                                                                      ? controller.listReadyToPay[i]
-                                                                                                      : widget.type == Status.COD_WITH_DRIVERS
-                                                                                                          ? controller.listCodWithDrivers[i]
-                                                                                                          : controller.listCodReturn[i],
-                                                                                      x,
-                                                                                      dashboardController.trackingStatuses,
-                                                                                    ),
-                                                                                  );
-                                                                                },
-                                                                              ),
-                          ),
-                        ),
-                        loadMoreIndicator(),
-                      ],
-                    ),
+                                                                    controller
+                                                                        .listPaid
+                                                                        .isEmpty
+                                                                ? NoDataView(
+                                                                    label:
+                                                                        "No Data")
+                                                                : widget.type == Status.READY_TO_PAY &&
+                                                                        controller.inViewLoadingReadyToPay.value &&
+                                                                        controller.listReadyToPay.isEmpty
+                                                                    ? WaiteImage()
+                                                                    : widget.type == Status.READY_TO_PAY && controller.listReadyToPay.isEmpty
+                                                                        ? NoDataView(label: "No Data")
+                                                                        : ListView.separated(
+                                                                            // shrinkWrap: false,
+                                                                            controller:
+                                                                                scrollController,
+                                                                            separatorBuilder: (context, i) =>
+                                                                                const SizedBox(height: 15),
+                                                                            itemCount: widget.type == Status.ALL
+                                                                                ? controller.listAll.length
+                                                                                : widget.type == Status.PAID
+                                                                                    ? controller.listPaid.length
+                                                                                    : widget.type == Status.COD_PENDING
+                                                                                        ? controller.listCodPending.length
+                                                                                        : widget.type == Status.READY_TO_PAY
+                                                                                            ? controller.listReadyToPay.length
+                                                                                            : widget.type == Status.COD_WITH_DRIVERS
+                                                                                                ? controller.listCodWithDrivers.length
+                                                                                                : controller.listCodReturn.length,
+                                                                            padding: const EdgeInsets.only(
+                                                                                left: 15,
+                                                                                right: 15,
+                                                                                bottom: 10,
+                                                                                top: 5),
+                                                                            itemBuilder:
+                                                                                (context, i) {
+                                                                              return GetBuilder<FinanceListingController>(
+                                                                                builder: (x) => card(
+                                                                                  controller,
+                                                                                  widget.type == Status.ALL
+                                                                                      ? controller.listAll[i]
+                                                                                      : widget.type == Status.PAID
+                                                                                          ? controller.listPaid[i]
+                                                                                          : widget.type == Status.COD_PENDING
+                                                                                              ? controller.listCodPending[i]
+                                                                                              : widget.type == Status.READY_TO_PAY
+                                                                                                  ? controller.listReadyToPay[i]
+                                                                                                  : widget.type == Status.COD_WITH_DRIVERS
+                                                                                                      ? controller.listCodWithDrivers[i]
+                                                                                                      : controller.listCodReturn[i],
+                                                                                  x,
+                                                                                  dashboardController.trackingStatuses,
+                                                                                ),
+                                                                              );
+                                                                            },
+                                                                          ),
                   ),
-                  // loadMoreIndicator(),
-                ],
-              ),
+                ),
+                loadMoreIndicator(),
+              ],
             );
           }),
         ));
@@ -400,74 +403,50 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       case Status.ALL:
         {
           if (controller.loadMoreAll.value) {
-            return Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: const bottomLoadingIndicator());
+            return const bottomLoadingIndicator();
           } else
-            return Text('');
+            return Container();
         } //all
 
       case Status.PAID:
         {
           if (controller.loadMorePaid.value) {
-            return Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: const bottomLoadingIndicator());
+            return const bottomLoadingIndicator();
           } else
-            return Text('');
+            return Container();
         } //paid
 
       case Status.COD_PENDING:
         {
           if (controller.loadMoreCodPending.value) {
-            return Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: const bottomLoadingIndicator());
+            return const bottomLoadingIndicator();
           } else
-            return Text('');
+            return Container();
         } //cod pending
       case Status.READY_TO_PAY:
         {
           if (controller.loadMoreReadyToPay.value) {
-            return Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: const bottomLoadingIndicator());
+            return const bottomLoadingIndicator();
           } else
-            return Text('');
+            return Container();
         } //  ready to pay
       case Status.COD_WITH_DRIVERS:
         {
           if (controller.loadMoreCodWithDrivers.value) {
-            return Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: const bottomLoadingIndicator());
+            return const bottomLoadingIndicator();
           } else
-            return Text('');
+            return Container();
         } //cod reaturn
       case Status.COD_RETURN:
         {
           if (controller.loadMoreCodReturn.value) {
-            return Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: const bottomLoadingIndicator());
+            return const bottomLoadingIndicator();
           } else
-            return Text('');
+            return Container();
         } //cod reaturn
       default:
         {
-          return Text('');
+          return Container();
         }
     }
   }
@@ -482,26 +461,26 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
       shipment: shipment,
       willaya: shipment.wilayaName,
       area: shipment.areaName,
-      orderId: shipment.orderId ?? 00,
+      orderId: shipment.orderId,
       date: shipment.updatedAt,
       customer_name: shipment.customerName,
       Order_current_Status: shipment.orderStatusName,
-      number: shipment.phone ?? "+968",
-      orderNumber: shipment.orderNo.toString(),
+      number: shipment.customerNo,
+      orderNumber: shipment.orderId,
       cod: shipment.cod ?? "0.00",
       cop: shipment.cop ?? "0.00",
       shipmentCost: shipment.shippingPrice ?? "0.00",
-      deleiver_image: shipment.orderDeliverImage ?? "",
-      undeleiver_image: shipment.orderUndeliverImage ?? "",
-      pickup_image: shipment.orderPickupImage ?? "",
+      deleiver_image: shipment.orderImage,
+      undeleiver_image: shipment.undeliverImage,
+      pickup_image: shipment.pickupImage,
       totalCharges:
           '${(double.tryParse(shipment.cod.toString()) ?? 0.0) - (double.tryParse(shipment.shippingPrice.toString()) ?? 0.0)}',
       stutaus: shipment.orderActivities,
       icon: trackingStatus.map((element) => element.icon.toString()).toList(),
       status_key: shipment.orderStatusKey,
-      ref: shipment.refId ?? 0,
-      weight: shipment.weight ?? 0.00,
-      currentStep: shipment.currentStatus ?? 1,
+      ref: shipment.refId,
+      weight: shipment.weight,
+      currentStep: shipment.trackingId,
       isOpen: shipment.isOpen,
       onPressedShowMore: () {
         if (shipment.isOpen == false) {

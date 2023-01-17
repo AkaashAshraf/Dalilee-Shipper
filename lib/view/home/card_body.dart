@@ -4,6 +4,7 @@ import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/DispatcherController.dart';
 import 'package:dalile_customer/core/view_model/complain_view_model.dart';
 import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
+import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/stepess.dart';
@@ -73,7 +74,7 @@ class CardBody extends StatelessWidget {
   final bool isOpen;
   final List<String>? icon;
   final void Function()? onPressedShowMore;
-
+  HelperController helperController = Get.put(HelperController());
   @override
   Widget build(BuildContext context) {
     final cod = double.tryParse(shipment.cod ?? "") ?? 0;
@@ -148,12 +149,10 @@ class CardBody extends StatelessWidget {
                             problemViewModal(context, orderNumber,
                                     shipment: shipment)
                                 .show();
-                          else
-                            imagesViewModal(
-                              context,
-                              images,
-                              orderNumber,
-                            ).show();
+                          // else
+                          //   imagesViewModal(context, orderNumber,
+                          //           shipment: shipment)
+                          //       .show();
                         },
                         child: Icon(
                           Icons.remove_red_eye,
@@ -255,7 +254,7 @@ class CardBody extends StatelessWidget {
                           pickup_image,
                         );
                       },
-                      child: const Icon(
+                      child: Icon(
                         Icons.more_vert,
                         color: primaryColor,
                         size: 25,
@@ -279,7 +278,10 @@ class CardBody extends StatelessWidget {
               children: [
                 _buildRowText('Ref'.tr + ' : $ref', 'Phone'.tr + ' : $number',
                     context: context),
-                _buildRowText('COD'.tr + ' : $cod OMR', 'Date'.tr + ' : $date ',
+                _buildRowText(
+                    'COD'.tr +
+                        ' : ${helperController.getCurrencyInFormat(cod)} ',
+                    'Date'.tr + ' : $date ',
                     context: context),
               ],
             ),
@@ -324,16 +326,7 @@ class CardBody extends StatelessWidget {
               top: 10,
             ),
             child: StepProgressView(
-              icons: icon ??
-                  [
-                    "https://shaheen-oman.dalilee.om/storage/order-icons/pickup.png",
-                    "https://shaheen-oman.dalilee.om/storage/order-icons/send.png",
-                    "https://shaheen-oman.dalilee.om/storage/order-icons/received.png",
-                    "https://shaheen-oman.dalilee.om/storage/order-icons/assigned.png",
-                    "https://shaheen-oman.dalilee.om/storage/order-icons/process.png",
-                    "https://shaheen-oman.dalilee.om/storage/order-icons/un-delivered.png",
-                    "https://shaheen-oman.dalilee.om/storage/order-icons/delivered.png"
-                  ],
+              icons: icon ?? [],
               curStep: currentStep > 0 ? currentStep : 1,
               color: primaryColor,
             ),
@@ -397,21 +390,21 @@ class CardBody extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                     ),
                   ),
-                  indicatorStyle: const IndicatorStyle(
+                  indicatorStyle: IndicatorStyle(
                       width: 13, color: primaryColor, indicatorXY: 0.5),
-                  beforeLineStyle:
-                      const LineStyle(thickness: 1, color: primaryColor),
-                  afterLineStyle:
-                      const LineStyle(thickness: 1, color: primaryColor),
+                  beforeLineStyle: LineStyle(thickness: 1, color: primaryColor),
+                  afterLineStyle: LineStyle(thickness: 1, color: primaryColor),
                 ),
               ),
             _rowWithnameline('PaymentSummary'.tr, primaryColor),
-            _buildRowDown(
-                text1Color, 12, 'ShippingCost'.tr, '$shipmentCost OMR'),
-            _buildRowDown(text1Color, 12, 'CC'.tr, '$cc OMR'),
-            _buildRowDown(text1Color, 12, 'COD'.tr, '$cod OMR'),
+            _buildRowDown(text1Color, 12, 'ShippingCost'.tr,
+                '${helperController.getCurrencyInFormat(shipmentCost)} '),
+            _buildRowDown(text1Color, 12, 'CC'.tr,
+                '${helperController.getCurrencyInFormat(cc)} '),
+            _buildRowDown(text1Color, 12, 'COD'.tr,
+                '${helperController.getCurrencyInFormat(cod)} '),
             _buildRowDown(primaryColor, 13, 'TotalCharges'.tr,
-                ' ${(double.tryParse(shipment.cc.toString()) ?? 0.0) + (double.tryParse(totalCharges.toString()) ?? 0.0)}'),
+                '${helperController.getCurrencyInFormat((double.tryParse(shipment.cc.toString()) ?? 0.0) + (double.tryParse(totalCharges.toString()) ?? 0.0))}'),
           ],
         ),
       ),

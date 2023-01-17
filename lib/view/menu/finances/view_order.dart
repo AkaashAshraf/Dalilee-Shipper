@@ -2,7 +2,7 @@ import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/dashbordController.dart';
 import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
 import 'package:dalile_customer/core/view_model/view_order_view_model.dart';
-import 'package:dalile_customer/view/home/card_body.dart';
+import 'package:dalile_customer/view/home/card_body_new_log.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/empty.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
@@ -133,108 +133,81 @@ class _ViewOrderViewState extends State<ViewOrderView> {
                   SizedBox(
                     height: 20,
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: controller.loadMore.value
-                            ? MediaQuery.of(context).size.height * 0.75
-                            : MediaQuery.of(context).size.height * 0.8,
-                        child: Expanded(
-                          flex: 14,
-                          child: SmartRefresher(
-                            header: WaterDropHeader(
-                              waterDropColor: primaryColor,
-                            ),
-                            controller: refreshController,
-                            onRefresh: _refresh,
-                            child: ListView.separated(
-                              controller: scrollController,
-                              separatorBuilder: (context, i) =>
-                                  const SizedBox(height: 15),
-                              itemCount: controller.viewOrderData.length,
-                              padding: const EdgeInsets.only(
-                                  left: 15, right: 15, bottom: 10, top: 5),
-                              itemBuilder: (context, i) {
-                                return GetBuilder<ShipmentViewModel>(
-                                    init: ShipmentViewModel(),
-                                    builder: (x) {
-                                      return CardBody(
-                                        shipment: controller.viewOrderData[i],
-                                        willaya: controller
-                                            .viewOrderData[i].wilayaName,
-                                        area: controller
-                                            .viewOrderData[i].areaName,
-                                        date: controller
-                                            .viewOrderData[i].updatedAt,
-                                        status_key: controller
-                                            .viewOrderData[i].orderStatusKey,
-                                        deleiver_image: controller
-                                            .viewOrderData[i].orderDeliverImage,
-                                        Order_current_Status: controller
-                                            .viewOrderData[i].orderStatusKey,
-                                        undeleiver_image: controller
-                                            .viewOrderData[i]
-                                            .orderUndeliverImage,
-                                        pickup_image: controller
-                                            .viewOrderData[i].orderPickupImage,
-                                        customer_name: controller
-                                            .viewOrderData[i].customerName,
-                                        orderId: controller
-                                                .viewOrderData[i].orderId ??
-                                            "00",
-                                        number:
-                                            controller.viewOrderData[i].phone ??
-                                                "+968",
-                                        cod: controller.viewOrderData[i].cod ??
-                                            "0.00",
-                                        cop: controller.viewOrderData[i].cop ??
-                                            "0.00",
-                                        shipmentCost: controller
-                                                .viewOrderData[i]
-                                                .shippingPrice ??
-                                            "0.00",
-                                        orderNumber:
-                                            controller.viewOrderData[i].orderNo,
-                                        totalCharges:
-                                            '${(double.tryParse(controller.viewOrderData[i].cod.toString()) ?? 0.0) - (double.tryParse(controller.viewOrderData[i].shippingPrice.toString()) ?? 0.0)}',
-                                        stutaus: controller
-                                            .viewOrderData[i].orderActivities,
-                                        icon: dashboardController
-                                            .trackingStatuses
-                                            .map((element) =>
-                                                element.icon.toString())
-                                            .toList(),
-                                        ref:
-                                            controller.viewOrderData[i].refId ??
-                                                "0",
-                                        weight: controller
-                                                .viewOrderData[i].weight ??
-                                            "0.00",
-                                        currentStep: controller.viewOrderData[i]
-                                                .currentStatus ??
-                                            1,
-                                        isOpen:
-                                            controller.viewOrderData[i].isOpen,
-                                        onPressedShowMore: () {
-                                          controller.viewOrderData[i].isOpen =
-                                              !controller
-                                                  .viewOrderData[i].isOpen;
-                                          x.update();
-                                          print(controller
-                                              .viewOrderData[i].isOpen
-                                              .toString());
-                                        },
-                                      );
-                                    });
-                              },
-                            ),
-                          ),
-                        ),
+                  Expanded(
+                    flex: 14,
+                    child: SmartRefresher(
+                      header: WaterDropHeader(
+                        waterDropColor: primaryColor,
                       ),
-                      if (controller.loadMore.value) bottomLoadingIndicator()
-                    ],
+                      controller: refreshController,
+                      onRefresh: _refresh,
+                      child: ListView.separated(
+                        controller: scrollController,
+                        separatorBuilder: (context, i) =>
+                            const SizedBox(height: 15),
+                        itemCount: controller.viewOrderData.length,
+                        padding: const EdgeInsets.only(
+                            left: 15, right: 15, bottom: 10, top: 5),
+                        itemBuilder: (context, i) {
+                          return GetBuilder<ShipmentViewModel>(
+                              init: ShipmentViewModel(),
+                              builder: (x) {
+                                return CardBody(
+                                  shipment: controller.viewOrderData[i],
+                                  willaya:
+                                      controller.viewOrderData[i].wilayaName,
+                                  area: controller.viewOrderData[i].areaName,
+                                  date: controller.viewOrderData[i].updatedAt,
+                                  status_key: controller
+                                      .viewOrderData[i].orderStatusKey,
+                                  deleiver_image:
+                                      controller.viewOrderData[i].orderImage,
+                                  Order_current_Status: controller
+                                      .viewOrderData[i].orderStatusKey,
+                                  undeleiver_image: controller
+                                      .viewOrderData[i].undeliverImage,
+                                  pickup_image:
+                                      controller.viewOrderData[i].pickupImage,
+                                  customer_name:
+                                      controller.viewOrderData[i].customerName,
+                                  orderId: controller.viewOrderData[i].orderId,
+                                  number:
+                                      controller.viewOrderData[i].customerNo,
+                                  cod:
+                                      controller.viewOrderData[i].cod ?? "0.00",
+                                  cop:
+                                      controller.viewOrderData[i].cop ?? "0.00",
+                                  shipmentCost: controller
+                                          .viewOrderData[i].shippingPrice ??
+                                      "0.00",
+                                  orderNumber:
+                                      controller.viewOrderData[i].orderId,
+                                  totalCharges:
+                                      '${(double.tryParse(controller.viewOrderData[i].cod.toString()) ?? 0.0) - (double.tryParse(controller.viewOrderData[i].shippingPrice.toString()) ?? 0.0)}',
+                                  stutaus: controller
+                                      .viewOrderData[i].orderActivities,
+                                  icon: dashboardController.trackingStatuses
+                                      .map((element) => element.icon.toString())
+                                      .toList(),
+                                  ref: controller.viewOrderData[i].refId,
+                                  weight: controller.viewOrderData[i].weight,
+                                  currentStep:
+                                      controller.viewOrderData[i].trackingId,
+                                  isOpen: controller.viewOrderData[i].isOpen,
+                                  onPressedShowMore: () {
+                                    controller.viewOrderData[i].isOpen =
+                                        !controller.viewOrderData[i].isOpen;
+                                    x.update();
+                                    print(controller.viewOrderData[i].isOpen
+                                        .toString());
+                                  },
+                                );
+                              });
+                        },
+                      ),
+                    ),
                   ),
+                  if (controller.loadMore.value) bottomLoadingIndicator()
                 ],
               );
             }),

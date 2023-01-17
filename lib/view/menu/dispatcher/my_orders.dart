@@ -1,13 +1,14 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/dashbordController.dart';
 import 'package:dalile_customer/core/view_model/DispatcherController.dart';
-import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
-import 'package:dalile_customer/view/home/card_body.dart';
+import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import '../../home/card_body_new_log.dart';
 
 class MyOrders extends StatefulWidget {
   MyOrders({Key? key}) : super(key: key);
@@ -198,16 +199,16 @@ CardBody card(
     willaya: shipment.wilayaName,
     area: shipment.areaName,
     date: shipment.updatedAt,
-    orderId: shipment.orderId ?? 00,
+    orderId: shipment.orderId,
     customer_name: shipment.customerName,
     Order_current_Status: shipment.orderStatusName,
-    number: shipment.phone ?? "+968",
-    orderNumber: shipment.orderNo,
+    number: shipment.customerName,
+    orderNumber: shipment.orderId,
     cod: shipment.cod ?? "0.00",
     cop: shipment.cop ?? "0.00",
-    deleiver_image: shipment.orderDeliverImage ?? "",
-    undeleiver_image: shipment.orderUndeliverImage ?? "",
-    pickup_image: shipment.orderPickupImage ?? "",
+    deleiver_image: shipment.orderImage,
+    undeleiver_image: shipment.undeliverImage,
+    pickup_image: shipment.pickupImage,
     shipmentCost: shipment.shippingPrice ?? "0.00",
     totalCharges:
         '${(double.tryParse(shipment.cod.toString()) ?? 0.0) - (double.tryParse(shipment.shippingPrice.toString()) ?? 0.0)}',
@@ -216,9 +217,9 @@ CardBody card(
         .map((element) => element.icon.toString())
         .toList(),
     status_key: shipment.orderStatusKey,
-    ref: shipment.refId ?? 0,
-    weight: shipment.weight ?? 0.00,
-    currentStep: shipment.currentStatus ?? 1,
+    ref: shipment.refId,
+    weight: shipment.weight,
+    currentStep: shipment.trackingId,
     isOpen: shipment.isOpen,
     onPressedShowMore: () {
       if (shipment.isOpen == false) {

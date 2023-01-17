@@ -77,7 +77,7 @@ class DownloadController extends GetxController {
     }
   } //startDownloadingImage
 
-  addComment({required String problemId, required BuildContext context}) async {
+  addComment({String problemId = "", required BuildContext context}) async {
     loading(true);
 
     try {

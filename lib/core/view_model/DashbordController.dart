@@ -1,6 +1,6 @@
 import 'package:dalile_customer/core/server/dashbord_api.dart';
 import 'package:dalile_customer/model/Dashboard/MainDashboardModel.dart';
-import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
+import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
 import 'package:get/get.dart';
 
@@ -60,9 +60,9 @@ class DashbordController extends GetxController {
   }
 
   //---------------------Api------------------
-  RxList<Shipment> allShipemet = <Shipment>[].obs;
-  RxList<Shipment> deliverShipemet = <Shipment>[].obs;
-  RxList<Shipment> undeliverShipemet = <Shipment>[].obs;
+  RxList<Shipment?> allShipemet = <Shipment?>[].obs;
+  RxList<Shipment?> deliverShipemet = <Shipment?>[].obs;
+  RxList<Shipment?> undeliverShipemet = <Shipment?>[].obs;
   RxList<TrackingStatus> trackingStatuses = <TrackingStatus>[
     TrackingStatus(
         id: 1,
@@ -97,10 +97,10 @@ class DashbordController extends GetxController {
             "https://shaheen-oman.dalilee.om/storage/order-icons/delivered.png",
         statusEng: "delivered")
   ].obs;
-  RxList<Shipment> returnShipemet = <Shipment>[].obs;
-  RxList<Shipment> cancellShipemet = <Shipment>[].obs;
-  RxList<Shipment> ofdShipemet = <Shipment>[].obs;
-  RxList<Shipment> tobeDelShipemet = <Shipment>[].obs;
+  RxList<Shipment?> returnShipemet = <Shipment?>[].obs;
+  RxList<Shipment?> cancellShipemet = <Shipment?>[].obs;
+  RxList<Shipment?> ofdShipemet = <Shipment?>[].obs;
+  RxList<Shipment?> tobeDelShipemet = <Shipment?>[].obs;
 
   fetchMainDashBoardData() async {
     try {
@@ -135,8 +135,9 @@ class DashbordController extends GetxController {
 
   fetchFinanceDashbordData() async {
     try {
-      isLoadingf(true);
+      // isLoadingf(true);
       var data = await DashboardApi.fetchFinanceDashData();
+
       if (data != null) {
         totalAmount.value = data.totalAmount.toString();
         paidAmount.value = data.paid.toString();
@@ -150,6 +151,8 @@ class DashbordController extends GetxController {
           Get.snackbar('Failed', DashboardApi.mass);
         }
       }
+    } catch (err) {
+      print(err.toString());
     } finally {
       if (DashboardApi.checkAuth == true) {
         Get.offAll(() => LoginView());
@@ -161,28 +164,29 @@ class DashbordController extends GetxController {
 
   fetchAllShipmentData({bool isRefresh: false}) async {
     try {
-      var limit = "500";
+      var limit = "50";
       var offset = allShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "500";
+        limit = "50";
         offset = "0";
       }
       // limit = "1";
       // offset = "249";
       var body = {"limit": limit, "offset": offset, "module": "shipments"};
       var data = await DashboardApi.fetchShipmentList(body);
-
+      // inspect(data);
       // var allData = await DashboardApi.fetchAllShipemetData("");
       loadMore.value = false;
+      // return;
 
       if (data != null) {
         dashboardAllShiments.value = data.data!.totalShipments!;
         if (isRefresh)
-          allShipemet.value = data.data!.shipments!;
+          allShipemet.value = data.data!.shipments;
         else
-          allShipemet.value += data.data!.shipments!;
+          allShipemet.value += data.data!.shipments;
         return data.data!.shipments;
       } else {
         if (!Get.isSnackbarOpen) {
@@ -201,12 +205,12 @@ class DashbordController extends GetxController {
 
   fetchDeliverShipemetData({isRefresh: false}) async {
     try {
-      var limit = "500";
+      var limit = "50";
       var offset = deliverShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "500";
+        limit = "50";
         offset = "0";
       } else
         loadMoreDeliveredShipments(true);
@@ -220,9 +224,9 @@ class DashbordController extends GetxController {
       if (data != null) {
         dashboardDeliveredShipments.value = data.data!.totalShipments!;
         if (isRefresh)
-          deliverShipemet.value = data.data!.shipments!;
+          deliverShipemet.value = data.data!.shipments;
         else
-          deliverShipemet.value += data.data!.shipments!;
+          deliverShipemet.value += data.data!.shipments;
       } else {
         if (!Get.isSnackbarOpen) {
           Get.snackbar('Failed', DashboardApi.mass);
@@ -242,12 +246,12 @@ class DashbordController extends GetxController {
 
   fetchUnDeliverShipemetData({isRefresh: false}) async {
     try {
-      var limit = "500";
+      var limit = "50";
       var offset = undeliverShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "500";
+        limit = "50";
         offset = "0";
       } else
         loadMoreUndeliver(true);
@@ -261,9 +265,9 @@ class DashbordController extends GetxController {
       if (data != null) {
         dashboardUndeliver.value = data.data!.totalShipments!;
         if (isRefresh)
-          undeliverShipemet.value = data.data!.shipments!;
+          undeliverShipemet.value = data.data!.shipments;
         else
-          undeliverShipemet.value += data.data!.shipments!;
+          undeliverShipemet.value += data.data!.shipments;
       } else {
         if (!Get.isSnackbarOpen) {
           Get.snackbar('Failed', DashboardApi.mass);
@@ -283,12 +287,12 @@ class DashbordController extends GetxController {
 
   fetchRetrunShipemetData({isRefresh: false}) async {
     try {
-      var limit = "500";
+      var limit = "50";
       var offset = returnShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "500";
+        limit = "50";
         offset = "0";
       } else
         loadMoreReturnShipments(true);
@@ -302,9 +306,9 @@ class DashbordController extends GetxController {
       if (data != null) {
         dashboardReturnedShipment.value = data.data!.totalShipments!;
         if (isRefresh)
-          returnShipemet.value = data.data!.shipments!;
+          returnShipemet.value = data.data!.shipments;
         else
-          returnShipemet.value += data.data!.shipments!;
+          returnShipemet.value += data.data!.shipments;
       } else {
         if (!Get.isSnackbarOpen) {
           Get.snackbar('Failed', DashboardApi.mass);
@@ -324,12 +328,12 @@ class DashbordController extends GetxController {
 
   fetchcancellShipemetData({isRefresh: false}) async {
     try {
-      var limit = "500";
+      var limit = "50";
       var offset = cancellShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "500";
+        limit = "50";
         offset = "0";
       } else
         loadMoreCancelShipments(true);
@@ -343,9 +347,9 @@ class DashbordController extends GetxController {
       if (data != null) {
         dashboardCancelledShiments.value = data.data!.totalShipments!;
         if (isRefresh)
-          cancellShipemet.value = data.data!.shipments!;
+          cancellShipemet.value = data.data!.shipments;
         else
-          cancellShipemet.value += data.data!.shipments!;
+          cancellShipemet.value += data.data!.shipments;
       } else {
         if (!Get.isSnackbarOpen) {
           Get.snackbar('Failed', DashboardApi.mass);
@@ -365,12 +369,12 @@ class DashbordController extends GetxController {
 
   fetchOFDShipemetData({isRefresh: false}) async {
     try {
-      var limit = "500";
+      var limit = "50";
       var offset = ofdShipemet.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "500";
+        limit = "50";
         offset = "0";
       } else
         loadMoreOFDShipments(true);
@@ -380,9 +384,9 @@ class DashbordController extends GetxController {
       if (data != null) {
         dashboardOFDShiments.value = data.data!.totalShipments!;
         if (isRefresh)
-          ofdShipemet.value = data.data!.shipments!;
+          ofdShipemet.value = data.data!.shipments;
         else
-          ofdShipemet.value += data.data!.shipments!;
+          ofdShipemet.value += data.data!.shipments;
       } else {
         if (!Get.isSnackbarOpen) {
           Get.snackbar('Failed', DashboardApi.mass);

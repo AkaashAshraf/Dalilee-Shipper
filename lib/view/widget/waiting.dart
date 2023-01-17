@@ -29,17 +29,12 @@ class bottomLoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      bottom: 0,
-      left: MediaQuery.of(context).size.width * 0.43,
-      right: MediaQuery.of(context).size.width * 0.43,
-      child: Container(
-        height: 50,
-        child: LoadingIndicator(
-          indicatorType: Indicator.ballPulse,
-          colors: const [primaryColor],
-          strokeWidth: 1,
-        ),
+    return Container(
+      height: 50,
+      child: LoadingIndicator(
+        indicatorType: Indicator.ballPulse,
+        colors: [primaryColor],
+        strokeWidth: 1,
       ),
     );
   }
@@ -71,7 +66,7 @@ class NoDataView extends StatelessWidget {
             child: Text(
               label,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: primaryColor, fontSize: 14),
+              style: TextStyle(color: primaryColor, fontSize: 14),
             ),
           ),
         ],

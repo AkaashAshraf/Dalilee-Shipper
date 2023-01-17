@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/server/finance_api.dart';
 import 'package:dalile_customer/core/view_model/name_icons.dart';
-import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
+import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/shipments/complain_body_shipement.dart';
 import 'package:dalile_customer/view/shipments/edit_shipement_body.dart';
 import 'package:flutter/material.dart';
@@ -37,13 +37,14 @@ class ViewOrderController extends GetxController {
         loadMore.value = true;
       }
       var body = {"offset": offset, "limit": limit, "module": "open_finance"};
-      var viewOrder = await FinanceApi.fetchViewOrdersData(body);
+      var viewOrder = await FinanceApi.fetchViewOrdersData(body,
+          url: "/dashboard/shipments");
       if (viewOrder != null) {
         totalOrders.value = viewOrder.totalShipments!;
         if (isRefresh)
-          viewOrderData.value = viewOrder.shipments!;
+          viewOrderData.value = viewOrder.shipments;
         else
-          viewOrderData.value += viewOrder.shipments!;
+          viewOrderData.value += viewOrder.shipments;
       } else {
         if (FinanceApi.mass.isEmpty) {
           if (!Get.isSnackbarOpen) {

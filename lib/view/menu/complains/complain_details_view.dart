@@ -88,7 +88,7 @@ class ComplainDetails extends StatelessWidget {
             Container(
               height: 80,
               width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   color: primaryColor,
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(20),

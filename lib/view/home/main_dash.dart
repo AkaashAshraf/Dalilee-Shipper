@@ -1,22 +1,17 @@
-import 'dart:convert';
-
-import 'package:dalile_customer/components/popups/ProblemResolveViewModal.dart';
 import 'package:dalile_customer/config/localNotificationService.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/dashbordController.dart';
 import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
 import 'package:dalile_customer/core/view_model/view_order_view_model.dart';
-import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
+import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/home/MainDashboardListing/unDeliverListing.dart';
-import 'package:dalile_customer/view/home/card_body.dart';
+import 'package:dalile_customer/view/home/card_body_new_log.dart';
 import 'package:dalile_customer/view/home/item_body.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/empty.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:bluetooth_print/bluetooth_print.dart';
@@ -237,13 +232,9 @@ class _MainDashState extends State<MainDash> {
     await bluetoothPrint.disconnect();
 
     var devices = await bluetoothPrint.startScan(timeout: Duration(seconds: 6));
-    print("-------------devices-----");
-    print(devices.length);
-    print("=--=-=-=-=-=-=-=-devices-----");
+
     var res = await bluetoothPrint.connect(devices[0]);
-    print("-------------res-----");
-    // print(res);
-    print("=--=-=-=-=-=-=-=-res-----");
+
     // return;
     Map<String, dynamic> config = Map();
     List<LineText> list = [];
@@ -311,6 +302,9 @@ class _MainDashState extends State<MainDash> {
                 onTap: () {
                   // print_r();
                   // return;
+                  if (widget.controller.allShipemet.length > 50)
+                    widget.controller.allShipemet.value =
+                        widget.controller.allShipemet.getRange(0, 50).toList();
                   _refresh(type: Status.ALL);
                   Get.to(
                       () => GetX<DashbordController>(builder: (controller) {
@@ -335,55 +329,49 @@ class _MainDashState extends State<MainDash> {
                                     controller: Container(
                                       height:
                                           MediaQuery.of(context).size.height,
-                                      child: Stack(
+                                      child: Column(
                                         children: [
-                                          Column(
-                                            children: [
-                                              Container(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.81,
-                                                child: SmartRefresher(
-                                                  header: WaterDropHeader(),
-                                                  controller:
-                                                      allShipmentRefreshController,
-                                                  onRefresh: () async {
-                                                    _refresh(type: Status.ALL);
-                                                  },
-                                                  child: ListView.separated(
-                                                    controller:
-                                                        allShipmentScrollController,
-                                                    separatorBuilder:
-                                                        (context, i) =>
-                                                            const SizedBox(
-                                                                height: 15),
-                                                    itemCount: controller
-                                                        .allShipemet.length,
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,
-                                                            right: 15,
-                                                            bottom: 10,
-                                                            top: 5),
-                                                    itemBuilder: (context, i) {
-                                                      return GetBuilder<
-                                                          DashbordController>(
-                                                        builder: (x) =>
-                                                            dashBoardCard(
-                                                                controller,
-                                                                controller
-                                                                    .allShipemet[i],
-                                                                x),
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
+                                          Expanded(
+                                            // height: MediaQuery.of(context)
+                                            //         .size
+                                            //         .height *
+                                            //     0.81,
+                                            child: SmartRefresher(
+                                              header: WaterDropHeader(),
+                                              controller:
+                                                  allShipmentRefreshController,
+                                              onRefresh: () async {
+                                                _refresh(type: Status.ALL);
+                                              },
+                                              child: ListView.separated(
+                                                controller:
+                                                    allShipmentScrollController,
+                                                separatorBuilder: (context,
+                                                        i) =>
+                                                    const SizedBox(height: 15),
+                                                itemCount: controller
+                                                    .allShipemet.length,
+                                                padding: const EdgeInsets.only(
+                                                    left: 15,
+                                                    right: 15,
+                                                    bottom: 10,
+                                                    top: 5),
+                                                itemBuilder: (context, i) {
+                                                  return GetBuilder<
+                                                      DashbordController>(
+                                                    builder: (x) =>
+                                                        dashBoardCard(
+                                                            controller,
+                                                            controller
+                                                                .allShipemet[i]!,
+                                                            x),
+                                                  );
+                                                },
                                               ),
-                                            ],
+                                            ),
                                           ),
                                           if (controller.loadMore.value)
-                                            bottomLoadingIndicator()
+                                            bottomLoadingIndicator(),
                                         ],
                                       ),
                                     ),
@@ -413,6 +401,11 @@ class _MainDashState extends State<MainDash> {
                   _buildsmallbox(
                     InkWell(
                       onTap: () {
+                        if (widget.controller.deliverShipemet.length > 50)
+                          widget.controller.deliverShipemet.value = widget
+                              .controller.deliverShipemet
+                              .getRange(0, 50)
+                              .toList();
                         Get.to(
                             () =>
                                 GetX<DashbordController>(builder: (controller) {
@@ -504,7 +497,7 @@ class _MainDashState extends State<MainDash> {
                                                                   dashBoardCard(
                                                                       controller,
                                                                       controller
-                                                                          .deliverShipemet[i],
+                                                                          .deliverShipemet[i]!,
                                                                       x),
                                                             );
                                                           },
@@ -539,6 +532,11 @@ class _MainDashState extends State<MainDash> {
                   _buildsmallbox(
                     InkWell(
                       onTap: () {
+                        if (widget.controller.undeliverShipemet.length > 50)
+                          widget.controller.undeliverShipemet.value = widget
+                              .controller.undeliverShipemet
+                              .getRange(0, 50)
+                              .toList();
                         Get.to(UndeliverListing());
                       },
                       child: _InsideSmallBox(
@@ -562,6 +560,11 @@ class _MainDashState extends State<MainDash> {
                   _buildsmallbox(
                     InkWell(
                       onTap: () {
+                        if (widget.controller.ofdShipemet.length > 50)
+                          widget.controller.ofdShipemet.value = widget
+                              .controller.ofdShipemet
+                              .getRange(0, 50)
+                              .toList();
                         Get.to(
                             () =>
                                 GetX<DashbordController>(builder: (controller) {
@@ -648,7 +651,7 @@ class _MainDashState extends State<MainDash> {
                                                                   dashBoardCard(
                                                                       controller,
                                                                       controller
-                                                                          .ofdShipemet[i],
+                                                                          .ofdShipemet[i]!,
                                                                       x),
                                                             );
                                                           },
@@ -683,6 +686,11 @@ class _MainDashState extends State<MainDash> {
                   _buildsmallbox(
                     InkWell(
                       onTap: () {
+                        if (widget.controller.cancellShipemet.length > 50)
+                          widget.controller.cancellShipemet.value = widget
+                              .controller.cancellShipemet
+                              .getRange(0, 50)
+                              .toList();
                         Get.to(
                             () =>
                                 GetX<DashbordController>(builder: (controller) {
@@ -769,11 +777,15 @@ class _MainDashState extends State<MainDash> {
                                                                   top: 5),
                                                           itemBuilder:
                                                               (context, i) {
-                                                            return dashBoardCard(
-                                                                controller,
-                                                                controller
-                                                                    .cancellShipemet[i],
-                                                                controller);
+                                                            return GetBuilder<
+                                                                DashbordController>(
+                                                              builder: (x) =>
+                                                                  dashBoardCard(
+                                                                      controller,
+                                                                      controller
+                                                                          .cancellShipemet[i]!,
+                                                                      x),
+                                                            );
                                                           },
                                                         ),
                                                       ),
@@ -809,6 +821,11 @@ class _MainDashState extends State<MainDash> {
                   context,
                   InkWell(
                     onTap: () {
+                      if (widget.controller.returnShipemet.length > 50)
+                        widget.controller.returnShipemet.value = widget
+                            .controller.returnShipemet
+                            .getRange(0, 50)
+                            .toList();
                       Get.to(
                           () => GetX<DashbordController>(builder: (controller) {
                                 return widget.controller.returnShipemet.isEmpty
@@ -893,7 +910,7 @@ class _MainDashState extends State<MainDash> {
                                                                 dashBoardCard(
                                                                     controller,
                                                                     controller
-                                                                        .returnShipemet[i],
+                                                                        .returnShipemet[i]!,
                                                                     x),
                                                           );
                                                         },
@@ -937,15 +954,15 @@ class _MainDashState extends State<MainDash> {
       willaya: shipment.wilayaName,
       area: shipment.areaName,
       date: shipment.updatedAt,
-      deleiver_image: shipment.orderDeliverImage ?? "",
-      undeleiver_image: shipment.orderUndeliverImage ?? "",
-      pickup_image: shipment.orderPickupImage ?? "",
-      orderId: shipment.orderId ?? 00,
+      deleiver_image: shipment.undeliverImage,
+      undeleiver_image: shipment.undeliverImage2,
+      pickup_image: shipment.undeliverImage3,
+      orderId: shipment.orderId,
       status_key: shipment.orderStatusKey,
       customer_name: shipment.customerName,
       Order_current_Status: shipment.orderStatusName,
-      number: shipment.phone ?? "+968",
-      orderNumber: shipment.orderNo,
+      number: shipment.customerNo,
+      orderNumber: shipment.orderId,
       cod: shipment.cod ?? "0.00",
       cop: shipment.cop ?? "0.00",
       shipmentCost: shipment.shippingPrice ?? "0.00",
@@ -955,13 +972,13 @@ class _MainDashState extends State<MainDash> {
       icon: controller.trackingStatuses
           .map((element) => element.icon.toString())
           .toList(),
-      ref: shipment.refId ?? 0,
-      weight: shipment.weight ?? 0.00,
-      currentStep: shipment.currentStatus ?? 1,
+      ref: shipment.refId,
+      weight: shipment.weight,
+      currentStep: shipment.trackingId,
       isOpen: shipment.isOpen,
       onPressedShowMore: () {
         if (shipment.isOpen == false) {
-          controller.allShipemet.forEach((element) => element.isOpen = false);
+          controller.allShipemet.forEach((element) => element?.isOpen = false);
           shipment.isOpen = !shipment.isOpen;
           x.update();
         } else {

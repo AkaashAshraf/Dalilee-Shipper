@@ -1,5 +1,6 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/my_lang_controller.dart';
+import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/view/menu/profiles/edit_profile.dart';
 import 'package:dalile_customer/view/menu/profiles/terms_Conditions_view.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
@@ -8,6 +9,8 @@ import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:launch_review/launch_review.dart';
+import 'package:restart_app/restart_app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -169,6 +172,26 @@ class ProfileView extends StatelessWidget {
                 ),
               );
             }),
+            const SizedBox(
+              height: 20,
+            ),
+
+            _buildRows("chooseCurrency".tr, Icons.currency_exchange, () {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  scrollable: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5.0),
+                    ),
+                  ),
+                  content: Builder(builder: (context) {
+                    return _ShowCurrency();
+                  }),
+                ),
+              );
+            }),
 
             const Spacer(),
           ],
@@ -200,7 +223,7 @@ class ProfileView extends StatelessWidget {
             title,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
-          trailing: const Icon(
+          trailing: Icon(
             Icons.chevron_right_outlined,
             color: primaryColor,
             size: 30,
@@ -255,6 +278,7 @@ class _Showlung extends StatelessWidget {
               } else {
                 controller.changeLang('en');
               }
+              Restart.restartApp();
               return null;
             },
             validator: (val) => val == null
@@ -326,5 +350,75 @@ class StarRating extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children:
             List.generate(starCount, (index) => buildStar(context, index)));
+  }
+}
+
+class _ShowCurrency extends StatelessWidget {
+  _ShowCurrency({
+    Key? key,
+  }) : super(key: key);
+  final MyLang controller = Get.put(MyLang());
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomText(
+                text: "chooseCurrency".tr,
+                alignment: Alignment.topRight,
+                color: primaryColor,
+                size: 15,
+                fontWeight: FontWeight.w500,
+              ),
+              IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: const Icon(
+                  Icons.clear_outlined,
+                  size: 20,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          CustomFormFiled(
+            select: "",
+            hint: 'OMR',
+            text: 'chooseCurrency'.tr,
+            onSaved: (val) async {
+              if (val == "omr".tr) {
+                final prefs = await SharedPreferences.getInstance();
+                prefs.setString("currency", "omr");
+                Get.put(HelperController()).currency.value = "omr";
+                // controller.changeLang('ar');
+              } else {
+                final prefs = await SharedPreferences.getInstance();
+                prefs.setString("currency", "aed");
+
+                Get.put(HelperController()).currency.value = "aed";
+              }
+              return null;
+            },
+            validator: (val) => null,
+            items: ["omr".tr, "aed".tr],
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          CustomButtom(
+            text: 'Save'.tr,
+            onPressed: () {
+              Get.back();
+            },
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/http/FromDalilee.dart';
+import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/core/view_model/pickup_view_model.dart';
 import 'package:dalile_customer/model/Pickup/PickupModel.dart';
 import 'package:dalile_customer/model/muhafaza_model.dart';
@@ -19,7 +20,7 @@ class PickupApi {
   static Future<PickupDetailsModel?> fetchPickupDetailsData(refid) async {
     try {
       var response =
-          await dalileePost("/collectionOrders", {"collection_id": refid});
+          await post("/pickup/collection-orders", {"collection_id": refid});
       if (response.statusCode == 200) {
         var data = pickupDetailsModelFromJson(response.body);
 
@@ -170,7 +171,7 @@ class PickupApi {
         "tab": tab,
       };
       // print(body);
-      var response = await dalileePost("/traderPickup", body);
+      var response = await post("/pickup/trader-pickup", body);
       if (response.statusCode == 200) {
         var data = pickupModelFromJson(response.body);
 

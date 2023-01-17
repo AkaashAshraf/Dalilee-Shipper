@@ -79,7 +79,7 @@ class OfficesView extends StatelessWidget {
             const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
         indicator: ShapeDecoration(
           shape: RoundedRectangleBorder(
-              side: const BorderSide(color: primaryColor),
+              side: BorderSide(color: primaryColor),
               borderRadius: BorderRadius.circular(30)),
           gradient: SweepGradient(
             colors: [

@@ -1,12 +1,13 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/pickup_view_model.dart';
+import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/view/pickup/details_pickup.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AllPickupBody extends StatelessWidget {
-  const AllPickupBody(
+  AllPickupBody(
       {Key? key,
       this.date,
       this.onPressed,
@@ -20,6 +21,7 @@ class AllPickupBody extends StatelessWidget {
 
   final dynamic status;
   final void Function()? onPressed;
+  final HelperController helperController = Get.put(HelperController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,12 +48,13 @@ class AllPickupBody extends StatelessWidget {
                 CustomText(
                   text: 'Ref'.tr + ' : $id',
                   color: primaryColor,
-                  size: 16,
+                  size: Get.locale.toString() == "ar" ? 13 : 16,
                   fontWeight: FontWeight.w600,
                 ),
                 InkWell(
                   onTap: () {
-                    Get.put(PickupController()).fetcPickupDetailsData("$id");
+                    Get.put(PickupController()).fetcPickupDetailsData(
+                        collectionID: id.toString(), isRefresh: true);
                     Get.to(() => PickupDetails(
                           ref: "$id",
                           date: "$date",
@@ -78,7 +81,9 @@ class AllPickupBody extends StatelessWidget {
               children: [
                 _buildRowText('Date'.tr + ' : $date', 'Driver'.tr + ' : $name'),
                 _buildRowText(
-                    'COP'.tr + ' : $cod OMR', 'Quantity'.tr + ' : $qty'),
+                    'COP'.tr +
+                        ' : ${helperController.getCurrencyInFormat(cod)}',
+                    'Quantity'.tr + ' : $qty'),
               ],
             ),
           ),
@@ -94,6 +99,7 @@ class AllPickupBody extends StatelessWidget {
                       text: "status".tr + " : ",
                       fontWeight: FontWeight.w400,
                       color: text1Color,
+                      size: Get.locale.toString() == "ar" ? 10 : 12,
                       alignment: Alignment.centerLeft,
                     ),
                     const SizedBox(
@@ -112,12 +118,16 @@ class AllPickupBody extends StatelessWidget {
                         ),
                       ),
                       //alignment: Alignment.center,
-                      child: CustomText(
-                        text: "$status",
-                        color: whiteColor,
-                        alignment: Alignment.center,
+                      child: Center(
+                        child: CustomText(
+                          text: "$status",
+                          color: whiteColor,
+                          size: Get.locale.toString() == "ar" ? 10 : 12,
 
-                        // onPressed: () {},
+                          alignment: Alignment.center,
+
+                          // onPressed: () {},
+                        ),
                       ),
                     ),
                   ],
@@ -126,7 +136,7 @@ class AllPickupBody extends StatelessWidget {
                   width: 40,
                   child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                        side: const BorderSide(
+                        side: BorderSide(
                           width: 1.5,
                           color: primaryColor,
                           style: BorderStyle.solid,
@@ -153,7 +163,7 @@ class AllPickupBody extends StatelessWidget {
           text: title,
           fontWeight: FontWeight.w400,
           color: text1Color,
-          size: 13,
+          size: Get.locale.toString() == "ar" ? 10 : 13,
         ),
         const SizedBox(
           height: 15,
@@ -162,7 +172,7 @@ class AllPickupBody extends StatelessWidget {
           text: subTilte,
           fontWeight: FontWeight.w400,
           color: text1Color,
-          size: 13,
+          size: Get.locale.toString() == "ar" ? 10 : 13,
         ),
       ],
     );

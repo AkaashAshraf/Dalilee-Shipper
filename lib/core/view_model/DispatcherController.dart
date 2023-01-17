@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:dalile_customer/core/http/FromDalilee.dart';
 import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/core/server/pickup_api.dart';
 import 'package:dalile_customer/model/Dispatcher/Orders.dart';
 import 'package:dalile_customer/model/Dispatcher/add_orders_response.dart';
-import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
+import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
+import 'package:dalile_customer/model/shaheen_aws/shipment_listing.dart';
 import 'package:dalile_customer/model/wilayas_model.dart';
 import 'package:dalile_customer/view/menu/dispatcher/my_orders.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +71,7 @@ class DispatcherController extends GetxController {
         // print(response.message);
       }
     } catch (e) {
+      Get.snackbar('Successfull', e.toString());
     } finally {
       loading(false);
     }
@@ -78,28 +79,29 @@ class DispatcherController extends GetxController {
 
   fetchMyOrders({isRefresh: false}) async {
     try {
-      var limit = "500";
+      var limit = "50";
       var offset = myOders.length.toString();
 
       // isLoading(true);
       if (isRefresh) {
-        limit = "500";
+        limit = "50";
         offset = "0";
       } else if (myOders.length < 1) loadingMyOrders(true);
       var body = {
         "limit": limit,
         "offset": offset,
-        "module": "shipper_self_orders"
+        "module": "shipper_self_orders",
+        "attempts": "1",
       };
-      var data = await dalileePost("/getStoresOrders", body);
+      var data = await post("/shipments", body);
 
       if (data != null) {
-        final jsonData = shipmentListingFromJson(data.body);
-        totalOrder.value = jsonData.data?.totalShipments ?? 0;
+        final jsonData = shipmentListAwsFromJson(data.body);
+        totalOrder.value = jsonData?.data?.totalShipments ?? 0;
         if (isRefresh)
-          myOders.value = jsonData.data?.shipments ?? [];
+          myOders.value = jsonData?.data?.shipments ?? [];
         else
-          myOders.value += jsonData.data?.shipments ?? [];
+          myOders.value += jsonData?.data?.shipments ?? [];
       } else {
         if (!Get.isSnackbarOpen) {
           Get.snackbar('Failed', "Something went wrong. Try again");

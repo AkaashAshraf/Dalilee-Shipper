@@ -1,4 +1,5 @@
 import 'package:dalile_customer/core/server/finance_api.dart';
+import 'package:dalile_customer/core/view_model/downloadController.dart';
 import 'package:dalile_customer/model/close_finance_model.dart';
 import 'package:dalile_customer/model/finance_open_model.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
@@ -6,7 +7,6 @@ import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class FinanceController extends GetxController {
   RxBool loadMoreClosed = false.obs;
@@ -51,7 +51,7 @@ class FinanceController extends GetxController {
         openData(open);
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', FinanceApi.mass);
+          Get.snackbar('Failed'.tr, FinanceApi.mass);
         }
       }
     } finally {
@@ -84,7 +84,7 @@ class FinanceController extends GetxController {
           closeData.value += close.invoices!;
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', FinanceApi.mass);
+          Get.snackbar('Failed'.tr, FinanceApi.mass);
         }
       }
     } finally {
@@ -104,11 +104,18 @@ class FinanceController extends GetxController {
     try {
       var pdf = await FinanceApi.fetchPDFCloseData(id, type: type)
           .whenComplete(() => Get.back());
+      // Get.snackbar(pdf.toString(), " ", colorText: Colors.orange);
+
       if (pdf != null) {
         // print('pdf----$pdf');
+        Get.snackbar(pdf, " ", colorText: Colors.orange);
         var url = pdf;
-        await launch(url);
+        Get.put(DownloadController()).startDownloadingExcellOrPdf(url, "pdf");
+        // await launchUrl(Uri.parse(url));
+        // await launch(url);
       }
+    } catch (e) {
+      Get.snackbar(e.toString(), " ", colorText: Colors.orange);
     } finally {
       print('finally');
     }

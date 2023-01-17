@@ -113,13 +113,17 @@ class CustomFormFiledWithTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CustomText(
-          text: text,
-          color: text1Color,
-          alignment: "ENORAR".tr == "ar"
-              ? Alignment.centerRight
-              : Alignment.centerLeft,
-          fontWeight: FontWeight.w400,
+        Row(
+          children: [
+            CustomText(
+              text: text,
+              color: text1Color,
+              alignment: "ENORAR".tr == "ar"
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
+              fontWeight: FontWeight.w400,
+            ),
+          ],
         ),
         const SizedBox(
           height: 12,
@@ -146,6 +150,9 @@ class CustomFormFiledWithTitle extends StatelessWidget {
                   fontSize: 12,
                   color: Colors.blueGrey,
                 ),
+          textDirection: Get.locale.toString() == "ar"
+              ? TextDirection.ltr
+              : TextDirection.ltr,
           decoration: InputDecoration(
             labelText: labelText,
             isDense: true,
@@ -209,12 +216,16 @@ class CustomFormFiledAreaWithTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CustomText(
-          text: text,
-          color: text1Color,
-          alignment: "ENORAR".tr == "ar"
-              ? Alignment.centerRight
-              : Alignment.centerLeft,
+        Row(
+          children: [
+            CustomText(
+              text: text,
+              color: text1Color,
+              alignment: "ENORAR".tr == "ar"
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
+            ),
+          ],
         ),
         const SizedBox(
           height: 10,

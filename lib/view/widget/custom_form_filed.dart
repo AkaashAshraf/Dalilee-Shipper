@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 class CustomFormFiled extends StatelessWidget {
   final String text, hint;
-  final String? Function(String?)? onSaved;
+  final dynamic onSaved;
   final String? Function(String?)? validator;
   final String? select;
   final List<String>? items;
@@ -24,12 +24,16 @@ class CustomFormFiled extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CustomText(
-          text: text,
-          color: text1Color,
-          alignment: "ENORAR".tr == "ar"
-              ? Alignment.centerRight
-              : Alignment.centerLeft,
+        Row(
+          children: [
+            CustomText(
+              text: text,
+              color: text1Color,
+              alignment: "ENORAR".tr == "ar"
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
+            ),
+          ],
         ),
         const SizedBox(
           height: 10,

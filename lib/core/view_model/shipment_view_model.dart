@@ -166,8 +166,12 @@ class ShipmentViewModel extends GetxController {
 
                           switch (index) {
                             case 0:
-                              Get.back();
-                              showD(context, orderN);
+                              if (false) {
+                                Get.back();
+                                showD(context, orderN);
+                              } else
+                                Get.snackbar('soon_available'.tr, " ",
+                                    colorText: Colors.orange);
                               break;
                             case 1:
                               try {

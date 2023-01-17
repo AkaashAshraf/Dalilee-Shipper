@@ -1,6 +1,8 @@
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/core/view_model/enquiry_view_model.dart';
 import 'package:dalile_customer/core/view_model/finance_view_model.dart';
 import 'package:dalile_customer/core/view_model/view_order_view_model.dart';
+import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/view/menu/finances/finance_enquiry.dart';
 import 'package:dalile_customer/view/menu/finances/view_order.dart';
 import 'package:dalile_customer/view/menu/finances/manage_accounts.dart';
@@ -11,13 +13,14 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class OpendedView extends StatelessWidget {
-  const OpendedView({Key? key, required this.c}) : super(key: key);
+  OpendedView({Key? key, required this.c}) : super(key: key);
   final FinanceController c;
-
+  final HelperController helperController = Get.put(HelperController());
   @override
   Widget build(BuildContext context) {
     final RefreshController refreshController =
         RefreshController(initialRefresh: true);
+
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
         child: Obx(
@@ -77,12 +80,17 @@ class OpendedView extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              CustomText(
-                                text: 'StoreRemainingAmount'.tr,
-                                color: whiteColor,
-                                size: 17,
-                                fontWeight: FontWeight.w500,
-                                alignment: Alignment.centerLeft,
+                              Row(
+                                children: [
+                                  CustomText(
+                                    text: 'StoreRemainingAmount'.tr,
+                                    color: whiteColor,
+                                    size:
+                                        Get.locale.toString() == "ar" ? 15 : 17,
+                                    fontWeight: FontWeight.w500,
+                                    alignment: Alignment.centerLeft,
+                                  ),
+                                ],
                               ),
                               const SizedBox(
                                 height: 10,
@@ -92,9 +100,11 @@ class OpendedView extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomText(
-                                    text:
-                                        '${c.openData.value.remaining ?? 0.00} OMR',
-                                    size: 20,
+                                    direction: TextDirection.ltr,
+                                    text: helperController.getCurrencyInFormat(
+                                        c.openData.value.remaining),
+                                    size:
+                                        Get.locale.toString() == "ar" ? 15 : 17,
                                     color: whiteColor,
                                     fontWeight: FontWeight.w800,
                                     alignment: Alignment.centerLeft,
@@ -112,12 +122,19 @@ class OpendedView extends StatelessWidget {
                       ]),
                       _buildBodyRow('TotalOrdersDelivered'.tr,
                           '${c.openData.value.totalOrdersDelivered ?? 0}     '),
-                      _buildBodyRow('TotalAmountRequest'.tr,
-                          '${c.openData.value.totalAmountRequest ?? 0.00} OMR'),
-                      _buildBodyRow('DeliveryFee'.tr,
-                          '${c.openData.value.deliveryFee ?? 0.00} OMR'),
-                      _buildBodyRow('CollectionFee'.tr,
-                          '${c.openData.value.collectionFee ?? 0.00} OMR'),
+                      _buildBodyRow(
+                          'TotalAmountRequest'.tr,
+                          helperController.getCurrencyInFormat(
+                              c.openData.value.totalAmountRequest)),
+                      _buildBodyRow(
+                          'DeliveryFee'.tr,
+                          helperController.getCurrencyInFormat(
+                              c.openData.value.deliveryFee)),
+                      if (false)
+                        _buildBodyRow(
+                            'CollectionFee'.tr,
+                            helperController.getCurrencyInFormat(
+                                c.openData.value.collectionFee)),
                     ],
                   ),
                 ),
@@ -139,6 +156,8 @@ class OpendedView extends StatelessWidget {
                 CustomButtom(
                   text: 'FinanceInquiry'.tr,
                   onPressed: () {
+                    Get.put(EnquiryFinanceController())
+                        .fetchEnquiryFinanceData();
                     Get.to(() => FinanceEnquiry(),
                         transition: Transition.downToUp,
                         duration: const Duration(milliseconds: 400));
@@ -149,7 +168,13 @@ class OpendedView extends StatelessWidget {
                 ),
                 CustomButtom(
                   text: 'ManageAccounts'.tr,
-                  onPressed: () {
+                  onPressed: () async {
+                    // final prefs = await SharedPreferences.getInstance();
+
+                    // String token = prefs.getString('name') ?? '';
+
+                    // Get.snackbar(token, " ", colorText: Colors.orange);
+                    // return;
                     Get.to(() => ManageAccountsView(),
                         transition: Transition.downToUp,
                         duration: const Duration(milliseconds: 400));
@@ -169,17 +194,16 @@ class OpendedView extends StatelessWidget {
           width: 4,
           color: primaryColor,
         ),
-        
-        
         title: CustomText(
           text: title,
           fontWeight: FontWeight.w500,
-          size: 13,
+          size: Get.locale.toString() == "ar" ? 12 : 13,
         ),
         trailing: Padding(
           padding: const EdgeInsets.only(right: 10.0),
           child: Text(
             subtitle,
+            textDirection: TextDirection.ltr,
             style:
                 const TextStyle(color: text1Color, fontWeight: FontWeight.bold),
           ),

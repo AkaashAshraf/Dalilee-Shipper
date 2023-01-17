@@ -1,5 +1,6 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/view_order_view_model.dart';
+import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/model/view_orders_model.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/stepess.dart';
@@ -8,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 class ViewOrderBody extends StatelessWidget {
-  const ViewOrderBody(
+  ViewOrderBody(
       {Key? key,
       required this.i,
       required this.list,
@@ -28,6 +29,7 @@ class ViewOrderBody extends StatelessWidget {
     'pickup.png',
     'pickup.png',
   ];
+  final HelperController helperController = Get.put(HelperController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -59,7 +61,7 @@ class ViewOrderBody extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: callList,
-                        child: const Icon(
+                        child: Icon(
                           Icons.call_outlined,
                           color: primaryColor,
                         ),
@@ -67,14 +69,14 @@ class ViewOrderBody extends StatelessWidget {
                       const SizedBox(
                         width: 8,
                       ),
-                      const Icon(
+                      Icon(
                         Icons.file_download_outlined,
                         color: primaryColor,
                       ),
                       const SizedBox(
                         width: 8,
                       ),
-                      const Icon(
+                      Icon(
                         Icons.print_outlined,
                         color: primaryColor,
                       ),
@@ -83,7 +85,7 @@ class ViewOrderBody extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: menuList,
-                        child: const Icon(
+                        child: Icon(
                           Icons.more_vert,
                           color: primaryColor,
                         ),
@@ -114,7 +116,7 @@ class ViewOrderBody extends StatelessWidget {
                   Expanded(
                       flex: 3,
                       child: _buildRowText(
-                          'COP : ${list.orders![i].cop ?? 0.00} OMR',
+                          'COP : ${helperController.getCurrencyInFormat(list.orders![i].cop ?? 0.00)} ',
                           'Weight : ${list.orders![i].weight} KG')),
                 ],
               ),
@@ -200,21 +202,19 @@ class ViewOrderBody extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                   ),
                 ),
-                indicatorStyle: const IndicatorStyle(
+                indicatorStyle: IndicatorStyle(
                     width: 13, color: primaryColor, indicatorXY: 0.5),
-                beforeLineStyle:
-                    const LineStyle(thickness: 1, color: primaryColor),
-                afterLineStyle:
-                    const LineStyle(thickness: 1, color: primaryColor),
+                beforeLineStyle: LineStyle(thickness: 1, color: primaryColor),
+                afterLineStyle: LineStyle(thickness: 1, color: primaryColor),
               ),
             ),
           _rowWithnameline('Payment Summary'),
           _buildRowDown(text1Color, 12, 'Shipping Cost ',
-              '${list.orders![i].shippingPrice} OMR'),
-          _buildRowDown(
-              text1Color, 12, 'COD ', '${list.orders![i].cod} OMR'),
+              '${helperController.getCurrencyInFormat(list.orders![i].shippingPrice)}  '),
+          _buildRowDown(text1Color, 12, 'COD ',
+              '${helperController.getCurrencyInFormat(list.orders![i].cod)}  '),
           _buildRowDown(primaryColor, 13, 'Total Charges ',
-              ' ${list.orders![i].cod} OMR'),
+              ' ${helperController.getCurrencyInFormat(list.orders![i].cod)}  '),
         ],
       ),
     );

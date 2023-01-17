@@ -18,7 +18,7 @@ class StepProgressView extends StatelessWidget {
       : _icons = icons,
         _curStep = curStep,
         _activeColor = color,
-        assert(curStep > 0 && curStep <= icons.length),
+        assert(curStep > -1 && curStep <= icons.length),
         super(key: key);
 
   @override
@@ -32,13 +32,20 @@ class StepProgressView extends StatelessWidget {
     var list = <Widget>[];
     _icons.asMap().forEach((i, icon) {
       //colors according to state
-      var circleColor =
-          (i == 0 || _curStep > i) ? _activeColor : _inactiveColor;
+      var circleColor = _curStep == 0
+          ? _inactiveColor
+          : (i == 0 || _curStep > i)
+              ? _activeColor
+              : _inactiveColor;
 
       var lineColor =
           _curStep > i + 1 ? primaryColor : text1Color.withOpacity(0.2);
 
-      var iconColor = (i == 0 || _curStep > i) ? _inactiveColor : _activeColor;
+      var iconColor = _curStep == 0
+          ? _activeColor
+          : (i == 0 || _curStep > i)
+              ? _inactiveColor
+              : _activeColor;
 
       list.add(
         ClipRRect(

@@ -58,7 +58,8 @@ class _AddOrder extends State<AddOrder> {
         floatingActionButton: controller.loading.value == false
             ? FloatingActionButton(
                 onPressed: () {
-                  controller.addList.add(new Order());
+                  controller.addList
+                      .add(new Order(id: controller.addList.length + 1));
                   // print(controller.addList);
                 },
                 child: controller.loading.value == false
@@ -82,50 +83,60 @@ class _AddOrder extends State<AddOrder> {
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
             child: Stack(
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: ListView.separated(
-                      itemCount: controller.addList.length,
-                      itemBuilder: (context, i) => AddOrderCard(
-                        controller: controller,
-                        order: controller.addList[i],
-                        onCancelClick: () {
-                          // print(controller.addList[i].name);
-                          // final List<Order> tempArr = [];
-                          // Order? deletedIndex;
-                          // for (var index = 0;
-                          //     index < controller.addList.length;
-                          //     index++) {
-                          //   if (index != controller.addList.length - 1)
-                          //     tempArr.add(controller.addList[index]);
-                          //   else
-                          //     deletedIndex = controller.addList[index];
-                          // }
-                          // // print(deletedIndex?.name);
+                Expanded(
+                  // width: MediaQuery.of(context).size.width,
+                  // height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 10.0, right: 10, top: 10, bottom: 50),
+                          child: ListView.separated(
+                            itemCount: controller.addList.length,
+                            itemBuilder: (context, i) => AddOrderCard(
+                              controller: controller,
+                              order: controller.addList[i],
+                              onCancelClick: () {
+                                // print(controller.addList[i].name);
+                                // final List<Order> tempArr = [];
+                                // Order? deletedIndex;
+                                // for (var index = 0;
+                                //     index < controller.addList.length;
+                                //     index++) {
+                                //   if (index != controller.addList.length - 1)
+                                //     tempArr.add(controller.addList[index]);
+                                //   else
+                                //     deletedIndex = controller.addList[index];
+                                // }
+                                // // print(deletedIndex?.name);
 
-                          // controller.addList.value = tempArr;
-                          controller.addList
-                              .removeAt(controller.addList.length - 1);
-                          if (controller.addList.length == 0) {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                          }
-                          // Navigator.pop(context);
-                        },
-                        index: i,
+                                // controller.addList.value = tempArr;
+                                controller.addList
+                                    .removeAt(controller.addList.length - 1);
+                                if (controller.addList.length == 0) {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                }
+                                // Navigator.pop(context);
+                              },
+                              index: i,
+                            ),
+                            separatorBuilder: (context, i) =>
+                                const SizedBox(height: 15),
+                          ),
+                        ),
                       ),
-                      separatorBuilder: (context, i) =>
-                          const SizedBox(height: 15),
-                    ),
+                      const SizedBox(
+                        height: 30,
+                      )
+                    ],
                   ),
                 ),
                 if (controller.loading.value == false)
                   Positioned(
                     right: 80,
-                    bottom: 30,
+                    bottom: 0,
                     left: 80,
                     child: Align(
                       alignment: Alignment.center,

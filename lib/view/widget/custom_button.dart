@@ -5,12 +5,9 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 class CustomButtom extends StatelessWidget {
   final Function()? onPressed;
   final String text;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   const CustomButtom(
-      {Key? key,
-      required this.text,
-      this.onPressed,
-      this.backgroundColor: primaryColor})
+      {Key? key, required this.text, this.onPressed, this.backgroundColor})
       : super(key: key);
 
   @override
@@ -18,17 +15,19 @@ class CustomButtom extends StatelessWidget {
     return NeumorphicButton(
       onPressed: onPressed,
       style: NeumorphicStyle(
-        color: backgroundColor,
+        color: backgroundColor ?? primaryColor,
         shape: NeumorphicShape.flat,
         boxShape: NeumorphicBoxShape.beveled(BorderRadius.circular(10)),
       ),
       padding: const EdgeInsets.all(12.0),
-      child: CustomText(
-        alignment: Alignment.center,
-        text: text,
-        fontWeight: FontWeight.w500,
-        color: Colors.white,
-        size: 15,
+      child: Center(
+        child: CustomText(
+          alignment: Alignment.center,
+          text: text,
+          fontWeight: FontWeight.w500,
+          color: Colors.white,
+          size: 15,
+        ),
       ),
     );
   }

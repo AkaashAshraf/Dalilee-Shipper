@@ -2,14 +2,17 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/http/FromDalilee.dart';
-import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
+import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/model/add_inqury_list_caterogry_model.dart';
 import 'package:dalile_customer/model/bank_model.dart';
 import 'package:dalile_customer/model/close_finance_model.dart';
+import 'package:dalile_customer/model/crm/account_enquiries.dart';
+import 'package:dalile_customer/model/crm/bank_accounts.dart';
 import 'package:dalile_customer/model/enquiry_model.dart';
 import 'package:dalile_customer/model/finance_open_model.dart';
-import 'package:dalile_customer/model/manage_account_model.dart';
+import 'package:dalile_customer/model/shaheen_aws/shipment_listing.dart';
 import 'package:dalile_customer/model/sub_cat_list_model.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,7 +21,7 @@ abstract class FinanceApi {
   static bool checkAuth = false;
   static Future<OpenData?> fetchopenData() async {
     try {
-      final response = await dalileePost("/openFinance", {});
+      final response = await post("/finance/open", {});
       if (response.statusCode == 200) {
         var data = financeOpenModelFromJson(response.body);
 
@@ -36,13 +39,14 @@ abstract class FinanceApi {
     return null;
   }
 
-  static Future<Data?> fetchViewOrdersData(dynamic body) async {
+  static Future<Data?> fetchViewOrdersData(dynamic body,
+      {required String url}) async {
     try {
-      var response = await dalileePost("/getStoresOrders", body);
+      var response = await post(url, body);
       if (response.statusCode == 200) {
-        var data = shipmentListingFromJson(response.body);
+        var data = shipmentListAwsFromJson(response.body);
 
-        return data.data;
+        return data?.data;
       } else {
         var err = json.decode(response.body);
 
@@ -56,7 +60,7 @@ abstract class FinanceApi {
     return null;
   }
 
-  static Future<Data_?> fetchManageAccountData() async {
+  static Future<Bankaccounts?> fetchManageAccountData() async {
     final prefs = await SharedPreferences.getInstance();
 
     dynamic fromString = prefs.getString('loginData') ?? '';
@@ -64,20 +68,24 @@ abstract class FinanceApi {
     dynamic resLogin = json.decode(fromString!.toString());
     dynamic tokenLo = resLogin['data']["access_token"] ?? '';
 
-    String _url = "$like/bank-accounts";
+    String _url = "$crmBaseUrl/accounts/my_list";
 
     try {
-      var response = await http.get(
+      final prefs = await SharedPreferences.getInstance();
+      String storeCode = prefs.getString('store_code') ?? '';
+      var response = await http.post(
         Uri.parse(_url),
+        body: {"trader_id": storeCode},
         headers: {
           "Accept": "application/json",
           "Authorization": "Bearer $tokenLo",
         },
       );
       if (response.statusCode == 200) {
-        var data = manageAccountModelFromJson(response.body);
+        var data = bankaccountsFromJson(response.body);
+        inspect(data);
 
-        return data.data;
+        return data;
       } else {
         var err = json.decode(response.body);
 
@@ -86,26 +94,29 @@ abstract class FinanceApi {
         return null;
       }
     } catch (e) {
-      mass = 'Network error';
+      mass = 'Network error' + e.toString();
     }
     return null;
   }
 
-  static Future<List<EnquiryList>?> fetchEnquiryFinanceData() async {
+  static Future<List<Enquiry>?> fetchEnquiryFinanceData() async {
     final prefs = await SharedPreferences.getInstance();
 
     String token = prefs.getString('token') ?? '';
+    String storeID = prefs.getString('store_code') ?? '';
+
     dynamic fromString = prefs.getString('loginData') ?? '';
 
     dynamic resLogin = json.decode(fromString!.toString());
 
     dynamic _id = resLogin['data']["store"]["user_id"] ?? '';
 
-    var url = base_url + "/inquiry/customer/listing/$_id";
+    var url = crmBaseUrl + "/account-enq/fetch-all";
     // "https://shaheen-test2.dalilee.om/api/inquiry/customer/listing/$_id";
     try {
-      var response = await http.get(
+      var response = await http.post(
         Uri.parse(url),
+        body: {"trader_id": storeID},
         headers: {
           "Accept": "application/json",
           "Authorization": "Bearer $token",
@@ -113,8 +124,8 @@ abstract class FinanceApi {
       );
 
       if (response.statusCode == 200) {
-        var data = enquiryModelFromJson(response.body);
-        return data.data;
+        var data = accountEnquiriesFromJson(response.body);
+        return data!.data;
       } else if (response.statusCode == 401) {
         checkAuth = true;
         var err = json.decode(response.body);
@@ -136,10 +147,18 @@ abstract class FinanceApi {
 
   static Future<bool?> fetchAddAccountData(String traderId, String bankID,
       String bankName, String bankNo, String name) async {
+    // inspect({
+    //   "bank_id": bankID,
+    //   "name": name,
+    //   "account_type": "Payable",
+    //   "account_no": bankNo,
+    //   "trader_id": traderId
+    // });
+    // return false;
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? '';
 
-    var url = "$like/bank-accounts/store";
+    var url = "$crmBaseUrl/account/create";
     try {
       var response = await http.post(
         Uri.parse(url),
@@ -148,11 +167,14 @@ abstract class FinanceApi {
           "Authorization": "Bearer $token",
         },
         body: {
-          "bank_name": "$bankName",
-          "holder_name": name,
-          "account_number": bankNo,
+          "bank_id": bankID,
+          "name": name,
+          "account_type": "Payable",
+          "account_no": bankNo,
+          "trader_id": traderId
         },
       );
+
       if (response.statusCode == 200) {
         return true;
       } else {
@@ -163,7 +185,7 @@ abstract class FinanceApi {
         return false;
       }
     } catch (e) {
-      mass = 'Network error';
+      mass = 'Network error' + e.toString();
 
       return false;
     }
@@ -197,15 +219,16 @@ abstract class FinanceApi {
 
     dynamic resLogin = json.decode(fromString!.toString());
     dynamic tokenLo = resLogin['data']["access_token"] ?? '';
-
     try {
       var response = await http.post(Uri.parse(url), headers: {
         "Accept": "application/json",
-        "Authorization": "Bearer $tokenLo"
+        "Authorization":
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxNyIsImp0aSI6ImFhOGJlOTFkNzU5MDhiOGE4ZjllYTc5OWQ5YWQ3YWU5N2E5MzQ1MWVkNzA5OWRjMTgwMjM4ZmYxNWM3ZDYwZWQwZWFmYjhmYzZkZWM5YjRkIiwiaWF0IjoxNjczNzMyNDY5LCJuYmYiOjE2NzM3MzI0NjksImV4cCI6MTcwNTI2ODQ2OSwic3ViIjoiMTQ1ODIyIiwic2NvcGVzIjpbXX0.EDn8f3RAEQorGsPdF8rLClLirtNgA685bjCRuGzzl6Ay5OuEKerWpIdTTd4ebAiuLsUTGw3-zKd5NkIyzeWZSP70_effGPpBXcrkNGzS5Kq-iLzSXdrGvkWB5NdBeazYONl2_QG119vaa27BuFVfIZ4lD8uTbBLqLDXU1kdhTVktZeEBAxFCX_dyKjOejguU8rCWCeIDGqLgXVmSp5ON0CtOPjo7uSeFo5bcZ6_iW4x0IBJYizr_beBnG3_gGuH9M0t9wEaCEtJ-FvvLsGz_S36YgvspsPoOh2kUeX-a-BmboOR7uErz1Ck_p993h-Xnuh2r3e8j0Recdkncy9tpmrSzuK9hKlGOGeU1GzBTp4zyoqGS37fmwC0WBh8ofRQHcS1MAJ1FsGiYor8T93MwK35MuDwPed9YdwLt3QhlLeGaGd257MRELAuqISkpcdx2JgsoMio7J8Lsjc9e3bWGiMMrhOxGoHcNbDz-MzrYCh7MnzT2D0IXJVcTVqoXxFVOTLgbsqlSRNgblYI4o5U-4PoTQNOU1LTyAMYmUR015x7EoIko3znWhmtAsZ4JUzlazKtmYlZitdE6SKN1xy2cBBB4-fSZHDdUXpgowALnoRMGwGYTU4Fo4ynhGUyEWDSpoEtWYgjguXoCoIWABQPtzF1Vuo7Lu1q6ezN4OyieaSM"
       }, body: {
         "invoice_id": "$id",
         "type": type
       });
+      inspect(response);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
 
@@ -325,19 +348,23 @@ abstract class FinanceApi {
     return data;
   }
 
-  static Future<dynamic> fetchAddEnquiryData(
-    cat,
-    subcat,
-    doc,
-  ) async {
+  static Future<dynamic> fetchAddEnquiryData({
+    required String accountId,
+    required String description,
+    required String amount,
+  }) async {
     final prefs = await SharedPreferences.getInstance();
 
     dynamic fromString = prefs.getString('loginData') ?? '';
 
+    String userNAme = prefs.getString('name') ?? '';
+    String mobile = prefs.getString('mobile') ?? '';
+    String storeId = prefs.getString('store_code') ?? '';
+
     dynamic resLogin = json.decode(fromString!.toString());
     dynamic tokenLo = resLogin['data']["access_token"] ?? '';
 
-    var _url = base_url + '/inquiry/customre-inquiry/create';
+    var _url = crmBaseUrl + '/create/account/Enquiry';
     // "https://shaheen-test2.dalilee.om/api/inquiry/customre-inquiry/create";
 
     try {
@@ -345,9 +372,12 @@ abstract class FinanceApi {
         "Accept": "application/json",
         "Authorization": "Bearer $tokenLo"
       }, body: {
-        "selectedCategory": "$cat",
-        "selectedSubcategory": "$subcat",
-        "comment": "$doc",
+        "estimated_amount": amount,
+        "trader_name": userNAme,
+        "trader_contact": mobile,
+        "trader_id": storeId,
+        "decription": description,
+        "trader_account_id": accountId,
       });
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -360,7 +390,7 @@ abstract class FinanceApi {
         return null;
       }
     } catch (e) {
-      mass = 'Network error';
+      mass = 'Network error' + e.toString();
       return null;
     }
   }

@@ -1,5 +1,6 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
+import 'package:dalile_customer/view/home/search/search_screen.dart';
 import 'package:dalile_customer/view/shipments/in_view.dart';
 import 'package:dalile_customer/view/shipments/out_view.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,18 @@ class ShipmentView extends StatelessWidget {
         elevation: 0,
         backgroundColor: primaryColor,
         title: Text("SHIPMENTS".tr),
+        leading: GestureDetector(
+          onTap: () {
+            Get.to(SearchScreen());
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+          ),
+        ),
         centerTitle: true,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -90,7 +103,7 @@ class ShipmentView extends StatelessWidget {
             const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
         indicator: ShapeDecoration(
           shape: RoundedRectangleBorder(
-              side: const BorderSide(color: primaryColor),
+              side: BorderSide(color: primaryColor),
               borderRadius: BorderRadius.circular(30)),
           gradient: SweepGradient(
             colors: [

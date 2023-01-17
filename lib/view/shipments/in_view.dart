@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/dashbordController.dart';
 import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
@@ -50,6 +51,16 @@ class _InShipmentsState extends State<InShipments> {
     super.dispose();
   }
 
+  final List<Tab> myTabs = <Tab>[
+    Tab(text: 'most_amount'.tr),
+    Tab(text: 'closest_to_finish'.tr),
+    Tab(text: 'latest_initaive'.tr),
+  ];
+  final List<Widget> myWidgets = <Widget>[
+    Text("1"),
+    Text("2"),
+    Text("3"),
+  ];
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -61,23 +72,47 @@ class _InShipmentsState extends State<InShipments> {
           children: [
             Column(
               children: [
-                SizedBox(
-                  height: 40,
-                  child: MyInput(
-                    keyboardType: TextInputType.text,
-                    hintText: 'EnterShipmentNumber'.tr,
-                    onChanged: controller.onSearchTextChanged,
-                    controller: controller.searchConter,
-                    suffixIcon: MaterialButton(
-                        minWidth: 5,
-                        color: primaryColor,
-                        onPressed: () {},
-                        child: const Icon(
-                          Icons.search,
-                          color: whiteColor,
-                        )),
+                if (false)
+                  SizedBox(
+                    height: 40,
+                    child: MyInput(
+                      keyboardType: TextInputType.text,
+                      hintText: 'EnterShipmentNumber'.tr,
+                      onChanged: controller.onSearchTextChanged,
+                      controller: controller.searchConter,
+                      suffixIcon: MaterialButton(
+                          minWidth: 5,
+                          color: primaryColor,
+                          onPressed: () {},
+                          child: const Icon(
+                            Icons.search,
+                            color: whiteColor,
+                          )),
+                    ),
                   ),
-                ),
+                if (false)
+                  DefaultTabController(
+                    length: myTabs.length,
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 12,
+                        ),
+                        ButtonsTabBar(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                          backgroundColor: Colors.amber,
+                          unselectedBackgroundColor: Colors.red,
+                          unselectedLabelStyle: TextStyle(color: Colors.black),
+                          labelStyle: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                          tabs: myTabs,
+                        ),
+                        Expanded(
+                          child: TabBarView(children: myWidgets),
+                        ),
+                      ],
+                    ),
+                  ),
                 SizedBox(
                   height: 5,
                 ),

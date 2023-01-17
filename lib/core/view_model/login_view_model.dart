@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:dalile_customer/core/http/http.dart';
+import 'package:dalile_customer/model/countries.dart';
 import 'package:dalile_customer/view/widget/controller_view.dart';
 import 'package:device_info/device_info.dart';
 import 'package:dalile_customer/constants.dart';
@@ -16,14 +18,33 @@ class LoginController extends GetxController {
   RxBool isAgree = false.obs;
   RxString mobile = "".obs;
   RxString emailAddress = "".obs;
+  RxString selectedCountryCode = "".obs;
+
+  RxList<Country?> countries = <Country?>[].obs;
 
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
   Rx<TextEditingController> phoneNumber = TextEditingController().obs;
   Rx<TextEditingController> email = TextEditingController().obs;
   RxInt isLoginWithEmail = 0.obs;
 
+  void fetchCountries() async {
+    var response = await getWithUrl("$base_url/shipper-countries");
+    if (response?.statusCode == 200) {
+      var responseJson = countriesFromJson(response?.body);
+      countries.value = responseJson!.countries;
+      if (responseJson.countries.length > 0)
+        selectedCountryCode(responseJson.countries[0]?.countryCode);
+    }
+  }
+
+  @override
+  void onInit() {
+    fetchCountries();
+    super.onInit();
+  }
+
   var code;
-  void fetchOTPSentData() async {
+  void fetchOTPSentData({required String countryCode}) async {
     try {
       mobile(phoneNumber.value.text);
       emailAddress(email.value.text);
@@ -31,7 +52,8 @@ class LoginController extends GetxController {
       isLoading(true);
 
       var data = await LoginAPi.loginData(
-          mobile: phoneNumber.value.text,
+          countryCode: selectedCountryCode.value,
+          mobile: "${phoneNumber.value.text}",
           email: email.value.text,
           isEmail: isLoginWithEmail.value == 0 ? false : true);
       if (data != null) {
@@ -39,17 +61,17 @@ class LoginController extends GetxController {
           code = await SmsAutoFill().getAppSignature;
 
           Get.to(() => const OTPView());
-          Get.snackbar('Send OTP', "OTP Sent Successfully",
+          Get.snackbar("sendOtp".tr, "otpSent".tr,
               backgroundColor: primaryColor.withOpacity(0.6),
               colorText: whiteColor);
         } else {
           if (!Get.isSnackbarOpen) {
-            Get.snackbar('Filed', LoginAPi.mass);
+            Get.snackbar('Failed'.tr, LoginAPi.mass);
           }
         }
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', LoginAPi.mass);
+          Get.snackbar('Failed'.tr, LoginAPi.mass);
         }
       }
     } finally {
@@ -67,6 +89,7 @@ class LoginController extends GetxController {
     try {
       isLoading(true);
       var data = await LoginAPi.loginOtpData(otp, "$identifier", "$deviceName",
+          countryCode: selectedCountryCode.value,
           email: emailAddress.value,
           isEmail: isLoginWithEmail.value == 0 ? false : true,
           mobile: mobile.value);
@@ -76,7 +99,7 @@ class LoginController extends GetxController {
         }
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', LoginAPi.mass);
+          Get.snackbar('Failed'.tr, LoginAPi.mass);
         }
       }
     } finally {
@@ -84,17 +107,15 @@ class LoginController extends GetxController {
     }
   }
 
-  valid() async {
+  valid({required String countryCode}) async {
     if (globalKey.currentState!.validate()) {
-      fetchOTPSentData();
+      fetchOTPSentData(countryCode: countryCode);
     }
   }
 
   mobileVild(x) {
     if (x.isEmpty) {
       return "please enter your mobile number";
-    } else if (x.length > 8) {
-      return "number can not be bigger than 20";
     } else if (x.length <= 7) {
       return "number can not be smaller than 8";
     }

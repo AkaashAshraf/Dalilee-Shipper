@@ -138,7 +138,7 @@ class _HoursState extends State<_Hours> {
   int _start = 60;
   Timer? _timer;
   void startTimer() {
-    Get.put(LoginController()).fetchOTPSentData();
+    Get.put(LoginController()).fetchOTPSentData(countryCode: "+968");
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,

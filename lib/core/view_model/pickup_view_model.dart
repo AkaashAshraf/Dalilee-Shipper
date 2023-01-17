@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/core/server/pickup_api.dart';
@@ -7,6 +8,8 @@ import 'package:dalile_customer/model/Pickup/fetch_auto_pickup_status.dart';
 import 'package:dalile_customer/model/muhafaza_model.dart';
 import 'package:dalile_customer/model/pickup_deatils.dart';
 import 'package:dalile_customer/model/region_model.dart';
+import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
+import 'package:dalile_customer/model/shaheen_aws/shipment_listing.dart';
 import 'package:dalile_customer/model/wilayas_model.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
 import 'package:dalile_customer/view/widget/custom_popup.dart';
@@ -27,6 +30,7 @@ class PickupController extends GetxController {
   RxBool loadMoreTodayPickup = false.obs;
   RxBool isAutoDailyPickup = false.obs;
   RxBool autoPickupLoading = false.obs;
+  RxList<Shipment> pickupShipments = <Shipment>[].obs;
 
   RxInt totalAllPickup = 0.obs;
   RxInt totalTodayPickup = 0.obs;
@@ -221,7 +225,7 @@ class PickupController extends GetxController {
   }
 
   RxList<Order> pickupDetailsList = <Order>[].obs;
-  void fetcPickupDetailsData(ref) async {
+  void fetcPickupDetailsDataOld(ref) async {
     try {
       // isLoadingToday(true);
       isLoadingDetails(true);
@@ -230,7 +234,32 @@ class PickupController extends GetxController {
         pickupDetailsList.value = data.data!.orders!;
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Failed', PickupApi.mass);
+          Get.snackbar('Failed'.tr, PickupApi.mass);
+        }
+      }
+    } finally {
+      isLoadingDetails(false);
+    }
+  }
+
+  void fetcPickupDetailsData(
+      {bool isRefresh = false, required String collectionID}) async {
+    try {
+      // isLoadingToday(true);
+      isLoadingDetails(true);
+      var data = await post("/dashboard/shipments", {
+        "module": "collection_orders",
+        "limit": "500",
+        "offset": "0",
+        "collection_id": collectionID
+      });
+      inspect(data);
+      if (data != null) {
+        var res = shipmentListAwsFromJson(data?.body);
+        pickupShipments.value = res?.data?.shipments ?? [];
+      } else {
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar('Failed'.tr, PickupApi.mass);
         }
       }
     } finally {

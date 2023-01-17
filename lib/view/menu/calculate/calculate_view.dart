@@ -1,5 +1,6 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/calculate_view_model.dart';
+import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/custom_form_filed.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
@@ -18,7 +19,6 @@ class CalculateView extends StatefulWidget {
 
 class _CalculateViewState extends State<CalculateView> {
   final CalculateController _controller = Get.put(CalculateController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +54,7 @@ class _CalculateViewState extends State<CalculateView> {
                         height: MediaQuery.of(context).size.height,
                         child: Theme(
                           data: Theme.of(context).copyWith(
-                              colorScheme: const ColorScheme.light(
+                              colorScheme: ColorScheme.light(
                             primary: primaryColor,
                           )),
                           child: Form(
@@ -559,7 +559,7 @@ class ComplatedScreen extends StatelessWidget {
                   height: 10,
                 ),
                 CustomText(
-                  text: '$text OMR',
+                  text: Get.put(HelperController()).getCurrencyInFormat(text),
                   fontWeight: FontWeight.bold,
                   size: 16,
                   color: primaryColor,

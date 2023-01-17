@@ -1,7 +1,7 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/server/finance_api.dart';
 import 'package:dalile_customer/model/bank_model.dart';
-import 'package:dalile_customer/model/manage_account_model.dart';
+import 'package:dalile_customer/model/crm/bank_accounts.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/custom_form_filed.dart';
 import 'package:dalile_customer/view/widget/custom_popup.dart';
@@ -10,6 +10,7 @@ import 'package:dalile_customer/view/widget/my_input.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ManageAccountController extends GetxController {
   @override
@@ -20,14 +21,15 @@ class ManageAccountController extends GetxController {
   }
 
   var isLoading = false.obs;
+
   var bankListData = <BankListModel>[].obs;
-  var accountData = <BankAccount>[].obs;
+  var accountData = <Accounts>[].obs;
   void fetchManageAccountData() async {
     try {
       isLoading(true);
       var account = await FinanceApi.fetchManageAccountData();
       if (account != null) {
-        accountData.value = account.bankAccounts!.reversed.toList();
+        accountData.value = account.data!;
       } else {
         if (!Get.isSnackbarOpen) {
           Get.snackbar('Filed', FinanceApi.mass);
@@ -93,9 +95,11 @@ class ManageAccountController extends GetxController {
             );
           },
         );
+        final prefs = await SharedPreferences.getInstance();
+        String storeCode = prefs.getString('store_code') ?? '';
 
-        bool? postRequst = await FinanceApi.fetchAddAccountData(
-            "1", bankId.text, bankName.text, bankNo.text, nameAccount.text);
+        bool? postRequst = await FinanceApi.fetchAddAccountData(storeCode,
+            bankId.text, bankName.text, bankNo.text, nameAccount.text);
         Get.back();
         if (postRequst != null && postRequst == true) {
           Get.back();
@@ -104,9 +108,9 @@ class ManageAccountController extends GetxController {
               barrierColor: Colors.transparent,
               context: context,
               builder: (BuildContext context) {
-                return const CustomDialogBoxAl(
-                  title: "Done !!",
-                  des: "bank account added successfully",
+                return CustomDialogBoxAl(
+                  title: 'done'.tr,
+                  des: "bank_added".tr,
                   icon: Icons.priority_high_outlined,
                 );
               });
@@ -119,7 +123,7 @@ class ManageAccountController extends GetxController {
       }
     } finally {
       nameAccount.clear();
-      bankId.clear();
+      // bankId.clear();
 
       bankNo.clear();
       checkboxIs.value = false;
@@ -176,11 +180,11 @@ class ShowAddEditBank extends GetWidget<ManageAccountController> {
                     select: controller.bankName.text.isEmpty
                         ? null
                         : controller.bankName.text,
-                        
                     text: 'Bank'.tr,
                     onSaved: (val) {
                       for (int i = 0; i < controller.bankListData.length; i++) {
                         if (controller.bankListData[i].name == val) {
+                          // print(controller.bankListData[i].id.toString());
                           controller.bankId.text =
                               controller.bankListData[i].id.toString();
                           controller.bankName.text =
@@ -189,19 +193,15 @@ class ShowAddEditBank extends GetWidget<ManageAccountController> {
                       }
                       return null;
                     },
-                    validator: (val) => val == null
-                        ? 'please enter your account number'
-                        : val.length > 20
-                            ? "max number 20"
-                            : null,
+                    validator: (val) => val == null ? 'selectBank'.tr : null,
                     items: controller.bankListData
                         .map((element) => element.name.toString())
                         .toList()),
                 CustomFormFiledWithTitle(
                   validator: (val) => val!.isEmpty
-                      ? 'please enter your account number'
+                      ? 'enterAccount'.tr
                       : val.length > 20
-                          ? "max number 20"
+                          ? "maxlimit".tr
                           : null,
                   controller: controller.bankNo,
                   keyboardType: TextInputType.number,
@@ -213,11 +213,7 @@ class ShowAddEditBank extends GetWidget<ManageAccountController> {
                 ),
                 CustomFormFiledWithTitle(
                   controller: controller.nameAccount,
-                  validator: (val) => val!.isEmpty
-                      ? 'please enter your name'
-                      : val.length > 20
-                          ? "name is to long"
-                          : null,
+                  validator: (val) => val!.isEmpty ? 'enterName'.tr : null,
                   text: 'BeneficiaryName'.tr,
                   hintText: 'Name'.tr,
                 ),
@@ -238,13 +234,16 @@ class ShowAddEditBank extends GetWidget<ManageAccountController> {
                 const SizedBox(
                   height: 20,
                 ),
-                CustomButtom(
-                  text: 'Add'.tr,
-                  onPressed: () {
-                    if (controller.checkboxIs.value) {
-                      controller.fetchAddPostData(context);
-                    }
-                  },
+                SizedBox(
+                  width: 200,
+                  child: CustomButtom(
+                    text: 'Add'.tr,
+                    onPressed: () {
+                      if (controller.checkboxIs.value) {
+                        controller.fetchAddPostData(context);
+                      }
+                    },
+                  ),
                 ),
               ],
             ),

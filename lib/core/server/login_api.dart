@@ -12,11 +12,12 @@ class LoginAPi {
   static Future loginData(
       {required String mobile,
       required String email,
+      required String countryCode,
       bool isEmail: false}) async {
     try {
       final url =
           Uri.parse(isEmail ? "$like/send-otp-email" : "$like/send-otp");
-      var data = {'mobile': mobile};
+      var data = {'mobile': mobile, "country_code": countryCode};
       if (isEmail) data = {'email': email};
       final headers = {"Accept": "application/json"};
       final response = await http.post(url, headers: headers, body: data);
@@ -61,20 +62,22 @@ class LoginAPi {
 
   static Future loginOtpData(String otpnum, String dId, String dName,
       {required String email,
+      required String countryCode,
       required String mobile,
       bool isEmail: false}) async {
-    print(Get.put(LoginController()).mobile.value +
-        "-" +
-        Get.put(LoginController()).emailAddress.value);
+    // print(Get.put(LoginController()).mobile.value +
+    //     "-" +
+    //     Get.put(LoginController()).emailAddress.value);
 
     try {
       var url = Uri.parse(isEmail ? "$like/login-with-email" : "$like/login");
 
       String? token = await FirebaseMessaging.instance.getToken();
 
-      print("fcm:$token");
+      // print("fcm:$token");
       var data = {
         "mobile": mobile,
+        "country_code": countryCode,
         "email": email,
         "code": otpnum,
         "device_id": dId,
@@ -93,8 +96,13 @@ class LoginAPi {
           final token = json.decode(response.body);
           print(token['data']['store']['username']);
           // return null;
-          _saveProduct(token['data']["access_token"], "token");
+          _saveProduct(token['data']["access_token"] ?? "", "token");
+          _saveProduct(token['data']['store']["mobile"] ?? "", "mobile");
+          _saveProduct(
+              token['data']['store']["store_code"] ?? "", "store_code");
+
           _saveProduct(token['data']['store']['username'], "username");
+          _saveProduct(token['data']['store']['user']["name"] ?? "", "name");
 
           return res;
         } else {

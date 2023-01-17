@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dalile_customer/components/popups/askOtp.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/profileController.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
@@ -8,8 +7,7 @@ import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/my_input.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfile extends StatefulWidget {
@@ -44,8 +42,8 @@ class _EditProfileState extends State<EditProfile> {
         toolbarHeight: 70,
         backgroundColor: primaryColor,
         foregroundColor: whiteColor,
-        title: const CustomText(
-          text: 'PROFILE',
+        title: CustomText(
+          text: 'Profile'.tr,
           color: whiteColor,
           size: 18,
           alignment: Alignment.center,
@@ -86,7 +84,7 @@ class _EditProfileState extends State<EditProfile> {
                           child: RichText(
                             text: TextSpan(children: <TextSpan>[
                               TextSpan(
-                                  text: "Enable Editing",
+                                  text: "enableEditing".tr,
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w300,
@@ -101,8 +99,8 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                     CustomFormFiledWithTitle(
                       read: !controller.isEditinig.value,
-                      hintText: 'Store Name',
-                      text: 'Store Name',
+                      hintText: 'storeName'.tr,
+                      text: 'storeName'.tr,
                       controller: new TextEditingController(
                           text: controller.profile.value.storeName),
                       prefix: const Icon(
@@ -130,7 +128,7 @@ class _EditProfileState extends State<EditProfile> {
                       height: 20,
                     ),
                     CustomFormFiledWithTitle(
-                      text: 'Email',
+                      text: 'Email'.tr,
                       controller: new TextEditingController(
                           text: controller.profile.value.storeEmail),
                       hintText: 'abc@gmail.com',
@@ -165,7 +163,7 @@ class _EditProfileState extends State<EditProfile> {
                       onChanged: (val) {
                         controller.profile.value.storeMobile = val;
                       },
-                      text: 'Mobile Number',
+                      text: 'mobile'.tr,
                       controller: new TextEditingController(
                         text: controller.profile.value.storeMobile,
                       ),
@@ -193,8 +191,8 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                     SizedBox(height: 20),
                     CustomFormFiledWithTitle(
-                      text: 'Joining Date',
-                      hintText: 'Joining Date',
+                      text: 'joinDate'.tr,
+                      hintText: 'joinDate'.tr,
                       read: true,
                       controller: new TextEditingController(
                           text: controller.profile.value.createdAt),
@@ -236,7 +234,7 @@ class _EditProfileState extends State<EditProfile> {
                                   padding: const EdgeInsets.only(
                                       left: 5, right: 10, top: 0, bottom: 10),
                                   child: Text(
-                                    "Logo",
+                                    "Logo".tr,
                                     style: TextStyle(
                                         fontSize: 12, color: text1Color),
                                     textAlign: TextAlign.left,
@@ -274,7 +272,7 @@ class _EditProfileState extends State<EditProfile> {
                               ),
                               if (controller.isEditinig.value)
                                 Text(
-                                  "Choose Logo",
+                                  "chooseLogo".tr,
                                   style: TextStyle(
                                       color: primaryColor, fontSize: 18),
                                 )
@@ -301,7 +299,7 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                     if (controller.isEditinig.value)
                       CustomButtom(
-                        text: 'Save',
+                        text: 'Save'.tr,
                         onPressed: () {
                           // print(controller.mobile);
                           // return;

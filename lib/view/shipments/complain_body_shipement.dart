@@ -19,7 +19,7 @@ class ShowComplainShipement extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-            const  CustomText(
+              CustomText(
                 text: 'Ticket',
                 alignment: Alignment.topLeft,
                 color: primaryColor,
@@ -27,12 +27,12 @@ class ShowComplainShipement extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
               Padding(
-                padding:const EdgeInsets.only(left: 10.0),
+                padding: const EdgeInsets.only(left: 10.0),
                 child: IconButton(
                   onPressed: () {
                     Get.back();
                   },
-                  icon:const Icon(
+                  icon: const Icon(
                     Icons.clear_outlined,
                     size: 22,
                   ),
@@ -40,7 +40,7 @@ class ShowComplainShipement extends StatelessWidget {
               ),
             ],
           ),
-         const SizedBox(
+          const SizedBox(
             height: 20,
           ),
           CustomFormFiled(

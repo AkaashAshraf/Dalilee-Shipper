@@ -1,12 +1,15 @@
+import 'dart:developer';
+
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
 Future<dynamic> get(String url) async {
   var _url = like + url;
-  // print(_url);
+  print(_url);
   final prefs = await SharedPreferences.getInstance();
 
   String token = prefs.getString('token') ?? '';
@@ -16,6 +19,8 @@ Future<dynamic> get(String url) async {
       "Accept": "application/json",
       "Authorization": "Bearer $token"
     });
+    // return response;
+
     // print(response.body);
     // return response.statusCode;
     if (response.statusCode == 200) {
@@ -78,7 +83,7 @@ Future<dynamic> post(String url, dynamic body) async {
       // 'Content-Type': 'application/json; charset=UTF-8',
       "Authorization": "Bearer $token"
     });
-    // return response.body;
+    // return _url;
     // print(response.body);
     if (response.statusCode == 200) {
       return response;
@@ -88,12 +93,13 @@ Future<dynamic> post(String url, dynamic body) async {
       prefs.clear();
       Get.deleteAll();
       Get.offAll(() => LoginView());
-      return null;
+      return response.statusCode;
     } else {
-      return null;
+      return response;
     }
   } catch (e) {
     print(e.toString());
+
     return null;
   }
 }
@@ -110,6 +116,9 @@ Future<dynamic> postWithJsonBody(String url, dynamic body) async {
       'Content-Type': 'application/json; charset=UTF-8',
       "Authorization": "Bearer $token"
     });
+    // inspect(response);
+    // Get.snackbar('Successfull', response.statusCode.toString());
+    // return response;
     // return response.body;
     // print(response.body);
     if (response.statusCode == 200) {
@@ -125,6 +134,8 @@ Future<dynamic> postWithJsonBody(String url, dynamic body) async {
       return null;
     }
   } catch (e) {
+    // return e.toString;
+    // Get.snackbar(e.toString(), " ", colorText: Colors.orange);
     print(e.toString());
     return null;
   }

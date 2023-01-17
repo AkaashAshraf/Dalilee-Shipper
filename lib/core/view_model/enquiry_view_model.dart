@@ -1,15 +1,17 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/server/finance_api.dart';
 import 'package:dalile_customer/model/add_inqury_list_caterogry_model.dart';
-import 'package:dalile_customer/model/enquiry_model.dart';
-import 'package:dalile_customer/model/sub_cat_list_model.dart';
+import 'package:dalile_customer/model/crm/account_enquiries.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
 import 'package:dalile_customer/view/widget/custom_popup.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class EnquiryFinanceController extends GetxController {
+  var selectedAccountID = 0.obs;
+  var selectedAccountName = "".obs;
+  var estimatedAmount = "".obs;
+  var description = "".obs;
   @override
   void onInit() {
     fetchCatListData();
@@ -20,8 +22,8 @@ class EnquiryFinanceController extends GetxController {
 
   var isLoading = false.obs;
 
-  var enquriyData = <EnquiryList>[].obs;
-  void fetchEnquiryFinanceData() async {
+  var enquriyData = <Enquiry>[].obs;
+  fetchEnquiryFinanceData() async {
     try {
       isLoading(true);
       var enquriy = await FinanceApi.fetchEnquiryFinanceData();
@@ -29,21 +31,19 @@ class EnquiryFinanceController extends GetxController {
         enquriyData.value = enquriy;
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', FinanceApi.mass);
+          Get.snackbar('Failed'.tr, FinanceApi.mass);
         }
       }
     } finally {
-      print('finally');
+      isLoading(false);
+
       if (FinanceApi.checkAuth == true) {
         Get.offAll(() => LoginView());
         FinanceApi.checkAuth = false;
       }
-      isLoading(false);
     }
   }
 
-  TextEditingController catListName = TextEditingController();
-  TextEditingController catListId = TextEditingController();
   List<CatList> catListData = [];
   void fetchCatListData() async {
     try {
@@ -53,41 +53,10 @@ class EnquiryFinanceController extends GetxController {
         update();
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', FinanceApi.mass);
+          Get.snackbar('Failed'.tr, FinanceApi.mass);
         }
       }
-    } finally {
-      print('finally');
-    }
-  }
-
-  TextEditingController subcatListName = TextEditingController();
-  TextEditingController subcatListId = TextEditingController();
-  List<SubCatList> subcatListData = [];
-  void fetchSubCatListData() async {
-    subcatListId.clear();
-    subcatListName.clear();
-    subcatListData.clear();
-    Get.dialog(
-      const Center(
-          child: CupertinoActivityIndicator(
-        color: primaryColor,
-      )),
-      barrierDismissible: false,
-      barrierColor: Colors.transparent,
-    );
-    try {
-      var enquriy = await FinanceApi.fetchSubCatList(catListId.text);
-      if (enquriy != null) {
-        subcatListData = enquriy;
-      }
-    } finally {
-      if (Get.isDialogOpen == true) {
-        Get.back();
-      }
-      update();
-      print('finally');
-    }
+    } finally {}
   }
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -99,47 +68,49 @@ class EnquiryFinanceController extends GetxController {
     }
   }
 
-  bool isAddwiting = false;
+  RxBool isAddwiting = false.obs;
 
   void fetchAddEnquiryFinanceData(context) async {
-    isAddwiting = true;
+    isAddwiting.value = true;
     update();
     try {
+      //  dynamic enquriyAdd = await FinanceApi.fetchAddEnquiryData(
+      //         catListId.text, subcatListId.text, decConteroller)
       dynamic enquriyAdd = await FinanceApi.fetchAddEnquiryData(
-              catListId.text, subcatListId.text, decConteroller)
+              accountId: selectedAccountID.value.toString(),
+              description: description.value,
+              amount: estimatedAmount.value)
           .whenComplete(() {
-        isAddwiting = false;
+        isAddwiting.value = false;
         Get.back();
         update();
       });
 
       if (enquriyAdd != null) {
-        if (enquriyAdd == "success") {
+        if (enquriyAdd == 1) {
           showDialog(
               barrierDismissible: true,
               barrierColor: Colors.transparent,
               context: context,
               builder: (BuildContext context) {
-                return const CustomDialogBoxAl(
-                  title: "Done !!",
-                  des: "add enquiry successfully",
+                return CustomDialogBoxAl(
+                  title: "done".tr,
+                  des: "enq_addedd".tr,
                   icon: Icons.priority_high_outlined,
                 );
               });
         } else {
           if (!Get.isSnackbarOpen) {
-            Get.snackbar('Filed', "please check your data",
-                colorText: whiteColor);
+            Get.snackbar('Failed'.tr, "check_data".tr, colorText: whiteColor);
           }
         }
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', FinanceApi.mass);
+          Get.snackbar('Failed'.tr, FinanceApi.mass);
         }
       }
     } finally {
       fetchEnquiryFinanceData();
-      print('finally');
     }
   }
 }

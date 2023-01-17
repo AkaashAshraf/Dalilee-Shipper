@@ -1,5 +1,6 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/dashbordController.dart';
+import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/view/home/FinanceListings/FinanceListing.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/core/view_model/financeListingController.dart';
@@ -20,6 +21,7 @@ class _FinanceDashState extends State<FinanceDash> {
   RefreshController mainScreenRefreshController =
       RefreshController(initialRefresh: true);
   FinanceListingController fController = Get.put(FinanceListingController());
+  HelperController helperController = Get.put(HelperController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,7 +60,8 @@ class _FinanceDashState extends State<FinanceDash> {
                     ),
                     // title: 'Total Orders',
                     title: 'TotalOrdersAmount'.tr,
-                    numbers: '${widget.controller.totalAmount.value + " OMR"}',
+                    numbers: helperController.getCurrencyInFormat(
+                        widget.controller.totalAmount.value),
                   ),
                   15.0,
                   15.0,
@@ -105,7 +108,8 @@ class _FinanceDashState extends State<FinanceDash> {
                       // title: 'Total collected',
                       title: 'PaidAmount'.tr,
 
-                      numbers: '${widget.controller.paidAmount.value + " OMR"}',
+                      numbers: helperController.getCurrencyInFormat(
+                          widget.controller.paidAmount.value),
                     ), () {
                   Get.to(FinanceDasboradListing(
                       title: "PaidOrders".tr,
@@ -125,8 +129,8 @@ class _FinanceDashState extends State<FinanceDash> {
                       // title: 'COD Pending',
                       title: 'ShippingCost'.tr,
 
-                      numbers:
-                          '${widget.controller.shipmentCost.value + " OMR"}',
+                      numbers: helperController.getCurrencyInFormat(
+                          widget.controller.shipmentCost.value),
                     ),
                     () {}),
               ],
@@ -142,8 +146,8 @@ class _FinanceDashState extends State<FinanceDash> {
                       // title: 'Total collected',
                       title: 'CODPending'.tr,
 
-                      numbers:
-                          '${widget.controller.codPendingAmount.value + " OMR"}',
+                      numbers: helperController.getCurrencyInFormat(
+                          widget.controller.codPendingAmount.value),
                     ), () {
                   Get.to(FinanceDasboradListing(
                       title: "CODPending".tr,
@@ -163,8 +167,8 @@ class _FinanceDashState extends State<FinanceDash> {
                       // title: 'COD Pending',
                       title: 'ReadyToPay'.tr,
 
-                      numbers:
-                          '${widget.controller.readyToPayAmount.value + " OMR"}',
+                      numbers: helperController.getCurrencyInFormat(
+                          widget.controller.readyToPayAmount.value),
                     ), () {
                   Get.to(FinanceDasboradListing(
                       title: "ReadyToPay".tr,
@@ -186,8 +190,8 @@ class _FinanceDashState extends State<FinanceDash> {
                       title: 'CODwithDrivers'.tr,
                       // title: 'Total with Driver',
 
-                      numbers:
-                          '${widget.controller.codWithDriversAmount.value + " OMR"}',
+                      numbers: helperController.getCurrencyInFormat(
+                          widget.controller.codWithDriversAmount.value),
                     ), () {
                   Get.to(FinanceDasboradListing(
                       title: "CODwithDrivers".tr,
@@ -206,7 +210,8 @@ class _FinanceDashState extends State<FinanceDash> {
                       title: 'CODReturn'.tr,
                       // title: 'Total Returned',
 
-                      numbers: '${widget.controller.codReturn.value + " OMR"}',
+                      numbers: helperController.getCurrencyInFormat(
+                          widget.controller.codReturn.value),
                     ), () {
                   Get.to(FinanceDasboradListing(
                       title: "CODReturn".tr,

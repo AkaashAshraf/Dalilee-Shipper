@@ -94,7 +94,7 @@ class ComplainView extends GetWidget<ComplainController> {
         tabs: _tabTwoParameters(),
         indicator: ShapeDecoration(
           shape: RoundedRectangleBorder(
-              side: const BorderSide(color: primaryColor),
+              side: BorderSide(color: primaryColor),
               borderRadius: BorderRadius.circular(25)),
           gradient: SweepGradient(
             colors: [

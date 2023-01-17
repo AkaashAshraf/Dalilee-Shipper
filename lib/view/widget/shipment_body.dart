@@ -1,5 +1,6 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
+import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/model/Dashboard/MainDashboardModel.dart';
 import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
@@ -9,7 +10,7 @@ import 'package:get/get.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 class ShipmentBody extends StatelessWidget {
-  const ShipmentBody(
+  ShipmentBody(
       {Key? key,
       required this.outList,
       required this.i,
@@ -19,7 +20,7 @@ class ShipmentBody extends StatelessWidget {
   final List<TrackingStatus> shipList;
 
   final int i;
-
+  final HelperController helperController = Get.put(HelperController());
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ShipmentViewModel>(
@@ -57,7 +58,7 @@ class ShipmentBody extends StatelessWidget {
                             onTap: () {
                               _data.callAlert(context, outList!.customerNo);
                             },
-                            child: const Icon(
+                            child: Icon(
                               Icons.call_outlined,
                               color: primaryColor,
                             ),
@@ -98,7 +99,7 @@ class ShipmentBody extends StatelessWidget {
                               _data.menuAlert(context, outList!.customerNo,
                                   outList!.orderId, "", "", "");
                             },
-                            child: const Icon(
+                            child: Icon(
                               Icons.more_vert,
                               color: primaryColor,
                             ),
@@ -125,7 +126,8 @@ class ShipmentBody extends StatelessWidget {
                       const SizedBox(
                         width: 10,
                       ),
-                      _buildRowText('COP : ${outList!.cop} OMR',
+                      _buildRowText(
+                          'COP : ${helperController.getCurrencyInFormat(outList!.cop)} ',
                           'Weight : ${outList!.weight} KG'),
                     ],
                   ),
@@ -215,20 +217,19 @@ class ShipmentBody extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                     ),
                   ),
-                  indicatorStyle: const IndicatorStyle(
+                  indicatorStyle: IndicatorStyle(
                       width: 13, color: primaryColor, indicatorXY: 0.5),
-                  beforeLineStyle:
-                      const LineStyle(thickness: 1, color: primaryColor),
-                  afterLineStyle:
-                      const LineStyle(thickness: 1, color: primaryColor),
+                  beforeLineStyle: LineStyle(thickness: 1, color: primaryColor),
+                  afterLineStyle: LineStyle(thickness: 1, color: primaryColor),
                 ),
               ),
             _rowWithnameline('Payment Summary'),
             _buildRowDown(text1Color, 12, 'Shipping Cost ',
-                '${outList!.shippingPrice} OMR'),
-            _buildRowDown(text1Color, 12, 'COD ', '${outList!.cod} OMR'),
+                '${helperController.getCurrencyInFormat(outList!.shippingPrice)}  '),
+            _buildRowDown(text1Color, 12, 'COD ',
+                '${helperController.getCurrencyInFormat(outList!.cod)} '),
             _buildRowDown(primaryColor, 13, 'Total Charges ',
-                '${outList!.shippingPrice! + outList!.cod!} OMR'),
+                '${helperController.getCurrencyInFormat(outList!.shippingPrice! + outList!.cod!)}  '),
           ],
         ),
       ),

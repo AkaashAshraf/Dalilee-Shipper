@@ -15,15 +15,13 @@ class MainCardBodyView extends StatelessWidget {
     return Scaffold(
         // backgroundColor: primaryColor,
         appBar: _buildAppBar(),
-        body: SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            padding: EdgeInsets.only(top: 25),
-            decoration: const BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
-            child: controller,
-          ),
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          padding: EdgeInsets.only(top: 25),
+          decoration: const BoxDecoration(
+              color: bgColor,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
+          child: controller,
         ));
   }
 

@@ -46,14 +46,14 @@ class ManageAddressView extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
-                      children:const [
-                         CustomText(
+                      children: const [
+                        CustomText(
                           text: 'Updated data ',
                           color: Colors.grey,
                           alignment: Alignment.center,
                           size: 10,
                         ),
-                         Icon(
+                        Icon(
                           Icons.refresh,
                           color: Colors.grey,
                         ),
@@ -64,7 +64,8 @@ class ManageAddressView extends StatelessWidget {
                 Expanded(
                     flex: 13,
                     child: ListView.separated(
-                      separatorBuilder: (context, i) => const SizedBox(height: 13),
+                      separatorBuilder: (context, i) =>
+                          const SizedBox(height: 13),
                       itemCount: 5,
                       padding: const EdgeInsets.only(
                           left: 10, right: 10, bottom: 10, top: 5),
@@ -87,7 +88,7 @@ class ManageAddressView extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const CustomText(
+                                    CustomText(
                                       text: 'Main Address',
                                       color: primaryColor,
                                       fontWeight: FontWeight.w500,

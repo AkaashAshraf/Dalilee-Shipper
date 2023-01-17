@@ -1,5 +1,6 @@
-import 'package:dalile_customer/core/http/FromDalilee.dart';
-import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
+import 'package:dalile_customer/core/http/http.dart';
+import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
+import 'package:dalile_customer/model/shaheen_aws/shipment_listing.dart';
 import 'package:get/get.dart';
 
 class FinanceListingController extends GetxController {
@@ -58,7 +59,7 @@ class FinanceListingController extends GetxController {
 
   getList(dynamic body) async {
     try {
-      var res = await dalileePost("/storeFinanceOrders", body);
+      var res = await post("/dashboard/finance/shipments", body);
 
       return res;
     } catch (e) {
@@ -67,11 +68,11 @@ class FinanceListingController extends GetxController {
   } //getlist
 
   getAllOrders({bool isRefresh: false}) async {
-    var limit = "500";
+    var limit = "50";
     var offset = listAll.length.toString();
 
     if (isRefresh) {
-      limit = "500";
+      limit = "50";
       offset = "0";
     } else {
       loadMoreAll(true);
@@ -81,12 +82,12 @@ class FinanceListingController extends GetxController {
       var res = await getList(
           {"limit": limit, "offset": offset, "module": "total_amount"});
       if (res != null) {
-        var json = shipmentListingFromJson(res.body);
-        totalAll(json.data!.totalShipments);
+        var json = shipmentListAwsFromJson(res.body);
+        totalAll(json?.data?.totalShipments);
         if (isRefresh)
-          listAll.value = json.data!.shipments!;
+          listAll.value = json?.data?.shipments ?? [];
         else
-          listAll.value += json.data!.shipments!;
+          listAll.value += json?.data?.shipments ?? [];
       }
     } catch (e) {
     } finally {
@@ -97,11 +98,11 @@ class FinanceListingController extends GetxController {
   }
 
   getPaidOrders({bool isRefresh: false}) async {
-    var limit = "500";
+    var limit = "50";
     var offset = listPaid.length.toString();
 
     if (isRefresh) {
-      limit = "500";
+      limit = "50";
       offset = "0";
     } else {
       loadMorePaid(true);
@@ -111,12 +112,12 @@ class FinanceListingController extends GetxController {
       var res =
           await getList({"limit": limit, "offset": offset, "module": "paid"});
       if (res != null) {
-        var json = shipmentListingFromJson(res.body);
-        totalPaid(json.data!.totalShipments);
+        var json = shipmentListAwsFromJson(res.body);
+        totalPaid(json?.data?.totalShipments);
         if (isRefresh)
-          listPaid.value = json.data!.shipments!;
+          listPaid.value = json?.data?.shipments ?? [];
         else
-          listPaid.value += json.data!.shipments!;
+          listPaid.value += json?.data?.shipments ?? [];
       }
     } catch (e) {
     } finally {
@@ -127,11 +128,11 @@ class FinanceListingController extends GetxController {
   }
 
   getCodPendingOrders({bool isRefresh: false}) async {
-    var limit = "500";
+    var limit = "50";
     var offset = listCodPending.length.toString();
 
     if (isRefresh) {
-      limit = "500";
+      limit = "50";
       offset = "0";
     } else {
       loadMoreCodPending(true);
@@ -141,12 +142,12 @@ class FinanceListingController extends GetxController {
       var res = await getList(
           {"limit": limit, "offset": offset, "module": "cod_pending"});
       if (res != null) {
-        var json = shipmentListingFromJson(res.body);
-        totalCodPending(json.data!.totalShipments);
+        var json = shipmentListAwsFromJson(res.body);
+        totalCodPending(json?.data?.totalShipments);
         if (isRefresh)
-          listCodPending.value = json.data!.shipments!;
+          listCodPending.value = json?.data?.shipments ?? [];
         else
-          listCodPending.value += json.data!.shipments!;
+          listCodPending.value += json?.data?.shipments ?? [];
       }
     } catch (e) {
     } finally {
@@ -157,11 +158,11 @@ class FinanceListingController extends GetxController {
   }
 
   getReadyToPayOrders({bool isRefresh: false}) async {
-    var limit = "500";
+    var limit = "50";
     var offset = listReadyToPay.length.toString();
 
     if (isRefresh) {
-      limit = "500";
+      limit = "50";
       offset = "0";
     } else {
       loadMoreReadyToPay(true);
@@ -171,12 +172,12 @@ class FinanceListingController extends GetxController {
       var res = await getList(
           {"limit": limit, "offset": offset, "module": "ready_to_pay"});
       if (res != null) {
-        var json = shipmentListingFromJson(res.body);
-        totalReadyToPay(json.data!.totalShipments);
+        var json = shipmentListAwsFromJson(res.body);
+        totalReadyToPay(json?.data?.totalShipments);
         if (isRefresh)
-          listReadyToPay.value = json.data!.shipments!;
+          listReadyToPay.value = json?.data?.shipments ?? [];
         else
-          listReadyToPay.value += json.data!.shipments!;
+          listReadyToPay.value += json?.data?.shipments ?? [];
       }
     } catch (e) {
     } finally {
@@ -201,12 +202,12 @@ class FinanceListingController extends GetxController {
       var res = await getList(
           {"limit": limit, "offset": offset, "module": "cod_with_drivers"});
       if (res != null) {
-        var json = shipmentListingFromJson(res.body);
-        totalCodWithDrivers(json.data!.totalShipments);
+        var json = shipmentListAwsFromJson(res.body);
+        totalCodWithDrivers(json?.data?.totalShipments);
         if (isRefresh)
-          listCodWithDrivers.value = json.data!.shipments!;
+          listCodWithDrivers.value = json?.data?.shipments ?? [];
         else
-          listCodWithDrivers.value += json.data!.shipments!;
+          listCodWithDrivers.value += json?.data?.shipments ?? [];
       }
     } catch (e) {
     } finally {
@@ -217,11 +218,11 @@ class FinanceListingController extends GetxController {
   }
 
   getCodReturnOrders({bool isRefresh: false}) async {
-    var limit = "500";
+    var limit = "50";
     var offset = listCodReturn.length.toString();
 
     if (isRefresh) {
-      limit = "500";
+      limit = "50";
       offset = "0";
     } else {
       loadMoreCodReturn(true);
@@ -231,12 +232,12 @@ class FinanceListingController extends GetxController {
       var res = await getList(
           {"limit": limit, "offset": offset, "module": "cod_returned"});
       if (res != null) {
-        var json = shipmentListingFromJson(res.body);
-        totalCodReturn(json.data!.totalShipments);
+        var json = shipmentListAwsFromJson(res.body);
+        totalCodReturn(json?.data?.totalShipments);
         if (isRefresh)
-          listCodReturn.value = json.data!.shipments!;
+          listCodReturn.value = json?.data?.shipments ?? [];
         else
-          listCodReturn.value += json.data!.shipments!;
+          listCodReturn.value += json?.data?.shipments ?? [];
       }
     } catch (e) {
     } finally {

@@ -11,7 +11,7 @@ class AuthController {
 
       dynamic fromString = prefs.getString('loginData') ?? null;
 
-      dynamic resLogin = json.decode(fromString!.toString()) ?? null;
+      dynamic resLogin = json.decode(fromString.toString()) ?? null;
 
       dynamic tokenLo = resLogin['data']["access_token"] ?? null;
 
