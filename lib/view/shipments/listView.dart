@@ -20,13 +20,16 @@ class _ShipmentListView extends State<ShipmentListView> {
   List<ShipmentStatus> statusList = [
     ShipmentStatus(label: "all".tr, value: "ALL", module: "all", attempt: 1),
     ShipmentStatus(
-        label: "da1".tr, value: "DA1", module: "delivery_attempts", attempt: 1),
+        label: "Delivered".tr,
+        value: "completedDA1",
+        module: "completed",
+        attempt: 1),
     ShipmentStatus(
-        label: "da2".tr, value: "DA2", module: "delivery_attempts", attempt: 2),
-    ShipmentStatus(
-        label: "ca1".tr, module: "call_attempts", value: "CA1", attempt: 1),
-    ShipmentStatus(
-        label: "ca2".tr, module: "call_attempts", value: "CA2", attempt: 2),
+        label: "Un-Delivered".tr, value: "completed", module: "F", attempt: 1),
+    // ShipmentStatus(
+    //     label: "ca1".tr, module: "call_attempts", value: "CA1", attempt: 1),
+    // ShipmentStatus(
+    //     label: "ca2".tr, module: "call_attempts", value: "CA2", attempt: 2),
     ShipmentStatus(label: 'OFD'.tr, value: "OFD", module: "OFD", attempt: 1),
   ];
   DateTime to = new DateTime.now();
@@ -133,7 +136,7 @@ class _ShipmentListView extends State<ShipmentListView> {
                 children: [
                   Column(
                     children: [
-                      SizedBox(width: width * 0.45, child: Text("Status".tr)),
+                      SizedBox(width: width * 0.45, child: Text("status".tr)),
                       Container(
                         width: width * 0.45,
                         decoration: BoxDecoration(

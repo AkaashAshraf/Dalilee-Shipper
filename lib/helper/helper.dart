@@ -17,6 +17,7 @@ class HelperController extends GetxController {
   }
 
   int getStatusCode(String statusKey) {
+    // return 6;
     switch (statusKey) {
       case "uc":
         return 6;
@@ -25,31 +26,31 @@ class HelperController extends GetxController {
         return 5;
 
       case "RTO":
-        return 6;
+        return 7;
 
       case "RISS":
-        return 5;
+        return 3;
 
       case "review":
         return 5;
 
       case "return":
-        return 6;
+        return 7;
 
       case "reschedule":
-        return 5;
+        return 6;
 
       case "receivedbybranch":
-        return 2;
+        return 3;
 
       case "pickupbydriver":
         return 1;
 
       case "OFD":
-        return 2;
+        return 4;
 
       case "ndr":
-        return 6;
+        return 7;
 
       case "NA":
         return 6;
@@ -73,13 +74,13 @@ class HelperController extends GetxController {
         return 6;
 
       case "completed":
-        return 7;
+        return 8;
 
       case "canceled":
-        return 6;
+        return 7;
 
       case "BR":
-        return 6;
+        return 7;
 
       case "assigned":
         return 4;

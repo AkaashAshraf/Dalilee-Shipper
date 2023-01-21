@@ -190,7 +190,12 @@ class CardBody extends StatelessWidget {
                               shipment.orderProblem!.auditorResponse !=
                                   "corect" &&
                               shipment.orderProblem!.id > 0 &&
-                              shipment.orderStatusKey != "completed")
+                              (shipment.orderStatusKey == "F" ||
+                                  shipment.orderStatusKey == "intransit" ||
+                                  shipment.orderStatusKey == "FW" ||
+                                  shipment.orderStatusKey == "canceled" ||
+                                  shipment.orderStatusKey ==
+                                      "receivedbybranch"))
                             problemViewModal(context, orderNumber,
                                     shipment: shipment)
                                 .show();
@@ -201,11 +206,16 @@ class CardBody extends StatelessWidget {
                         },
                         child: Icon(
                           Icons.remove_red_eye,
-                          color: shipment.orderProblem != null &&
+                          color: (shipment.orderStatusKey == "F" ||
+                                      shipment.orderStatusKey == "intransit" ||
+                                      shipment.orderStatusKey == "FW" ||
+                                      shipment.orderStatusKey == "canceled" ||
+                                      shipment.orderStatusKey ==
+                                          "receivedbybranch") &&
+                                  shipment.orderProblem != null &&
                                   shipment.orderProblem!.auditorResponse !=
                                       "corect" &&
-                                  shipment.orderProblem!.id > 0 &&
-                                  shipment.orderStatusKey != "completed"
+                                  shipment.orderProblem!.id > 0
                               ? Colors.red
                               : primaryColor,
                           size: 25,
@@ -368,7 +378,10 @@ class CardBody extends StatelessWidget {
           ),
           _rowWithnameline(
               shipment.orderStatusKey == "F" ||
-                      shipment.orderStatusKey == "intransit"
+                      shipment.orderStatusKey == "intransit" ||
+                      shipment.orderStatusKey == "FW" ||
+                      shipment.orderStatusKey == "canceled" ||
+                      shipment.orderStatusKey == "receivedbybranch"
                   ? Get.locale.toString() == "en"
                       ? shipment.orderProblem?.problemReason.title != ""
                           ? shipment.orderProblem?.problemReason.title
@@ -377,9 +390,11 @@ class CardBody extends StatelessWidget {
                           ? shipment.orderProblem?.problemReason.titleAr
                           : Order_current_Status
                   : Order_current_Status ?? "",
-              status_key == 'return' ||
-                      shipment.orderStatusKey == "F" ||
-                      shipment.orderStatusKey == "intransit"
+              shipment.orderStatusKey == "F" ||
+                      shipment.orderStatusKey == "intransit" ||
+                      shipment.orderStatusKey == "FW" ||
+                      shipment.orderStatusKey == "canceled" ||
+                      shipment.orderStatusKey == "receivedbybranch"
                   ? Colors.red
                   : status_key == 'F' || status_key == "FW"
                       ? Colors.orange
@@ -388,8 +403,8 @@ class CardBody extends StatelessWidget {
                           : primaryColor),
           Padding(
             padding: const EdgeInsets.only(
-              left: 15.0,
-              right: 12,
+              left: 8.0,
+              right: 8,
               top: 10,
             ),
             child: StepProgressView(
@@ -631,6 +646,7 @@ class CardBody extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width * 0.42,
           child: CustomText(
+            // direction: TextDirection.ltr,
             maxLines: 1,
             text: subTilte,
             size: Get.locale.toString() == "ar" ? 10 : 12,

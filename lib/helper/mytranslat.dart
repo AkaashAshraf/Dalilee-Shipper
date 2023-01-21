@@ -4,6 +4,9 @@ class MyTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         "ar": {
+          "Delivered": "تم التوصيل",
+          "Un-Delivered": "لم يتم تسليمها",
+
           "da1": "محاولة تسليم الطلب ١",
           "da2": "محاولة تسليم الطلب ٢",
           "ca1": "محاولة الاتصال ١",
@@ -296,6 +299,8 @@ class MyTranslations extends Translations {
           "Filed": "فشل",
         },
         "en": {
+          "Delivered": "Delivered",
+          "Un-Delivered": "Un-Delivered",
           "da1": "Delivery Attempt 1",
           "da2": "Delivery Attempt 2",
           "ca1": "Call Attempt 1",

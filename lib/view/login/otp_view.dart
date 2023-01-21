@@ -74,6 +74,7 @@ class _OTPViewState extends State<OTPView> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 60.0),
               child: PinFieldAutoFill(
+                autoFocus: true,
                 codeLength: 4,
                 decoration: BoxLooseDecoration(
                   radius: const Radius.circular(5),

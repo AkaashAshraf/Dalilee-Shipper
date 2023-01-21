@@ -269,7 +269,7 @@ class _Showlung extends StatelessWidget {
             height: 15,
           ),
           CustomFormFiled(
-            select: "",
+            select: Get.locale.toString() == "en" ? 'English' : "العربية",
             hint: 'English',
             text: 'SelectLanguage'.tr,
             onSaved: (val) {
@@ -388,7 +388,9 @@ class _ShowCurrency extends StatelessWidget {
             height: 15,
           ),
           CustomFormFiled(
-            select: "",
+            select: Get.put(HelperController()).currency.value == "omr"
+                ? "omr".tr
+                : "aed".tr,
             hint: 'OMR',
             text: 'chooseCurrency'.tr,
             onSaved: (val) async {

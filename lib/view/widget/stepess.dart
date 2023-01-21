@@ -8,7 +8,7 @@ class StepProgressView extends StatelessWidget {
   final int _curStep;
   final Color _activeColor;
   final Color _inactiveColor = whiteColor;
-  final double lineWidth = 3.0;
+  final double lineWidth = 2.0;
 
   const StepProgressView(
       {Key? key,
@@ -48,34 +48,31 @@ class StepProgressView extends StatelessWidget {
               : _activeColor;
 
       list.add(
-        ClipRRect(
-          borderRadius: BorderRadius.circular(90),
-          child: Container(
-            width: 35.0,
-            height: 35.0,
-            padding: const EdgeInsets.all(8),
-            child: _icons.isEmpty
-                ? Image.asset(
-                    'assets/images/dalilee.png',
-                    color: iconColor,
-                    height: 1,
-                    width: 1,
-                    fit: BoxFit.fill,
-                  )
-                : Image.network(
-                    icon,
-                    color: iconColor,
-                    height: 1,
-                    width: 1,
-                    fit: BoxFit.fill,
-                  ),
-            decoration: BoxDecoration(
-              color: circleColor,
-              borderRadius: const BorderRadius.all(Radius.circular(90.0)),
-              border: Border.all(
-                color: _activeColor,
-                width: 1.5,
-              ),
+        Container(
+          width: 35.0,
+          height: 35.0,
+          padding: const EdgeInsets.all(8),
+          child: _icons.isEmpty
+              ? Image.asset(
+                  'assets/images/dalilee.png',
+                  color: iconColor,
+                  // height: 1,
+                  // width: 1,
+                  fit: BoxFit.cover,
+                )
+              : Image.network(
+                  icon,
+                  color: iconColor,
+                  // height: 45,
+
+                  fit: BoxFit.cover,
+                ),
+          decoration: BoxDecoration(
+            color: circleColor,
+            borderRadius: const BorderRadius.all(Radius.circular(90.0)),
+            border: Border.all(
+              color: _activeColor,
+              width: 1.5,
             ),
           ),
         ),
@@ -83,27 +80,33 @@ class StepProgressView extends StatelessWidget {
 
       //line between icons
       if (i != _icons.length - 1) {
-        list.add(Expanded(
-            child: _curStep > i + 1
-                ? Container(
-                    height: lineWidth,
-                    color: lineColor,
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomText(
-                        alignment: Alignment.center,
-                        text: '-',
-                        color: text1Color.withOpacity(0.4),
-                      ),
-                      CustomText(
-                        alignment: Alignment.center,
-                        text: '-',
-                        color: text1Color.withOpacity(0.4),
-                      ),
-                    ],
-                  )));
+        list.add(_curStep > i + 1
+            ? Expanded(
+                child: Container(
+                  // width: 5,
+                  height: lineWidth,
+                  color: lineColor,
+                ),
+              )
+            : Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                      alignment: Alignment.center,
+                      text: '-',
+                      size: 10,
+                      color: text1Color.withOpacity(0.4),
+                    ),
+                    CustomText(
+                      alignment: Alignment.center,
+                      text: '-',
+                      size: 10,
+                      color: text1Color.withOpacity(0.4),
+                    ),
+                  ],
+                ),
+              ));
       }
     });
 
