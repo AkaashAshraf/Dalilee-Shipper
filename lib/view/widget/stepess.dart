@@ -89,22 +89,10 @@ class StepProgressView extends StatelessWidget {
                 ),
               )
             : Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(
-                      alignment: Alignment.center,
-                      text: '-',
-                      size: 10,
-                      color: text1Color.withOpacity(0.4),
-                    ),
-                    CustomText(
-                      alignment: Alignment.center,
-                      text: '-',
-                      size: 10,
-                      color: text1Color.withOpacity(0.4),
-                    ),
-                  ],
+                child: Container(
+                  // width: 5,
+                  height: lineWidth,
+                  color: lineColor,
                 ),
               ));
       }

@@ -1,4 +1,4 @@
-// To parse this JSON Closedata, do
+// To parse this JSON data, do
 //
 //     final closedFinanceListModel = closedFinanceListModelFromJson(jsonString);
 
@@ -12,84 +12,83 @@ String closedFinanceListModelToJson(ClosedFinanceListModel data) =>
 
 class ClosedFinanceListModel {
   ClosedFinanceListModel({
-    this.success,
     this.data,
   });
 
-  String? success;
-  CloseData? data;
+  ClosingData? data;
 
   factory ClosedFinanceListModel.fromJson(Map<String, dynamic> json) =>
       ClosedFinanceListModel(
-        success: json["success"],
-        data: CloseData.fromJson(json["data"]),
+        data: json["data"] == null ? null : ClosingData.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "success": success,
-        "data": data!.toJson(),
+        "data": data?.toJson(),
       };
 }
 
-class CloseData {
-  CloseData({
-    this.invoices,
+class ClosingData {
+  ClosingData({
     this.totalInvoices,
+    this.closingRequests,
   });
 
-  List<Invoice>? invoices;
   int? totalInvoices;
+  List<ClosingRequest>? closingRequests;
 
-  factory CloseData.fromJson(Map<String, dynamic> json) => CloseData(
-        invoices: List<Invoice>.from(
-            json["invoices"].map((x) => Invoice.fromJson(x))),
-        totalInvoices:
-            json["total_invoices"] == null ? 0 : json["total_invoices"],
+  factory ClosingData.fromJson(Map<String, dynamic> json) => ClosingData(
+        totalInvoices: json["total_invoices"],
+        closingRequests: json["closing_requests"] == null
+            ? []
+            : List<ClosingRequest>.from(json["closing_requests"]!
+                .map((x) => ClosingRequest.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "invoices": List<dynamic>.from(invoices!.map((x) => x.toJson())),
-        "total_invoices": totalInvoices == null ? 0 : totalInvoices,
+        "total_invoices": totalInvoices,
+        "closing_requests": closingRequests == null
+            ? []
+            : List<dynamic>.from(closingRequests!.map((x) => x.toJson())),
       };
 }
 
-class Invoice {
-  Invoice({
-    this.id,
-    this.closingDate,
-    this.cod,
-    this.shippingCost,
-    this.totalOrders,
-    this.cc,
-    this.amountTransferred,
-    this.createdAt,
+class ClosingRequest {
+  ClosingRequest({
+    this.id = 0,
+    this.closingDate = "",
+    this.cod = 0,
+    this.shipping = 0,
+    this.totalOrders = 0,
+    this.cc = 0,
+    this.amountTransferred = 0,
+    this.createdAt = "",
   });
 
   int? id;
-  dynamic closingDate;
-  dynamic cod;
-  dynamic shippingCost;
-  dynamic totalOrders;
-  dynamic cc;
-  dynamic amountTransferred;
-  dynamic createdAt;
+  String? closingDate;
+  int? cod;
+  int? shipping;
+  int? totalOrders;
+  int? cc;
+  int? amountTransferred;
+  String? createdAt;
 
-  factory Invoice.fromJson(Map<String, dynamic> json) => Invoice(
-        id: json["id"],
-        closingDate: json["closing_date"],
-        cod: json["cod"],
-        shippingCost: json["shipping_cost"],
-        totalOrders: json["total_orders"],
-        cc: json["cc"],
-        amountTransferred: json["amount_transferred"],
-        createdAt: json["created_at"],
+  factory ClosingRequest.fromJson(Map<String, dynamic> json) => ClosingRequest(
+        id: json["id"] ?? 0,
+        closingDate: json["closing_date"] ?? "",
+        cod: json["cod"] ?? 0,
+        shipping: json["shipping"] ?? 0,
+        totalOrders: json["total_orders"] ?? 0,
+        cc: json["cc"] ?? 0,
+        amountTransferred: json["amount_transferred"] ?? 0,
+        createdAt: json["created_at"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "closing_date": closingDate,
         "cod": cod,
-        "shipping_cost": shippingCost,
+        "shipping": shipping,
         "total_orders": totalOrders,
         "cc": cc,
         "amount_transferred": amountTransferred,

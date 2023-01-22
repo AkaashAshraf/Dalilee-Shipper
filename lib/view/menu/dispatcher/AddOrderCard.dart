@@ -59,7 +59,7 @@ class AddOrderCard extends StatelessWidget {
                                   onTextChange: (val) {
                                     controller.addList[index].phone = val;
                                   },
-                                  label: "Contact *" + order.id.toString(),
+                                  label: "Contact *",
                                   validator: (_value) {
                                     if ((_value == "" || _value == null) &&
                                         controller
@@ -117,57 +117,54 @@ class AddOrderCard extends StatelessWidget {
                                     initialValue: order.cod)),
 
                             Container(
-                                // height: 45,
+                                height: 45,
                                 width: MediaQuery.of(context).size.width * 0.32,
-                                child: Expanded(
-                                  child: DropdownSearch<String>(
-                                    label: "Willaya *",
+                                child: DropdownSearch<String>(
+                                  label: "Willaya *",
 
-                                    showSearchBox: true,
-                                    // showClearButton: true,
-                                    showAsSuffixIcons: true,
-                                    showSelectedItems: true,
+                                  showSearchBox: true,
+                                  // showClearButton: true,
+                                  showAsSuffixIcons: true,
+                                  showSelectedItems: true,
 
-                                    items: controller.willayas.map((element) {
-                                      return element.name;
-                                    }).toList(),
-                                    onChanged: (_value) {
-                                      final List<Order> list = [];
-                                      Order object;
-                                      final willaya = controller.willayas
-                                          .where((item) => item.name == _value)
-                                          .first;
-                                      // print(r.id);
+                                  items: controller.willayas.map((element) {
+                                    return element.name;
+                                  }).toList(),
+                                  onChanged: (_value) {
+                                    final List<Order> list = [];
+                                    Order object;
+                                    final willaya = controller.willayas
+                                        .where((item) => item.name == _value)
+                                        .first;
+                                    // print(r.id);
 
-                                      for (int i = 0;
-                                          i < controller.addList.length;
-                                          i++) {
-                                        object = controller.addList[i];
+                                    for (int i = 0;
+                                        i < controller.addList.length;
+                                        i++) {
+                                      object = controller.addList[i];
 
-                                        if (index == i) {
-                                          object.willayaLabel = _value ?? "";
-                                          object.willayaID = willaya.id;
-                                          object.regionLabel = "";
-                                          object.regionID = 0;
-                                        }
-                                        list.add(object);
+                                      if (index == i) {
+                                        object.willayaLabel = _value ?? "";
+                                        object.willayaID = willaya.id;
+                                        object.regionLabel = "";
+                                        object.regionID = 0;
                                       }
-                                      controller.addList.value = list;
-                                    },
-                                    autoValidateMode: AutovalidateMode.always,
+                                      list.add(object);
+                                    }
+                                    controller.addList.value = list;
+                                  },
+                                  autoValidateMode: AutovalidateMode.always,
 
-                                    validator: (String? i) {
-                                      if (i == "" &&
-                                          controller
-                                              .addList[index].checkValidtion)
-                                        return 'required';
-                                      // else if (i >= 5) return 'value should be < 5';
-                                      return null;
-                                    },
-                                    selectedItem: controller
-                                        .addList[index].willayaLabel
-                                        .toString(),
-                                  ),
+                                  validator: (String? i) {
+                                    if (i == "" &&
+                                        controller.addList[index]
+                                            .checkValidtion) return 'required';
+                                    // else if (i >= 5) return 'value should be < 5';
+                                    return null;
+                                  },
+                                  selectedItem: controller
+                                      .addList[index].willayaLabel
+                                      .toString(),
                                 )),
 
                             Container(

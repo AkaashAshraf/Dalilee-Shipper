@@ -8,11 +8,9 @@ import 'package:dalile_customer/model/bank_model.dart';
 import 'package:dalile_customer/model/close_finance_model.dart';
 import 'package:dalile_customer/model/crm/account_enquiries.dart';
 import 'package:dalile_customer/model/crm/bank_accounts.dart';
-import 'package:dalile_customer/model/enquiry_model.dart';
 import 'package:dalile_customer/model/finance_open_model.dart';
 import 'package:dalile_customer/model/shaheen_aws/shipment_listing.dart';
 import 'package:dalile_customer/model/sub_cat_list_model.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -191,9 +189,10 @@ abstract class FinanceApi {
     }
   }
 
-  static Future<CloseData?> fetchCloseData(dynamic body) async {
+  static Future<ClosingData?> fetchCloseData(dynamic body) async {
     try {
-      final response = await dalileePost("/closeFinance", body);
+      final response = await post("/finance/close", body);
+      inspect(response);
       if (response.statusCode == 200) {
         var data = closedFinanceListModelFromJson(response.body);
 
@@ -206,7 +205,7 @@ abstract class FinanceApi {
         return null;
       }
     } catch (e) {
-      mass = 'Network error';
+      mass = 'Network error' + e.toString();
     }
     return null;
   }
@@ -214,16 +213,15 @@ abstract class FinanceApi {
   static Future<String?> fetchPDFCloseData(id, {required String type}) async {
     var url = "$like/pickup/export-invoice-pdf";
     final prefs = await SharedPreferences.getInstance();
-
+    String token = prefs.getString('token') ?? '';
+    print(token);
     dynamic fromString = prefs.getString('loginData') ?? '';
 
     dynamic resLogin = json.decode(fromString!.toString());
-    dynamic tokenLo = resLogin['data']["access_token"] ?? '';
     try {
       var response = await http.post(Uri.parse(url), headers: {
         "Accept": "application/json",
-        "Authorization":
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxNyIsImp0aSI6ImFhOGJlOTFkNzU5MDhiOGE4ZjllYTc5OWQ5YWQ3YWU5N2E5MzQ1MWVkNzA5OWRjMTgwMjM4ZmYxNWM3ZDYwZWQwZWFmYjhmYzZkZWM5YjRkIiwiaWF0IjoxNjczNzMyNDY5LCJuYmYiOjE2NzM3MzI0NjksImV4cCI6MTcwNTI2ODQ2OSwic3ViIjoiMTQ1ODIyIiwic2NvcGVzIjpbXX0.EDn8f3RAEQorGsPdF8rLClLirtNgA685bjCRuGzzl6Ay5OuEKerWpIdTTd4ebAiuLsUTGw3-zKd5NkIyzeWZSP70_effGPpBXcrkNGzS5Kq-iLzSXdrGvkWB5NdBeazYONl2_QG119vaa27BuFVfIZ4lD8uTbBLqLDXU1kdhTVktZeEBAxFCX_dyKjOejguU8rCWCeIDGqLgXVmSp5ON0CtOPjo7uSeFo5bcZ6_iW4x0IBJYizr_beBnG3_gGuH9M0t9wEaCEtJ-FvvLsGz_S36YgvspsPoOh2kUeX-a-BmboOR7uErz1Ck_p993h-Xnuh2r3e8j0Recdkncy9tpmrSzuK9hKlGOGeU1GzBTp4zyoqGS37fmwC0WBh8ofRQHcS1MAJ1FsGiYor8T93MwK35MuDwPed9YdwLt3QhlLeGaGd257MRELAuqISkpcdx2JgsoMio7J8Lsjc9e3bWGiMMrhOxGoHcNbDz-MzrYCh7MnzT2D0IXJVcTVqoXxFVOTLgbsqlSRNgblYI4o5U-4PoTQNOU1LTyAMYmUR015x7EoIko3znWhmtAsZ4JUzlazKtmYlZitdE6SKN1xy2cBBB4-fSZHDdUXpgowALnoRMGwGYTU4Fo4ynhGUyEWDSpoEtWYgjguXoCoIWABQPtzF1Vuo7Lu1q6ezN4OyieaSM"
+        "Authorization": "Bearer $token"
       }, body: {
         "invoice_id": "$id",
         "type": type
@@ -241,6 +239,41 @@ abstract class FinanceApi {
         return null;
       }
     } catch (e) {
+      mass = 'Network error';
+    }
+    return null;
+  }
+
+  static Future<String?> fetchCSVCloseData(id,
+      {bool isAllOrders = false}) async {
+    var url = isAllOrders
+        ? "$like/dashboard/export?type=pdf&module=shipper_self_orders&email=0"
+        : "$like/dashboard/export?type=csv&email=0&module=invoice_shipments&invoice_id=${id.toString()}";
+    final prefs = await SharedPreferences.getInstance();
+
+    String token = prefs.getString('token') ?? '';
+    try {
+      var response = await http.get(
+        Uri.parse(url),
+        headers: {
+          "Accept": "application/json",
+          "Authorization": "Bearer $token"
+        },
+      );
+      inspect(response);
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+
+        return data["data"]["url"];
+      } else {
+        var err = json.decode(response.body);
+
+        mass = '${err["message"]}';
+
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
       mass = 'Network error';
     }
     return null;

@@ -1,6 +1,7 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/dashbordController.dart';
 import 'package:dalile_customer/core/view_model/DispatcherController.dart';
+import 'package:dalile_customer/core/view_model/finance_view_model.dart';
 import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
@@ -99,6 +100,39 @@ class _MyOrders extends State<MyOrders> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: controller.myOders.length > 0
+            ? FloatingActionButton(
+                onPressed: () {
+                  Get.defaultDialog(
+                      title: 'PDF ' + 'File'.tr,
+                      titlePadding: const EdgeInsets.all(15),
+                      contentPadding: const EdgeInsets.all(5),
+                      middleText: 'AreDownloadpdf'.tr,
+                      textCancel: 'Cancel'.tr,
+                      textConfirm: 'Ok'.tr,
+                      buttonColor: primaryColor,
+                      confirmTextColor: Colors.white,
+                      cancelTextColor: Colors.black,
+                      radius: 10,
+                      backgroundColor: whiteColor,
+                      onConfirm: () {
+                        Get.put(FinanceController())
+                            .launchCSV(0, isAllOrders: true);
+                      });
+                },
+                child: controller.loading.value == false
+                    ? Icon(
+                        Icons.download,
+                        color: Colors.white,
+                        size: 25,
+                      )
+                    : null,
+                backgroundColor: primaryColor,
+                elevation: 8,
+                splashColor: Colors.grey,
+              )
+            : null,
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
         backgroundColor: primaryColor,
         appBar: _buildAppBar(),
         body: Container(

@@ -22,7 +22,9 @@ class ViewOrderController extends GetxController {
   RxBool loadMore = false.obs;
 
   RxList<Shipment> viewOrderData = <Shipment>[].obs;
+  RxList<Shipment> closedOrderData = <Shipment>[].obs;
   RxInt totalOrders = 0.obs;
+  RxInt totalClosedOrders = 0.obs;
 
   fetchViewOrderData({isRefresh: false}) async {
     try {
@@ -53,6 +55,49 @@ class ViewOrderController extends GetxController {
         }
         if (!Get.isSnackbarOpen) {
           Get.snackbar('Failed', FinanceApi.mass);
+        }
+      }
+    } finally {
+      isLoading(false);
+      loadMore(false);
+    }
+  }
+
+  fetchClosedInvoiceData({isRefresh: false, required String invoiceID}) async {
+    try {
+      var limit = "100";
+      var offset = closedOrderData.length.toString();
+
+      if (isRefresh) {
+        isLoading(true);
+        limit = "100";
+        offset = "0";
+        loadMore.value = false;
+      } else {
+        loadMore.value = true;
+      }
+      var body = {
+        "offset": offset,
+        "limit": limit,
+        "module": "invoice_shipments",
+        "invoice_id": invoiceID
+      };
+      var viewOrder = await FinanceApi.fetchViewOrdersData(body,
+          url: "/dashboard/shipments");
+      if (viewOrder != null) {
+        totalClosedOrders.value = viewOrder.totalShipments!;
+        if (isRefresh)
+          closedOrderData.value = viewOrder.shipments;
+        else
+          closedOrderData.value += viewOrder.shipments;
+      } else {
+        if (FinanceApi.mass.isEmpty) {
+          if (!Get.isSnackbarOpen) {
+            Get.snackbar('Failed'.tr, "please try agian later");
+          }
+        }
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar('Failed'.tr, FinanceApi.mass);
         }
       }
     } finally {

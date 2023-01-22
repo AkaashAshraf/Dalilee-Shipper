@@ -1,6 +1,8 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/finance_view_model.dart';
+import 'package:dalile_customer/core/view_model/view_order_view_model.dart';
 import 'package:dalile_customer/helper/helper.dart';
+import 'package:dalile_customer/view/menu/finances/view_closed_invoice_order.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/empty.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
@@ -20,6 +22,8 @@ class ColusedView extends StatefulWidget {
 class _ColusedViewState extends State<ColusedView> {
   ScrollController? scrollController;
   HelperController helperController = Get.put(HelperController());
+  ViewOrderController viewOrderController = Get.put(ViewOrderController());
+
   @override
   void initState() {
     scrollController = ScrollController()
@@ -120,7 +124,7 @@ class _ColusedViewState extends State<ColusedView> {
                                 _buildRowText(
                                     'ShippingCost'.tr,
                                     helperController.getCurrencyInFormat(
-                                        widget.c.closeData[i].shippingCost)),
+                                        widget.c.closeData[i].shipping)),
                                 _buildRowText(
                                     'CC'.tr,
                                     helperController.getCurrencyInFormat(
@@ -219,6 +223,52 @@ class _ColusedViewState extends State<ColusedView> {
             // const SizedBox(
             //   width: 10,
             // ),
+            GestureDetector(
+              onTap: () {
+                viewOrderController.closedOrderData.value = [];
+                viewOrderController.totalClosedOrders.value = 0;
+                Get.to(ViewClosedInvoiceOrderView(
+                  invoiceId: id.toString(),
+                ));
+              },
+              child: Icon(
+                Icons.remove_red_eye,
+                color: primaryColor,
+                size: 30.0,
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            InkWell(
+              onTap: () {
+                Get.defaultDialog(
+                    title: 'CSV ' + 'File'.tr,
+                    titlePadding: const EdgeInsets.all(15),
+                    contentPadding: const EdgeInsets.all(5),
+                    middleText: 'AreDownloadpdf'.tr,
+                    textCancel: 'Cancel'.tr,
+                    textConfirm: 'Ok'.tr,
+                    buttonColor: primaryColor,
+                    confirmTextColor: Colors.white,
+                    cancelTextColor: Colors.black,
+                    radius: 10,
+                    backgroundColor: whiteColor,
+                    onConfirm: () {
+                      widget.c.launchCSV(
+                        id,
+                      );
+                    });
+              },
+              child: Image.asset(
+                'assets/images/csv.png',
+                width: 25,
+                height: 25,
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
             InkWell(
               onTap: () {
                 Get.defaultDialog(

@@ -120,16 +120,16 @@ class HomeViewModel extends GetxController {
                                 // }),
                                 buildMenu(Icons.add_box_outlined, "AddOrder".tr,
                                     context, () {
-                                  Get.snackbar('soon_available'.tr, " ",
-                                      colorText: Colors.orange);
-                                  if (false) Get.to(AddOrder());
+                                  // Get.snackbar('soon_available'.tr, " ",
+                                  //     colorText: Colors.orange);
+                                  Get.to(AddOrder());
                                 }),
 
                                 buildMenu(Icons.my_library_books_outlined,
                                     "myOrders".tr, context, () {
-                                  Get.snackbar('soon_available'.tr, " ",
-                                      colorText: Colors.orange);
-                                  return;
+                                  // Get.snackbar('soon_available'.tr, " ",
+                                  //     colorText: Colors.orange);
+                                  // return;
                                   Get.put(DispatcherController())
                                       .fetchMyOrders();
                                   Get.to(MyOrders());

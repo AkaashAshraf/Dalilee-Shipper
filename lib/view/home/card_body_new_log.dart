@@ -224,7 +224,7 @@ class CardBody extends StatelessWidget {
                     else if (isMyOrder && cod > 0)
                       InkWell(
                         onTap: () async {
-                          final _url = '$thawaniPaymentLink${shipment.orderId}';
+                          final _url = '$thawaniPaymentLink${shipment.rId}';
                           // Share.share("Sample Share Text");
                           FlutterShare.share(
                             title: ' ',
@@ -245,7 +245,7 @@ class CardBody extends StatelessWidget {
                     if (isMyOrder && cod > 0)
                       InkWell(
                         onTap: () async {
-                          final _url = '$thawaniPaymentLink${shipment.orderId}';
+                          final _url = '$thawaniPaymentLink${shipment.rId}';
                           Get.put(DispatcherController())
                               .loadingPaymentView
                               .value = true;

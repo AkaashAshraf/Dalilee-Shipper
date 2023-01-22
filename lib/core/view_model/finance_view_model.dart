@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dalile_customer/core/server/finance_api.dart';
 import 'package:dalile_customer/core/view_model/downloadController.dart';
 import 'package:dalile_customer/model/close_finance_model.dart';
@@ -42,7 +44,7 @@ class FinanceController extends GetxController {
   var isLoading = false.obs;
 
   var openData = OpenData().obs;
-  var closeData = <Invoice>[].obs;
+  var closeData = <ClosingRequest>[].obs;
   fetchOpenData() async {
     try {
       isLoading(true);
@@ -79,9 +81,9 @@ class FinanceController extends GetxController {
       if (close != null) {
         totalCloseInvoices.value = close.totalInvoices!;
         if (isRefresh)
-          closeData.value = close.invoices!;
+          closeData.value = close.closingRequests ?? [];
         else
-          closeData.value += close.invoices!;
+          closeData.value += close.closingRequests ?? [];
       } else {
         if (!Get.isSnackbarOpen) {
           Get.snackbar('Failed'.tr, FinanceApi.mass);
@@ -104,6 +106,7 @@ class FinanceController extends GetxController {
     try {
       var pdf = await FinanceApi.fetchPDFCloseData(id, type: type)
           .whenComplete(() => Get.back());
+      inspect(pdf);
       // Get.snackbar(pdf.toString(), " ", colorText: Colors.orange);
 
       if (pdf != null) {
@@ -111,6 +114,28 @@ class FinanceController extends GetxController {
         Get.snackbar(pdf, " ", colorText: Colors.orange);
         var url = pdf;
         Get.put(DownloadController()).startDownloadingExcellOrPdf(url, "pdf");
+        // await launchUrl(Uri.parse(url));
+        // await launch(url);
+      }
+    } catch (e) {
+      Get.snackbar(e.toString(), " ", colorText: Colors.orange);
+    } finally {
+      print('finally');
+    }
+  }
+
+  launchCSV(id, {bool isAllOrders = false}) async {
+    Get.dialog(const WaiteImage(), barrierColor: Colors.transparent);
+    try {
+      var csv = await FinanceApi.fetchCSVCloseData(id, isAllOrders: isAllOrders)
+          .whenComplete(() => Get.back());
+
+      if (csv != null) {
+        // print('pdf----$pdf');
+        Get.snackbar(csv, " ", colorText: Colors.orange);
+        var url = csv;
+        Get.put(DownloadController())
+            .startDownloadingExcellOrPdf(url, isAllOrders ? "pdf" : "csv");
         // await launchUrl(Uri.parse(url));
         // await launch(url);
       }
