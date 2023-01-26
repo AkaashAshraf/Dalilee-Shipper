@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 // const primaryColor = Colors.green;
 bool isTesEnvironment = false;
 double omrToAedRate = 9.47;
+const int iosVersionLocal = 2;
+const int androidVersionLocal = 2;
+
 Color primaryColor = Color(isTesEnvironment ? 0xFF05A549 : 0xFF00A1E1);
 
 const whiteColor = Color(0xFFFFFFFF);

@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:dalile_customer/config/localNotificationService.dart';
 import 'package:dalile_customer/core/server/auth.dart';
+import 'package:dalile_customer/view/home/notifications/notifications_list.dart';
+import 'package:dalile_customer/view/home/search/search_screen.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
 import 'package:dalile_customer/view/widget/controller_view.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:get/get.dart';
@@ -28,11 +32,36 @@ class _SplashScreenState extends State<SplashScreen> {
     player.play().then((value) => {
           Timer(const Duration(milliseconds: 5000), () {
             Get.offAll(status ? ControllerView() : LoginView());
+            setupInteractedMessage();
           })
         });
     // .then((value) => {Get.offAll(status ? ControllerView() : LoginView())});
 
     super.initState();
+  }
+
+  Future<void> setupInteractedMessage() async {
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    FirebaseMessaging.onMessageOpenedApp.listen((val) {
+      if (val.data["body"] != "")
+        Get.to(SearchScreen(
+          defaultSearch: val.data["body"] ?? "",
+        ));
+      else
+        Get.to(NotificationList());
+    });
+    FirebaseMessaging.onMessage.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    // NotificationService.showNotification(message.notification?.title ?? "",
+    //     message.notification?.body.toString() ?? "", 'Order Update');
   }
 
   @override
@@ -60,6 +89,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     // print(status.toString());
+
     return Container(
       child: VideoPlayer(player),
     );

@@ -43,7 +43,7 @@ class _ShipmentListView extends State<ShipmentListView> {
   void _refresh() async {
     await controller.fetchData(
         module: selectedStatus?.module ?? "all",
-        type: "out",
+        type: "all",
         isRefresh: true,
         to: to.toString().split(' ')[0],
         from: from.toString().split(' ')[0],
@@ -102,24 +102,36 @@ class _ShipmentListView extends State<ShipmentListView> {
     }
   }
 
-  _loadMore() async {
-    // print(controller.undeliverShipemet[0].toJson());
-
-    // if (controller.loadMoreUndeliver.value) return;
-    // if ((controller.dashboardUndeliver.value >
-    //         controller.undeliverShipemet.length) &&
-    //     scrollController!.position.extentAfter < 100.0) {
-    //   // bool isTop = scrollController!.position.pixels == 0;
-    //   controller.loadMoreUndeliver.value = true;
-    //   await controller.fetchUnDeliverShipemetData();
-    //   if (this.mounted)
-    //     setState(() {
-    //       subTitle = controller.undeliverShipemet.length.toString() +
-    //           "/" +
-    //           controller.dashboardUndeliver.value.toString();
-    //     });
-    // }
+  _loadMore() {
+    if (controller.loadMore.value || controller.loading.value) return;
+    if (controller.totalOUT > controller.ordersOUT.length &&
+        scrollController!.position.extentAfter < 3000 &&
+        controller.ordersOUT.length > 0) {
+      controller.fetchData(
+          module: selectedStatus?.module ?? "all",
+          type: selectedStatus?.module ?? "all",
+          isRefresh: false,
+          offset: controller.ordersOUT.length);
+    }
   }
+  // _loadMore() async {
+  //   // print(controller.undeliverShipemet[0].toJson());
+
+  //   // if (controller.loadMoreUndeliver.value) return;
+  //   // if ((controller.dashboardUndeliver.value >
+  //   //         controller.undeliverShipemet.length) &&
+  //   //     scrollController!.position.extentAfter < 100.0) {
+  //   //   // bool isTop = scrollController!.position.pixels == 0;
+  //   //   controller.loadMoreUndeliver.value = true;
+  //   //   await controller.fetchUnDeliverShipemetData();
+  //   //   if (this.mounted)
+  //   //     setState(() {
+  //   //       subTitle = controller.undeliverShipemet.length.toString() +
+  //   //           "/" +
+  //   //           controller.dashboardUndeliver.value.toString();
+  //   //     });
+  //   // }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +150,7 @@ class _ShipmentListView extends State<ShipmentListView> {
                     children: [
                       SizedBox(width: width * 0.45, child: Text("status".tr)),
                       Container(
-                        width: width * 0.45,
+                        width: width * 0.47,
                         decoration: BoxDecoration(
                           border: Border.all(
                               color: primaryColor, // Set border color
@@ -147,7 +159,7 @@ class _ShipmentListView extends State<ShipmentListView> {
                               5.0)), // Set rounded corner radius
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
                           child: DropdownButton<ShipmentStatus>(
                             value: selectedStatus,
                             icon: const Icon(Icons.arrow_drop_down),
@@ -230,7 +242,7 @@ class _ShipmentListView extends State<ShipmentListView> {
                 onRefresh: () async {
                   _refresh();
                 },
-                child: controller.ordersIN.isEmpty
+                child: controller.ordersOUT.isEmpty
                     ? controller.loading.value
                         ? WaiteImage()
                         : NoDataView(label: "NoData".tr)
@@ -238,12 +250,12 @@ class _ShipmentListView extends State<ShipmentListView> {
                         controller: scrollController,
                         separatorBuilder: (context, i) =>
                             const SizedBox(height: 15),
-                        itemCount: controller.ordersIN.length,
+                        itemCount: controller.ordersOUT.length,
                         padding: const EdgeInsets.only(
                             left: 15, right: 15, bottom: 10, top: 5),
                         itemBuilder: (context, i) {
                           return GetBuilder<INOUTController>(
-                            builder: (x) => card(controller.ordersIN()[i], x),
+                            builder: (x) => card(controller.ordersOUT()[i], x),
                           );
                         },
                       ),

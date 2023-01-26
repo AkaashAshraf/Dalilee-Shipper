@@ -79,11 +79,13 @@ class AllPickupBody extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildRowText('Date'.tr + ' : $date', 'Driver'.tr + ' : $name'),
+                _buildRowText('Date'.tr + ' : $date', 'Driver'.tr + ' : $name',
+                    MediaQuery.of(context).size.width),
                 _buildRowText(
                     'COP'.tr +
                         ' : ${helperController.getCurrencyInFormat(cod)}',
-                    'Quantity'.tr + ' : $qty'),
+                    'Quantity'.tr + ' : $qty',
+                    MediaQuery.of(context).size.width),
               ],
             ),
           ),
@@ -155,24 +157,30 @@ class AllPickupBody extends StatelessWidget {
     );
   }
 
-  Column _buildRowText(String title, String subTilte) {
+  Column _buildRowText(String title, String subTilte, double width) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomText(
-          text: title,
-          fontWeight: FontWeight.w400,
-          color: text1Color,
-          size: Get.locale.toString() == "ar" ? 10 : 13,
+        SizedBox(
+          width: width * 0.4,
+          child: CustomText(
+            text: title,
+            fontWeight: FontWeight.w400,
+            color: text1Color,
+            size: Get.locale.toString() == "ar" ? 10 : 13,
+          ),
         ),
         const SizedBox(
           height: 15,
         ),
-        CustomText(
-          text: subTilte,
-          fontWeight: FontWeight.w400,
-          color: text1Color,
-          size: Get.locale.toString() == "ar" ? 10 : 13,
+        SizedBox(
+          width: width * 0.4,
+          child: CustomText(
+            text: subTilte,
+            fontWeight: FontWeight.w400,
+            color: text1Color,
+            size: Get.locale.toString() == "ar" ? 10 : 13,
+          ),
         ),
       ],
     );

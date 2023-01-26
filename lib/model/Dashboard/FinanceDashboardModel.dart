@@ -49,14 +49,22 @@ class Data {
 }
 
 class FinanceStats {
-  FinanceStats(
-      {this.totalAmount,
-      this.codWithDrivers,
-      this.codPending,
-      this.codReturned,
-      this.paid,
-      this.readyToPay,
-      this.totalShippingAmount});
+  FinanceStats({
+    this.totalAmount,
+    this.codWithDrivers,
+    this.codPending,
+    this.codReturned,
+    this.paid,
+    this.readyToPay,
+    this.totalShippingAmount,
+    this.totalAmountCount,
+    this.paidCount,
+    this.codPendingCount,
+    this.readyToPayCount,
+    this.codWithDriversCount,
+    this.codReturnedCount,
+    this.totalShippingAmountCount,
+  });
 
   dynamic totalAmount;
   dynamic codWithDrivers;
@@ -66,6 +74,13 @@ class FinanceStats {
   dynamic readyToPay;
   dynamic totalShippingAmount;
 
+  dynamic totalAmountCount;
+  dynamic paidCount;
+  dynamic codPendingCount;
+  dynamic readyToPayCount;
+  dynamic codWithDriversCount;
+  dynamic codReturnedCount;
+  dynamic totalShippingAmountCount;
   factory FinanceStats.fromJson(Map<String, dynamic> json) => FinanceStats(
         totalAmount: json["total_amount"] == null
             ? 0
@@ -100,6 +115,13 @@ class FinanceStats {
         totalShippingAmount: json["total_shipping_amount"] == null
             ? 0
             : json["total_shipping_amount"],
+        totalAmountCount: json["total_amount_count"],
+        paidCount: json["paid_count"],
+        codPendingCount: json["cod_pending_count"],
+        readyToPayCount: json["ready_to_pay_count"],
+        codWithDriversCount: json["cod_with_drivers_count"],
+        codReturnedCount: json["cod_returned_count"],
+        totalShippingAmountCount: json["total_shipping_amount_count"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -111,5 +133,12 @@ class FinanceStats {
         "ready_to_pay": readyToPay == null ? 0 : readyToPay,
         "total_shipping_amount":
             totalShippingAmount == null ? 0 : totalShippingAmount,
+        "total_amount_count": totalAmountCount,
+        "paid_count": paidCount,
+        "cod_pending_count": codPendingCount,
+        "ready_to_pay_count": readyToPayCount,
+        "cod_with_drivers_count": codWithDriversCount,
+        "cod_returned_count": codReturnedCount,
+        "total_shipping_amount_count": totalShippingAmountCount,
       };
 }

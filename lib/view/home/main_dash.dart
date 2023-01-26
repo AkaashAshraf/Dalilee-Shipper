@@ -1,4 +1,5 @@
-import 'package:dalile_customer/config/localNotificationService.dart';
+import 'dart:developer';
+
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/dashbordController.dart';
 import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
@@ -14,8 +15,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:bluetooth_print/bluetooth_print.dart';
-import 'package:bluetooth_print/bluetooth_print_model.dart';
 
 class MainDash extends StatefulWidget {
   MainDash({Key? key, required this.controller}) : super(key: key);
@@ -53,29 +52,9 @@ class _MainDashState extends State<MainDash> {
   RefreshController cancelShipmentRefreshController =
       RefreshController(initialRefresh: true);
 
-  Future<void> setupInteractedMessage() async {
-    RemoteMessage? initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
-
-    if (initialMessage != null) {
-      _handleMessage(initialMessage);
-    }
-
-    FirebaseMessaging.onMessageOpenedApp.listen((val) {
-      Get.to(UndeliverListing());
-    });
-    FirebaseMessaging.onMessage.listen(_handleMessage);
-  }
-
-  void _handleMessage(RemoteMessage message) {
-    NotificationService.showNotification(message.notification!.title.toString(),
-        message.notification!.body.toString(), 'Order Update');
-  }
-
   @override
   void initState() {
     super.initState();
-    setupInteractedMessage();
     allShipmentScrollController = ScrollController()
       ..addListener(() {
         _loadMore(type: Status.ALL);
@@ -191,6 +170,9 @@ class _MainDashState extends State<MainDash> {
   }
 
   void _refresh({required type}) async {
+    String token = await FirebaseMessaging.instance.getToken() ?? "";
+    inspect({"fcm": token, "test": ""});
+    print(token);
     switch (type) {
       case Status.ALL:
         {
@@ -198,6 +180,7 @@ class _MainDashState extends State<MainDash> {
           allShipmentRefreshController.refreshCompleted();
           break;
         } //all
+
       case Status.DELIVERED:
         {
           await widget.controller.fetchDeliverShipemetData(isRefresh: true);
@@ -226,52 +209,8 @@ class _MainDashState extends State<MainDash> {
     } //switch
   }
 
-  BluetoothPrint bluetoothPrint = BluetoothPrint.instance;
-
-  print_r() async {
-    await bluetoothPrint.disconnect();
-
-    var devices = await bluetoothPrint.startScan(timeout: Duration(seconds: 6));
-
-    var res = await bluetoothPrint.connect(devices[0]);
-
-    // return;
-    Map<String, dynamic> config = Map();
-    List<LineText> list = [];
-    list.add(LineText(
-        type: LineText.TYPE_TEXT,
-        content: 'A Title',
-        weight: 1,
-        align: LineText.ALIGN_CENTER,
-        linefeed: 1));
-    list.add(LineText(
-        type: LineText.TYPE_TEXT,
-        content: 'this is conent left',
-        weight: 0,
-        align: LineText.ALIGN_LEFT,
-        linefeed: 1));
-    list.add(LineText(
-        type: LineText.TYPE_TEXT,
-        content: 'this is conent right',
-        align: LineText.ALIGN_RIGHT,
-        linefeed: 1));
-    list.add(LineText(linefeed: 1));
-    list.add(LineText(
-        type: LineText.TYPE_BARCODE,
-        content: 'A12312112',
-        size: 10,
-        align: LineText.ALIGN_CENTER,
-        linefeed: 1));
-    list.add(LineText(linefeed: 1));
-    list.add(LineText(
-        type: LineText.TYPE_QRCODE,
-        content: 'qrcode i',
-        size: 10,
-        align: LineText.ALIGN_CENTER,
-        linefeed: 1));
-    list.add(LineText(linefeed: 1));
-
-    await bluetoothPrint.printReceipt(config, list);
+  checkAppExpiry(BuildContext context) {
+    if (mounted) Get.put(DashbordController()).checkAppExpiry(context);
   }
 
   @override
@@ -280,7 +219,6 @@ class _MainDashState extends State<MainDash> {
     Get.put(
       () => ViewOrderController(),
     );
-
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -294,6 +232,7 @@ class _MainDashState extends State<MainDash> {
             onRefresh: () async {
               await widget.controller.fetchMainDashBoardData();
               mainScreenRefreshController.refreshCompleted();
+              checkAppExpiry(context);
             },
             controller: mainScreenRefreshController,
             child:

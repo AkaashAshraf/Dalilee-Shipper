@@ -1,4 +1,3 @@
-import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/OrderController.dart';
 import 'package:flutter/material.dart';
@@ -128,36 +127,37 @@ class MyShop extends StatelessWidget {
                               ],
                             ))),
                   ),
-                  ButtonsTabBar(
-                    backgroundColor: primaryColor,
-                    unselectedBackgroundColor: Colors.white,
-                    labelStyle: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    contentPadding: EdgeInsets.all(10),
-                    unselectedLabelStyle: TextStyle(
-                        color: primaryColor, fontWeight: FontWeight.bold),
-                    borderWidth: 0.3,
-                    unselectedBorderColor: Colors.black,
-                    radius: 5,
-                    tabs: [
-                      Tab(
-                        icon: Container(),
-                        text:
-                            "Pending ${controller.orders.where((p0) => false).length}",
-                      ),
-                      Tab(
-                        text: "Accepted",
-                      ),
-                      Tab(
-                        text: "In Process",
-                      ),
-                      Tab(
-                        text: "Completed",
-                      ),
-                    ],
-                  ),
+                  // ButtonsTabBar(
+                  //   backgroundColor: primaryColor,
+                  //   unselectedBackgroundColor: Colors.white,
+                  //   labelStyle: TextStyle(
+                  //     color: Colors.white,
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  //   contentPadding: EdgeInsets.all(10),
+                  //   unselectedLabelStyle: TextStyle(
+                  //       color: primaryColor, fontWeight: FontWeight.bold),
+                  //   borderWidth: 0.3,
+                  //   unselectedBorderColor: Colors.black,
+                  //   radius: 5,
+                  //   tabs: [
+                  //     Tab(
+                  //       icon: Container(),
+                  //       text:
+                  //           "Pending ${controller.orders.where((p0) => false).length}",
+                  //     ),
+                  //     Tab(
+                  //       text: "Accepted",
+                  //     ),
+                  //     Tab(
+                  //       text: "In Process",
+                  //     ),
+                  //     Tab(
+                  //       text: "Completed",
+                  //     ),
+                  //   ],
+                  // ),
+
                   Expanded(
                     child: TabBarView(children: [
                       Container(

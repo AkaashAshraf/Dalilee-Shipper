@@ -66,11 +66,11 @@ class ClosingRequest {
 
   int? id;
   String? closingDate;
-  int? cod;
-  int? shipping;
-  int? totalOrders;
-  int? cc;
-  int? amountTransferred;
+  dynamic cod;
+  dynamic shipping;
+  dynamic totalOrders;
+  dynamic cc;
+  dynamic amountTransferred;
   String? createdAt;
 
   factory ClosingRequest.fromJson(Map<String, dynamic> json) => ClosingRequest(

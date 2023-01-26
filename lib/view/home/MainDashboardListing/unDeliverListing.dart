@@ -4,6 +4,7 @@ import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/home/card_body_new_log.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -21,6 +22,9 @@ class _UndeliverListing extends State<UndeliverListing> {
   ScrollController? scrollController;
 
   void _refresh() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    print(token);
+
     await controller.fetchUnDeliverShipemetData(isRefresh: true);
     refreshController.refreshCompleted();
     if (this.mounted)

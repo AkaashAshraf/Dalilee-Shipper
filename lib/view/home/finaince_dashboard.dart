@@ -52,7 +52,8 @@ class _FinanceDashState extends State<FinanceDash> {
               child: buildCard(
                   context,
                   _InsideShape(
-                    subtitle: '',
+                    subtitle:
+                        "${widget.controller.totalOrderAmountOrdersCount.value}  ${"Orders".tr}",
                     image: Icon(
                       Icons.account_balance_wallet_outlined,
                       color: whiteColor,
@@ -60,6 +61,7 @@ class _FinanceDashState extends State<FinanceDash> {
                     ),
                     // title: 'Total Orders',
                     title: 'TotalOrdersAmount'.tr,
+
                     numbers: helperController.getCurrencyInFormat(
                         widget.controller.totalAmount.value),
                   ),
@@ -107,6 +109,8 @@ class _FinanceDashState extends State<FinanceDash> {
                       image: 'assets/images/delivered.png',
                       // title: 'Total collected',
                       title: 'PaidAmount'.tr,
+                      middleText:
+                          "${widget.controller.paidAmountOrdersCount.value} ${"Orders".tr}",
 
                       numbers: helperController.getCurrencyInFormat(
                           widget.controller.paidAmount.value),
@@ -128,7 +132,8 @@ class _FinanceDashState extends State<FinanceDash> {
 
                       // title: 'COD Pending',
                       title: 'ShippingCost'.tr,
-
+                      middleText:
+                          "${widget.controller.shippingCostOrdersCount.value}  ${"Orders".tr}",
                       numbers: helperController.getCurrencyInFormat(
                           widget.controller.shipmentCost.value),
                     ),
@@ -145,7 +150,8 @@ class _FinanceDashState extends State<FinanceDash> {
                       image: 'assets/images/tobepickup.png',
                       // title: 'Total collected',
                       title: 'CODPending'.tr,
-
+                      middleText:
+                          "${widget.controller.codPendingOrdersCount.value} ${"Orders".tr}",
                       numbers: helperController.getCurrencyInFormat(
                           widget.controller.codPendingAmount.value),
                     ), () {
@@ -163,7 +169,8 @@ class _FinanceDashState extends State<FinanceDash> {
                     _InsideSmallBox(
                       // image: 'assets/images/tobepickup.png',
                       image: 'assets/images/delivered.png',
-
+                      middleText:
+                          "${widget.controller.readyToPayOrdersCount.value} ${"Orders".tr}",
                       // title: 'COD Pending',
                       title: 'ReadyToPay'.tr,
 
@@ -189,7 +196,8 @@ class _FinanceDashState extends State<FinanceDash> {
                       image: 'assets/images/tobepickup.png',
                       title: 'CODwithDrivers'.tr,
                       // title: 'Total with Driver',
-
+                      middleText:
+                          "${widget.controller.codOfdOrdersCount.value} ${"Orders".tr}",
                       numbers: helperController.getCurrencyInFormat(
                           widget.controller.codWithDriversAmount.value),
                     ), () {
@@ -209,7 +217,8 @@ class _FinanceDashState extends State<FinanceDash> {
                       image: 'assets/images/delivered.png',
                       title: 'CODReturn'.tr,
                       // title: 'Total Returned',
-
+                      middleText:
+                          "${widget.controller.codReturnedOrdersCount.value} ${"Orders".tr}",
                       numbers: helperController.getCurrencyInFormat(
                           widget.controller.codReturn.value),
                     ), () {
@@ -234,7 +243,7 @@ Expanded _buildsmallbox(Widget child, dynamic onTap) {
     child: GestureDetector(
       onTap: onTap,
       child: Container(
-          height: 110,
+          height: 125,
           decoration: BoxDecoration(
             color: primaryColor,
             borderRadius: BorderRadius.circular(10),
@@ -264,25 +273,41 @@ Widget buildCard(BuildContext context, Widget child, a, b, c, d) {
 }
 
 class _InsideSmallBox extends StatelessWidget {
-  const _InsideSmallBox(
-      {Key? key,
-      required this.image,
-      required this.title,
-      required this.numbers})
-      : super(key: key);
-  final String image, title, numbers;
+  const _InsideSmallBox({
+    Key? key,
+    required this.image,
+    required this.title,
+    this.middleText = "",
+    required this.numbers,
+  }) : super(key: key);
+  final String image, title, numbers, middleText;
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CustomText(
-          text: title,
-          color: whiteColor,
-          size: 14,
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.4,
+          child: CustomText(
+            text: title,
+            color: whiteColor,
+            size: 14,
+          ),
         ),
         SizedBox(
-          height: 10,
+          height: 5,
+        ),
+        Row(
+          children: [
+            CustomText(
+              text: middleText,
+              color: whiteColor,
+              size: 12,
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 5,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

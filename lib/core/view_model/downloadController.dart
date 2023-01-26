@@ -119,7 +119,7 @@ class DownloadController extends GetxController {
               ? 1
               : 0;
       var res = await get(
-          '/dashboard/export?email=$isSendToEmail&type=$type&module=shipments&from_date=${startDate.value}&to_date=${endDate.value}');
+          '/dashboard/export?email=$isSendToEmail&type=$type&module=shipments&from_date=${startDate.value}&to_date=${endDate.value}&pdf_type=listing');
       if (res != null) {
         var body = exportResponseFromJson(res.body);
 

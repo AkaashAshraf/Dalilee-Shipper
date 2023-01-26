@@ -14,22 +14,39 @@ class MainDashboard {
     this.status,
     this.data,
     this.message,
+    this.andriodVersion,
+    this.iosVersion,
+    this.isAndroidVersionCheck,
+    this.isIosVersionCheck,
   });
 
   String? status;
   Data? data;
   String? message;
 
+  int? andriodVersion;
+  int? iosVersion;
+  bool? isAndroidVersionCheck;
+  bool? isIosVersionCheck;
+
   factory MainDashboard.fromJson(Map<String, dynamic> json) => MainDashboard(
         status: json["status"],
         data: Data.fromJson(json["data"]),
         message: json["message"],
+        andriodVersion: json["andriod_version"],
+        iosVersion: json["ios_version"],
+        isAndroidVersionCheck: json["is_android_version_check"],
+        isIosVersionCheck: json["is_ios_version_check"],
       );
 
   Map<String, dynamic> toJson() => {
         "status": status,
         "data": data!.toJson(),
         "message": message,
+        "andriod_version": andriodVersion,
+        "ios_version": iosVersion,
+        "is_android_version_check": isAndroidVersionCheck,
+        "is_ios_version_check": isIosVersionCheck,
       };
 }
 

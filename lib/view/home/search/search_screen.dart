@@ -13,7 +13,8 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class SearchScreen extends StatefulWidget {
-  SearchScreen({Key? key}) : super(key: key);
+  SearchScreen({Key? key, this.defaultSearch = ""}) : super(key: key);
+  final String defaultSearch;
 
   @override
   State<SearchScreen> createState() => _UndeliverListing();
@@ -33,6 +34,11 @@ class _UndeliverListing extends State<SearchScreen> {
   String searchText = "";
   @override
   void initState() {
+    setState(() {
+      searchText = widget.defaultSearch;
+    });
+    if (widget.defaultSearch != "") _refresh();
+
     super.initState();
   }
 
@@ -50,7 +56,9 @@ class _UndeliverListing extends State<SearchScreen> {
       backgroundColor: primaryColor,
       foregroundColor: whiteColor,
       title: CustomText(
-          text: "Search".tr,
+          text: widget.defaultSearch != ""
+              ? "OrderId#".tr + widget.defaultSearch
+              : "Search".tr,
           color: whiteColor,
           size: 18,
           fontWeight: FontWeight.w500,
@@ -76,36 +84,43 @@ class _UndeliverListing extends State<SearchScreen> {
                   padding: const EdgeInsets.all(20.0),
                   child: Container(
                     // height: 50,
-                    child: TextField(
-                      onChanged: (val) {
-                        setState(() {
-                          searchText = val;
-                        });
-                        if (_debounce?.isActive ?? false) _debounce?.cancel();
-                        _debounce =
-                            Timer(const Duration(milliseconds: 500), () {
-                          if (searchText.isEmpty)
-                            controller.shipments.value = [];
-                          else
-                            refreshController.requestRefresh();
+                    child: widget.defaultSearch != ""
+                        ? Container()
+                        : TextField(
+                            controller: widget.defaultSearch == ""
+                                ? null
+                                : TextEditingController(text: searchText),
+                            onChanged: (val) {
+                              setState(() {
+                                searchText = val;
+                              });
+                              if (_debounce?.isActive ?? false)
+                                _debounce?.cancel();
+                              _debounce =
+                                  Timer(const Duration(milliseconds: 500), () {
+                                if (searchText.isEmpty)
+                                  controller.shipments.value = [];
+                                else
+                                  refreshController.requestRefresh();
 
-                          // do something with query
-                        });
-                      },
-                      textCapitalization: TextCapitalization.characters,
-                      decoration: new InputDecoration(
-                        border: new OutlineInputBorder(
-                            borderSide: new BorderSide(color: primaryColor)),
-                        hintText: 'Search'.tr,
-                        helperText: 'write_order_number'.tr,
-                        labelText: 'search_order'.tr,
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: primaryColor,
-                        ),
-                        prefixText: ' ',
-                      ),
-                    ),
+                                // do something with query
+                              });
+                            },
+                            textCapitalization: TextCapitalization.characters,
+                            decoration: new InputDecoration(
+                              border: new OutlineInputBorder(
+                                  borderSide:
+                                      new BorderSide(color: primaryColor)),
+                              hintText: 'Search'.tr,
+                              helperText: 'write_order_number'.tr,
+                              labelText: 'search_order'.tr,
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: primaryColor,
+                              ),
+                              prefixText: ' ',
+                            ),
+                          ),
                   ),
                 ),
                 Expanded(

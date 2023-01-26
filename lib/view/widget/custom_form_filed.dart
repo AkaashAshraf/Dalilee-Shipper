@@ -9,7 +9,7 @@ class CustomFormFiled extends StatelessWidget {
   final dynamic onSaved;
   final String? Function(String?)? validator;
   final String? select;
-  final List<String>? items;
+  final List<String> items;
   const CustomFormFiled(
       {Key? key,
       required this.text,

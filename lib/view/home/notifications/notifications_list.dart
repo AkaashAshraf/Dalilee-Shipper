@@ -3,6 +3,7 @@ import 'package:dalile_customer/core/view_model/dashbordController.dart';
 import 'package:dalile_customer/core/view_model/notification_controller.dart';
 import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/home/card_body_new_log.dart';
+import 'package:dalile_customer/view/home/search/search_screen.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:dotted_line/dotted_line.dart';
@@ -28,6 +29,8 @@ class _UndeliverListing extends State<NotificationList> {
 
   @override
   void initState() {
+    // Get.put(NotificationController()).unreadNotification(0);
+
     super.initState();
   }
 
@@ -88,86 +91,104 @@ class _UndeliverListing extends State<NotificationList> {
                                     : NoDataView(label: "NoData".tr)
                                 : ListView.separated(
                                     separatorBuilder: (context, i) =>
-                                        const SizedBox(height: 15),
+                                        const SizedBox(height: 0),
                                     itemCount: controller.notifications.length,
                                     padding: const EdgeInsets.only(
-                                        left: 15,
-                                        right: 15,
-                                        bottom: 10,
-                                        top: 5),
+                                        left: 15, right: 15, bottom: 3, top: 2),
                                     itemBuilder: (context, i) {
-                                      return Container(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 10),
-                                        child: Card(
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 15),
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      "OrderId#".tr,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    Text(
-                                                      controller
-                                                          .notifications[i]
-                                                          .orderId
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(
-                                                  height: 5,
-                                                ),
-                                                DottedLine(
-                                                  dashColor: Colors.grey
-                                                      .withOpacity(0.8),
-                                                  dashGapColor: Colors.grey
-                                                      .withOpacity(0.8),
-                                                ),
-                                                const SizedBox(
-                                                  height: 5,
-                                                ),
-                                                SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.9,
-                                                  child: Text(
-                                                    controller.notifications[i]
-                                                        .externalText
-                                                        .toString(),
-                                                    style: TextStyle(),
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Get.to(SearchScreen(
+                                            defaultSearch: controller
+                                                .notifications[i].orderId
+                                                .toString(),
+                                          ));
+                                        },
+                                        child: Container(
+                                          padding:
+                                              EdgeInsets.symmetric(vertical: 5),
+                                          child: Card(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 15),
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "OrderId#".tr,
+                                                        style: TextStyle(
+                                                            color: Colors.red,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Text(
+                                                        controller
+                                                            .notifications[i]
+                                                            .orderId
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            color: primaryColor,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Container(),
-                                                    Text(
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  DottedLine(
+                                                    dashColor: Colors.grey
+                                                        .withOpacity(0.8),
+                                                    dashGapColor: Colors.grey
+                                                        .withOpacity(0.8),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 15,
+                                                  ),
+                                                  SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.9,
+                                                    child: Text(
                                                       controller
                                                           .notifications[i]
-                                                          .createdAt
+                                                          .externalText
                                                           .toString(),
-                                                      style: TextStyle(
-                                                          fontSize: 12),
+                                                      style: TextStyle(),
                                                     ),
-                                                  ],
-                                                ),
-                                              ],
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(),
+                                                      Text(
+                                                        controller
+                                                            .notifications[i]
+                                                            .createdAt
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            color: Colors.grey,
+                                                            fontSize: 12),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),

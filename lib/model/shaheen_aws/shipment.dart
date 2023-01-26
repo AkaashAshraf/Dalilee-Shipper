@@ -29,6 +29,8 @@ class Shipment {
     this.createdAt = "",
     this.updatedAt = "",
     this.trackingId = 0,
+    this.deliveryAttempts = "",
+    this.callAttempts = "",
     this.isOpen = false,
     required this.orderActivities,
   });
@@ -51,6 +53,9 @@ class Shipment {
   String weight;
   dynamic shippingPrice;
   dynamic cod;
+
+  String? deliveryAttempts;
+  String? callAttempts;
   String wilayaName;
   String areaName;
   int addedByStore;
@@ -79,6 +84,8 @@ class Shipment {
         weight: json["weight"] ?? "",
         shippingPrice: json["shipping_price"],
         cod: json["cod"],
+        deliveryAttempts: json["delivery_attempts"] ?? "",
+        callAttempts: json["call_attempts"] ?? "",
         wilayaName: json["wilaya_name"] ?? "",
         areaName: json["area_name"] ?? "",
         addedByStore: json["added_by_store"] ?? 0,
@@ -119,6 +126,8 @@ class Shipment {
         "area_name": areaName,
         "added_by_store": addedByStore,
         "store_id": storeId,
+        "delivery_attempts": deliveryAttempts,
+        "call_attempts": callAttempts,
         "order_problem": orderProblem,
         "created_at": createdAt,
         "updated_at": updatedAt,

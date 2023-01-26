@@ -4,9 +4,16 @@ class MyTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         "ar": {
+          "call_attempts": "محاولة الاتصال",
+          "delivery_attempts": "محاولة التوصيل",
+          "app_expired": "هذا الاصدار من التطبيق ملغي",
+          "please_update": "الرجاء تحديث التطبيق",
+          "upgrade_now": "تحديث الان",
+
+          "version": "اصدار التطبيق : ",
+          "Orders": "الشحنة",
           "Delivered": "تم التوصيل",
           "Un-Delivered": "لم يتم تسليمها",
-
           "da1": "محاولة تسليم الطلب ١",
           "da2": "محاولة تسليم الطلب ٢",
           "ca1": "محاولة الاتصال ١",
@@ -54,7 +61,7 @@ class MyTranslations extends Translations {
           'required': "مطلوب",
           "EnquiryNo": "رقم الطلب",
           "enq_addedd": "تم اضافة طلبك بنجاح",
-          "OrderId#": "رقم الشحنة:",
+          "OrderId#": "رقم الشحنة : ",
 
           "check_data": "الرجاء التاكد من الاتصال بالانترنت",
           "less_amount_warning":
@@ -299,7 +306,15 @@ class MyTranslations extends Translations {
           "Filed": "فشل",
         },
         "en": {
+          "call_attempts": "Call Attempts",
+          "delivery_attempts": "Delivery Attempts",
+          "app_expired": "Application Version Expired",
+          "please_update": "Please Update",
+          "upgrade_now": "Upgrade Now",
           "Delivered": "Delivered",
+          "version": "App Version : ",
+          "Orders": "Orders",
+
           "Un-Delivered": "Un-Delivered",
           "da1": "Delivery Attempt 1",
           "da2": "Delivery Attempt 2",
@@ -354,7 +369,7 @@ class MyTranslations extends Translations {
           "enq_addedd": "Enquiry successfully added",
           "Failed": "Failed",
           "check_data": "Please check your data",
-          "OrderId#": "Order No:",
+          "OrderId#": "Order No : ",
 
           "less_amount_warning":
               "Your pending amount is less than 1 OMR, you can not create enquiry",
@@ -436,10 +451,10 @@ class MyTranslations extends Translations {
           "TotalOrdersAmount": "Total Orders Amount",
           "PaidOrders": "Paid Orders",
           "PaidAmount": "Paid Amount",
-          "CODPending": "COD Pending",
+          "CODPending": "Pending Shipments COD ",
           "ReadyToPay": "Ready To Pay",
-          "CODwithDrivers": "COD with Drivers",
-          "CODReturn": "COD Return",
+          "CODwithDrivers": "COD OFD",
+          "CODReturn": "COD Returned",
           "SHIPMENTS": "SHIPMENTS",
           "IN": "IN",
           "OUT": "OUT",

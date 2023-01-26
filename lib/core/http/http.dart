@@ -76,7 +76,7 @@ Future<dynamic> post(String url, dynamic body) async {
   final prefs = await SharedPreferences.getInstance();
 
   String token = prefs.getString('token') ?? '';
-
+  print(token);
   try {
     var response = await http.post(Uri.parse(_url), body: body, headers: {
       "Accept": "application/json",

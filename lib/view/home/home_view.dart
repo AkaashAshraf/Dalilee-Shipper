@@ -2,6 +2,7 @@ import 'package:dalile_customer/components/popups/exportModal.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/dashbordController.dart';
 import 'package:dalile_customer/core/view_model/downloadController.dart';
+import 'package:dalile_customer/core/view_model/notification_controller.dart';
 import 'package:dalile_customer/view/home/finaince_dashboard.dart';
 import 'package:dalile_customer/view/home/main_dash.dart';
 import 'package:dalile_customer/view/home/notifications/notifications_list.dart';
@@ -18,6 +19,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(NotificationController());
     return Scaffold(
         backgroundColor: primaryColor,
         appBar: AppBar(
@@ -42,13 +44,45 @@ class HomeView extends StatelessWidget {
               onTap: () {
                 Get.to(NotificationList());
               },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Icon(
-                  Icons.notifications,
-                  color: Colors.white,
-                ),
-              ),
+              child: GetX<NotificationController>(builder: (controller) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Stack(
+                      children: <Widget>[
+                        new Icon(Icons.notifications, size: 25),
+                        new Positioned(
+                          right: 0,
+                          child: controller.unreadNotification.value == 0
+                              ? Container()
+                              : Container(
+                                  padding: EdgeInsets.all(1),
+                                  decoration: new BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  constraints: BoxConstraints(
+                                    minWidth: 13,
+                                    minHeight: 13,
+                                  ),
+                                  child: Center(
+                                    child: new Text(
+                                      controller.unreadNotification.value
+                                          .toString(),
+                                      style: new TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 8,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              }),
             ),
           ],
           title: CustomText(

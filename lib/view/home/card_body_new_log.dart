@@ -193,6 +193,7 @@ class CardBody extends StatelessWidget {
                               (shipment.orderStatusKey == "F" ||
                                   shipment.orderStatusKey == "intransit" ||
                                   shipment.orderStatusKey == "FW" ||
+                                  shipment.orderStatusKey == "BR" ||
                                   shipment.orderStatusKey == "canceled" ||
                                   shipment.orderStatusKey ==
                                       "receivedbybranch"))
@@ -209,6 +210,7 @@ class CardBody extends StatelessWidget {
                           color: (shipment.orderStatusKey == "F" ||
                                       shipment.orderStatusKey == "intransit" ||
                                       shipment.orderStatusKey == "FW" ||
+                                      shipment.orderStatusKey == "BR" ||
                                       shipment.orderStatusKey == "canceled" ||
                                       shipment.orderStatusKey ==
                                           "receivedbybranch") &&
@@ -305,8 +307,8 @@ class CardBody extends StatelessWidget {
 
                         await Get.put(ShipmentViewModel()).menuAlert(
                           context,
-                          number ?? "000",
-                          orderId ?? "2574953",
+                          number ?? "",
+                          orderId ?? "",
                           deleiver_image,
                           undeleiver_image,
                           pickup_image,
@@ -344,6 +346,39 @@ class CardBody extends StatelessWidget {
               ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 15.0, right: 15, top: 10, bottom: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  child: CustomText(
+                    maxLines: 1,
+                    size: Get.locale.toString() == "ar" ? 10 : 12,
+                    text: "${"call_attempts".tr} : ${shipment.callAttempts}",
+                    fontWeight: FontWeight.w400,
+                    color: text1Color,
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.42,
+                  child: CustomText(
+                    maxLines: 1,
+                    size: Get.locale.toString() == "ar" ? 10 : 12,
+                    text:
+                        "${"delivery_attempts".tr} : ${shipment.deliveryAttempts}",
+                    fontWeight: FontWeight.w400,
+                    color: text1Color,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
           // if (willaya != "")
           Padding(
             padding: const EdgeInsets.only(left: 15, right: 15, top: 0),
@@ -377,7 +412,7 @@ class CardBody extends StatelessWidget {
             height: 5,
           ),
           _rowWithnameline(
-              shipment.orderStatusKey == "F" ||
+              title: shipment.orderStatusKey == "F" ||
                       shipment.orderStatusKey == "intransit" ||
                       shipment.orderStatusKey == "FW" ||
                       shipment.orderStatusKey == "canceled" ||
@@ -385,12 +420,14 @@ class CardBody extends StatelessWidget {
                   ? Get.locale.toString() == "en"
                       ? shipment.orderProblem?.problemReason.title != ""
                           ? shipment.orderProblem?.problemReason.title
-                          : Order_current_Status
+                          : shipment.orderStatusName
                       : shipment.orderProblem?.problemReason.titleAr != ""
                           ? shipment.orderProblem?.problemReason.titleAr
-                          : Order_current_Status
-                  : Order_current_Status ?? "",
-              shipment.orderStatusKey == "F" ||
+                          : shipment.orderStatusName
+                  : shipment.orderStatusName != ""
+                      ? shipment.orderStatusName
+                      : Order_current_Status,
+              color: shipment.orderStatusKey == "F" ||
                       shipment.orderStatusKey == "intransit" ||
                       shipment.orderStatusKey == "FW" ||
                       shipment.orderStatusKey == "canceled" ||
@@ -458,7 +495,7 @@ class CardBody extends StatelessWidget {
         onTap: onPressedShowMore,
         child: Column(
           children: [
-            _rowWithnameline('ShipmentJourney'.tr, primaryColor),
+            _rowWithnameline(title: 'ShipmentJourney'.tr, color: primaryColor),
             for (int q = 0; q < shipment.orderActivities.length; q++)
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -533,7 +570,7 @@ class CardBody extends StatelessWidget {
                   )
                 ],
               ),
-            _rowWithnameline('PaymentSummary'.tr, primaryColor),
+            _rowWithnameline(title: 'PaymentSummary'.tr, color: primaryColor),
             _buildRowDown(
                 text1Color,
                 Get.locale.toString() == "ar" ? 11 : 12,
@@ -600,7 +637,7 @@ class CardBody extends StatelessWidget {
     );
   }
 
-  Row _rowWithnameline(String title, Color color) {
+  Row _rowWithnameline({required String title, required Color color}) {
     return Row(
       children: [
         Expanded(

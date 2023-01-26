@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 class NotificationController extends GetxController {
   RxBool loading = false.obs;
+  RxInt unreadNotification = 0.obs;
   RxList<Notification> notifications = <Notification>[].obs;
 
   @override
@@ -21,6 +22,7 @@ class NotificationController extends GetxController {
 
       var response = await post(
           "/notifications", {"module": module, "limit": "500", "offset": "0"});
+      unreadNotification(0);
       // inspect(response);
       if (response != null) {
         var jsonResponse = notificationsFromJson(response?.body);

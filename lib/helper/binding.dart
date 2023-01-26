@@ -1,4 +1,4 @@
-import 'package:dalile_customer/core/view_model/DashbordController.dart';
+import 'package:dalile_customer/core/view_model/dashbordController.dart';
 import 'package:dalile_customer/core/view_model/downloadController.dart';
 import 'package:dalile_customer/core/view_model/financeListingController.dart';
 import 'package:dalile_customer/core/view_model/home_view_model.dart';

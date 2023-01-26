@@ -9,7 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+// import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
 class What3WordsView extends StatefulWidget {
   const What3WordsView({Key? key}) : super(key: key);
@@ -30,7 +30,7 @@ class _What3WordsViewState extends State<What3WordsView> {
   }
 
   var textController;
-  GlobalKey<AutoCompleteTextFieldState<String>> key = GlobalKey();
+  // GlobalKey<AutoCompleteTextFieldState<String>> key = GlobalKey();
   @override
   Widget build(BuildContext context) {
     Get.put(What3WordController()).currentWords.value = "";
@@ -190,36 +190,36 @@ class _What3WordsViewState extends State<What3WordsView> {
                             color: Colors.red,
                             fontWeight: FontWeight.w400,
                           ),
-                        if (false)
-                          SimpleAutoCompleteTextField(
-                              key: key,
+                        // if (false)
+                        // SimpleAutoCompleteTextField(
+                        //     key: key,
 
-                              // autofocus: true,
-                              decoration: InputDecoration(
-                                  border: const OutlineInputBorder(
-                                      // borderSide: BorderSide(
-                                      //     color: Colors.blue, width: 0.5),
-                                      ),
-                                  hintText: "/// limit.broom.flip",
-                                  errorText:
-                                      !_data.currentWords.value.contains(".")
-                                          ? " "
-                                          : ""),
-                              controller:
-                                  TextEditingController(text: currentText),
-                              suggestions: [],
-                              textChanged: (text) {
-                                final dots = text.split(".");
+                        //     // autofocus: true,
+                        //     decoration: InputDecoration(
+                        //         border: const OutlineInputBorder(
+                        //             // borderSide: BorderSide(
+                        //             //     color: Colors.blue, width: 0.5),
+                        //             ),
+                        //         hintText: "/// limit.broom.flip",
+                        //         errorText:
+                        //             !_data.currentWords.value.contains(".")
+                        //                 ? " "
+                        //                 : ""),
+                        //     controller:
+                        //         TextEditingController(text: currentText),
+                        //     suggestions: [],
+                        //     textChanged: (text) {
+                        //       final dots = text.split(".");
 
-                                _data.currentWords.value = text;
-                                // if (dots.length > 1)
-                                //   Get.put(What3WordController())
-                                //       .getMyWords(words: text);
-                              },
-                              clearOnSubmit: false,
-                              textSubmitted: (text) => {
-                                    _data.currentWords.value = text,
-                                  }),
+                        //       _data.currentWords.value = text;
+                        //       // if (dots.length > 1)
+                        //       //   Get.put(What3WordController())
+                        //       //       .getMyWords(words: text);
+                        //     },
+                        //     clearOnSubmit: false,
+                        //     textSubmitted: (text) => {
+                        //           _data.currentWords.value = text,
+                        //         }),
                       ],
                     ),
                   ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/view_model/my_lang_controller.dart';
 import 'package:dalile_customer/helper/helper.dart';
@@ -192,7 +194,14 @@ class ProfileView extends StatelessWidget {
                 ),
               );
             }),
-
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+                child: Text(
+              "${"version".tr} ${Platform.isIOS ? iosVersionLocal.toString() : androidVersionLocal.toString()}",
+              style: TextStyle(color: Colors.grey),
+            )),
             const Spacer(),
           ],
         ),

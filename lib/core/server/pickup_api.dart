@@ -134,7 +134,7 @@ class PickupApi {
         "Accept": "application/json",
         "Authorization": "Bearer $token"
       }, body: {
-        "governate_id": muhafazaid > 0 ? muhafazaid.toString() : ""
+        // "governate_id": muhafazaid > 0 ? muhafazaid.toString() : ""
       });
       // print(response.body);
       if (response.statusCode == 200) {

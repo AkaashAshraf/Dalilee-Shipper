@@ -1,8 +1,14 @@
+import 'dart:io';
+
+import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/server/dashbord_api.dart';
 import 'package:dalile_customer/model/Dashboard/MainDashboardModel.dart';
 import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:launch_review/launch_review.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class DashbordController extends GetxController {
   RxBool isLoading = false.obs;
@@ -14,6 +20,11 @@ class DashbordController extends GetxController {
   RxBool inViewLoadingUndeliver = true.obs;
   RxBool inViewLoadingReturnedShipments = true.obs;
   RxBool inViewLoadingCancelledShipments = true.obs;
+  RxBool isIOSVersionServerCheck = false.obs;
+  RxBool isAndroidVersionServerCheck = false.obs;
+  RxInt iosServerVerison = 0.obs;
+  RxInt androidServerVerison = 0.obs;
+
 // //// load more
   RxBool loadMore = false.obs;
   RxBool loadMoreDeliveredShipments = false.obs;
@@ -46,6 +57,14 @@ class DashbordController extends GetxController {
   RxString codReturn = "0".obs;
   RxString shipmentCost = "0".obs;
 
+  RxString totalOrderAmountOrdersCount = "1".obs;
+  RxString paidAmountOrdersCount = "2".obs;
+  RxString codPendingOrdersCount = "3".obs;
+  RxString readyToPayOrdersCount = "5".obs;
+  RxString codOfdOrdersCount = "6".obs;
+  RxString shippingCostOrdersCount = "8".obs;
+  RxString codReturnedOrdersCount = "9".obs;
+
   @override
   void onInit() {
     fetchMainDashBoardData();
@@ -63,40 +82,7 @@ class DashbordController extends GetxController {
   RxList<Shipment?> allShipemet = <Shipment?>[].obs;
   RxList<Shipment?> deliverShipemet = <Shipment?>[].obs;
   RxList<Shipment?> undeliverShipemet = <Shipment?>[].obs;
-  RxList<TrackingStatus> trackingStatuses = <TrackingStatus>[
-    TrackingStatus(
-        id: 1,
-        icon: "https://shaheen-oman.dalilee.om/storage/order-icons/pickup.png",
-        statusEng: "pickup"),
-    TrackingStatus(
-        id: 2,
-        icon: "https://shaheen-oman.dalilee.om/storage/order-icons/send.png",
-        statusEng: "send in branch"),
-    TrackingStatus(
-        id: 3,
-        icon:
-            "https://shaheen-oman.dalilee.om/storage/order-icons/received.png",
-        statusEng: "received in branch"),
-    TrackingStatus(
-        id: 4,
-        icon:
-            "https://shaheen-oman.dalilee.om/storage/order-icons/assigned.png",
-        statusEng: "order assigned"),
-    TrackingStatus(
-        id: 5,
-        icon: "https://shaheen-oman.dalilee.om/storage/order-icons/process.png",
-        statusEng: "in process"),
-    TrackingStatus(
-        id: 6,
-        icon:
-            "https://shaheen-oman.dalilee.om/storage/order-icons/un-delivered.png",
-        statusEng: "un delivered"),
-    TrackingStatus(
-        id: 7,
-        icon:
-            "https://shaheen-oman.dalilee.om/storage/order-icons/delivered.png",
-        statusEng: "delivered")
-  ].obs;
+  RxList<TrackingStatus> trackingStatuses = <TrackingStatus>[].obs;
   RxList<Shipment?> returnShipemet = <Shipment?>[].obs;
   RxList<Shipment?> cancellShipemet = <Shipment?>[].obs;
   RxList<Shipment?> ofdShipemet = <Shipment?>[].obs;
@@ -119,9 +105,13 @@ class DashbordController extends GetxController {
         dashboardUndeliverdShiments.value =
             data.data!.stats!.undeliveredShipments!;
         trackingStatuses.value = data.data!.trackingStatuses!;
+        isIOSVersionServerCheck(data.isIosVersionCheck);
+        isAndroidVersionServerCheck(data.isAndroidVersionCheck);
+        iosServerVerison(data.iosVersion);
+        androidServerVerison(data.andriodVersion);
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Failed', DashboardApi.mass);
+          Get.snackbar('Failed'.tr, DashboardApi.mass);
         }
       }
     } finally {
@@ -146,13 +136,21 @@ class DashbordController extends GetxController {
         codWithDriversAmount.value = data.codWithDrivers.toString();
         codReturn.value = data.codReturned.toString();
         shipmentCost.value = data.totalShippingAmount.toString();
+
+        totalOrderAmountOrdersCount(data.totalAmountCount.toString());
+        paidAmountOrdersCount(data.paidCount.toString());
+        shippingCostOrdersCount(data.totalShippingAmountCount.toString());
+        codPendingOrdersCount(data.codPendingCount.toString());
+        readyToPayOrdersCount(data.readyToPayCount.toString());
+        codPendingOrdersCount(data.codWithDriversCount.toString());
+        codReturnedOrdersCount(data.codReturnedCount.toString());
       } else {
         if (!Get.isSnackbarOpen) {
           Get.snackbar('Failed', DashboardApi.mass);
         }
       }
     } catch (err) {
-      print(err.toString());
+      // print(err.toString());
     } finally {
       if (DashboardApi.checkAuth == true) {
         Get.offAll(() => LoginView());
@@ -402,5 +400,40 @@ class DashbordController extends GetxController {
 
       isLoading(false);
     }
+  }
+
+  void checkAppExpiry(BuildContext context) {
+    if ((Platform.isAndroid &&
+            isAndroidVersionServerCheck.value &&
+            androidServerVerison.value != androidVersionLocal) ||
+        (Platform.isIOS &&
+            isIOSVersionServerCheck.value &&
+            iosServerVerison.value != iosVersionLocal))
+      Alert(
+          onWillPopActive: true,
+          closeIcon: Container(),
+          context: context,
+          type: AlertType.error,
+          title: "app_expired".tr,
+          desc: "please_update".tr,
+          content: Column(
+            children: [
+              const SizedBox(
+                height: 50,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: ElevatedButton(
+                    onPressed: () {
+                      LaunchReview.launch(
+                          androidAppId: "thiqatech.dalilee.shipper_app",
+                          iOSAppId: "1633078775");
+                      // Navigator.pop(context);
+                    },
+                    child: Text("upgrade_now".tr)),
+              )
+            ],
+          ),
+          buttons: []).show();
   }
 }
