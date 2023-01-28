@@ -57,13 +57,13 @@ class DashbordController extends GetxController {
   RxString codReturn = "0".obs;
   RxString shipmentCost = "0".obs;
 
-  RxString totalOrderAmountOrdersCount = "1".obs;
-  RxString paidAmountOrdersCount = "2".obs;
-  RxString codPendingOrdersCount = "3".obs;
-  RxString readyToPayOrdersCount = "5".obs;
-  RxString codOfdOrdersCount = "6".obs;
-  RxString shippingCostOrdersCount = "8".obs;
-  RxString codReturnedOrdersCount = "9".obs;
+  RxString totalOrderAmountOrdersCount = "".obs;
+  RxString paidAmountOrdersCount = "".obs;
+  RxString codPendingOrdersCount = "".obs;
+  RxString readyToPayOrdersCount = "".obs;
+  RxString codOfdOrdersCount = "".obs;
+  RxString shippingCostOrdersCount = "".obs;
+  RxString codReturnedOrdersCount = "".obs;
 
   @override
   void onInit() {
@@ -142,7 +142,7 @@ class DashbordController extends GetxController {
         shippingCostOrdersCount(data.totalShippingAmountCount.toString());
         codPendingOrdersCount(data.codPendingCount.toString());
         readyToPayOrdersCount(data.readyToPayCount.toString());
-        codPendingOrdersCount(data.codWithDriversCount.toString());
+        codOfdOrdersCount(data.codWithDriversCount.toString());
         codReturnedOrdersCount(data.codReturnedCount.toString());
       } else {
         if (!Get.isSnackbarOpen) {
