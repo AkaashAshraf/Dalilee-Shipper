@@ -5,6 +5,11 @@ class MyTranslations extends Translations {
   Map<String, Map<String, String>> get keys => {
         "ar": {
           "call_attempts": "محاولة الاتصال",
+          "call_driver": "الإتصال بالمندوب",
+          "call_customer": "الإتصال بالعميل",
+          "whatsapp_customer": "واتساب العميل",
+          "whatsapp_driver": "واتساب المندوب",
+
           "delivery_attempts": "محاولة التوصيل",
           "app_expired": "هذا الاصدار من التطبيق ملغي",
           "please_update": "الرجاء تحديث التطبيق",
@@ -306,6 +311,10 @@ class MyTranslations extends Translations {
           "Filed": "فشل",
         },
         "en": {
+          "call_driver": "Call Driver",
+          "call_customer": "Call Customer",
+          "whatsapp_customer": "Whatsapp Customer",
+          "whatsapp_driver": "Whatsapp Driver",
           "call_attempts": "Call Attempts",
           "delivery_attempts": "Delivery Attempts",
           "app_expired": "Application Version Expired",

@@ -118,8 +118,10 @@ class DownloadController extends GetxController {
           : isEmail.value
               ? 1
               : 0;
+      print(
+          "/dashboard/export?email=$isSendToEmail&type=$type&module=${selectedOrderType.value.key}&from_date=${startDate.value}&to_date=${endDate.value}&pdf_type=listing");
       var res = await get(
-          '/dashboard/export?email=$isSendToEmail&type=$type&module=shipments&from_date=${startDate.value}&to_date=${endDate.value}&pdf_type=listing');
+          '/dashboard/export?email=$isSendToEmail&type=$type&module=${selectedOrderType.value.key}&from_date=${startDate.value}&to_date=${endDate.value}&pdf_type=listing');
       if (res != null) {
         var body = exportResponseFromJson(res.body);
 

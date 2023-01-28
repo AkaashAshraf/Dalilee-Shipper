@@ -56,7 +56,8 @@ class ShipmentBody extends StatelessWidget {
                         children: [
                           InkWell(
                             onTap: () {
-                              _data.callAlert(context, outList!.customerNo);
+                              _data.callAlert(context, outList!.customerNo,
+                                  driverContact: "");
                             },
                             child: Icon(
                               Icons.call_outlined,

@@ -116,8 +116,9 @@ class CardBody extends StatelessWidget {
                     if (!isMyOrder)
                       InkWell(
                         onTap: () {
-                          Get.put(ShipmentViewModel())
-                              .callAlert(context, number ?? "0");
+                          Get.put(ShipmentViewModel()).callAlert(
+                              context, number ?? "",
+                              driverContact: "");
                         },
                         child: Icon(
                           Icons.call_outlined,

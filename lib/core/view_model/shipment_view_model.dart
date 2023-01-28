@@ -41,17 +41,18 @@ class ShipmentViewModel extends GetxController {
   }
 
   List<NameWithIcon> callList = [
-    NameWithIcon(icon: Icons.call, name: 'Call'.tr),
-    NameWithIcon(icon: Icons.mail_outlined, name: 'SMS'.tr),
-    NameWithIcon(icon: Icons.whatsapp_outlined, name: 'WhatsAppMessage'.tr),
-    NameWithIcon(icon: Icons.content_copy_outlined, name: 'CopyNumber'.tr),
+    NameWithIcon(icon: Icons.call, name: 'call_driver'.tr),
+    NameWithIcon(icon: Icons.call, name: 'call_customer'.tr),
+    NameWithIcon(icon: Icons.whatsapp_outlined, name: 'whatsapp_driver'.tr),
+    NameWithIcon(icon: Icons.whatsapp_outlined, name: 'whatsapp_customer'.tr),
+    // NameWithIcon(icon: Icons.content_copy_outlined, name: 'CopyNumber'.tr),
   ];
   List<NameWithIcon> menuList = [
     NameWithIcon(icon: Icons.info_outlined, name: 'GenerateTicket'.tr),
     NameWithIcon(icon: Icons.picture_as_pdf_outlined, name: 'DownloadBill'.tr),
   ];
 
-  callAlert(context, number) {
+  callAlert(context, number, {required String driverContact}) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -78,25 +79,28 @@ class ShipmentViewModel extends GetxController {
                     onTap: () {
                       switch (index) {
                         case 0:
-                          makePhoneCall("$number");
+                          makePhoneCall(driverContact);
+                          break;
+                        case 1:
+                          makePhoneCall(number);
                           break;
 
-                        case 1:
-                          _textMe("$number");
-                          break;
+                        // case 2:
+                        //   _textMe("$number");
+                        //   break;
 
                         case 2:
-                          launchWhatsapp(number);
+                          launchWhatsapp(driverContact);
                           break;
+                        // case 4:
+                        //   Clipboard.setData(ClipboardData(text: "$number"))
+                        //       .then((value) {
+                        //     Get.snackbar('Copyphonenumber'.tr, " ",
+                        //         colorText: whiteColor);
+                        //   });
+                        //   break;
                         case 3:
-                          Clipboard.setData(ClipboardData(text: "$number"))
-                              .then((value) {
-                            Get.snackbar('Copyphonenumber'.tr, " ",
-                                colorText: whiteColor);
-                          });
-                          break;
-                        case 4:
-                          launchWhatsapp("123");
+                          launchWhatsapp(number);
                           break;
                       }
                       Get.back();
@@ -218,7 +222,8 @@ class ShipmentViewModel extends GetxController {
   }
 
   Future<void> launchWhatsapp(number) async {
-    final url = "https://wa.me/$number?text= Hi";
+    print("https://wa.me/+968$number?text=");
+    final url = "https://wa.me/+968$number?text=";
     if (await canLaunch(url)) {
       await launch(url);
     } else {

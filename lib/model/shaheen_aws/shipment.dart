@@ -31,6 +31,8 @@ class Shipment {
     this.trackingId = 0,
     this.deliveryAttempts = "",
     this.callAttempts = "",
+    this.driverMobile = "",
+    this.driverName = "",
     this.isOpen = false,
     required this.orderActivities,
   });
@@ -54,6 +56,8 @@ class Shipment {
   dynamic shippingPrice;
   dynamic cod;
 
+  String? driverName;
+  String? driverMobile;
   String? deliveryAttempts;
   String? callAttempts;
   String wilayaName;
@@ -96,6 +100,8 @@ class Shipment {
         createdAt: json["created_at"] ?? "",
         updatedAt: json["updated_at"] ?? "",
         trackingId: json["tracking_id"] ?? 0,
+        driverName: json["driver_name"] ?? "",
+        driverMobile: json["driver_mobile"] ?? "",
         orderActivities: json["order_activities"] == null
             ? []
             : json["order_activities"] == null
