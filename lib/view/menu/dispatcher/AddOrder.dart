@@ -1,5 +1,5 @@
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/DispatcherController.dart';
+import 'package:dalile_customer/controllers/dispatcher_controller.dart';
 import 'package:dalile_customer/model/Dispatcher/Orders.dart';
 import 'package:dalile_customer/view/menu/dispatcher/AddOrderCard.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';

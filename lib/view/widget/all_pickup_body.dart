@@ -1,5 +1,5 @@
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/pickup_view_model.dart';
+import 'package:dalile_customer/controllers/pickup_controller.dart';
 import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/view/pickup/details_pickup.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';

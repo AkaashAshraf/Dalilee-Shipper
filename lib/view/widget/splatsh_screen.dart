@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:dalile_customer/config/localNotificationService.dart';
 import 'package:dalile_customer/core/server/auth.dart';
 import 'package:dalile_customer/view/home/notifications/notifications_list.dart';
 import 'package:dalile_customer/view/home/search/search_screen.dart';
@@ -8,7 +7,6 @@ import 'package:dalile_customer/view/login/login_view.dart';
 import 'package:dalile_customer/view/widget/controller_view.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 

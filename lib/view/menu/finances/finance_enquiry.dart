@@ -1,7 +1,7 @@
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/enquiry_view_model.dart';
-import 'package:dalile_customer/core/view_model/finance_view_model.dart';
-import 'package:dalile_customer/core/view_model/mange_account_view_model.dart';
+import 'package:dalile_customer/controllers/enquiry_controller.dart';
+import 'package:dalile_customer/controllers/finance_controller.dart';
+import 'package:dalile_customer/controllers/mange_account_controller.dart';
 import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/view/menu/finances/finance_enquiry_details.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';

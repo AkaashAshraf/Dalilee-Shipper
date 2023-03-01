@@ -1,6 +1,6 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/http/http.dart';
-import 'package:dalile_customer/core/view_model/pickup_view_model.dart';
+import 'package:dalile_customer/controllers/pickup_controller.dart';
 import 'package:dalile_customer/model/W3Words.dart';
 import 'package:dalile_customer/view/widget/custom_popup.dart';
 import 'package:flutter/material.dart';

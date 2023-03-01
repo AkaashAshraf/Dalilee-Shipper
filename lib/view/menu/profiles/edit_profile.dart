@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/profileController.dart';
+import 'package:dalile_customer/controllers/profile_controller.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/my_input.dart';

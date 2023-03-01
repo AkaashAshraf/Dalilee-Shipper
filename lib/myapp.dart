@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/my_lang_controller.dart';
-import 'package:dalile_customer/core/view_model/notification_controller.dart';
+import 'package:dalile_customer/controllers/my_lang_controller.dart';
+import 'package:dalile_customer/controllers/notification_controller.dart';
 import 'package:dalile_customer/helper/binding.dart';
 import 'package:dalile_customer/helper/mytranslat.dart';
 import 'package:dalile_customer/view/home/notifications/notifications_list.dart';

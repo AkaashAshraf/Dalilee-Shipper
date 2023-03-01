@@ -1,5 +1,5 @@
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/OrderController.dart';
+import 'package:dalile_customer/controllers/order_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

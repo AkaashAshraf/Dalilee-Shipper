@@ -1,5 +1,5 @@
 import 'package:dalile_customer/components/generalModel.dart';
-import 'package:dalile_customer/core/view_model/downloadController.dart';
+import 'package:dalile_customer/controllers/download_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 

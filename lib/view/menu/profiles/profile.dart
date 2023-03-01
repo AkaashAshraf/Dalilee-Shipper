@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/my_lang_controller.dart';
+import 'package:dalile_customer/controllers/my_lang_controller.dart';
 import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/view/menu/profiles/edit_profile.dart';
 import 'package:dalile_customer/view/menu/profiles/terms_Conditions_view.dart';

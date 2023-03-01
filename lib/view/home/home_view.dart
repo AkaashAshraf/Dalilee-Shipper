@@ -1,8 +1,8 @@
 import 'package:dalile_customer/components/popups/exportModal.dart';
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/dashbordController.dart';
-import 'package:dalile_customer/core/view_model/downloadController.dart';
-import 'package:dalile_customer/core/view_model/notification_controller.dart';
+import 'package:dalile_customer/controllers/dashbord_controller.dart';
+import 'package:dalile_customer/controllers/download_controller.dart';
+import 'package:dalile_customer/controllers/notification_controller.dart';
 import 'package:dalile_customer/view/home/finaince_dashboard.dart';
 import 'package:dalile_customer/view/home/main_dash.dart';
 import 'package:dalile_customer/view/home/notifications/notifications_list.dart';

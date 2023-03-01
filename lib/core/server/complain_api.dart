@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/ticket_details_model_vew.dart';
+import 'package:dalile_customer/controllers/ticket_details_controller.dart';
 import 'package:dalile_customer/model/complain_type_model.dart';
 import 'package:dalile_customer/model/complian_model.dart';
 import 'package:dalile_customer/model/ticket_details_model.dart';

@@ -1,5 +1,5 @@
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/branch_view_model.dart';
+import 'package:dalile_customer/controllers/branch_controller.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/empty.dart';
 import 'package:dalile_customer/view/widget/my_input.dart';

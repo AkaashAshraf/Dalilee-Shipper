@@ -1,6 +1,6 @@
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/DispatcherController.dart';
-import 'package:dalile_customer/core/view_model/OrderController.dart';
+import 'package:dalile_customer/controllers/dispatcher_controller.dart';
+import 'package:dalile_customer/controllers/order_controller.dart';
 import 'package:dalile_customer/view/calculable_view.dart';
 import 'package:dalile_customer/view/home/home_view.dart';
 import 'package:dalile_customer/view/login/login_view.dart';

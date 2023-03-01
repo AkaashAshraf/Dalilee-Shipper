@@ -1,4 +1,4 @@
-import 'package:dalile_customer/core/view_model/pickup_view_model.dart';
+import 'package:dalile_customer/controllers/pickup_controller.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/custom_form_filed.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';

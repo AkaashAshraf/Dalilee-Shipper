@@ -1,6 +1,6 @@
 import 'package:dalile_customer/components/inputs/text_input.dart';
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/DispatcherController.dart';
+import 'package:dalile_customer/controllers/dispatcher_controller.dart';
 import 'package:dalile_customer/model/Dispatcher/Orders.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dropdown_search/dropdown_search.dart';

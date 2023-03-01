@@ -1,6 +1,6 @@
 import 'package:dalile_customer/components/generalModel.dart';
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/downloadController.dart';
+import 'package:dalile_customer/controllers/download_controller.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:dotted_line/dotted_line.dart';

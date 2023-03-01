@@ -1,9 +1,9 @@
-import 'package:dalile_customer/core/view_model/dashbordController.dart';
-import 'package:dalile_customer/core/view_model/downloadController.dart';
-import 'package:dalile_customer/core/view_model/financeListingController.dart';
-import 'package:dalile_customer/core/view_model/home_view_model.dart';
-import 'package:dalile_customer/core/view_model/login_view_model.dart';
-import 'package:dalile_customer/core/view_model/profileController.dart';
+import 'package:dalile_customer/controllers/dashbord_controller.dart';
+import 'package:dalile_customer/controllers/download_controller.dart';
+import 'package:dalile_customer/controllers/finance_listing_controller.dart';
+import 'package:dalile_customer/controllers/home_controller.dart';
+import 'package:dalile_customer/controllers/login_controller.dart';
+import 'package:dalile_customer/controllers/profile_controller.dart';
 import 'package:get/get.dart';
 
 class Binding extends Bindings {

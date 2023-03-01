@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/login_view_model.dart';
+import 'package:dalile_customer/controllers/login_controller.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';

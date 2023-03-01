@@ -1,9 +1,9 @@
 import 'package:dalile_customer/components/popups/ImagesViewModal.dart';
 import 'package:dalile_customer/components/popups/ProblemViewModal.dart';
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/DispatcherController.dart';
-import 'package:dalile_customer/core/view_model/complain_view_model.dart';
-import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
+import 'package:dalile_customer/controllers/dispatcher_controller.dart';
+import 'package:dalile_customer/controllers/complain_controller.dart';
+import 'package:dalile_customer/controllers/shipment_controller.dart';
 import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';

@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/dashbordController.dart';
-import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
-import 'package:dalile_customer/core/view_model/view_order_view_model.dart';
+import 'package:dalile_customer/controllers/dashbord_controller.dart';
+import 'package:dalile_customer/controllers/shipment_controller.dart';
+import 'package:dalile_customer/controllers/view_order_controller.dart';
 import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/home/MainDashboardListing/unDeliverListing.dart';
 import 'package:dalile_customer/view/home/card_body_new_log.dart';

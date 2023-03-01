@@ -1,5 +1,5 @@
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/calculate_view_model.dart';
+import 'package:dalile_customer/controllers/calculate_controller.dart';
 import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/custom_form_filed.dart';

@@ -1,5 +1,5 @@
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
+import 'package:dalile_customer/controllers/shipment_controller.dart';
 import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/model/Dashboard/MainDashboardModel.dart';
 import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';

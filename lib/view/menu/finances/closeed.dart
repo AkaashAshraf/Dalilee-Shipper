@@ -1,6 +1,6 @@
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/finance_view_model.dart';
-import 'package:dalile_customer/core/view_model/view_order_view_model.dart';
+import 'package:dalile_customer/controllers/finance_controller.dart';
+import 'package:dalile_customer/controllers/view_order_controller.dart';
 import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/view/menu/finances/view_closed_invoice_order.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';

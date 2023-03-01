@@ -1,5 +1,5 @@
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/finance_view_model.dart';
+import 'package:dalile_customer/controllers/finance_controller.dart';
 import 'package:dalile_customer/view/menu/finances/closeed.dart';
 import 'package:dalile_customer/view/menu/finances/open.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';

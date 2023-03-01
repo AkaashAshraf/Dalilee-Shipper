@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:dalile_customer/core/http/FromDalilee.dart';
 import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/model/Dashboard/FinanceDashboardModel.dart';
 import 'package:dalile_customer/model/Dashboard/MainDashboardModel.dart';
-import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
 import 'package:dalile_customer/model/shaheen_aws/shipment_listing.dart';
 
 abstract class DashboardApi {
@@ -16,7 +14,7 @@ abstract class DashboardApi {
         "/dashboard/finance",
       );
       // print("--------------------");
-      // inspect(response);
+      inspect(response);
       if (response != null) {
         var data = financeMainDashboardModelFromJson(response.body);
         // inspect(data.data!.stats);
@@ -59,7 +57,7 @@ abstract class DashboardApi {
   static Future<MainDashboard?> fetchMainDashBoardData(type) async {
     try {
       final response = await get("/dashboard/shipments-count");
-      // log("------------>$response");
+      inspect(response);
       if (response != null) {
         var data = mainDashboardFromJson(response.body);
 

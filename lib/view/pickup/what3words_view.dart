@@ -1,5 +1,5 @@
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/what3word_view_model.dart';
+import 'package:dalile_customer/controllers/what3word_controller.dart';
 import 'package:dalile_customer/model/W3Words.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';

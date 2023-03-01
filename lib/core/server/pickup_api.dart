@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/http/FromDalilee.dart';
 import 'package:dalile_customer/core/http/http.dart';
-import 'package:dalile_customer/core/view_model/pickup_view_model.dart';
+import 'package:dalile_customer/controllers/pickup_controller.dart';
 import 'package:dalile_customer/model/Pickup/PickupModel.dart';
 import 'package:dalile_customer/model/muhafaza_model.dart';
 import 'package:dalile_customer/model/pickup_deatils.dart';

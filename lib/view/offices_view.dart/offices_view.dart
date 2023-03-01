@@ -1,5 +1,5 @@
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/branch_view_model.dart';
+import 'package:dalile_customer/controllers/branch_controller.dart';
 import 'package:dalile_customer/view/offices_view.dart/map.dart';
 import 'package:dalile_customer/view/offices_view.dart/offices_list_view.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';

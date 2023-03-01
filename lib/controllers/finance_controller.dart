@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:dalile_customer/core/server/finance_api.dart';
-import 'package:dalile_customer/core/view_model/downloadController.dart';
+import 'package:dalile_customer/controllers/download_controller.dart';
 import 'package:dalile_customer/model/close_finance_model.dart';
 import 'package:dalile_customer/model/finance_open_model.dart';
 import 'package:dalile_customer/view/login/login_view.dart';

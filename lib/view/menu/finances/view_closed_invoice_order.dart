@@ -1,7 +1,7 @@
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/dashbordController.dart';
-import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
-import 'package:dalile_customer/core/view_model/view_order_view_model.dart';
+import 'package:dalile_customer/controllers/dashbord_controller.dart';
+import 'package:dalile_customer/controllers/shipment_controller.dart';
+import 'package:dalile_customer/controllers/view_order_controller.dart';
 import 'package:dalile_customer/view/home/card_body_new_log.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/empty.dart';

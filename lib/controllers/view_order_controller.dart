@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/server/finance_api.dart';
-import 'package:dalile_customer/core/view_model/name_icons.dart';
+import 'package:dalile_customer/controllers/name_icons.dart';
 import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/shipments/complain_body_shipement.dart';
 import 'package:dalile_customer/view/shipments/edit_shipement_body.dart';

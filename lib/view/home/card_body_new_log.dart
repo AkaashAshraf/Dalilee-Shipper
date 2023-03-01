@@ -1,8 +1,8 @@
 import 'package:dalile_customer/components/popups/ImagesViewModal.dart';
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/DispatcherController.dart';
-import 'package:dalile_customer/core/view_model/complain_view_model.dart';
-import 'package:dalile_customer/core/view_model/shipment_view_model.dart';
+import 'package:dalile_customer/controllers/dispatcher_controller.dart';
+import 'package:dalile_customer/controllers/complain_controller.dart';
+import 'package:dalile_customer/controllers/shipment_controller.dart';
 import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
@@ -342,7 +342,7 @@ class CardBody extends StatelessWidget {
                 _buildRowText(
                     'COD'.tr +
                         ' : ${helperController.getCurrencyInFormat(cod.toString())}',
-                    'Date'.tr + ' : $date ',
+                    'Date'.tr + ' : ${shipment.createdAt} ',
                     context: context),
               ],
             ),

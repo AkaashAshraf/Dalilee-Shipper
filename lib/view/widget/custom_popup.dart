@@ -4,10 +4,15 @@ import 'package:flutter/material.dart';
 
 class CustomDialogBoxAl extends StatelessWidget {
   const CustomDialogBoxAl(
-      {Key? key, required this.title, required this.des, required this.icon})
+      {Key? key,
+      required this.title,
+      this.error = false,
+      required this.des,
+      required this.icon})
       : super(key: key);
   final String title, des;
   final IconData icon;
+  final bool error;
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -42,7 +47,7 @@ class CustomDialogBoxAl extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   alignment: Alignment.center,
                   size: 27,
-                  color: primaryColor,
+                  color: error ? Colors.red : primaryColor,
                 ),
                 const SizedBox(
                   height: 15,
@@ -50,7 +55,7 @@ class CustomDialogBoxAl extends StatelessWidget {
                 CustomText(
                   text: des,
                   size: 15,
-                  color: Colors.grey,
+                  color: error ? Colors.red : Colors.grey,
                   alignment: Alignment.center,
                 ),
                 const SizedBox(
@@ -59,12 +64,13 @@ class CustomDialogBoxAl extends StatelessWidget {
               ],
             ),
           ),
+          // if (!error)
           Positioned(
             left: 10,
             right: 10,
             top: 10,
             child: Image.asset(
-              'assets/images/done.png',
+              error ? 'assets/images/failed.png' : 'assets/images/done.png',
               height: 60,
               width: 60,
             ),

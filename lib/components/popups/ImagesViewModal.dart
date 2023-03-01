@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dalile_customer/components/generalModel.dart';
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/downloadController.dart';
+import 'package:dalile_customer/controllers/download_controller.dart';
 import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/pickup/image_libar.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';

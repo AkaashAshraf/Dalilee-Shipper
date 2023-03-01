@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/dashbordController.dart';
-import 'package:dalile_customer/core/view_model/search_controller.dart';
+import 'package:dalile_customer/controllers/dashbord_controller.dart';
+import 'package:dalile_customer/controllers/search_controller.dart';
 import 'package:dalile_customer/model/Dashboard/MainDashboardModel.dart';
 import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/home/card_body_new_log.dart';

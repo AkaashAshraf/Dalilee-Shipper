@@ -4,7 +4,7 @@ import 'package:dalile_customer/components/generalModel.dart';
 import 'package:dalile_customer/components/popups/ProblemResolveViewModal.dart';
 import 'package:dalile_customer/components/popups/image_view_modal.dart';
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/downloadController.dart';
+import 'package:dalile_customer/controllers/download_controller.dart';
 import 'package:dalile_customer/model/Shipments/ShipmentListingModel.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:dotted_line/dotted_line.dart';

@@ -1,4 +1,4 @@
-import 'package:dalile_customer/core/view_model/home_view_model.dart';
+import 'package:dalile_customer/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

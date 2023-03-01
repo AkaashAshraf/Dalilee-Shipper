@@ -2,6 +2,7 @@ import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/server/finance_api.dart';
 import 'package:dalile_customer/model/add_inqury_list_caterogry_model.dart';
 import 'package:dalile_customer/model/crm/account_enquiries.dart';
+import 'package:dalile_customer/model/crm/general_response.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
 import 'package:dalile_customer/view/widget/custom_popup.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +77,8 @@ class EnquiryFinanceController extends GetxController {
     try {
       //  dynamic enquriyAdd = await FinanceApi.fetchAddEnquiryData(
       //         catListId.text, subcatListId.text, decConteroller)
-      dynamic enquriyAdd = await FinanceApi.fetchAddEnquiryData(
+      Crmgenralresponse enquriyAdd = await FinanceApi.fetchAddEnquiryData(
+              context: context,
               accountId: selectedAccountID.value.toString(),
               description: description.value,
               amount: estimatedAmount.value)
@@ -86,8 +88,8 @@ class EnquiryFinanceController extends GetxController {
         update();
       });
 
-      if (enquriyAdd != null) {
-        if (enquriyAdd == 1) {
+      {
+        if (enquriyAdd.status == 1) {
           showDialog(
               barrierDismissible: true,
               barrierColor: Colors.transparent,
@@ -100,15 +102,32 @@ class EnquiryFinanceController extends GetxController {
                 );
               });
         } else {
-          if (!Get.isSnackbarOpen) {
-            Get.snackbar('Failed'.tr, "check_data".tr, colorText: whiteColor);
-          }
-        }
-      } else {
-        if (!Get.isSnackbarOpen) {
-          Get.snackbar('Failed'.tr, FinanceApi.mass);
+          showDialog(
+              barrierDismissible: true,
+              barrierColor: Colors.transparent,
+              context: context,
+              builder: (BuildContext context) {
+                return CustomDialogBoxAl(
+                  title: "Failed".tr,
+                  error: true,
+                  des: Get.locale.toString() == "en"
+                      ? enquriyAdd.messageEn ?? ""
+                      : enquriyAdd.messageAr ?? "",
+                  icon: Icons.cancel,
+                );
+              });
         }
       }
+      //else {
+      //     if (!Get.isSnackbarOpen) {
+      //       Get.snackbar('Failed'.tr, "check_data".tr, colorText: whiteColor);
+      //     }
+      //   }
+      // } else {
+      //   if (!Get.isSnackbarOpen) {
+      //     Get.snackbar('Failed'.tr, FinanceApi.mass);
+      //   }
+      // }
     } finally {
       fetchEnquiryFinanceData();
     }

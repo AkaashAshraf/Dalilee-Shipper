@@ -8,9 +8,13 @@ import 'package:dalile_customer/model/bank_model.dart';
 import 'package:dalile_customer/model/close_finance_model.dart';
 import 'package:dalile_customer/model/crm/account_enquiries.dart';
 import 'package:dalile_customer/model/crm/bank_accounts.dart';
+import 'package:dalile_customer/model/crm/general_response.dart';
 import 'package:dalile_customer/model/finance_open_model.dart';
 import 'package:dalile_customer/model/shaheen_aws/shipment_listing.dart';
 import 'package:dalile_customer/model/sub_cat_list_model.dart';
+import 'package:dalile_customer/view/widget/custom_popup.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -381,10 +385,11 @@ abstract class FinanceApi {
     return data;
   }
 
-  static Future<dynamic> fetchAddEnquiryData({
+  static Future<Crmgenralresponse> fetchAddEnquiryData({
     required String accountId,
     required String description,
     required String amount,
+    required BuildContext context,
   }) async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -413,18 +418,43 @@ abstract class FinanceApi {
         "trader_account_id": accountId,
       });
       if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-
-        return data["status"];
+        var data = crmgenralresponseFromJson(response.body);
+        // if (data.status == 0)
+        // {
+        //   showDialog(
+        //       barrierDismissible: true,
+        //       barrierColor: Colors.transparent,
+        //       context: context,
+        //       builder: (BuildContext context) {
+        //         return CustomDialogBoxAl(
+        //           title: "done".tr,
+        //           des: "enq_addedd".tr,
+        //           icon: Icons.priority_high_outlined,
+        //         );
+        //       });
+        // }
+        // inspect(data);
+        // showDialog(
+        //     barrierDismissible: true,
+        //     barrierColor: Colors.transparent,
+        //     context: context,
+        //     builder: (BuildContext context) {
+        //       return Text(
+        //         data["message_en"],
+        //         style: TextStyle(color: Colors.red),
+        //       );
+        //     });
+        // Get.snackbar('Failed'.tr, "jgchjdgchjdghcgdhjg", colorText: Colors.red);
+        return data;
       } else {
         var err = json.decode(response.body);
         mass = '${err["message"]}';
 
-        return null;
+        return Crmgenralresponse();
       }
     } catch (e) {
       mass = 'Network error' + e.toString();
-      return null;
+      return Crmgenralresponse();
     }
   }
 }

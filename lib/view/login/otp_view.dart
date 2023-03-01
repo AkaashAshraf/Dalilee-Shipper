@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/login_view_model.dart';
+import 'package:dalile_customer/controllers/login_controller.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';

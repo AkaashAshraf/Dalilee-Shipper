@@ -1,5 +1,5 @@
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/view_model/login_view_model.dart';
+import 'package:dalile_customer/controllers/login_controller.dart';
 import 'package:dalile_customer/model/countries.dart';
 import 'package:dalile_customer/view/login/terms_conditions.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
