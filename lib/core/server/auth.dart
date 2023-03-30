@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dalile_customer/config/storag_paths.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController {
@@ -13,7 +14,8 @@ class AuthController {
 
       dynamic resLogin = json.decode(fromString.toString()) ?? null;
 
-      dynamic tokenLo = resLogin['data']["access_token"] ?? null;
+      dynamic tokenLo = prefs.getString(accountManagerToken) ?? null;
+      // dynamic tokenLo = resLogin['data']["access_token"] ?? null;
 
       if (tokenLo != null) {
         _isLogin = true;

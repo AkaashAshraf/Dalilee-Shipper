@@ -1,8 +1,9 @@
 import 'dart:developer';
 
+import 'package:dalile_customer/config/storag_paths.dart';
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/model/aacount_manager/login.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
@@ -30,7 +31,7 @@ Future<dynamic> get(String url) async {
       prefs.remove("token");
       prefs.clear();
       Get.deleteAll();
-      Get.offAll(() => LoginView());
+      Get.offAll(() => AccountManagerLogin());
       return null;
     } else {
       return null;
@@ -61,7 +62,7 @@ Future<dynamic> getWithUrl(String url) async {
       prefs.remove("token");
       prefs.clear();
       Get.deleteAll();
-      Get.offAll(() => LoginView());
+      Get.offAll(() => AccountManagerLogin());
       return null;
     } else {
       return null;
@@ -92,7 +93,76 @@ Future<dynamic> post(String url, dynamic body) async {
       prefs.remove("token");
       prefs.clear();
       Get.deleteAll();
-      Get.offAll(() => LoginView());
+      Get.offAll(() => AccountManagerLogin());
+      return response.statusCode;
+    } else {
+      return response;
+    }
+  } catch (e) {
+    print(e.toString());
+
+    return null;
+  }
+}
+
+Future<dynamic> getAccountManager(String url) async {
+  var _url = url;
+  // print(_url);
+  final prefs = await SharedPreferences.getInstance();
+
+  String token = prefs.getString(accountManagerToken) ?? '';
+
+  try {
+    var response = await http.get(Uri.parse(_url), headers: {
+      "Accept": "application/json",
+      "Authorization": "Bearer $token"
+    });
+    inspect(response);
+    // return response;
+
+    // print(response.body);
+    // return response.statusCode;
+    if (response.statusCode == 200) {
+      return response;
+    } else if (response.statusCode == 401) {
+      prefs.remove("loginData");
+      prefs.remove("token");
+      prefs.clear();
+      Get.deleteAll();
+      Get.offAll(() => AccountManagerLogin());
+      return null;
+    } else {
+      return null;
+    }
+  } catch (e) {
+    inspect(e);
+    return e;
+  }
+}
+
+Future<dynamic> postAccountManager(String url, dynamic body,
+    {bool isLogin = false}) async {
+  var _url = url;
+  final prefs = await SharedPreferences.getInstance();
+
+  String token = prefs.getString(accountManagerToken) ?? '';
+  // print(token);
+  try {
+    var response = await http.post(Uri.parse(_url), body: body, headers: {
+      "Accept": "application/json",
+      // 'Content-Type': 'application/json; charset=UTF-8',
+      "Authorization": "Bearer $token"
+    });
+    // return _url;
+    // print(response.body);
+    if (response.statusCode == 200) {
+      return response;
+    } else if (response.statusCode == 401 && !isLogin) {
+      prefs.remove("loginData");
+      prefs.remove("token");
+      prefs.clear();
+      Get.deleteAll();
+      Get.offAll(() => AccountManagerLogin());
       return response.statusCode;
     } else {
       return response;
@@ -128,7 +198,7 @@ Future<dynamic> postWithJsonBody(String url, dynamic body) async {
       prefs.remove("token");
       prefs.clear();
       Get.deleteAll();
-      Get.offAll(() => LoginView());
+      Get.offAll(() => AccountManagerLogin());
       return null;
     } else {
       return null;
@@ -161,7 +231,7 @@ Future<dynamic> multirequestPost(dynamic request) async {
       prefs.remove("token");
       prefs.clear();
       Get.deleteAll();
-      Get.offAll(() => LoginView());
+      Get.offAll(() => AccountManagerLogin());
       return null;
     } else {
       return null;

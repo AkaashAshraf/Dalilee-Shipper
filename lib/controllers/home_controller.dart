@@ -1,9 +1,9 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/controllers/dispatcher_controller.dart';
 import 'package:dalile_customer/controllers/order_controller.dart';
+import 'package:dalile_customer/view/account_manager/login_view.dart';
 import 'package:dalile_customer/view/calculable_view.dart';
 import 'package:dalile_customer/view/home/home_view.dart';
-import 'package:dalile_customer/view/login/login_view.dart';
 import 'package:dalile_customer/view/menu/complains/complain_view.dart';
 import 'package:dalile_customer/view/menu/dispatcher/AddOrder.dart';
 import 'package:dalile_customer/view/menu/dispatcher/my_orders.dart';
@@ -158,7 +158,7 @@ class HomeViewModel extends GetxController {
                                         prefs.remove("token");
                                         prefs.clear();
                                         Get.deleteAll();
-                                        Get.offAll(() => LoginView());
+                                        Get.offAll(AccountManagerLoginView());
                                       });
                                 }),
                                 buildMenu(
@@ -189,7 +189,7 @@ class HomeViewModel extends GetxController {
                                         prefs.remove("token");
                                         prefs.clear();
                                         Get.deleteAll();
-                                        Get.offAll(() => LoginView());
+                                        Get.offAll(AccountManagerLoginView());
                                       });
                                 }),
                               ],

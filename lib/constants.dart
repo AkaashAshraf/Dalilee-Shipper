@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // const primaryColor = Colors.green;
-bool isTesEnvironment = false;
+bool isTesEnvironment = true;
 double omrToAedRate = 9.47;
 const int iosVersionLocal = 5; //28/feb/2023
 const int androidVersionLocal = 5; //28/feb/2023
@@ -20,13 +20,15 @@ const cardColor = Color(0xFFF6F6F6);
 
 // String domain = "https://shaheen-oman.dalilee.om"; // live
 
-String domain =
-    isTesEnvironment ? "http://test.meshwarr.com" : "https://shaheenom.com"; //
+String domain = isTesEnvironment
+    ? "https://staging.shaheenom.com"
+    : "https://shaheenom.com"; //
 
 String base_url = "$domain/api"; // live
 String terms_url = "$domain/terms"; // live
 
 String like = '$base_url/v1/store'; //live
+String accountManagerBaseUrl = '$base_url/v1/account-manager'; //live
 String image = "$domain/storage/uploads/branches/"; // live
 
 String dalileeOldBaseUrl =

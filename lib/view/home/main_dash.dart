@@ -1,10 +1,15 @@
 import 'dart:developer';
 
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/controllers/account_manager_controller.dart';
 import 'package:dalile_customer/controllers/dashbord_controller.dart';
+import 'package:dalile_customer/controllers/mange_account_controller.dart';
+import 'package:dalile_customer/controllers/profile_controller.dart';
 import 'package:dalile_customer/controllers/shipment_controller.dart';
 import 'package:dalile_customer/controllers/view_order_controller.dart';
+import 'package:dalile_customer/model/aacount_manager/store.dart';
 import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
+import 'package:dalile_customer/view/account_manager/choose_store_view.dart';
 import 'package:dalile_customer/view/home/MainDashboardListing/unDeliverListing.dart';
 import 'package:dalile_customer/view/home/card_body_new_log.dart';
 import 'package:dalile_customer/view/home/item_body.dart';
@@ -15,6 +20,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainDash extends StatefulWidget {
   MainDash({Key? key, required this.controller}) : super(key: key);
@@ -51,9 +57,13 @@ class _MainDashState extends State<MainDash> {
 
   RefreshController cancelShipmentRefreshController =
       RefreshController(initialRefresh: true);
-
+  AccountManagerController accountManagerController =
+      Get.put(AccountManagerController());
   @override
   void initState() {
+    setState(() {
+      selectedStore = accountManagerController.selectedStore.value;
+    });
     super.initState();
     allShipmentScrollController = ScrollController()
       ..addListener(() {
@@ -213,6 +223,8 @@ class _MainDashState extends State<MainDash> {
     if (mounted) Get.put(DashbordController()).checkAppExpiry(context);
   }
 
+  Stores selectedStore = Stores();
+
   @override
   Widget build(BuildContext context) {
     Get.put(ShipmentViewModel());
@@ -237,6 +249,105 @@ class _MainDashState extends State<MainDash> {
             controller: mainScreenRefreshController,
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Row(
+                children: [
+                  Text("Current Store Mobile"),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: primaryColor, width: 1.5),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5.0)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Text(Get.put(ProfileController())
+                                .profile
+                                .value
+                                .storeMobile ??
+                            ""),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  GestureDetector(
+                      onTap: (() => {
+                            Get.defaultDialog(
+                                title: "Change Store".tr,
+                                titlePadding: const EdgeInsets.all(15),
+                                contentPadding: const EdgeInsets.all(5),
+                                middleText:
+                                    "Are you sure you want to logout from this store?",
+                                textCancel: 'Cancel'.tr,
+                                textConfirm: 'Ok'.tr,
+                                buttonColor: primaryColor,
+                                confirmTextColor: Colors.white,
+                                cancelTextColor: Colors.black,
+                                radius: 10,
+                                backgroundColor: whiteColor,
+                                onConfirm: () async {
+                                  // final prefs =
+                                  //     await SharedPreferences.getInstance();
+
+                                  // prefs.remove("loginData");
+                                  // prefs.remove("token");
+                                  // prefs.clear();
+                                  // Get.deleteAll();
+                                  Get.offAll(ChooseStoreView());
+                                })
+                          }),
+                      child: Icon(Icons.logout, color: primaryColor, size: 35))
+                ],
+              ),
+              // GetX<AccountManagerController>(builder: (controller) {
+              //   return Container(
+              //       height: 45,
+              //       width: MediaQuery.of(context).size.width,
+              //       child: Padding(
+              //         padding: const EdgeInsets.symmetric(horizontal: 10),
+              //         child: DropdownSearch<String>(
+              //           label: "Select Store",
+              //           autoValidateMode: AutovalidateMode.always,
+              //           dropdownBuilder: ((context, item) => Text(item ?? "")),
+              //           showSearchBox: true,
+              //           showAsSuffixIcons: true,
+              //           showSelectedItems: true,
+              //           items: controller.stores
+              //               .map((element) => element.mobile)
+              //               .toList(),
+              //           onChanged: (_value) {
+              //             print(_value);
+              //             Stores currentSelectedStore = controller.stores[
+              //                 controller.stores.indexWhere(
+              //                     (element) => element.mobile == _value)];
+              //             // inspect(currentSelectedStore);
+              //             setState(() {
+              //               selectedStore = currentSelectedStore;
+              //             });
+              //           },
+              //           selectedItem: selectedStore.mobile,
+              //         ),
+              //       )
+              // dropdownBuilder: ((context, lis) =>
+              //     Text(lis.id.toString())),
+              // showClearButton: true,
+              // popupProps: PopupPropsMultiSelection.menu(
+              //     showSelectedItems: true,
+              //     disabledItemFn: (String s) => s.startsWith('I'),
+              // ),
+              // onChanged: (){},
+              // selectedItem:  ,
+              // );
+              // }),
+              SizedBox(
+                height: 10,
+              ),
               InkWell(
                 onTap: () {
                   // print_r();

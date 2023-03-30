@@ -1,4 +1,4 @@
-package thiqatech.dalilee.shipper_app
+package thiqatech.dalilee.account_manager
 
 import io.flutter.embedding.android.FlutterActivity
 
