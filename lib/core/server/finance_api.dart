@@ -385,8 +385,9 @@ abstract class FinanceApi {
     return data;
   }
 
-  static Future<Crmgenralresponse> fetchAddEnquiryData({
+  static Future<Crmgenralresponse> addEnquiryData({
     required String accountId,
+    required String otp,
     required String description,
     required String amount,
     required BuildContext context,
@@ -413,10 +414,12 @@ abstract class FinanceApi {
         "estimated_amount": amount,
         "trader_name": userNAme,
         "trader_contact": mobile,
+        "otp": otp,
         "trader_id": storeId,
         "decription": description,
         "trader_account_id": accountId,
       });
+      // inspect(response);
       if (response.statusCode == 200) {
         var data = crmgenralresponseFromJson(response.body);
         // if (data.status == 0)
@@ -455,6 +458,28 @@ abstract class FinanceApi {
     } catch (e) {
       mass = 'Network error' + e.toString();
       return Crmgenralresponse();
+    }
+  }
+
+  static sendOtpForEnquiry() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    dynamic fromString = prefs.getString('loginData') ?? '';
+
+    // String mobile = prefs.getString('mobile') ?? '';
+    String storeId = prefs.getString('store_code') ?? '';
+
+    dynamic resLogin = json.decode(fromString!.toString());
+    String mobile = (resLogin['data']["store"]["country_code"] ?? "") +
+        (resLogin['data']["store"]["mobile"] ?? "");
+    var _url = crmBaseUrl + '/shipper/send-otp/$mobile/$storeId';
+    print(_url);
+    try {
+      await http.post(Uri.parse(_url), headers: {
+        "Accept": "application/json",
+      }, body: {});
+    } catch (e) {
+      inspect(e);
     }
   }
 }

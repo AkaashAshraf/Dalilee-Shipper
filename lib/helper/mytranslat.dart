@@ -4,6 +4,9 @@ class MyTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         "ar": {
+          "resend_otp": "إعادة إرسال OTP",
+          "verify": "يؤكد",
+          "enter_otp_to_verify": "أدخل OTP لإنشاء استعلام",
           "call_attempts": "محاولة الاتصال",
           "call_driver": "الإتصال بالمندوب",
           "call_customer": "الإتصال بالعميل",
@@ -311,6 +314,9 @@ class MyTranslations extends Translations {
           "Filed": "فشل",
         },
         "en": {
+          "resend_otp": "Resend OTP",
+          "enter_otp_to_verify": "Enter OTP to Create Enquiry",
+          "verify": "Verify",
           "call_driver": "Call Driver",
           "call_customer": "Call Customer",
           "whatsapp_customer": "Whatsapp Customer",

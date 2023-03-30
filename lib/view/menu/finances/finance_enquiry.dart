@@ -4,6 +4,7 @@ import 'package:dalile_customer/controllers/finance_controller.dart';
 import 'package:dalile_customer/controllers/mange_account_controller.dart';
 import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/view/menu/finances/finance_enquiry_details.dart';
+import 'package:dalile_customer/view/menu/finances/otp_modal.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/custom_form_filed.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
@@ -13,6 +14,7 @@ import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:otp_timer_button/otp_timer_button.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class FinanceEnquiry extends StatelessWidget {
@@ -419,10 +421,20 @@ class FinanceEnquiry extends StatelessWidget {
   }
 }
 
-class _AlrtAddEnquryBody extends StatelessWidget {
+class _AlrtAddEnquryBody extends StatefulWidget {
   const _AlrtAddEnquryBody({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<_AlrtAddEnquryBody> createState() => _AlrtAddEnquryBodyState();
+}
+
+class _AlrtAddEnquryBodyState extends State<_AlrtAddEnquryBody> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -560,10 +572,25 @@ class _AlrtAddEnquryBody extends StatelessWidget {
                   ),
                   controller.isAddwiting.value
                       ? WaiteImage()
-                      : CustomButtom(
+                      :
+                      // : OtpTimerButton(
+                      //     controller: controller.otpTimerButtonController,
+                      //     backgroundColor: primaryColor,
+                      //     onPressed: () {
+                      //       controller.sendOtp();
+
+                      //       otpModal(context).show();
+                      //       controller.otpTimerButtonController.startTimer();
+                      //     },
+                      //     text: Text('CreateInquiry'.tr),
+                      //     duration: 10,
+                      //     height: MediaQuery.of(context).size.height * 0.055,
+                      //   ),
+                      CustomButtom(
                           text: 'CreateInquiry'.tr,
-                          onPressed: () {
-                            controller.checkval(context);
+                          onPressed: () async {
+                            var res = await controller.sendOtp();
+                            if (res) otpModal(context).show();
                           },
                         ),
                 ],
