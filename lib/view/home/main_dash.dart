@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainDash extends StatefulWidget {
   MainDash({Key? key, required this.controller}) : super(key: key);
@@ -277,6 +278,19 @@ class _MainDashState extends State<MainDash> {
                     width: 10,
                   ),
                   GestureDetector(
+                      onTap: (() async {
+                        var link =
+                            'https://api.whatsapp.com/send?phone=968${Get.put(ProfileController()).profile.value.countryCode}${Get.put(ProfileController()).profile.value.storeMobile}';
+                        if (await canLaunch(link)) {
+                          await launch(link, forceSafariVC: false);
+                        }
+                      }),
+                      child:
+                          Icon(Icons.whatsapp, color: Colors.green, size: 35)),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  GestureDetector(
                       onTap: (() => {
                             Get.defaultDialog(
                                 title: "Change Store".tr,
@@ -360,6 +374,7 @@ class _MainDashState extends State<MainDash> {
                       () => GetX<DashbordController>(builder: (controller) {
                             return controller.allShipemet.isEmpty
                                 ? MainCardBodyView(
+                                    module: "",
                                     controller: controller
                                             .inViewLoadingallShipments.value
                                         ? WaiteImage()
@@ -368,6 +383,7 @@ class _MainDashState extends State<MainDash> {
                                           ),
                                     title: "Shipments".tr)
                                 : MainCardBodyView(
+                                    module: "",
                                     title: 'AllShipments'.tr +
                                         ' (' +
                                         controller.allShipemet.length
@@ -462,6 +478,7 @@ class _MainDashState extends State<MainDash> {
                                   return widget
                                           .controller.deliverShipemet.isEmpty
                                       ? MainCardBodyView(
+                                          module: "delivered_shipments",
                                           controller: controller
                                                   .inViewLoadingdeliveredShipments
                                                   .value
@@ -495,6 +512,8 @@ class _MainDashState extends State<MainDash> {
                                                                 .height *
                                                             1,
                                                     child: MainCardBodyView(
+                                                      module:
+                                                          "delivered_shipments",
                                                       title: 'DeliveredShipments'
                                                               .tr +
                                                           ' (' +
@@ -620,6 +639,7 @@ class _MainDashState extends State<MainDash> {
                                 GetX<DashbordController>(builder: (controller) {
                                   return widget.controller.ofdShipemet.isEmpty
                                       ? MainCardBodyView(
+                                          module: "ofd_shipments",
                                           controller: controller
                                                   .inViewLoadingOFDShipments
                                                   .value
@@ -652,6 +672,7 @@ class _MainDashState extends State<MainDash> {
                                                                 .height *
                                                             1,
                                                     child: MainCardBodyView(
+                                                      module: "ofd_shipments",
                                                       title: "OFD".tr +
                                                           " (" +
                                                           controller.ofdShipemet
@@ -747,6 +768,7 @@ class _MainDashState extends State<MainDash> {
                                   return widget
                                           .controller.cancellShipemet.isEmpty
                                       ? MainCardBodyView(
+                                          module: "cancel_shipments",
                                           controller: controller
                                                   .inViewLoadingCancelledShipments
                                                   .value
@@ -780,6 +802,8 @@ class _MainDashState extends State<MainDash> {
                                                                 .height *
                                                             1,
                                                     child: MainCardBodyView(
+                                                      module:
+                                                          "cancel_shipments",
                                                       title: "CancelShipments"
                                                               .tr +
                                                           " (" +
@@ -880,6 +904,7 @@ class _MainDashState extends State<MainDash> {
                           () => GetX<DashbordController>(builder: (controller) {
                                 return widget.controller.returnShipemet.isEmpty
                                     ? MainCardBodyView(
+                                        module: "return_shipments",
                                         controller: controller
                                                 .inViewLoadingReturnedShipments
                                                 .value
@@ -910,6 +935,7 @@ class _MainDashState extends State<MainDash> {
                                                           .height *
                                                       1,
                                                   child: MainCardBodyView(
+                                                    module: "return_shipments",
                                                     title: "ReturnShipments"
                                                             .tr +
                                                         " (" +

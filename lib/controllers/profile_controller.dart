@@ -18,6 +18,8 @@ class ProfileController extends GetxController {
   Rx<XFile> image = XFile('').obs;
   Data oldProfile = new Data();
   String mobile = "";
+  String countryCode = "";
+
   String email = "";
   String name = "";
 
@@ -40,6 +42,8 @@ class ProfileController extends GetxController {
         // print(_profile.data!.storeMobile);
         mobile = _profile.data!.storeMobile.toString();
         name = _profile.data!.storeName.toString();
+        countryCode = _profile.data!.countryCode.toString();
+
         email = _profile.data!.storeEmail.toString();
 
         profile.value = _profile.data!;

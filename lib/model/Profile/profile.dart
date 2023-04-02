@@ -36,6 +36,7 @@ class Data {
     this.storeMobile,
     this.storeImage,
     this.createdAt,
+    this.countryCode = "",
   });
 
   String? storeName;
@@ -44,9 +45,11 @@ class Data {
   String? storeMobile;
   String? storeImage;
   String? createdAt;
+  String? countryCode;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         storeName: json["store_name"],
+        countryCode: json["country_code"] ?? "",
         storeUsername: json["store_username"],
         storeEmail: json["store_email"],
         storeMobile: json["store_mobile"],
@@ -56,6 +59,7 @@ class Data {
 
   Map<String, dynamic> toJson() => {
         "store_name": storeName,
+        "country_code": countryCode,
         "store_username": storeUsername,
         "store_email": storeEmail,
         "store_mobile": storeMobile,

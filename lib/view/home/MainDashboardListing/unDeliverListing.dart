@@ -1,5 +1,7 @@
+import 'package:dalile_customer/components/common/loading_indicator.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/controllers/dashbord_controller.dart';
+import 'package:dalile_customer/controllers/download_controller.dart';
 import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/home/card_body_new_log.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
@@ -85,6 +87,25 @@ class _UndeliverListing extends State<UndeliverListing> {
       toolbarHeight: 70,
       backgroundColor: primaryColor,
       foregroundColor: whiteColor,
+      actions: [
+        GetX<DownloadController>(builder: (controller) {
+          return Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: controller.isDownloading.value
+                ? DalileeLoadingIndicator(
+                    color: whiteColor,
+                    height: 20,
+                    width: 20,
+                  )
+                : GestureDetector(
+                    onTap: () {
+                      controller.startDownloadingListWithoutDateRange(
+                          "csv", "undelivered_shipments");
+                    },
+                    child: Icon(Icons.download)),
+          );
+        }),
+      ],
       title: CustomText(
           text: "Un-DeliveredShipments".tr + " ($subTitle)",
           color: whiteColor,

@@ -136,6 +136,32 @@ class DownloadController extends GetxController {
     }
   } //startDownloadingList
 
+  startDownloadingListWithoutDateRange(String type, String module) async {
+    try {
+      if (startDate.value == "")
+        startDate.value = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      if (endDate.value == "") endDate.value = startDate.value;
+      isDownloading(true);
+
+      // print(
+      //     "/dashboard/export?type=$type&email=0&module=$module&pdf_type=listing");
+      var res = await get(
+          '/dashboard/export?type=$type&email=0&module=$module&pdf_type=listing');
+      if (res != null) {
+        var body = exportResponseFromJson(res.body);
+
+        startDownloadingExcellOrPdf(body.data!.url.toString(), type,
+            isGoBack: false);
+        // print(res.toString());
+      } else
+        print(res);
+    } catch (e) {
+      print(e);
+    } finally {
+      isDownloading(false);
+    }
+  } //startDownloadingList
+
   startDownloadingSingle(String billId, {bool isGoBack: false}) async {
     try {
       if (isGoBack) Get.back();
@@ -157,7 +183,8 @@ class DownloadController extends GetxController {
     }
   } //startDownloadingList
 
-  startDownloadingExcellOrPdf(String url, String extension) async {
+  startDownloadingExcellOrPdf(String url, String extension,
+      {bool isGoBack = true}) async {
     try {
       // Get.snackbar(
       //     'Successfully Exported', "File has been sent to your email address.",
@@ -169,7 +196,7 @@ class DownloadController extends GetxController {
         launchUrl(_url);
         return;
       } else {
-        Get.back();
+        if (isGoBack) Get.back();
         if (url == "") return;
 
         if (Platform.isAndroid) {

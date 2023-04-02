@@ -49,6 +49,7 @@ class AccountManagerController extends GetxController {
       var res = await postAccountManager("$accountManagerBaseUrl/login",
           {"email": email.value, "password": password.value},
           isLogin: true);
+      // inspect(res);
       if (res != null) {
         var jsonResponse = accountManagerLoginFromJson(res?.body);
         final prefs = await SharedPreferences.getInstance();
@@ -110,7 +111,8 @@ class AccountManagerController extends GetxController {
 
         _saveProduct(token['data']['store']['username'], "username");
         _saveProduct(token['data']['store']['user']["name"] ?? "", "name");
-        Get.to(ControllerView());
+        loading(false);
+        Get.offAll(ControllerView());
         return response;
       } else {
         // mass = response['message'] ?? "please try agian later";
