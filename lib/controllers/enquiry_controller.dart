@@ -106,6 +106,8 @@ class EnquiryFinanceController extends GetxController {
       });
       if (enquriyAdd.status == 1) {
         Get.back();
+        Get.back();
+
         update();
       }
       {
