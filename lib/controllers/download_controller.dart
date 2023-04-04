@@ -196,7 +196,6 @@ class DownloadController extends GetxController {
         launchUrl(_url);
         return;
       } else {
-        if (isGoBack) Get.back();
         if (url == "") return;
 
         if (Platform.isAndroid) {
@@ -221,13 +220,10 @@ class DownloadController extends GetxController {
           options: Options(),
         )
             .then((_) {
-          // if (Platform.isIOS)
-          //   Get.snackbar('Successfully Exported',
-          //       "File has been sent to your email address.",
-          //       backgroundColor: primaryColor.withOpacity(0.7));
           OpenFile.open(path);
         });
       }
+      if (isGoBack) Get.back();
     } catch (e) {
       // print(e);
     } finally {
