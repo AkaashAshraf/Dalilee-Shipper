@@ -194,6 +194,7 @@ class PickupView extends StatelessWidget {
                                                             "", "",
                                                             url:
                                                                 "/pickup/create-pickup-auto",
+                                                                context: context,
                                                             isAutoDailyPickup:
                                                                 true,
                                                             time: controller

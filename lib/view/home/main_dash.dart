@@ -266,11 +266,20 @@ class _MainDashState extends State<MainDash> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(12),
-                        child: Text(Get.put(ProfileController())
-                                .profile
-                                .value
-                                .storeMobile ??
-                            ""),
+                        child: Text(
+                          (Get.put(ProfileController())
+                                      .profile
+                                      .value
+                                      .storeMobile ??
+                                  "") +
+                              " - " +
+                              (Get.put(ProfileController())
+                                      .profile
+                                      .value
+                                      .storeName ??
+                                  ""),
+                          maxLines: 1,
+                        ),
                       ),
                     ),
                   ),

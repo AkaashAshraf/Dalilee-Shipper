@@ -44,42 +44,41 @@ class AccountManagerController extends GetxController {
   }
 
   login() async {
-    try {
-      loading(true);
-      var res = await postAccountManager("$accountManagerBaseUrl/login",
-          {"email": email.value, "password": password.value},
-          isLogin: true);
-      // inspect(res);
-      if (res != null) {
-        var jsonResponse = accountManagerLoginFromJson(res?.body);
-        final prefs = await SharedPreferences.getInstance();
-        stores(jsonResponse.data?.stores);
-        prefs.setString(
-            accountManagerToken, jsonResponse.data?.accessToken ?? "");
-        prefs.setString(
-            accountManagerName, jsonResponse.data?.user?.name ?? "");
+    // try {
+    loading(true);
+    var res = await postAccountManager("$accountManagerBaseUrl/login",
+        {"email": email.value, "password": password.value},
+        isLogin: true);
+    // inspect(res);
+    if (res != null) {
+      var jsonResponse = accountManagerLoginFromJson(res?.body);
+      final prefs = await SharedPreferences.getInstance();
+      stores(jsonResponse.data?.stores);
+      prefs.setString(
+          accountManagerToken, jsonResponse.data?.accessToken ?? "");
+      prefs.setString(accountManagerName, jsonResponse.data?.user?.name ?? "");
 
-        prefs.setString(
-            accountManagerUserID, jsonResponse.data?.user?.id.toString() ?? "");
-        prefs.setString(
-            accountManagerData, accountManagerLoginToJson(jsonResponse));
-        Get.snackbar('Success', "Logged In Successfully",
-            backgroundColor: Colors.green.withOpacity(0.8),
-            colorText: whiteColor);
-        Get.to(ChooseStoreView());
-      } else {
-        Get.snackbar('Error', "Invalid email/password",
-            backgroundColor: Colors.red.withOpacity(0.8),
-            colorText: whiteColor);
-      }
-      loading(false);
-    } catch (e) {
+      prefs.setString(
+          accountManagerUserID, jsonResponse.data?.user?.id.toString() ?? "");
+      prefs.setString(
+          accountManagerData, accountManagerLoginToJson(jsonResponse));
+      Get.snackbar('Success', "Logged In Successfully",
+          backgroundColor: Colors.green.withOpacity(0.8),
+          colorText: whiteColor);
+      Get.to(ChooseStoreView());
+    } else {
       Get.snackbar('Error', "Invalid email/password",
           backgroundColor: Colors.red.withOpacity(0.8), colorText: whiteColor);
-      // inspect(e);
-    } finally {
-      loading(false);
     }
+    loading(false);
+    // } catch (e) {
+    //   inspect(e);
+    //   Get.snackbar('Error', "Invalid email/password",
+    //       backgroundColor: Colors.red.withOpacity(0.8), colorText: whiteColor);
+    //   // inspect(e);
+    // } finally {
+    //   loading(false);
+    // }
   }
 
   fetchStores() async {

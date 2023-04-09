@@ -16,10 +16,12 @@ class MyInput extends StatelessWidget {
       this.controller,
       this.keyboardType,
       this.validator,
+      this.secure = false,
       this.limitCharacters: 100,
       this.onChanged})
       : super(key: key);
   final TextInputType? keyboardType;
+  final bool secure;
   final limitCharacters;
   final Widget? suffixIcon, prefix;
   final String? hintText, labelText;
@@ -42,6 +44,7 @@ class MyInput extends StatelessWidget {
         initialValue: initialValue,
         keyboardType: keyboardType,
         validator: validator,
+        obscureText: secure,
         style: const TextStyle(
           fontSize: 13,
         ),

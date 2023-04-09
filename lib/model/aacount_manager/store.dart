@@ -17,7 +17,7 @@ class Stores {
 
   factory Stores.fromJson(Map<String, dynamic> json) => Stores(
         storeId: json["store_id"] ?? 0,
-        countryCode: json["country_code"] ?? 0,
+        countryCode: json["country_code"].toString(),
         name: json["name"] ?? "",
         mobile: json["mobile"] ?? "",
         storeCode: json["store_code"] ?? "",

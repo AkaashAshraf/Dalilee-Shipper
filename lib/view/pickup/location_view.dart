@@ -139,6 +139,7 @@ class _GMapState extends State<GMap> {
                   ? "/pickup/create-pickup-auto"
                   : "/pickup/create-pickup",
               isAutoDailyPickup: widget.isDailyPickup,
+              context: context,
               time: widget.isDailyPickup
                   ? Get.put(PickupController()).pickupTime.toString()
                   : "")
@@ -160,13 +161,13 @@ class _GMapState extends State<GMap> {
         _controller.fetchAllPickupData();
         _controller.fetchTodayPickupData();
 
-        await what3WordApi(
-          long.text.toString(),
-          lat.text.toString(),
-        );
-        Navigator.pop(context);
+        // await what3WordApi(
+        //   long.text.toString(),
+        //   lat.text.toString(),
+        // );
+        // Navigator.pop(context);
 
-        w3WordsPopup(context, word3);
+        // w3WordsPopup(context, word3);
       });
     } finally {}
   }

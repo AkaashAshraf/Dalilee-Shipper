@@ -176,7 +176,7 @@ abstract class FinanceApi {
           "trader_id": traderId
         },
       );
-
+      inspect(response);
       if (response.statusCode == 200) {
         return true;
       } else {

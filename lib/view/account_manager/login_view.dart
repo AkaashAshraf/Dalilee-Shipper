@@ -93,11 +93,13 @@ class _LoginViewState extends State<AccountManagerLoginView> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: MyInput(
+                        secure: true,
                         // controller: _controller.email.value,
                         validator: (x) => _controller.passwordValid(x),
                         keyboardType: TextInputType.emailAddress,
                         onChanged: ((p0) => {_controller.password(p0)}),
                         limitCharacters: 100,
+
                         hintText: "Enter password",
                         // prefix: Text(''),
                       ),

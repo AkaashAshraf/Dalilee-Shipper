@@ -80,19 +80,28 @@ class _LoginViewState extends State<ChooseStoreView> {
                             showAsSuffixIcons: true,
                             showSelectedItems: true,
                             items: _controller.stores
-                                .map((element) => element.mobile)
+                                .map((element) =>
+                                    element.mobile + " - " + element.name)
                                 .toList(),
                             onChanged: (_value) {
                               // inspect(_controller.stores.indexWhere((element) =>
                               //     element.mobile.toString() ==
                               //     _value.toString()));
-                              Stores currentSelectedStore = _controller.stores[
-                                  _controller.stores.indexWhere(
-                                      (element) => element.mobile == _value)];
-                              // inspect(currentSelectedStore);
-                              setState(() {
-                                selectedStore = currentSelectedStore;
-                              });
+
+                              try {
+                                var splittedArray = _value?.split(" ");
+                                var temparedValue = splittedArray!.isNotEmpty
+                                    ? splittedArray[0]
+                                    : _value;
+                                Stores currentSelectedStore =
+                                    _controller.stores[_controller.stores
+                                        .indexWhere((element) =>
+                                            element.mobile == temparedValue)];
+                                // inspect(currentSelectedStore);
+                                setState(() {
+                                  selectedStore = currentSelectedStore;
+                                });
+                              } catch (e) {}
                             },
                             selectedItem: selectedStore.mobile,
                           ),

@@ -169,22 +169,14 @@ class PickupController extends GetxController {
         Get.dialog(const WaiteImage(),
             barrierColor: Colors.transparent, barrierDismissible: false);
 
-        bool? postRequst =
-            await PickupApi.fetchPostRequestPickupData(1, wilayaID, regionID);
-        Get.back();
+        bool? postRequst = await PickupApi.fetchPostRequestPickupData(
+            1, wilayaID, regionID,
+            context: context);
+
         if (postRequst != null && postRequst == true) {
-          showDialog(
-              barrierDismissible: true,
-              barrierColor: Colors.transparent,
-              context: context,
-              builder: (BuildContext context) {
-                return const CustomDialogBoxAl(
-                  title: "Done !!",
-                  des: "pickup requested successfully",
-                  icon: Icons.priority_high_outlined,
-                );
-              });
         } else {
+          Get.back();
+
           if (!Get.isSnackbarOpen) {
             Get.snackbar('Failed', PickupApi.mass);
           }
@@ -201,7 +193,7 @@ class PickupController extends GetxController {
 
   fetchTodayPickupData({bool isRefresh = false}) async {
     try {
-      print("pickup called ");
+      // print("pickup called ");
       // isLoadingToday(true);
       if (!isRefresh) loadMoreTodayPickup(true);
 

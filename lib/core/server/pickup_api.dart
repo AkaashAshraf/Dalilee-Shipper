@@ -1,14 +1,16 @@
 import 'dart:convert';
 
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/http/FromDalilee.dart';
 import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/controllers/pickup_controller.dart';
 import 'package:dalile_customer/model/Pickup/PickupModel.dart';
+import 'package:dalile_customer/model/Pickup/create_pickup.dart';
 import 'package:dalile_customer/model/muhafaza_model.dart';
 import 'package:dalile_customer/model/pickup_deatils.dart';
 import 'package:dalile_customer/model/region_model.dart';
 import 'package:dalile_customer/model/wilayas_model.dart';
+import 'package:dalile_customer/view/widget/custom_popup.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -68,7 +70,8 @@ class PickupApi {
   static Future<bool> fetchlocationData(lat, lng,
       {required String url,
       required String time,
-      required isAutoDailyPickup}) async {
+      required isAutoDailyPickup,
+      required BuildContext context}) async {
     var _url = "$like$url";
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? '';
@@ -99,6 +102,30 @@ class PickupApi {
 
       // log(response.toString());
       if (response.statusCode == 200) {
+        var res = createPickUpFromJson(response.body);
+
+        {
+          Get.back();
+          Get.back();
+
+          showDialog(
+              barrierDismissible: true,
+              barrierColor: Colors.transparent,
+              context: context,
+              builder: (BuildContext context) {
+                return CustomDialogBoxAl(
+                  title: res.status == "warning"
+                      ? "Warning"
+                      : res.status == "error"
+                          ? "Failed"
+                          : "Done !!",
+                  warning: res.status == "warning" ? true : false,
+                  error: res.status == "errot" ? true : false,
+                  des: res.message,
+                  icon: Icons.priority_high_outlined,
+                );
+              });
+        }
         var data = json.decode(response.body);
 
         success = '${data["message"] ?? "has been added"}';
@@ -247,7 +274,8 @@ class PickupApi {
     }
   }
 
-  static Future<bool?> fetchPostRequestPickupData(storeId, wid, rId) async {
+  static Future<bool?> fetchPostRequestPickupData(storeId, wid, rId,
+      {required BuildContext context}) async {
     var url = "$like/pickup/request-pickup";
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? '';
@@ -262,6 +290,28 @@ class PickupApi {
         "area_id": "$rId",
       });
       if (response.statusCode == 200) {
+        var res = createPickUpFromJson(response.body);
+
+        {
+          Get.back();
+
+          showDialog(
+              barrierDismissible: true,
+              barrierColor: Colors.transparent,
+              context: context,
+              builder: (BuildContext context) {
+                return CustomDialogBoxAl(
+                  title: res.status == "warning"
+                      ? "Warning"
+                      : res.status == "error"
+                          ? "Failed"
+                          : "Done !!",
+                  des: res.message,
+                  icon: Icons.priority_high_outlined,
+                );
+              });
+        }
+
         var mass = json.decode(response.body);
         if (mass['message'] == "The reference has been created") {
           return true;
