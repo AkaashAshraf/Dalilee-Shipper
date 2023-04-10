@@ -14,7 +14,6 @@ import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:otp_timer_button/otp_timer_button.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class FinanceEnquiry extends StatelessWidget {
@@ -37,7 +36,7 @@ class FinanceEnquiry extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
             backgroundColor: primaryColor,
             onPressed: () {
-              if (financeController.openData.value.remaining < 1 && false) {
+              if (financeController.openData.value.remaining < 1) {
                 Get.snackbar('less_amount_warning'.tr.tr, " ",
                     backgroundColor: Colors.orange.withOpacity(0.9),
                     colorText: Colors.white);
@@ -589,7 +588,8 @@ class _AlrtAddEnquryBodyState extends State<_AlrtAddEnquryBody> {
                       CustomButtom(
                           text: 'CreateInquiry'.tr,
                           onPressed: () async {
-                            var res = await controller.sendOtp();
+                            var res = await controller.sendOtp(context);
+
                             if (res) otpModal(context).show();
                           },
                         ),

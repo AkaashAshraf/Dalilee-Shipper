@@ -419,7 +419,7 @@ abstract class FinanceApi {
         "decription": description,
         "trader_account_id": accountId,
       });
-      // inspect(response);
+      inspect(response);
       if (response.statusCode == 200) {
         var data = crmgenralresponseFromJson(response.body);
         // if (data.status == 0)
@@ -461,7 +461,7 @@ abstract class FinanceApi {
     }
   }
 
-  static sendOtpForEnquiry() async {
+  static Future<bool> sendOtpForEnquiry(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
 
     dynamic fromString = prefs.getString('loginData') ?? '';
@@ -473,13 +473,37 @@ abstract class FinanceApi {
     String mobile = (resLogin['data']["store"]["country_code"] ?? "") +
         (resLogin['data']["store"]["mobile"] ?? "");
     var _url = crmBaseUrl + '/shipper/send-otp/$mobile/$storeId';
-    print(_url);
+    // print(_url);
     try {
-      await http.post(Uri.parse(_url), headers: {
+      var response = await http.post(Uri.parse(_url), headers: {
         "Accept": "application/json",
       }, body: {});
+      if (response.statusCode == 200) {
+        var data = crmgenralresponseFromJson(response.body);
+        if (data.status == 0) {
+          Get.back();
+          // Get.back();
+
+          showDialog(
+              barrierDismissible: true,
+              barrierColor: Colors.transparent,
+              context: context,
+              builder: (BuildContext context) {
+                return CustomDialogBoxAl(
+                  title: "Failed".tr,
+                  error: true,
+                  des: Get.locale.toString() == "en"
+                      ? data.messageEn ?? ""
+                      : data.messageAr ?? "",
+                  icon: Icons.cancel,
+                );
+              });
+        }
+        return data.status == 0 ? false : true;
+      } else
+        return false;
     } catch (e) {
-      inspect(e);
+      return false;
     }
   }
 }

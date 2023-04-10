@@ -69,12 +69,12 @@ class EnquiryFinanceController extends GetxController {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String decConteroller = '';
-  Future<bool> sendOtp() async {
+  Future<bool> sendOtp(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       isAddwiting(true);
-      await FinanceApi.sendOtpForEnquiry();
+      var res = await FinanceApi.sendOtpForEnquiry(context);
       isAddwiting(false);
-      return true;
+      return res;
     } else {
       return false;
     }
