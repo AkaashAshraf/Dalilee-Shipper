@@ -6,7 +6,7 @@ double omrToAedRate = 9.47;
 const int iosVersionLocal = 5; //28/feb/2023
 const int androidVersionLocal = 5; //28/feb/2023
 
-Color primaryColor = Color(isTesEnvironment ? 0xFF76529c : 0xFF00A1E1);
+Color primaryColor = Color(isTesEnvironment ? 0xFF66504B : 0xFF76529c);
 
 const whiteColor = Color(0xFFFFFFFF);
 const bgColor = Color(0xFFF8F8F8);
@@ -21,7 +21,7 @@ const cardColor = Color(0xFFF6F6F6);
 // String domain = "https://shaheen-oman.dalilee.om"; // live
 
 String domain =
-    isTesEnvironment ? "http://test.meshwarr.com" : "https://shaheenom.com"; //
+    isTesEnvironment ? "http://test.meshwarr.com" : "https://tamshaheen.com"; //
 
 String base_url = "$domain/api"; // live
 String terms_url = "$domain/terms"; // live
