@@ -1,0 +1,4 @@
+path: android->app->tamkeystore
+key store password : tshaheenashipperm
+key password : tshaheenashipperm
+alias : tamshaheen
