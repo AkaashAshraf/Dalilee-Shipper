@@ -201,6 +201,9 @@ class _ShipmentListView extends State<ShipmentListView> {
                         ),
                         ElevatedButton(
                           onPressed: () => selectFromDate(context),
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(primaryColor)),
                           child: Text(
                             "${from.toLocal()}".split(' ')[0],
                             style: TextStyle(fontSize: 10),
@@ -221,6 +224,9 @@ class _ShipmentListView extends State<ShipmentListView> {
                         ),
                         ElevatedButton(
                           onPressed: () => selectToDate(context),
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(primaryColor)),
                           child: Text(
                             "${to.toLocal()}".split(' ')[0],
                             style: TextStyle(fontSize: 10),

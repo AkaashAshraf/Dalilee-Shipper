@@ -156,6 +156,11 @@ class OpendedView extends StatelessWidget {
                 CustomButtom(
                   text: 'FinanceInquiry'.tr,
                   onPressed: () {
+                    Get.snackbar("This feature is not available yet", " ",
+                        backgroundColor: Colors.orange.withOpacity(0.9),
+                        colorText: Colors.white);
+                    return;
+                    return;
                     Get.put(EnquiryFinanceController())
                         .fetchEnquiryFinanceData();
                     Get.to(() => FinanceEnquiry(),
@@ -169,6 +174,10 @@ class OpendedView extends StatelessWidget {
                 CustomButtom(
                   text: 'ManageAccounts'.tr,
                   onPressed: () async {
+                    Get.snackbar("This feature is not available yet", " ",
+                        backgroundColor: Colors.orange.withOpacity(0.9),
+                        colorText: Colors.white);
+                    return;
                     // final prefs = await SharedPreferences.getInstance();
 
                     // String token = prefs.getString('name') ?? '';
