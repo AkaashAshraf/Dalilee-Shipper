@@ -7,12 +7,15 @@ class CustomDialogBoxAl extends StatelessWidget {
       {Key? key,
       required this.title,
       this.error = false,
+      this.warning = false,
       required this.des,
       required this.icon})
       : super(key: key);
   final String title, des;
   final IconData icon;
   final bool error;
+  final bool warning;
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -25,7 +28,7 @@ class CustomDialogBoxAl extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Container(
-            height: 180,
+            height: MediaQuery.of(context).size.height * 0.3,
             width: MediaQuery.of(context).size.width * 0.8,
             padding:
                 const EdgeInsets.only(left: 10, top: 20, right: 10, bottom: 10),
@@ -47,14 +50,19 @@ class CustomDialogBoxAl extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   alignment: Alignment.center,
                   size: 27,
-                  color: error ? Colors.red : primaryColor,
+                  color: error
+                      ? Colors.red
+                      : warning
+                          ? Colors.orange
+                          : primaryColor,
                 ),
                 const SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 CustomText(
                   text: des,
                   size: 15,
+                  maxLines: 4,
                   color: error ? Colors.red : Colors.grey,
                   alignment: Alignment.center,
                 ),
@@ -70,7 +78,11 @@ class CustomDialogBoxAl extends StatelessWidget {
             right: 10,
             top: 10,
             child: Image.asset(
-              error ? 'assets/images/failed.png' : 'assets/images/done.png',
+              error
+                  ? 'assets/images/failed.png'
+                  : warning
+                      ? 'assets/images/failed.png'
+                      : 'assets/images/done.png',
               height: 60,
               width: 60,
             ),

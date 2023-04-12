@@ -198,7 +198,8 @@ class PickupView extends StatelessWidget {
                                                                 true,
                                                             time: controller
                                                                 .pickupTime
-                                                                .value)
+                                                                .value,
+                                                            context: context)
                                                         .then((value) {
                                                       if (value) {
                                                         // Get.to(PickupView());

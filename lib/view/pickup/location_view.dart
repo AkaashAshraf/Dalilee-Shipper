@@ -1,16 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
-import 'package:dalile_customer/components/popups/askOtp.dart';
-import 'package:dalile_customer/components/popups/w3WordsPopup.dart';
-import 'package:dalile_customer/view/widget/custom_popup.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/server/pickup_api.dart';
 import 'package:dalile_customer/controllers/pickup_controller.dart';
-import 'package:dalile_customer/view/pickup/pickup_view.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/material.dart';
@@ -141,19 +135,11 @@ class _GMapState extends State<GMap> {
               isAutoDailyPickup: widget.isDailyPickup,
               time: widget.isDailyPickup
                   ? Get.put(PickupController()).pickupTime.toString()
-                  : "")
+                  : "",
+              context: context)
           .then((value) {
         if (Get.isDialogOpen == true) {
           Get.back();
-        }
-        if (value) {
-          // Get.to(PickupView());
-          Get.snackbar('Successful', "${PickupApi.success}",
-              colorText: whiteColor,
-              backgroundColor: primaryColor.withOpacity(0.7));
-        } else {
-          Get.snackbar('Failed', "${PickupApi.mass}",
-              colorText: whiteColor, backgroundColor: Colors.red[800]);
         }
       }).whenComplete(() async {
         var _controller = Get.put(PickupController(), permanent: false);
@@ -165,8 +151,6 @@ class _GMapState extends State<GMap> {
           lat.text.toString(),
         );
         Navigator.pop(context);
-
-        w3WordsPopup(context, word3);
       });
     } finally {}
   }

@@ -1,14 +1,17 @@
 import 'dart:convert';
 
+import 'package:dalile_customer/components/popups/ask_for_tommorrow_pickup.dart';
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/http/FromDalilee.dart';
 import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/controllers/pickup_controller.dart';
 import 'package:dalile_customer/model/Pickup/PickupModel.dart';
+import 'package:dalile_customer/model/Pickup/create_pickup.dart';
 import 'package:dalile_customer/model/muhafaza_model.dart';
 import 'package:dalile_customer/model/pickup_deatils.dart';
 import 'package:dalile_customer/model/region_model.dart';
 import 'package:dalile_customer/model/wilayas_model.dart';
+import 'package:dalile_customer/view/widget/custom_popup.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -68,11 +71,13 @@ class PickupApi {
   static Future<bool> fetchlocationData(lat, lng,
       {required String url,
       required String time,
-      required isAutoDailyPickup}) async {
+      bool isTommorow = false,
+      required isAutoDailyPickup,
+      required BuildContext context}) async {
     var _url = "$like$url";
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? '';
-
+    var pickupController = Get.find<PickupController>();
     try {
       // print("------------params of create pickup");
 
@@ -92,6 +97,7 @@ class PickupApi {
         "lat": "$lat",
         "pickup_time": "$time",
         "lng": "$lng",
+        "create_next_day": isTommorow ? "1" : "0",
         "is_cron_active":
             Get.put(PickupController()).isAutoDailyPickup.value ? "1" : "0"
         // "is_cron_active": "${time != "" ? 1 : 0}"
@@ -99,6 +105,38 @@ class PickupApi {
 
       // log(response.toString());
       if (response.statusCode == 200) {
+        var res = createPickFromJson(response.body);
+
+        {
+          Get.back();
+          Get.back();
+          if (res.status == "warning")
+            minimumAmountModal(res.message, lat, lng,
+                    screenWidth: MediaQuery.of(context).size.width,
+                    url: url,
+                    time: time,
+                    isAutoDailyPickup: isAutoDailyPickup,
+                    context: context)
+                .show();
+          else
+            showDialog(
+                barrierDismissible: true,
+                barrierColor: Colors.transparent,
+                context: context,
+                builder: (BuildContext context) {
+                  return CustomDialogBoxAl(
+                    title: res.status == "warning"
+                        ? "Warning"
+                        : res.status == "error"
+                            ? "Failed"
+                            : "Done !!",
+                    warning: res.status == "warning" ? true : false,
+                    error: res.status == "errot" ? true : false,
+                    des: res.message,
+                    icon: Icons.priority_high_outlined,
+                  );
+                });
+        }
         var data = json.decode(response.body);
 
         success = '${data["message"] ?? "has been added"}';
@@ -121,7 +159,7 @@ class PickupApi {
       mass = 'Network error' + e.toString();
       print(mass);
       return false;
-    }
+    } finally {}
   }
 
   static Future<WilayasModel?> fetchWilayaData(muhafazaid) async {
@@ -247,7 +285,8 @@ class PickupApi {
     }
   }
 
-  static Future<bool?> fetchPostRequestPickupData(storeId, wid, rId) async {
+  static Future<bool?> fetchPostRequestPickupData(storeId, wid, rId,
+      {required BuildContext context}) async {
     var url = "$like/pickup/request-pickup";
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? '';

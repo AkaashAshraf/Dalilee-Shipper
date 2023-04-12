@@ -29,6 +29,8 @@ class PickupController extends GetxController {
   RxString pickupTime = "08:00".obs;
   RxBool loadMoreTodayPickup = false.obs;
   RxBool isAutoDailyPickup = false.obs;
+
+  RxBool craetePickupLoading = false.obs;
   RxBool autoPickupLoading = false.obs;
   RxList<Shipment> pickupShipments = <Shipment>[].obs;
 
@@ -169,8 +171,9 @@ class PickupController extends GetxController {
         Get.dialog(const WaiteImage(),
             barrierColor: Colors.transparent, barrierDismissible: false);
 
-        bool? postRequst =
-            await PickupApi.fetchPostRequestPickupData(1, wilayaID, regionID);
+        bool? postRequst = await PickupApi.fetchPostRequestPickupData(
+            1, wilayaID, regionID,
+            context: context);
         Get.back();
         if (postRequst != null && postRequst == true) {
           showDialog(
