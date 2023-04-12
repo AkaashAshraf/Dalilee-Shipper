@@ -4,6 +4,7 @@ class MyTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         "ar": {
+          "ExpressPickup": "الاستلام السرريع",
           "resend_otp": "إعادة إرسال OTP",
           "verify": "يؤكد",
           "enter_otp_to_verify": "أدخل OTP لإنشاء استعلام",
@@ -314,6 +315,7 @@ class MyTranslations extends Translations {
           "Filed": "فشل",
         },
         "en": {
+          "ExpressPickup": "Express Pickup",
           "resend_otp": "Resend OTP",
           "enter_otp_to_verify": "Enter OTP to Create Enquiry",
           "verify": "Verify",

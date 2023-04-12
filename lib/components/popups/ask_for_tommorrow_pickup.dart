@@ -16,6 +16,7 @@ Alert minimumAmountModal(String text, lat, lng,
     {required String url,
     required String time,
     bool isTommorow = false,
+    bool isFastPickup = false,
     required double screenWidth,
     required isAutoDailyPickup,
     required BuildContext context}) {
@@ -90,6 +91,8 @@ Alert minimumAmountModal(String text, lat, lng,
                             }, body: {
                               "lat": "$lat",
                               "pickup_time": "$time",
+                              "is_express": isFastPickup ? "1" : "0",
+
                               "lng": "$lng",
                               "create_next_day": "1",
                               "is_cron_active": Get.put(PickupController())

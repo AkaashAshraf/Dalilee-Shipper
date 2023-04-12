@@ -71,6 +71,7 @@ class PickupApi {
   static Future<bool> fetchlocationData(lat, lng,
       {required String url,
       required String time,
+      required bool isFastPickup,
       bool isTommorow = false,
       required isAutoDailyPickup,
       required BuildContext context}) async {
@@ -97,6 +98,7 @@ class PickupApi {
         "lat": "$lat",
         "pickup_time": "$time",
         "lng": "$lng",
+        "is_express": isFastPickup ? "1" : "0",
         "create_next_day": isTommorow ? "1" : "0",
         "is_cron_active":
             Get.put(PickupController()).isAutoDailyPickup.value ? "1" : "0"

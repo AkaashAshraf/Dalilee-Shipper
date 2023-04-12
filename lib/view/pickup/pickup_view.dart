@@ -180,6 +180,7 @@ class PickupView extends StatelessWidget {
                                                   Navigator.pop(context);
                                                   Get.to(
                                                       () => GMap(
+                                                            isFastPickup: false,
                                                             isDailyPickup: true,
                                                           ),
                                                       transition:
@@ -192,6 +193,7 @@ class PickupView extends StatelessWidget {
                                                         .value = true;
                                                     await PickupApi.fetchlocationData(
                                                             "", "",
+                                                            isFastPickup: false,
                                                             url:
                                                                 "/pickup/create-pickup-auto",
                                                             isAutoDailyPickup:
@@ -283,6 +285,23 @@ class PickupView extends StatelessWidget {
                 onTap: () {
                   Get.to(
                       () => GMap(
+                            isFastPickup: false,
+                            isDailyPickup: false,
+                          ),
+                      transition: Transition.downToUp,
+                      duration: Duration(milliseconds: 500));
+                }),
+            SpeedDialChild(
+                child: Icon(
+                  Icons.add_alarm,
+                  color: primaryColor,
+                  size: 30,
+                ),
+                label: 'ExpressPickup'.tr,
+                onTap: () {
+                  Get.to(
+                      () => GMap(
+                            isFastPickup: true,
                             isDailyPickup: false,
                           ),
                       transition: Transition.downToUp,

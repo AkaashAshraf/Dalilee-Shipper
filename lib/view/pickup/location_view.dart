@@ -15,8 +15,12 @@ import 'package:map_picker/map_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GMap extends StatefulWidget {
-  const GMap({Key? key, required this.isDailyPickup}) : super(key: key);
+  const GMap(
+      {Key? key, required this.isDailyPickup, required this.isFastPickup})
+      : super(key: key);
   final bool isDailyPickup;
+  final bool isFastPickup;
+
   @override
   State<GMap> createState() => _GMapState();
 }
@@ -129,6 +133,7 @@ class _GMapState extends State<GMap> {
     try {
       await PickupApi.fetchlocationData(
               lat.text.toString(), long.text.toString(),
+              isFastPickup: widget.isFastPickup,
               url: widget.isDailyPickup
                   ? "/pickup/create-pickup-auto"
                   : "/pickup/create-pickup",
