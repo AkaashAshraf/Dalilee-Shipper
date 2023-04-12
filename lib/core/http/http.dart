@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:dalile_customer/config/storag_paths.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/model/aacount_manager/login.dart';
-import 'package:dalile_customer/view/login/login_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
@@ -14,11 +13,13 @@ Future<dynamic> get(String url) async {
   final prefs = await SharedPreferences.getInstance();
 
   String token = prefs.getString('token') ?? '';
+  String managerToken = prefs.getString(accountManagerToken) ?? '';
 
   try {
     var response = await http.get(Uri.parse(_url), headers: {
       "Accept": "application/json",
-      "Authorization": "Bearer $token"
+      "Authorization": "Bearer $token",
+      "ManagerToken": "Bearer $managerToken"
     });
     // return response;
 
@@ -47,11 +48,13 @@ Future<dynamic> getWithUrl(String url) async {
   final prefs = await SharedPreferences.getInstance();
 
   String token = prefs.getString('token') ?? '';
+  String managerToken = prefs.getString(accountManagerToken) ?? '';
 
   try {
     var response = await http.get(Uri.parse(_url), headers: {
       "Accept": "application/json",
-      "Authorization": "Bearer $token"
+      "Authorization": "Bearer $token",
+      "ManagerToken": "Bearer $managerToken"
     });
     // print(response.body);
     // return response.statusCode;
@@ -77,12 +80,14 @@ Future<dynamic> post(String url, dynamic body) async {
   final prefs = await SharedPreferences.getInstance();
 
   String token = prefs.getString('token') ?? '';
+  String managerToken = prefs.getString(accountManagerToken) ?? '';
   print(token);
   try {
     var response = await http.post(Uri.parse(_url), body: body, headers: {
       "Accept": "application/json",
       // 'Content-Type': 'application/json; charset=UTF-8',
-      "Authorization": "Bearer $token"
+      "Authorization": "Bearer $token",
+      "ManagerToken": "Bearer $managerToken"
     });
     // return _url;
     // print(response.body);
@@ -111,13 +116,15 @@ Future<dynamic> getAccountManager(String url) async {
   final prefs = await SharedPreferences.getInstance();
 
   String token = prefs.getString(accountManagerToken) ?? '';
+  String managerToken = prefs.getString(accountManagerToken) ?? '';
 
   try {
     var response = await http.get(Uri.parse(_url), headers: {
       "Accept": "application/json",
-      "Authorization": "Bearer $token"
+      "Authorization": "Bearer $token",
+      "ManagerToken": "Bearer $managerToken"
     });
-    inspect(response);
+    // inspect(response);
     // return response;
 
     // print(response.body);
@@ -146,12 +153,15 @@ Future<dynamic> postAccountManager(String url, dynamic body,
   final prefs = await SharedPreferences.getInstance();
 
   String token = prefs.getString(accountManagerToken) ?? '';
+  String managerToken = prefs.getString(accountManagerToken) ?? '';
+
   // print(token);
   try {
     var response = await http.post(Uri.parse(_url), body: body, headers: {
       "Accept": "application/json",
       // 'Content-Type': 'application/json; charset=UTF-8',
-      "Authorization": "Bearer $token"
+      "Authorization": "Bearer $token",
+      "ManagerToken": "Bearer $managerToken"
     });
     // return _url;
     // print(response.body);
@@ -179,12 +189,14 @@ Future<dynamic> postWithJsonBody(String url, dynamic body) async {
   final prefs = await SharedPreferences.getInstance();
 
   String token = prefs.getString('token') ?? '';
+  String managerToken = prefs.getString(accountManagerToken) ?? '';
 
   try {
     var response = await http.post(Uri.parse(_url), body: body, headers: {
       "Accept": "application/json",
       'Content-Type': 'application/json; charset=UTF-8',
-      "Authorization": "Bearer $token"
+      "Authorization": "Bearer $token",
+      "ManagerToken": "Bearer $managerToken"
     });
     // inspect(response);
     // Get.snackbar('Successfull', response.statusCode.toString());
@@ -213,11 +225,14 @@ Future<dynamic> postWithJsonBody(String url, dynamic body) async {
 
 Future<dynamic> multirequestPost(dynamic request) async {
   final prefs = await SharedPreferences.getInstance();
+  String managerToken = prefs.getString(accountManagerToken) ?? '';
 
   String token = prefs.getString('token') ?? '';
   try {
     request.headers['Accept'] = 'application/json';
+
     request.headers['Authorization'] = "Bearer $token";
+    request.headers['ManagerToken'] = "Bearer $managerToken";
     var res = await request.send();
     var resData = await res.stream.toBytes();
     var f_res = String.fromCharCodes(resData);

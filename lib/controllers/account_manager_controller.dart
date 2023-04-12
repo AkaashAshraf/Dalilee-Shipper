@@ -49,7 +49,7 @@ class AccountManagerController extends GetxController {
     var res = await postAccountManager("$accountManagerBaseUrl/login",
         {"email": email.value, "password": password.value},
         isLogin: true);
-    // inspect(res);
+    inspect(res);
     if (res != null) {
       var jsonResponse = accountManagerLoginFromJson(res?.body);
       final prefs = await SharedPreferences.getInstance();
