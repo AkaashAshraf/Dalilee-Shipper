@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 // const primaryColor = Colors.green;
 bool isTesEnvironment = false;
 double omrToAedRate = 9.47;
-const int iosVersionLocal = 6; //10/april/2023 //otp for enq added
-const int androidVersionLocal = 6; //10/april/2023 //otp for enq added
+const int iosVersionLocal = 7; //12/april/2023 //otp for enq added
+const int androidVersionLocal = 7; //12/april/2023 //otp for enq added
 
 Color primaryColor = Color(isTesEnvironment ? 0xFF0D7297 : 0xFF00A1E1);
 
