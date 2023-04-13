@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/core/server/finance_api.dart';
 import 'package:dalile_customer/model/add_inqury_list_caterogry_model.dart';
 import 'package:dalile_customer/model/crm/account_enquiries.dart';
@@ -121,6 +122,9 @@ class EnquiryFinanceController extends GetxController {
                   icon: Icons.priority_high_outlined,
                 );
               });
+
+          await post("/activity/payment-request", {});
+
           return true;
         } else if (enquriyAdd.status == -1) {
           Fluttertoast.showToast(

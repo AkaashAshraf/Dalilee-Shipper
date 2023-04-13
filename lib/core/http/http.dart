@@ -81,7 +81,7 @@ Future<dynamic> post(String url, dynamic body) async {
 
   String token = prefs.getString('token') ?? '';
   String managerToken = prefs.getString(accountManagerToken) ?? '';
-  print(token);
+  print(accountManagerToken);
   try {
     var response = await http.post(Uri.parse(_url), body: body, headers: {
       "Accept": "application/json",
@@ -175,10 +175,10 @@ Future<dynamic> postAccountManager(String url, dynamic body,
       Get.offAll(() => AccountManagerLogin());
       return response.statusCode;
     } else {
-      return response;
+      return null;
     }
   } catch (e) {
-    print(e.toString());
+    // print(e.toString());
 
     return null;
   }

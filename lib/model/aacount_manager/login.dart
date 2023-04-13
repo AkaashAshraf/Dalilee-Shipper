@@ -24,7 +24,7 @@ class AccountManagerLogin {
 
   factory AccountManagerLogin.fromJson(Map<String, dynamic> json) =>
       AccountManagerLogin(
-        success: json["success"],
+        success: json["success"] ?? "",
         data: Data.fromJson(json["data"]),
       );
 

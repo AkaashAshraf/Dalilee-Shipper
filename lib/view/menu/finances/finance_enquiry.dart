@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/controllers/enquiry_controller.dart';
 import 'package:dalile_customer/controllers/finance_controller.dart';
 import 'package:dalile_customer/controllers/mange_account_controller.dart';
+import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/view/menu/finances/finance_enquiry_details.dart';
 import 'package:dalile_customer/view/menu/finances/otp_modal.dart';
@@ -589,6 +592,10 @@ class _AlrtAddEnquryBodyState extends State<_AlrtAddEnquryBody> {
                       CustomButtom(
                           text: 'CreateInquiry'.tr,
                           onPressed: () async {
+                            // var res =
+                            //     await post("/activity/payment-request", {});
+                            // inspect(res);
+
                             var res = await controller.sendOtp();
                             if (res) otpModal(context).show();
                           },

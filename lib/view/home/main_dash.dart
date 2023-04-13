@@ -7,6 +7,7 @@ import 'package:dalile_customer/controllers/mange_account_controller.dart';
 import 'package:dalile_customer/controllers/profile_controller.dart';
 import 'package:dalile_customer/controllers/shipment_controller.dart';
 import 'package:dalile_customer/controllers/view_order_controller.dart';
+import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/model/aacount_manager/store.dart';
 import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/account_manager/choose_store_view.dart';
@@ -288,11 +289,18 @@ class _MainDashState extends State<MainDash> {
                   ),
                   GestureDetector(
                       onTap: (() async {
+                        // final prefs = await SharedPreferences.getInstance();
+
+                        // String token = prefs.getString('token') ?? '';
+                        // printError(info: token);
+                        // return;
                         var link =
                             'https://api.whatsapp.com/send?phone=968${Get.put(ProfileController()).profile.value.countryCode}${Get.put(ProfileController()).profile.value.storeMobile}';
-                        if (await canLaunch(link)) {
-                          await launch(link, forceSafariVC: false);
-                        }
+                        // if (await canLaunch(link)) {
+                        await launch(link, forceSafariVC: false);
+                        await post("/activity/whatsapp", {});
+                        // inspect(res);
+                        // }
                       }),
                       child:
                           Icon(Icons.whatsapp, color: Colors.green, size: 35)),
