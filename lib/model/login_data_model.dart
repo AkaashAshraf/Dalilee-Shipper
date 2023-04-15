@@ -169,6 +169,7 @@ class User {
     this.defaultPipeline,
     this.deleteStatus,
     this.isActive,
+    this.phone = "",
     this.createdAt,
     this.updatedAt,
     this.profile,
@@ -192,6 +193,8 @@ class User {
   dynamic defaultPipeline;
   dynamic deleteStatus;
   dynamic isActive;
+  dynamic phone;
+
   DateTime? createdAt;
   DateTime? updatedAt;
   dynamic profile;
@@ -200,6 +203,7 @@ class User {
         id: json["id"],
         name: json["name"],
         email: json["email"],
+        phone: json["phone"] ?? "",
         activeStatus: json["active_status"],
         branchId: json["branch_id"],
         shiftId: json["shift_id"],
@@ -226,6 +230,7 @@ class User {
         "active_status": activeStatus,
         "branch_id": branchId,
         "shift_id": shiftId,
+        "phone": phone,
         "dark_mode": darkMode,
         "messenger_color": messengerColor,
         "plan": plan,

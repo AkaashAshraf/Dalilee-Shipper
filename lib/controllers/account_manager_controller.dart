@@ -56,6 +56,8 @@ class AccountManagerController extends GetxController {
         stores(jsonResponse.data?.stores);
         prefs.setString(
             accountManagerToken, jsonResponse.data?.accessToken ?? "");
+        prefs.setString(accountManagerPhone,
+            jsonResponse.data?.user?.phone.toString() ?? "");
         prefs.setString(
             accountManagerName, jsonResponse.data?.user?.name ?? "");
 
@@ -63,6 +65,7 @@ class AccountManagerController extends GetxController {
             accountManagerUserID, jsonResponse.data?.user?.id.toString() ?? "");
         prefs.setString(
             accountManagerData, accountManagerLoginToJson(jsonResponse));
+        // inspect(jsonResponse.data?.user?.phone);
         Get.snackbar('Success', "Logged In Successfully",
             backgroundColor: Colors.green.withOpacity(0.8),
             colorText: whiteColor);

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:dalile_customer/config/storag_paths.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/http/FromDalilee.dart';
 import 'package:dalile_customer/core/http/http.dart';
@@ -397,7 +398,7 @@ abstract class FinanceApi {
     dynamic fromString = prefs.getString('loginData') ?? '';
 
     String userNAme = prefs.getString('name') ?? '';
-    String mobile = prefs.getString('mobile') ?? '';
+    String phone = prefs.getString(accountManagerPhone) ?? '';
     String storeId = prefs.getString('store_code') ?? '';
 
     dynamic resLogin = json.decode(fromString!.toString());
@@ -405,13 +406,14 @@ abstract class FinanceApi {
 
     var _url = crmBaseUrl + '/create/account/Enquiry';
     // "https://shaheen-test2.dalilee.om/api/inquiry/customre-inquiry/create";
+    String mobile = "968" + phone;
 
     try {
       var response = await http.post(Uri.parse(_url), headers: {
         "Accept": "application/json",
         "Authorization": "Bearer $tokenLo"
       }, body: {
-        "estimated_amount": amount,
+        "estimated_amount": "1", // amount,
         "trader_name": userNAme,
         "trader_contact": mobile,
         "otp": otp,
@@ -419,7 +421,7 @@ abstract class FinanceApi {
         "decription": description,
         "trader_account_id": accountId,
       });
-      // inspect(response);
+      inspect(response);
       if (response.statusCode == 200) {
         var data = crmgenralresponseFromJson(response.body);
         // if (data.status == 0)
@@ -461,23 +463,48 @@ abstract class FinanceApi {
     }
   }
 
-  static sendOtpForEnquiry() async {
+  static sendOtpForEnquiry(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
 
     dynamic fromString = prefs.getString('loginData') ?? '';
 
-    // String mobile = prefs.getString('mobile') ?? '';
+    String phone = prefs.getString(accountManagerPhone) ?? '';
     String storeId = prefs.getString('store_code') ?? '';
 
     dynamic resLogin = json.decode(fromString!.toString());
-    String mobile = (resLogin['data']["store"]["country_code"] ?? "") +
-        (resLogin['data']["store"]["mobile"] ?? "");
+    String mobile = "968" + phone;
+    print(mobile);
     var _url = crmBaseUrl + '/shipper/send-otp/$mobile/$storeId';
     print(_url);
     try {
-      await http.post(Uri.parse(_url), headers: {
+      var response = await http.post(Uri.parse(_url), headers: {
         "Accept": "application/json",
       }, body: {});
+      if (response.statusCode == 200) {
+        var data = crmgenralresponseFromJson(response.body);
+        // inspect(data);
+        if (data.status == 0) {
+          Get.back();
+          // Get.back();
+
+          showDialog(
+              barrierDismissible: true,
+              barrierColor: Colors.transparent,
+              context: context,
+              builder: (BuildContext context) {
+                return CustomDialogBoxAl(
+                  title: "Failed".tr,
+                  error: true,
+                  des: Get.locale.toString() == "en"
+                      ? data.messageEn ?? ""
+                      : data.messageAr ?? "",
+                  icon: Icons.cancel,
+                );
+              });
+        }
+        return data.status == 0 ? false : true;
+      } else
+        return false;
     } catch (e) {
       inspect(e);
     }

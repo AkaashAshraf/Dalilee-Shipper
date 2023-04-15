@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/core/server/finance_api.dart';
 import 'package:dalile_customer/model/add_inqury_list_caterogry_model.dart';
@@ -70,12 +68,12 @@ class EnquiryFinanceController extends GetxController {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String decConteroller = '';
-  Future<bool> sendOtp() async {
+  Future<bool> sendOtp(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       isAddwiting(true);
-      await FinanceApi.sendOtpForEnquiry();
+      var res = await FinanceApi.sendOtpForEnquiry(context);
       isAddwiting(false);
-      return true;
+      return res;
     } else {
       return false;
     }
@@ -105,8 +103,11 @@ class EnquiryFinanceController extends GetxController {
           .whenComplete(() {
         isAddwiting.value = false;
       });
+
       if (enquriyAdd.status == 1) {
         Get.back();
+        Get.back();
+
         update();
       }
       {

@@ -121,7 +121,7 @@ Alert otpModal(BuildContext context) {
                   controller: controller.otpTimerButtonController,
                   backgroundColor: primaryColor,
                   onPressed: () {
-                    controller.sendOtp();
+                    controller.sendOtp(context);
                     controller.otpTimerButtonController.startTimer();
                   },
                   text: Text('resend_otp'.tr),

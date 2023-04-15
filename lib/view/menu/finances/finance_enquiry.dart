@@ -94,7 +94,7 @@ class FinanceEnquiry extends StatelessWidget {
                       padding: const EdgeInsets.only(
                           left: 10, right: 10, bottom: 10, top: 5),
                       itemBuilder: (context, i) {
-                        final _date = controller.enquriyData[i].updatedAt;
+                        final _date = controller.enquriyData[i].createdAt;
 
                         return Container(
                             padding: const EdgeInsets.all(10),
@@ -596,7 +596,7 @@ class _AlrtAddEnquryBodyState extends State<_AlrtAddEnquryBody> {
                             //     await post("/activity/payment-request", {});
                             // inspect(res);
 
-                            var res = await controller.sendOtp();
+                            var res = await controller.sendOtp(context);
                             if (res) otpModal(context).show();
                           },
                         ),
