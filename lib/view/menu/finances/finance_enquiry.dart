@@ -596,8 +596,9 @@ class _AlrtAddEnquryBodyState extends State<_AlrtAddEnquryBody> {
                             //     await post("/activity/payment-request", {});
                             // inspect(res);
 
-                            var res = await controller.sendOtp(context);
-                            if (res) otpModal(context).show();
+                            await controller.checkval(context);
+                            // var res = await controller.sendOtp(context);
+                            // if (res) otpModal(context).show();
                           },
                         ),
                 ],

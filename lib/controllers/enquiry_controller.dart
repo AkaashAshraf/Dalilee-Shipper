@@ -106,7 +106,7 @@ class EnquiryFinanceController extends GetxController {
 
       if (enquriyAdd.status == 1) {
         Get.back();
-        Get.back();
+        // Get.back();
 
         update();
       }
@@ -140,7 +140,7 @@ class EnquiryFinanceController extends GetxController {
               fontSize: 16.0);
           return false;
         } else {
-          Get.back();
+          // Get.back();
           Get.back();
 
           showDialog(

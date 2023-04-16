@@ -101,13 +101,13 @@ class AccountManagerController extends GetxController {
     loading(true);
     var response = await postAccountManager(
         "$accountManagerBaseUrl/generate-store-token", {"store_id": storeID});
-    inspect(response);
+    // inspect(response);
     if (response.statusCode == 200) {
       // if (response["success"] == "OK" || response["success"] == "ok")
       if (true) {
         _saveProduct(response.body, "loginData");
         final token = json.decode(response.body);
-        print(token['data']['store']['username']);
+        // print(token['data']['store']['username']);
         // return null;
         _saveProduct(token['data']["access_token"] ?? "", "token");
         _saveProduct(token['data']['store']["mobile"] ?? "", "mobile");

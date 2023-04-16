@@ -157,6 +157,7 @@ Future<dynamic> postAccountManager(String url, dynamic body,
 
   // print(token);
   try {
+    // inspect(body);
     var response = await http.post(Uri.parse(_url), body: body, headers: {
       "Accept": "application/json",
       // 'Content-Type': 'application/json; charset=UTF-8',
@@ -164,6 +165,7 @@ Future<dynamic> postAccountManager(String url, dynamic body,
       "ManagerToken": "Bearer $managerToken"
     });
     // return _url;
+    inspect(response);
     // print(response.body);
     if (response.statusCode == 200) {
       return response;
@@ -178,6 +180,7 @@ Future<dynamic> postAccountManager(String url, dynamic body,
       return null;
     }
   } catch (e) {
+    inspect(e);
     // print(e.toString());
 
     return null;

@@ -99,6 +99,8 @@ class LoginAPi {
           _saveProduct(token['data']["access_token"] ?? "", "token");
           _saveProduct(token['data']['store']["mobile"] ?? "", "mobile");
           _saveProduct(
+              token['data']['store']["country_code"] ?? "", "country_code");
+          _saveProduct(
               token['data']['store']["store_code"] ?? "", "store_code");
 
           _saveProduct(token['data']['store']['username'], "username");

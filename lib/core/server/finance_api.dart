@@ -76,9 +76,15 @@ abstract class FinanceApi {
     try {
       final prefs = await SharedPreferences.getInstance();
       String storeCode = prefs.getString('store_code') ?? '';
+      String mobile = prefs.getString('mobile') ?? '';
+      String countryode = prefs.getString('country_code') ?? '';
       var response = await http.post(
         Uri.parse(_url),
-        body: {"trader_id": storeCode},
+        body: {
+          "trader_id": storeCode,
+          "phone": mobile,
+          "country_code": countryode,
+        },
         headers: {
           "Accept": "application/json",
           "Authorization": "Bearer $tokenLo",
@@ -86,7 +92,7 @@ abstract class FinanceApi {
       );
       if (response.statusCode == 200) {
         var data = bankaccountsFromJson(response.body);
-        inspect(data);
+        // inspect(data);
 
         return data;
       } else {
@@ -117,9 +123,11 @@ abstract class FinanceApi {
     var url = crmBaseUrl + "/account-enq/fetch-all";
     // "https://shaheen-test2.dalilee.om/api/inquiry/customer/listing/$_id";
     try {
+      String mobile = prefs.getString('mobile') ?? '';
+      // inspect({"trader_id": storeID, "phone": mobile});
       var response = await http.post(
         Uri.parse(url),
-        body: {"trader_id": storeID},
+        body: {"trader_id": storeID, "phone": mobile},
         headers: {
           "Accept": "application/json",
           "Authorization": "Bearer $token",
@@ -160,8 +168,12 @@ abstract class FinanceApi {
     // return false;
     final prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? '';
-
+    String mobile = prefs.getString('mobile') ?? '';
+    String countryode = prefs.getString('country_code') ?? '';
     var url = "$crmBaseUrl/account/create";
+
+    String accountManageID = prefs.getString(accountManagerUserID) ?? "";
+    String accountManagerName_ = prefs.getString(accountManagerName) ?? "";
     try {
       var response = await http.post(
         Uri.parse(url),
@@ -172,6 +184,11 @@ abstract class FinanceApi {
         body: {
           "bank_id": bankID,
           "name": name,
+          "phone": mobile,
+          "country_code": countryode,
+          "accoun_manager_user_id": accountManageID,
+          "accoun_manager_name": accountManagerName_,
+          "is_account_manager": "1",
           "account_type": "Payable",
           "account_no": bankNo,
           "trader_id": traderId
@@ -398,30 +415,36 @@ abstract class FinanceApi {
     dynamic fromString = prefs.getString('loginData') ?? '';
 
     String userNAme = prefs.getString('name') ?? '';
-    String phone = prefs.getString(accountManagerPhone) ?? '';
+    String mobile = prefs.getString('mobile') ?? '';
+    String countryode = prefs.getString('country_code') ?? '';
     String storeId = prefs.getString('store_code') ?? '';
 
     dynamic resLogin = json.decode(fromString!.toString());
     dynamic tokenLo = resLogin['data']["access_token"] ?? '';
-
+    String accountManageID = prefs.getString(accountManagerUserID) ?? "";
+    String accountManagerName_ = prefs.getString(accountManagerName) ?? "";
     var _url = crmBaseUrl + '/create/account/Enquiry';
     // "https://shaheen-test2.dalilee.om/api/inquiry/customre-inquiry/create";
-    String mobile = "968" + phone;
+    // String mobile = "968" + phone;
 
     try {
       var response = await http.post(Uri.parse(_url), headers: {
         "Accept": "application/json",
         "Authorization": "Bearer $tokenLo"
       }, body: {
-        "estimated_amount": "1", // amount,
+        "estimated_amount": amount, // amount,
         "trader_name": userNAme,
+        "accoun_manager_user_id": accountManageID,
+        "accoun_manager_name": accountManagerName_,
+        "is_account_manager": "1",
         "trader_contact": mobile,
-        "otp": otp,
+        "country_code": countryode,
+        // "otp": otp,
         "trader_id": storeId,
         "decription": description,
         "trader_account_id": accountId,
       });
-      inspect(response);
+
       if (response.statusCode == 200) {
         var data = crmgenralresponseFromJson(response.body);
         // if (data.status == 0)
@@ -472,9 +495,11 @@ abstract class FinanceApi {
     String storeId = prefs.getString('store_code') ?? '';
 
     dynamic resLogin = json.decode(fromString!.toString());
-    String mobile = "968" + phone;
-    print(mobile);
-    var _url = crmBaseUrl + '/shipper/send-otp/$mobile/$storeId';
+
+    String mobile = prefs.getString('mobile') ?? '';
+    String countryode = prefs.getString('country_code') ?? '';
+    // print(mobile);
+    var _url = crmBaseUrl + '/shipper/send-otp/$countryode$mobile/$storeId';
     print(_url);
     try {
       var response = await http.post(Uri.parse(_url), headers: {
