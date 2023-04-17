@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/core/http/FromDalilee.dart';
 import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/model/add_inqury_list_caterogry_model.dart';
 import 'package:dalile_customer/model/bank_model.dart';
@@ -75,9 +74,10 @@ abstract class FinanceApi {
     try {
       final prefs = await SharedPreferences.getInstance();
       String storeCode = prefs.getString('store_code') ?? '';
+      String mobile = prefs.getString('mobile') ?? '';
       var response = await http.post(
         Uri.parse(_url),
-        body: {"trader_id": storeCode},
+        body: {"trader_id": storeCode, "phone": mobile},
         headers: {
           "Accept": "application/json",
           "Authorization": "Bearer $tokenLo",
@@ -106,6 +106,7 @@ abstract class FinanceApi {
 
     String token = prefs.getString('token') ?? '';
     String storeID = prefs.getString('store_code') ?? '';
+    String mobile = prefs.getString('mobile') ?? '';
 
     dynamic fromString = prefs.getString('loginData') ?? '';
 
@@ -118,7 +119,7 @@ abstract class FinanceApi {
     try {
       var response = await http.post(
         Uri.parse(url),
-        body: {"trader_id": storeID},
+        body: {"trader_id": storeID, "phone": mobile},
         headers: {
           "Accept": "application/json",
           "Authorization": "Bearer $token",
@@ -158,10 +159,31 @@ abstract class FinanceApi {
     // });
     // return false;
     final prefs = await SharedPreferences.getInstance();
+    dynamic fromString = prefs.getString('loginData') ?? '';
+
+    dynamic resLogin = json.decode(fromString!.toString());
+    String id = (resLogin['data']["store"]["id"].toString());
+
     String token = prefs.getString('token') ?? '';
+    String username = prefs.getString('username') ?? '';
+    String countryCode = (resLogin['data']["store"]["country_code"].toString());
+
+    String mobile = prefs.getString('mobile') ?? '';
 
     var url = "$crmBaseUrl/account/create";
     try {
+      // inspect({
+      //   "bank_id": bankID,
+      //   "name": name,
+      //   "shipper_user_id": id,
+      //   "phone": mobile,
+      //   "country_code": countryCode,
+      //   "shipper_name": username,
+      //   "account_type": "Payable",
+      //   "account_no": bankNo,
+      //   "trader_id": traderId
+      // });
+      // return false;
       var response = await http.post(
         Uri.parse(url),
         headers: {
@@ -171,6 +193,10 @@ abstract class FinanceApi {
         body: {
           "bank_id": bankID,
           "name": name,
+          "shipper_user_id": id,
+          "phone": mobile,
+          "country_code": countryCode,
+          "shipper_name": username,
           "account_type": "Payable",
           "account_no": bankNo,
           "trader_id": traderId
@@ -399,8 +425,10 @@ abstract class FinanceApi {
     String userNAme = prefs.getString('name') ?? '';
     String mobile = prefs.getString('mobile') ?? '';
     String storeId = prefs.getString('store_code') ?? '';
-
     dynamic resLogin = json.decode(fromString!.toString());
+
+    String id = (resLogin['data']["store"]["id"].toString());
+
     dynamic tokenLo = resLogin['data']["access_token"] ?? '';
 
     var _url = crmBaseUrl + '/create/account/Enquiry';
@@ -414,6 +442,8 @@ abstract class FinanceApi {
         "estimated_amount": amount,
         "trader_name": userNAme,
         "trader_contact": mobile,
+        "shipper_user_id": id,
+        "shipper_name": userNAme,
         "otp": otp,
         "trader_id": storeId,
         "decription": description,

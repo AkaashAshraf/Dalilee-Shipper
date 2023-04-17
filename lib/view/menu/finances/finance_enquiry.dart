@@ -90,7 +90,7 @@ class FinanceEnquiry extends StatelessWidget {
                       padding: const EdgeInsets.only(
                           left: 10, right: 10, bottom: 10, top: 5),
                       itemBuilder: (context, i) {
-                        final _date = controller.enquriyData[i].updatedAt;
+                        final _date = controller.enquriyData[i].createdAt;
 
                         return Container(
                             padding: const EdgeInsets.all(10),

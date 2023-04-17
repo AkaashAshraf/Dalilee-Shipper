@@ -94,10 +94,11 @@ class LoginAPi {
         if (res["success"] == "OK" || res["success"] == "ok") {
           _saveProduct(response.body, "loginData");
           final token = json.decode(response.body);
-          print(token['data']['store']['username']);
+          // print(token['data']['store']['username']);
           // return null;
           _saveProduct(token['data']["access_token"] ?? "", "token");
           _saveProduct(token['data']['store']["mobile"] ?? "", "mobile");
+          _saveProduct(token['data']['store']["id"].toString(), "id");
           _saveProduct(
               token['data']['store']["store_code"] ?? "", "store_code");
 

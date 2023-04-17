@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/server/finance_api.dart';
 import 'package:dalile_customer/model/bank_model.dart';
@@ -239,6 +241,7 @@ class ShowAddEditBank extends GetWidget<ManageAccountController> {
                   child: CustomButtom(
                     text: 'Add'.tr,
                     onPressed: () {
+                      // inspect(controller.checkboxIs.value);
                       if (controller.checkboxIs.value) {
                         controller.fetchAddPostData(context);
                       }
