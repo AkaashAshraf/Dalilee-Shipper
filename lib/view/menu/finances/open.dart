@@ -127,9 +127,17 @@ class OpendedView extends StatelessWidget {
                           helperController.getCurrencyInFormat(
                               c.openData.value.totalAmountRequest)),
                       _buildBodyRow(
-                          'DeliveryFee'.tr,
+                          'TotalCC'.tr,
                           helperController.getCurrencyInFormat(
-                              c.openData.value.deliveryFee)),
+                              c.openData.value.collectionFee)),
+                      _buildBodyRow(
+                          'DeliveryFee'.tr,
+                          c.openData.value.deliveryFee > 0
+                              ? "-" +
+                                  helperController.getCurrencyInFormat(
+                                      c.openData.value.deliveryFee)
+                              : helperController.getCurrencyInFormat(
+                                  c.openData.value.deliveryFee)),
                       if (false)
                         _buildBodyRow(
                             'CollectionFee'.tr,

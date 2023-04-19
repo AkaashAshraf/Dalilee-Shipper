@@ -34,6 +34,10 @@ class Data {
     this.storeUsername,
     this.storeEmail,
     this.storeMobile,
+    this.latitude,
+    this.longitude,
+    this.payable = false,
+    this.instagramLink,
     this.storeImage,
     this.createdAt,
   });
@@ -43,12 +47,21 @@ class Data {
   String? storeEmail;
   String? storeMobile;
   String? storeImage;
+  String? latitude;
+  String? longitude;
+  bool payable;
+  String? instagramLink;
+
   String? createdAt;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         storeName: json["store_name"],
+        payable: json["payable"],
         storeUsername: json["store_username"],
         storeEmail: json["store_email"],
+        latitude: json["store_lat"],
+        longitude: json["store_lng"],
+        instagramLink: json["store_instagram"],
         storeMobile: json["store_mobile"],
         storeImage: json["store_image"],
         createdAt: json["created_at"],
@@ -56,6 +69,10 @@ class Data {
 
   Map<String, dynamic> toJson() => {
         "store_name": storeName,
+        "payable": payable,
+        "store_instagram": instagramLink,
+        "store_lat": latitude,
+        "store_lng": longitude,
         "store_username": storeUsername,
         "store_email": storeEmail,
         "store_mobile": storeMobile,

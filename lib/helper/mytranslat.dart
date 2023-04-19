@@ -4,6 +4,13 @@ class MyTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         "ar": {
+          "pickAddress": "اختر العنوان",
+          "instagramLink": "انستغرام",
+          "Recievable": "مستحق",
+          "Payable": "مستحق الدفع",
+          "accountType": "نوع الحساب",
+          "Location": "موقع",
+          "TotalCC": "إجمالي النقد المحصل",
           "ExpressPickup": "الاستلام السرريع",
           "resend_otp": "إعادة إرسال OTP",
           "verify": "يؤكد",
@@ -315,6 +322,13 @@ class MyTranslations extends Translations {
           "Filed": "فشل",
         },
         "en": {
+          "Location": "Location",
+          "accountType": "Account Type",
+          "Payable": "Payable",
+          "Recievable": "Recievable",
+          "instagramLink": "Instagram Link",
+          "pickAddress": "Pick Address",
+          "TotalCC": "Total Collected Cash",
           "ExpressPickup": "Express Pickup",
           "resend_otp": "Resend OTP",
           "enter_otp_to_verify": "Enter OTP to Create Enquiry",

@@ -97,6 +97,7 @@ dependencies:
   video_player: ^2.4.10
   otp_timer_button: ^1.1.0
   fluttertoast: ^8.2.1
+  geocoding: ^2.1.0
 
 dev_dependencies:
   flutter_test:
