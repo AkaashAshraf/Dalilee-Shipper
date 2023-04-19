@@ -13,14 +13,14 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class OpendedView extends StatelessWidget {
-  OpendedView({Key? key, required this.c}) : super(key: key);
-  final FinanceController c;
+  OpendedView({Key? key}) : super(key: key);
+  final FinanceController c = Get.find<FinanceController>();
   final HelperController helperController = Get.put(HelperController());
+
+  final RefreshController refreshController =
+      RefreshController(initialRefresh: true);
   @override
   Widget build(BuildContext context) {
-    final RefreshController refreshController =
-        RefreshController(initialRefresh: true);
-
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
         child: Obx(
@@ -127,9 +127,17 @@ class OpendedView extends StatelessWidget {
                           helperController.getCurrencyInFormat(
                               c.openData.value.totalAmountRequest)),
                       _buildBodyRow(
-                          'DeliveryFee'.tr,
+                          'TotalCC'.tr,
                           helperController.getCurrencyInFormat(
-                              c.openData.value.deliveryFee)),
+                              c.openData.value.collectionFee)),
+                      _buildBodyRow(
+                          'DeliveryFee'.tr,
+                          c.openData.value.deliveryFee > 0
+                              ? "-" +
+                                  helperController.getCurrencyInFormat(
+                                      c.openData.value.deliveryFee)
+                              : helperController.getCurrencyInFormat(
+                                  c.openData.value.deliveryFee)),
                       if (false)
                         _buildBodyRow(
                             'CollectionFee'.tr,

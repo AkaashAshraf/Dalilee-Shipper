@@ -96,35 +96,37 @@ class AccountManagerController extends GetxController {
     }
   }
 
-  fetchStoreToken(String storeID) async {
-    // try {
-    loading(true);
-    var response = await postAccountManager(
-        "$accountManagerBaseUrl/generate-store-token", {"store_id": storeID});
-    // inspect(response);
-    if (response.statusCode == 200) {
-      // if (response["success"] == "OK" || response["success"] == "ok")
-      if (true) {
-        _saveProduct(response.body, "loginData");
-        final token = json.decode(response.body);
-        // print(token['data']['store']['username']);
-        // return null;
-        _saveProduct(token['data']["access_token"] ?? "", "token");
-        _saveProduct(token['data']['store']["mobile"] ?? "", "mobile");
-        _saveProduct(token['data']['store']["store_code"] ?? "", "store_code");
+  fetchStoreToken(String storeID, {String mobile = ""}) async {
+    try {
+      loading(true);
+      var response = await postAccountManager(
+          "$accountManagerBaseUrl/generate-store-token",
+          {"store_id": storeID, "store_mobile": mobile});
+      // inspect(response);
+      if (response.statusCode == 200) {
+        // if (response["success"] == "OK" || response["success"] == "ok")
+        if (true) {
+          _saveProduct(response.body, "loginData");
+          final token = json.decode(response.body);
+          // print(token['data']['store']['username']);
+          // return null;
+          _saveProduct(token['data']["access_token"] ?? "", "token");
+          _saveProduct(token['data']['store']["mobile"] ?? "", "mobile");
+          _saveProduct(
+              token['data']['store']["store_code"] ?? "", "store_code");
 
-        _saveProduct(token['data']['store']['username'], "username");
-        _saveProduct(token['data']['store']['user']["name"] ?? "", "name");
-        loading(false);
-        Get.offAll(ControllerView());
-        return response;
-      } else {
-        // mass = response['message'] ?? "please try agian later";
-
-        return null;
+          _saveProduct(token['data']['store']['username'], "username");
+          _saveProduct(token['data']['store']['user']["name"] ?? "", "name");
+          loading(false);
+          Get.offAll(ControllerView());
+          return response;
+        }
       }
+      loading(false);
+    } catch (e) {
+    } finally {
+      loading(false);
     }
-    loading(false);
   }
 
   static _saveProduct(String jsonTO, String name) async {

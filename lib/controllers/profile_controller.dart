@@ -3,6 +3,8 @@ import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/core/server/login_api.dart';
 import 'package:dalile_customer/model/Profile/profile.dart';
+import 'package:geocoding/geocoding.dart';
+
 // import 'package:dalile_customer/model/Profile/profile.dart';
 import 'package:dalile_customer/model/Profile/updateProfile.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +17,13 @@ class ProfileController extends GetxController {
   RxBool profileLoading = false.obs;
   RxBool isEditinig = false.obs;
   RxBool askOtp = false.obs;
+  RxString newLat = "".obs;
+  RxString newLong = "".obs;
+  RxString newInstLink = "".obs;
+
   Rx<XFile> image = XFile('').obs;
   Data oldProfile = new Data();
   String mobile = "";
-  String countryCode = "";
-
   String email = "";
   String name = "";
 
@@ -32,6 +36,29 @@ class ProfileController extends GetxController {
     super.onInit();
   }
 
+  Future<String> getLocationNameByLatLong() async {
+    double lat = double.tryParse(newLat.isNotEmpty
+            ? newLat.value
+            : profile.value.latitude.toString()) ??
+        0;
+    double long = double.tryParse(newLat.isNotEmpty
+            ? newLong.value
+            : profile.value.longitude.toString()) ??
+        0;
+    if (lat == 0 || long == 0) {
+      return "";
+    }
+
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+      lat,
+      long,
+    );
+    String address =
+        '${placemarks.first.name}, ${placemarks.first.administrativeArea}, ${placemarks.first.country}';
+
+    return address;
+  }
+
   getProfile() async {
     try {
       profileLoading(true);
@@ -42,8 +69,6 @@ class ProfileController extends GetxController {
         // print(_profile.data!.storeMobile);
         mobile = _profile.data!.storeMobile.toString();
         name = _profile.data!.storeName.toString();
-        countryCode = _profile.data!.countryCode.toString();
-
         email = _profile.data!.storeEmail.toString();
 
         profile.value = _profile.data!;
@@ -65,6 +90,14 @@ class ProfileController extends GetxController {
       request.fields['email'] = profile.value.storeEmail.toString();
       request.fields['mobile'] = profile.value.storeMobile.toString();
       request.fields['name'] = profile.value.storeName.toString();
+      request.fields['lat'] =
+          newLat.isNotEmpty ? newLat.value : profile.value.latitude.toString();
+      request.fields['lng'] = newLong.isNotEmpty
+          ? newLong.value
+          : profile.value.longitude.toString();
+      request.fields['instagram'] = newInstLink.isNotEmpty
+          ? newInstLink.value
+          : profile.value.instagramLink.toString();
 
       // print(request);
 

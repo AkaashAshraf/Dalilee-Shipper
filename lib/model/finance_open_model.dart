@@ -36,7 +36,7 @@ class OpenData {
     this.remaining,
     this.totalOrdersDelivered,
     this.totalAmountRequest,
-    this.deliveryFee,
+    this.deliveryFee = 0,
     this.collectionFee,
   });
 
@@ -50,7 +50,7 @@ class OpenData {
         remaining: json["remaining"],
         totalOrdersDelivered: json["total_orders_delivered"],
         totalAmountRequest: json["total_amount_request"],
-        deliveryFee: json["delivery_fee"],
+        deliveryFee: json["delivery_fee"] ?? 0,
         collectionFee: json["collection_fee"],
       );
 

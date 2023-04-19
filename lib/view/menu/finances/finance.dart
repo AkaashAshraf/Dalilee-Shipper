@@ -41,7 +41,7 @@ class FinanceView extends GetWidget<FinanceController> {
           body: TabBarView(
             physics: const CustomTabBarViewScrollPhysics(),
             children: [
-              OpendedView(c: _controll),
+              OpendedView(),
               ColusedView(c: _controll),
             ],
           ),

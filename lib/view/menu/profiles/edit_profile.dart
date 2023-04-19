@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/controllers/profile_controller.dart';
+import 'package:dalile_customer/view/menu/profiles/location_picker.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/my_input.dart';
 import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -31,6 +33,14 @@ class _EditProfileState extends State<EditProfile> {
     _controller.image.value = XFile('');
 
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    _controller.newInstLink("");
+    _controller.newLat("");
+    _controller.newLong("");
+    super.initState();
   }
 
   @override
@@ -189,6 +199,126 @@ class _EditProfileState extends State<EditProfile> {
                         size: 20,
                       ),
                     ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomFormFiledWithTitle(
+                      read: !controller.isEditinig.value,
+                      onChanged: (val) {
+                        controller.profile.value.instagramLink = val;
+                        controller.newInstLink.value = val;
+                      },
+                      text: 'instagramLink'.tr,
+                      controller: new TextEditingController(
+                        text: controller.profile.value.instagramLink,
+                      ),
+
+                      // initialValue: controller.profile.value.storeMobile,
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.all(11.0),
+                        child: controller.isEditinig.value == false
+                            ? null
+                            : Image.asset(
+                                'assets/images/edits.png',
+                                height: 10,
+                                width: 10,
+                                color: Colors.grey,
+                                fit: BoxFit.fill,
+                              ),
+                      ),
+                      hintText: '',
+                      prefix: const Icon(
+                        FontAwesomeIcons.instagram,
+                        color: Colors.grey,
+                        size: 20,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        CustomText(
+                          text: "Location".tr,
+                          color: text1Color,
+                          alignment: "ENORAR".tr == "ar"
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          if (controller.isEditinig.value)
+                            Get.to(const LocationPicker());
+                          else {}
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey,
+                              style: BorderStyle.solid,
+                              width: 1.0,
+                            ),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          // height: 50,
+                          width: MediaQuery.of(context).size.width * 0.95,
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.locationCrosshairs,
+                                  color: Colors.grey,
+                                  size: 20,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                FutureBuilder<String>(
+                                  future: controller.getLocationNameByLatLong(),
+                                  builder: (
+                                    BuildContext context,
+                                    AsyncSnapshot<String> snapshot,
+                                  ) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Text("");
+                                    } else if (snapshot.connectionState ==
+                                        ConnectionState.done) {
+                                      if (snapshot.hasError) {
+                                        return const Text('');
+                                      } else if (snapshot.hasData) {
+                                        return SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.6,
+                                          child: Text(
+                                            (snapshot.data ?? ""),
+                                            maxLines: 2,
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                        );
+                                      } else {
+                                        return const Text('');
+                                      }
+                                    } else {
+                                      return Text(
+                                          'State: ${snapshot.connectionState}');
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        )),
                     SizedBox(height: 20),
                     CustomFormFiledWithTitle(
                       text: 'joinDate'.tr,
@@ -198,6 +328,25 @@ class _EditProfileState extends State<EditProfile> {
                           text: controller.profile.value.createdAt),
                       prefix: const Icon(
                         Icons.calendar_month_outlined,
+                        color: Colors.grey,
+                        size: 20,
+                      ),
+                      suffixIcon: Padding(
+                          padding: const EdgeInsets.all(11.0), child: null),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomFormFiledWithTitle(
+                      text: 'accountType'.tr,
+                      hintText: ''.tr,
+                      read: true,
+                      controller: new TextEditingController(
+                          text: controller.profile.value.payable == true
+                              ? "Payable".tr
+                              : "Recievable".tr),
+                      prefix: const Icon(
+                        Icons.account_balance,
                         color: Colors.grey,
                         size: 20,
                       ),
