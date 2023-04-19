@@ -539,7 +539,7 @@ class MyTranslations extends Translations {
           "Closed": "Closed",
           "StoreRemainingAmount": "Store Remaining Amount",
           "TotalOrdersDelivered": "Total Orders Delivered",
-          "TotalAmountRequest": "Total Amount of Request",
+          "TotalAmountRequest": "Total COD",
           "DeliveryFee": "Delivery Fee",
           "CollectionFee": "Collection Fee",
           "ViewOrders": "View Orders",
