@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
