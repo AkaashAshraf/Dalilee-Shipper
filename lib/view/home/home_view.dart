@@ -16,10 +16,10 @@ class HomeView extends StatelessWidget {
   HomeView({Key? key}) : super(key: key);
   final controller = Get.put(DashbordController());
   final downloadController = Get.put(DownloadController());
+  final notificationController = Get.put(NotificationController());
 
   @override
   Widget build(BuildContext context) {
-    Get.put(NotificationController());
     return Scaffold(
         backgroundColor: primaryColor,
         appBar: AppBar(

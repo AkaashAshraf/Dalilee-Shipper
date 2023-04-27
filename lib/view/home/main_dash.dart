@@ -212,13 +212,13 @@ class _MainDashState extends State<MainDash> {
   checkAppExpiry(BuildContext context) {
     if (mounted) Get.put(DashbordController()).checkAppExpiry(context);
   }
-
-  @override
-  Widget build(BuildContext context) {
-    Get.put(ShipmentViewModel());
-    Get.put(
+ final shipmentViewModel= Get.put(ShipmentViewModel());
+  final viewOrderController=  Get.put(
       () => ViewOrderController(),
     );
+  @override
+  Widget build(BuildContext context) {
+  
     return Scaffold(
       body: Container(
         width: double.infinity,

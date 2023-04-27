@@ -71,7 +71,7 @@ Future<dynamic> getWithUrl(String url) async {
   }
 }
 
-Future<dynamic> post(String url, dynamic body) async {
+Future<dynamic> post(String url, dynamic body, {bool withAuth = true}) async {
   var _url = like + url;
   final prefs = await SharedPreferences.getInstance();
 
@@ -87,7 +87,7 @@ Future<dynamic> post(String url, dynamic body) async {
     // print(response.body);
     if (response.statusCode == 200) {
       return response;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401 && withAuth) {
       prefs.remove("loginData");
       prefs.remove("token");
       prefs.clear();

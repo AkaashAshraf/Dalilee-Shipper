@@ -4,6 +4,7 @@ class MyTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         "ar": {
+          "SearchOrder": "ترتيب البحث",
           "pickAddress": "اختر العنوان",
           "instagramLink": "انستغرام",
           "Recievable": "مستحق",
@@ -322,6 +323,8 @@ class MyTranslations extends Translations {
           "Filed": "فشل",
         },
         "en": {
+          "SearchOrder": "Search Order",
+
           "Location": "Location",
           "accountType": "Account Type",
           "Payable": "Payable",

@@ -28,11 +28,14 @@ class SearchController extends GetxController {
       loading(true);
       if (!isRefresh) loadMore(true);
 
-      var data = await post("/shipments/order-search", {
-        "order_id": searchText,
-        "limit": "50",
-        "offset": isRefresh ? "0" : shipments.length.toString(),
-      });
+      var data = await post(
+          "/shipments/order-search",
+          {
+            "order_id": searchText,
+            "limit": "50",
+            "offset": isRefresh ? "0" : shipments.length.toString(),
+          },
+          withAuth: false);
       inspect(data);
       if (data != null) {
         var res = shipmentListAwsFromJson(data?.body);

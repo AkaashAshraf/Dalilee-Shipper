@@ -1,6 +1,7 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/controllers/login_controller.dart';
 import 'package:dalile_customer/model/countries.dart';
+import 'package:dalile_customer/view/home/search/search_screen.dart';
 import 'package:dalile_customer/view/login/terms_conditions.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
@@ -23,6 +24,32 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   toolbarHeight: 70,
+      //   backgroundColor: primaryColor,
+      //   foregroundColor: whiteColor,
+      //   leading: GestureDetector(
+      //     onTap: () {
+      //       Get.to(SearchScreen());
+      //     },
+      //     child: Padding(
+      //       padding: const EdgeInsets.symmetric(horizontal: 10),
+      //       child: Icon(
+      //         Icons.search,
+      //         color: Colors.white,
+      //       ),
+      //     ),
+      //   ),
+      //   title: CustomText(
+      //     text: ''.tr,
+      //     color: whiteColor,
+      //     size: 18,
+      //     alignment: Alignment.center,
+      //   ),
+      //   centerTitle: true,
+      // ),
+
       backgroundColor: bgColor,
       body: SingleChildScrollView(
         child: Obx(() {
@@ -303,6 +330,22 @@ class _LoginViewState extends State<LoginView> {
                                           countryCode: countryCode);
                                     }
                                   : null),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    SizedBox(
+                      height: 45,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: CustomButtom(
+                          icon: Icon(
+                            Icons.search,
+                            color: Colors.white,
+                            // size: 30.0,
+                          ),
+                          text: 'SearchOrder'.tr,
+                          backgroundColor: primaryColor,
+                          onPressed: (() => {Get.to(SearchScreen())})),
                     ),
                   ],
                 )),
