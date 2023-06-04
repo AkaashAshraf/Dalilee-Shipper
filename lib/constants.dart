@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// const primaryColor = Colors.green;
 bool isTesEnvironment = false;
 double omrToAedRate = 9.47;
 const int iosVersionLocal =
