@@ -29,7 +29,7 @@ abstract class DashboardApi {
 
   static fetchShipmentList(dynamic body) async {
     var response = await post("/dashboard/shipments", body);
-    print(response.statusCode);
+    if (response == null) return;
     if (response.statusCode == 200) {
       var data = shipmentListAwsFromJson(response.body);
 

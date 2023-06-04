@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:dalile_customer/constants.dart';
-import 'package:dalile_customer/controllers/dashbord_controller.dart';
 import 'package:dalile_customer/controllers/search_controller.dart';
+import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/model/Dashboard/MainDashboardModel.dart';
 import 'package:dalile_customer/model/shaheen_aws/shipment.dart';
 import 'package:dalile_customer/view/home/card_body_new_log.dart';
@@ -22,6 +22,8 @@ class SearchScreen extends StatefulWidget {
 
 class _UndeliverListing extends State<SearchScreen> {
   SearchController controller = Get.put(SearchController());
+  HelperController helperController = Get.put(HelperController());
+
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
   Timer? _debounce;
@@ -98,7 +100,7 @@ class _UndeliverListing extends State<SearchScreen> {
                                 _debounce?.cancel();
                               _debounce =
                                   Timer(const Duration(milliseconds: 500), () {
-                                if (searchText.isEmpty)
+                                if (searchText.isEmpty || searchText.length < 4)
                                   controller.shipments.value = [];
                                 else
                                   refreshController.requestRefresh();
@@ -151,7 +153,7 @@ class _UndeliverListing extends State<SearchScreen> {
                                         controller,
                                         controller.shipments[i],
                                         x,
-                                        Get.put(DashbordController())
+                                        Get.put(HelperController())
                                             .trackingStatuses,
                                         searchText: searchText),
                                   );

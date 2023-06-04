@@ -36,7 +36,7 @@ class SearchController extends GetxController {
             "offset": isRefresh ? "0" : shipments.length.toString(),
           },
           withAuth: false);
-      inspect(data);
+      // inspect(data);
       if (data != null) {
         var res = shipmentListAwsFromJson(data?.body);
         if (!isRefresh)

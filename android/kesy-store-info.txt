@@ -1,0 +1,5 @@
+Key password :  Dalilee@123
+Key store password :  Dalilee@123
+Alias name : Dalilee_Shipper
+
+Path : android/keystore

@@ -87,15 +87,17 @@ Future<dynamic> post(String url, dynamic body, {bool withAuth = true}) async {
     // print(response.body);
     if (response.statusCode == 200) {
       return response;
-    } else if (response.statusCode == 401 && withAuth) {
-      prefs.remove("loginData");
-      prefs.remove("token");
-      prefs.clear();
-      Get.deleteAll();
-      Get.offAll(() => LoginView());
-      return response.statusCode;
-    } else {
-      return response;
+    }
+    //  else if (response.statusCode == 401 && withAuth) {
+    //   prefs.remove("loginData");
+    //   prefs.remove("token");
+    //   prefs.clear();
+    //   Get.deleteAll();
+    //   Get.offAll(() => LoginView());
+    //   return null;
+    // } 
+    else {
+      return null;
     }
   } catch (e) {
     print(e.toString());
