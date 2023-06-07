@@ -83,6 +83,10 @@ class Shipment {
       this.orderActivities,
       this.status,
       this.currentStatus,
+      this.ccCurrency = "OMR",
+      this.codCurrency = "OMR",
+      this.currency = "OMR",
+      this.shippingCurrency = "OMR",
       this.isOpen: false,
       this.wilayaName,
       this.areaName,
@@ -110,6 +114,7 @@ class Shipment {
   String? orderUndeliverImage;
   String? orderUndeliverImage2;
   String? orderUndeliverImage3;
+  String ccCurrency, shippingCurrency, codCurrency, currency;
 
   dynamic problemReasonId;
   dynamic problemReasons;
@@ -140,6 +145,10 @@ class Shipment {
                 ? "0"
                 : json["cop"],
         customerNo: json["customer_no"] == null ? "" : json["customer_no"],
+        currency: json["currency"] ?? "OMR",
+        ccCurrency: json["cc_currency"] ?? "OMR",
+        codCurrency: json["cod_currency"] ?? "OMR",
+        shippingCurrency: json["shipping_currency"] ?? "OMR",
         customerName:
             json["customer_name"] == null ? "" : json["customer_name"],
         cc: json["cc"] == null

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 bool isTesEnvironment = false;
 double omrToAedRate = 9.47;
-const int iosVersionLocal =
-    11; //04/june/2023 //search order in login screen issue fixed
-const int androidVersionLocal =
-    11; //04/june/2023 //search order in login screen issue fixed
+const int iosVersionLocal = 13; //08/june/2023 //currency come from server
+const int androidVersionLocal = 13; //08/june/2023 //currency come from server
 
 Color primaryColor = Color(isTesEnvironment ? 0xFF0D7297 : 0xFF00A1E1);
 

@@ -341,7 +341,7 @@ class CardBody extends StatelessWidget {
                     context: context),
                 _buildRowText(
                     'COD'.tr +
-                        ' : ${helperController.getCurrencyInFormat(cod.toString())}',
+                        ' : ${shipment.cod.toString()} ${shipment.codCurrency}',
                     'Date'.tr + ' : ${shipment.createdAt} ',
                     context: context),
               ],
@@ -576,22 +576,16 @@ class CardBody extends StatelessWidget {
                 text1Color,
                 Get.locale.toString() == "ar" ? 11 : 12,
                 'ShippingCost'.tr,
-                '${helperController.getCurrencyInFormat(shipment.shippingPrice.toString())}'),
-            _buildRowDown(
-                text1Color,
-                Get.locale.toString() == "ar" ? 11 : 12,
-                'CC'.tr,
-                '${helperController.getCurrencyInFormat(shipment.cc.toString())}'),
-            _buildRowDown(
-                text1Color,
-                Get.locale.toString() == "ar" ? 11 : 12,
-                'COD'.tr,
-                '${helperController.getCurrencyInFormat(shipment.cod.toString())}'),
+                '${shipment.shippingPrice.toString()} ${shipment.shippingCurrency}'),
+            _buildRowDown(text1Color, Get.locale.toString() == "ar" ? 11 : 12,
+                'CC'.tr, '${shipment.cc.toString()} ${shipment.ccCurrency}'),
+            _buildRowDown(text1Color, Get.locale.toString() == "ar" ? 11 : 12,
+                'COD'.tr, '${shipment.cod.toString()} ${shipment.codCurrency}'),
             _buildRowDown(
                 primaryColor,
                 Get.locale.toString() == "ar" ? 11 : 12,
                 'TotalCharges'.tr,
-                '${helperController.getCurrencyInFormat(((double.tryParse(shipment.cc.toString()) ?? 0.0) + (double.tryParse(totalCharges.toString()) ?? 0.0)).toString())}'),
+                '${((double.tryParse(shipment.cc.toString()) ?? 0.0) + (double.tryParse(totalCharges.toString()) ?? 0.0)).toString()} ${shipment.currency}'),
           ],
         ),
       ),

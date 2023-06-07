@@ -178,25 +178,25 @@ class ProfileView extends StatelessWidget {
               height: 20,
             ),
 
-            _buildRows("chooseCurrency".tr, Icons.currency_exchange, () {
-              showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                  scrollable: true,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5.0),
-                    ),
-                  ),
-                  content: Builder(builder: (context) {
-                    return _ShowCurrency();
-                  }),
-                ),
-              );
-            }),
-            const SizedBox(
-              height: 20,
-            ),
+            // _buildRows("chooseCurrency".tr, Icons.currency_exchange, () {
+            //   showDialog(
+            //     context: context,
+            //     builder: (_) => AlertDialog(
+            //       scrollable: true,
+            //       shape: const RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.all(
+            //           Radius.circular(5.0),
+            //         ),
+            //       ),
+            //       content: Builder(builder: (context) {
+            //         return _ShowCurrency();
+            //       }),
+            //     ),
+            //   );
+            // }),
+            // const SizedBox(
+            //   height: 20,
+            // ),
             Center(
                 child: Text(
               "${"version".tr} ${Platform.isIOS ? iosVersionLocal.toString() : androidVersionLocal.toString()}",

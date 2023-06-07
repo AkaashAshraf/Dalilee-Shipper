@@ -399,12 +399,18 @@ abstract class FinanceApi {
       {"name": "Bank Muscat", "id": 1},
       {"name": "NBO", "id": 2},
       {"name": "Nizwa Bank", "id": 3},
-      {"name": "BankDhofar", "id": 4},
+      {"name": "Bank Dhofar", "id": 4},
       {"name": "Alizz Islamic Bank", "id": 5},
       {"name": "Oman Arab Bank", "id": 6},
       {"name": "Al-AhliBank", "id": 7},
       {"name": "Bank Sohar", "id": 8},
-      {"name": "Other", "id": 9}
+      {"name": "Other", "id": 9},
+      {"name": "UAE - Abu Dhabi Islamic Bank", "id": 10},
+      {"name": "UAE - Abu Dhabi Commercial Bank", "id": 11},
+      {"name": "UAE - Dubai Islamic Bank", "id": 12},
+      {"name": "UAE - Emirates NBD", "id": 13},
+      {"name": "UAE - First Abu Dhabi Bank", "id": 14},
+      {"name": "UAE - Sharjah Islamic Bank", "id": 15},
     };
     List<BankListModel> data = bankListModelFromJson(bankList);
 

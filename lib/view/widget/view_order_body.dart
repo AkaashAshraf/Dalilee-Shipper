@@ -116,7 +116,7 @@ class ViewOrderBody extends StatelessWidget {
                   Expanded(
                       flex: 3,
                       child: _buildRowText(
-                          'COP : ${helperController.getCurrencyInFormat(list.orders![i].cop ?? 0.00)} ',
+                          'COP : ${list.orders![i].cc} ${list.orders![i].ccCurrency} ',
                           'Weight : ${list.orders![i].weight} KG')),
                 ],
               ),
@@ -210,11 +210,11 @@ class ViewOrderBody extends StatelessWidget {
             ),
           _rowWithnameline('Payment Summary'),
           _buildRowDown(text1Color, 12, 'Shipping Cost ',
-              '${helperController.getCurrencyInFormat(list.orders![i].shippingPrice)}  '),
+              '${list.orders![i].shippingPrice} ${list.orders![i].shippingCurrency} '),
           _buildRowDown(text1Color, 12, 'COD ',
-              '${helperController.getCurrencyInFormat(list.orders![i].cod)}  '),
+              '${list.orders![i].cod} ${list.orders![i].codCurrency} '),
           _buildRowDown(primaryColor, 13, 'Total Charges ',
-              ' ${helperController.getCurrencyInFormat(list.orders![i].cod)}  '),
+              ' ${list.orders![i].cod} ${list.orders![i].codCurrency} '),
         ],
       ),
     );
