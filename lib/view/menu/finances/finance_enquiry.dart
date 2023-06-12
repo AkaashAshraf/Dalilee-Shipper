@@ -36,12 +36,12 @@ class FinanceEnquiry extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
             backgroundColor: primaryColor,
             onPressed: () {
-              if (financeController.openData.value.remaining < 1) {
-                Get.snackbar('less_amount_warning'.tr.tr, " ",
-                    backgroundColor: Colors.orange.withOpacity(0.9),
-                    colorText: Colors.white);
-                return;
-              }
+              // if (financeController.openData.value.remaining < 1) {
+              //   Get.snackbar('less_amount_warning'.tr.tr, " ",
+              //       backgroundColor: Colors.orange.withOpacity(0.9),
+              //       colorText: Colors.white);
+              //   return;
+              // }
               controller.selectedAccountID(0);
               controller.selectedAccountName("");
               controller.estimatedAmount(
