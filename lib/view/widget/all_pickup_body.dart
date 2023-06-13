@@ -1,8 +1,10 @@
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/controllers/download_controller.dart';
 import 'package:dalile_customer/controllers/pickup_controller.dart';
 import 'package:dalile_customer/helper/helper.dart';
 import 'package:dalile_customer/view/pickup/details_pickup.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
+import 'package:dalile_customer/view/widget/waiting.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -38,122 +40,157 @@ class AllPickupBody extends StatelessWidget {
               color: Colors.grey.shade300,
             ),
           ]),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                  text: 'Ref'.tr + ' : $id',
-                  color: primaryColor,
-                  size: Get.locale.toString() == "ar" ? 13 : 16,
-                  fontWeight: FontWeight.w600,
-                ),
-                InkWell(
-                  onTap: () {
-                    Get.put(PickupController()).fetcPickupDetailsData(
-                        collectionID: id.toString(), isRefresh: true);
-                    Get.to(() => PickupDetails(
-                          ref: "$id",
-                          date: "$date",
-                        ));
-                  },
-                  child: Image.asset(
-                    'assets/images/visbilty.png',
-                    width: 22,
-                    height: 22,
+      child: GetX<DownloadController>(builder: (controller) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                    text: 'Ref'.tr + ' : $id',
+                    color: primaryColor,
+                    size: Get.locale.toString() == "ar" ? 13 : 16,
+                    fontWeight: FontWeight.w600,
                   ),
-                ),
-              ],
-            ),
-          ),
-          const Divider(
-            thickness: 3,
-            indent: 0,
-            endIndent: 0,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildRowText('Date'.tr + ' : $date', 'Driver'.tr + ' : $name',
-                    MediaQuery.of(context).size.width),
-                _buildRowText(
-                    'COP'.tr +
-                        ' : ${helperController.getCurrencyInFormat(cod)}',
-                    'Quantity'.tr + ' : $qty',
-                    MediaQuery.of(context).size.width),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-                left: 15.0, right: 15, top: 10, bottom: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    CustomText(
-                      text: "status".tr + " : ",
-                      fontWeight: FontWeight.w400,
-                      color: text1Color,
-                      size: Get.locale.toString() == "ar" ? 10 : 12,
-                      alignment: Alignment.centerLeft,
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Container(
-                      height: 30,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        gradient: LinearGradient(
-                          colors: [primaryColor, primaryColor.withOpacity(0.5)],
-                          stops: const [0, 2],
-                          end: Alignment.bottomCenter,
-                          begin: Alignment.topCenter,
+                  Row(
+                    children: [
+                      if (qty > 0)
+                        InkWell(
+                          onTap: () {
+                            controller.downloadReferenceOrders(id);
+                            // Get.put(PickupController()).fetcPickupDetailsData(
+                            //     collectionID: id.toString(), isRefresh: true);
+                            // Get.to(() => PickupDetails(
+                            //       ref: "$id",
+                            //       date: "$date",
+                            //     ));
+                          },
+                          child: controller.loading.value &&
+                                  controller.currentDownloadingRefId.value == id
+                              ? SizedBox(
+                                  height: 25, width: 25, child: WaiteImage())
+                              : Image.asset(
+                                  'assets/images/csv.png',
+                                  width: 22,
+                                  height: 22,
+                                ),
+                        ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Get.put(PickupController()).fetcPickupDetailsData(
+                              collectionID: id.toString(), isRefresh: true);
+                          Get.to(() => PickupDetails(
+                                ref: "$id",
+                                date: "$date",
+                              ));
+                        },
+                        child: Image.asset(
+                          'assets/images/visbilty.png',
+                          width: 22,
+                          height: 22,
                         ),
                       ),
-                      //alignment: Alignment.center,
-                      child: Center(
-                        child: CustomText(
-                          text: "$status",
-                          color: whiteColor,
-                          size: Get.locale.toString() == "ar" ? 10 : 12,
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const Divider(
+              thickness: 3,
+              indent: 0,
+              endIndent: 0,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildRowText(
+                      'Date'.tr + ' : $date',
+                      'Driver'.tr + ' : $name',
+                      MediaQuery.of(context).size.width),
+                  _buildRowText(
+                      'COP'.tr +
+                          ' : ${helperController.getCurrencyInFormat(cod)}',
+                      'Quantity'.tr + ' : $qty',
+                      MediaQuery.of(context).size.width),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15, top: 10, bottom: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      CustomText(
+                        text: "status".tr + " : ",
+                        fontWeight: FontWeight.w400,
+                        color: text1Color,
+                        size: Get.locale.toString() == "ar" ? 10 : 12,
+                        alignment: Alignment.centerLeft,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Container(
+                        height: 30,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          gradient: LinearGradient(
+                            colors: [
+                              primaryColor,
+                              primaryColor.withOpacity(0.5)
+                            ],
+                            stops: const [0, 2],
+                            end: Alignment.bottomCenter,
+                            begin: Alignment.topCenter,
+                          ),
+                        ),
+                        //alignment: Alignment.center,
+                        child: Center(
+                          child: CustomText(
+                            text: "$status",
+                            color: whiteColor,
+                            size: Get.locale.toString() == "ar" ? 10 : 12,
 
-                          alignment: Alignment.center,
+                            alignment: Alignment.center,
 
-                          // onPressed: () {},
+                            // onPressed: () {},
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: 40,
-                  child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(
-                          width: 1.5,
-                          color: primaryColor,
-                          style: BorderStyle.solid,
+                    ],
+                  ),
+                  SizedBox(
+                    width: 40,
+                    child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(
+                            width: 1.5,
+                            color: primaryColor,
+                            style: BorderStyle.solid,
+                          ),
                         ),
-                      ),
-                      onPressed: onPressed,
-                      child: Image.asset(
-                        'assets/images/call.png',
-                      )),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
+                        onPressed: onPressed,
+                        child: Image.asset(
+                          'assets/images/call.png',
+                        )),
+                  )
+                ],
+              ),
+            )
+          ],
+        );
+      }),
     );
   }
 

@@ -17,7 +17,7 @@ import 'package:url_launcher/url_launcher.dart';
 class DownloadController extends GetxController {
   Rx<bool> isDownloading = false.obs;
   Rx<bool> loading = false.obs;
-
+  RxInt currentDownloadingRefId = 0.obs;
   Rx<bool> isEmail = false.obs;
 
   Rx<OrderTypes> selectedOrderType = OrderTypes('', '').obs;
@@ -39,6 +39,27 @@ class DownloadController extends GetxController {
     // OrderTypes('cod_pending', "COD Pending Orders"), //pending from server
     // OrderTypes('ready_to_pay', "Ready to Pay Orders"), //pending from server
   ];
+
+  downloadReferenceOrders(int ref) async {
+    try {
+      currentDownloadingRefId(ref);
+      loading(true);
+      var res = await postAccountManager(
+          accountManagerBaseUrl + "/collection-orders",
+          {"collection_id": ref.toString()});
+      if (res != null) {
+        var body = exportResponseFromJson(res.body);
+
+        startDownloadingExcellOrPdf(body.data!.url.toString(), "csv");
+        print(res.toString());
+      }
+    } catch (e) {
+    } finally {
+      currentDownloadingRefId(0);
+
+      loading(false);
+    }
+  }
 
   download(BuildContext context) {
     DownloadingDialog(context).show();
@@ -118,8 +139,8 @@ class DownloadController extends GetxController {
           : isEmail.value
               ? 1
               : 0;
-      print(
-          "/dashboard/export?email=$isSendToEmail&type=$type&module=${selectedOrderType.value.key}&from_date=${startDate.value}&to_date=${endDate.value}&pdf_type=listing");
+      // print(
+      //     "/dashboard/export?email=$isSendToEmail&type=$type&module=${selectedOrderType.value.key}&from_date=${startDate.value}&to_date=${endDate.value}&pdf_type=listing");
       var res = await get(
           '/dashboard/export?email=$isSendToEmail&type=$type&module=${selectedOrderType.value.key}&from_date=${startDate.value}&to_date=${endDate.value}&pdf_type=listing');
       if (res != null) {
