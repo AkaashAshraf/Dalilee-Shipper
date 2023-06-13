@@ -4,6 +4,22 @@ class MyTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         "ar": {
+          // /assign order
+          "search_store": "البحث في المتجر",
+          "addStore": "عيّن المتجر",
+          "name:": "اسم:",
+          "phone:": "رقم الاتصال:",
+          "branch:": "فرع:",
+          "assign": "تعيين",
+          "are_you_sure_want_to_assign": "هل أنت متأكد أنك تريد التخصيص",
+          "store_has_been_assigned_Successfully": "تم تعيين المتجر بنجاح",
+          "something_went_wrong": "هناك خطأ ما. حاول مرة اخرى.",
+          "error": "خطأ",
+          "store_to_you": " مخزن لك ",
+          "yes": "نعم",
+          "no": "لا",
+
+          //////
           "pickAddress": "اختر العنوان",
           "instagramLink": "انستغرام",
           "Recievable": "مستحق",
@@ -322,6 +338,22 @@ class MyTranslations extends Translations {
           "Filed": "فشل",
         },
         "en": {
+          // /assign order
+          "search_store": "Search Store",
+          "addStore": "Assign Store",
+          "name:": "Name:",
+          "phone:": "Phone:",
+          "branch:": "Branch:",
+          "assign": "Assign",
+          "are_you_sure_want_to_assign": "Are you sure you want to assign ",
+          "store_has_been_assigned_Successfully":
+              "Store has been assigned successfully",
+          "something_went_wrong": "Something went wrong. Please try again.",
+          "error": "Error",
+          "store_to_you": " store to you",
+          "yes": "Yes",
+          "no": "No",
+          // ///
           "Location": "Location",
           "accountType": "Account Type",
           "Payable": "Payable",
@@ -510,7 +542,6 @@ class MyTranslations extends Translations {
           "Weight": "Weight",
           "Shipping": "Shipping",
           "Phone": "Phone",
-          "Location": "Location",
           "Pick": "Pick",
           "Muhafaza": "Muhafaza",
           "SelectMuhafaza": "Select Muhafaza",

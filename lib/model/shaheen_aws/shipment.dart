@@ -33,6 +33,10 @@ class Shipment {
     this.callAttempts = "",
     this.driverMobile = "",
     this.driverName = "",
+    this.ccCurrency = "OMR",
+    this.codCurrency = "OMR",
+    this.currency = "OMR",
+    this.shippingCurrency = "OMR",
     this.isOpen = false,
     required this.orderActivities,
   });
@@ -55,6 +59,7 @@ class Shipment {
   String weight;
   dynamic shippingPrice;
   dynamic cod;
+  String ccCurrency, shippingCurrency, codCurrency, currency;
 
   String? driverName;
   String? driverMobile;
@@ -72,6 +77,10 @@ class Shipment {
 
   factory Shipment.fromJson(Map<String, dynamic> json) => Shipment(
         rId: json["r_id"] ?? 0,
+        currency: json["currency"] ?? "OMR",
+        ccCurrency: json["cc_currency"] ?? "OMR",
+        codCurrency: json["cod_currency"] ?? "OMR",
+        shippingCurrency: json["shipping_currency"] ?? "OMR",
         orderId: json["order_id"].toString(),
         refId: json["ref_id"] ?? 0,
         cop: json["cop"] ?? 0,

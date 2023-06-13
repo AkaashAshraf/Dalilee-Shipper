@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/controllers/my_lang_controller.dart';
 import 'package:dalile_customer/helper/helper.dart';
+import 'package:dalile_customer/view/menu/add_store/add_store_view.dart';
 import 'package:dalile_customer/view/menu/profiles/edit_profile.dart';
 import 'package:dalile_customer/view/menu/profiles/terms_Conditions_view.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
@@ -178,21 +179,28 @@ class ProfileView extends StatelessWidget {
               height: 20,
             ),
 
-            _buildRows("chooseCurrency".tr, Icons.currency_exchange, () {
-              showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                  scrollable: true,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5.0),
-                    ),
-                  ),
-                  content: Builder(builder: (context) {
-                    return _ShowCurrency();
-                  }),
-                ),
-              );
+            // _buildRows("chooseCurrency".tr, Icons.currency_exchange, () {
+            //   showDialog(
+            //     context: context,
+            //     builder: (_) => AlertDialog(
+            //       scrollable: true,
+            //       shape: const RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.all(
+            //           Radius.circular(5.0),
+            //         ),
+            //       ),
+            //       content: Builder(builder: (context) {
+            //         return _ShowCurrency();
+            //       }),
+            //     ),
+            //   );
+            // }),
+            // const SizedBox(
+            //   height: 20,
+            // ),
+
+            _buildRows("addStore".tr, Icons.store, () {
+              Get.to(const AddStoreView());
             }),
             const SizedBox(
               height: 20,

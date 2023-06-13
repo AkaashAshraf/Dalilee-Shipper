@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 
 Future<dynamic> get(String url) async {
   var _url = like + url;
-  print(_url);
+  // print(_url);
   final prefs = await SharedPreferences.getInstance();
 
   String token = prefs.getString('token') ?? '';
@@ -180,7 +180,7 @@ Future<dynamic> postAccountManager(String url, dynamic body,
       return null;
     }
   } catch (e) {
-    inspect(e);
+    // inspect(e);
     // print(e.toString());
 
     return null;
