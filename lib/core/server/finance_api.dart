@@ -75,6 +75,7 @@ abstract class FinanceApi {
       final prefs = await SharedPreferences.getInstance();
       String storeCode = prefs.getString('store_code') ?? '';
       String mobile = prefs.getString('mobile') ?? '';
+      inspect({"trader_id": storeCode, "phone": mobile});
       var response = await http.post(
         Uri.parse(_url),
         body: {"trader_id": storeCode, "phone": mobile},

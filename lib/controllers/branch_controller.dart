@@ -34,7 +34,7 @@ class BranchController extends GetxController {
         branchListData.value = data.branches!.toList();
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', BranchApi.mass);
+          Get.snackbar('Failed'.tr, BranchApi.mass);
         }
       }
     } finally {

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/model/countries.dart';
@@ -24,8 +25,10 @@ class LoginController extends GetxController {
 
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
   Rx<TextEditingController> phoneNumber = TextEditingController().obs;
-  Rx<TextEditingController> email = TextEditingController().obs;
-  RxInt isLoginWithEmail = 0.obs;
+  Rx<TextEditingController> userName = TextEditingController().obs;
+  Rx<TextEditingController> password = TextEditingController().obs;
+
+  RxInt isLoginWithUserName = 0.obs;
 
   void fetchCountries() async {
     var response = await getWithUrl("$base_url/shipper-countries");
@@ -47,15 +50,15 @@ class LoginController extends GetxController {
   void fetchOTPSentData({required String countryCode}) async {
     try {
       mobile(phoneNumber.value.text);
-      emailAddress(email.value.text);
+      emailAddress(userName.value.text);
 
       isLoading(true);
 
       var data = await LoginAPi.loginData(
           countryCode: selectedCountryCode.value,
           mobile: "${phoneNumber.value.text}",
-          email: email.value.text,
-          isEmail: isLoginWithEmail.value == 0 ? false : true);
+          email: userName.value.text,
+          isEmail: isLoginWithUserName.value == 0 ? false : true);
       if (data != null) {
         if (data["message"] == "OK") {
           code = await SmsAutoFill().getAppSignature;
@@ -88,11 +91,17 @@ class LoginController extends GetxController {
   fetchCheckLoginData(String otp) async {
     try {
       isLoading(true);
-      var data = await LoginAPi.loginOtpData(otp, "$identifier", "$deviceName",
+      var data = await LoginAPi.loginOtpData(
+          otp,
+          "$identifier",
+          userName: userName.value.text,
+          password: password.value.text,
+          deviceName.value,
           countryCode: selectedCountryCode.value,
           email: emailAddress.value,
-          isEmail: isLoginWithEmail.value == 0 ? false : true,
+          isUserNAme: isLoginWithUserName.value == 0 ? false : true,
           mobile: mobile.value);
+      // inspect(data);
       if (data != null) {
         if (data["success"] == "ok" || data["success"] == "OK") {
           Get.offAll(() => ControllerView());
@@ -108,7 +117,9 @@ class LoginController extends GetxController {
   }
 
   valid({required String countryCode}) async {
-    if (globalKey.currentState!.validate()) {
+    if (isLoginWithUserName > 0) {
+      fetchCheckLoginData("");
+    } else if (globalKey.currentState!.validate()) {
       fetchOTPSentData(countryCode: countryCode);
     }
   }
@@ -131,10 +142,22 @@ class LoginController extends GetxController {
     if (!isValid) return "please enter a valid email";
   }
 
-  RxString deviceName = ''.obs;
+  emailUserName(x) {
+    if (x.isEmpty) {
+      return "please enter your email";
+    }
+  }
+
+  emailPassword(x) {
+    if (x.isEmpty) {
+      return "please enter your password";
+    }
+  }
+
+  RxString deviceName = '..'.obs;
   RxString enteredEmail = ''.obs;
 
-  RxString identifier = ''.obs;
+  RxString identifier = '..'.obs;
 
   getDeviceDetails() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();

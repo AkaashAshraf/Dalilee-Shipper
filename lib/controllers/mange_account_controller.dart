@@ -34,7 +34,7 @@ class ManageAccountController extends GetxController {
         accountData.value = account.data!;
       } else {
         if (!Get.isSnackbarOpen) {
-          Get.snackbar('Filed', FinanceApi.mass);
+          Get.snackbar('Failed', FinanceApi.mass);
         }
       }
     } finally {

@@ -94,7 +94,7 @@ class _LoginViewState extends State<LoginView> {
                               right: 20, left: 20, bottom: 20),
                           child: Row(
                             children: [
-                              Text('Loginby'.tr + " " + "WhatsappNo".tr,
+                              Text('Loginby'.tr,
                                   style: TextStyle(fontSize: 18)),
                             ],
                           ),
@@ -105,55 +105,54 @@ class _LoginViewState extends State<LoginView> {
                         Container(
                           child: Column(
                             children: <Widget>[
-                              if (false)
-                                Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      flex: 1,
-                                      child: RadioListTile(
-                                          value: 0,
-                                          groupValue: _controller
-                                              .isLoginWithEmail.value,
-                                          title: Text("MobileNo".tr),
-                                          onChanged: (newValue) {
-                                            FocusManager.instance.primaryFocus
-                                                ?.unfocus();
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    flex: 1,
+                                    child: RadioListTile(
+                                        value: 0,
+                                        groupValue: _controller
+                                            .isLoginWithUserName.value,
+                                        title: Text("MobileNo".tr),
+                                        onChanged: (newValue) {
+                                          FocusManager.instance.primaryFocus
+                                              ?.unfocus();
 
-                                            setState(() => _controller
-                                                .isLoginWithEmail
-                                                .value = newValue as int);
-                                            selected:
-                                            false;
-                                          }),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: RadioListTile(
-                                          value: 1,
-                                          groupValue: _controller
-                                              .isLoginWithEmail.value,
-                                          title: Text("Email".tr),
-                                          onChanged: (newValue) {
-                                            FocusManager.instance.primaryFocus
-                                                ?.unfocus();
+                                          setState(() => _controller
+                                              .isLoginWithUserName
+                                              .value = newValue as int);
+                                          selected:
+                                          false;
+                                        }),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: RadioListTile(
+                                        value: 1,
+                                        groupValue: _controller
+                                            .isLoginWithUserName.value,
+                                        title: Text("userName".tr),
+                                        onChanged: (newValue) {
+                                          FocusManager.instance.primaryFocus
+                                              ?.unfocus();
 
-                                            setState(() => _controller
-                                                .isLoginWithEmail
-                                                .value = newValue as int);
-                                            activeColor:
-                                            primaryColor;
-                                            selected:
-                                            false;
-                                          }),
-                                    ),
-                                  ],
-                                ),
+                                          setState(() => _controller
+                                              .isLoginWithUserName
+                                              .value = newValue as int);
+                                          activeColor:
+                                          primaryColor;
+                                          selected:
+                                          false;
+                                        }),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                    _controller.isLoginWithEmail.value == 0
+                    _controller.isLoginWithUserName.value == 0
                         ? Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 20.0),
@@ -238,17 +237,35 @@ class _LoginViewState extends State<LoginView> {
                         : Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 20.0),
-                            child: MyInput(
-                              controller: _controller.email.value,
-                              validator: (x) => _controller.emailVild(x),
-                              keyboardType: TextInputType.emailAddress,
-                              limitCharacters: 100,
-                              hintText: 'Enteryouremail'.tr,
-                              // prefix: Text(''),
+                            child: Column(
+                              children: [
+                                MyInput(
+                                  controller: _controller.userName.value,
+                                  validator: (x) =>
+                                      _controller.emailUserName(x),
+                                  keyboardType: TextInputType.text,
+                                  limitCharacters: 100,
+                                  hintText: 'enteryourusername'.tr,
+                                  // prefix: Text(''),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                MyInput(
+                                  controller: _controller.password.value,
+                                  validator: (x) =>
+                                      _controller.emailPassword(x),
+                                  keyboardType: TextInputType.text,
+                                  limitCharacters: 100,
+                                  hintText: 'password'.tr,
+                                  obsecure: true,
+                                  // prefix: Text(''),
+                                ),
+                              ],
                             ),
                           ),
                     const SizedBox(
-                      height: 30,
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -332,7 +349,7 @@ class _LoginViewState extends State<LoginView> {
                                   : null),
                     ),
                     SizedBox(
-                      height: 50,
+                      height: 20,
                     ),
                     SizedBox(
                       height: 45,

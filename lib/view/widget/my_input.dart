@@ -16,11 +16,13 @@ class MyInput extends StatelessWidget {
       this.controller,
       this.keyboardType,
       this.validator,
+      this.obsecure = false,
       this.limitCharacters: 100,
       this.onChanged})
       : super(key: key);
   final TextInputType? keyboardType;
   final limitCharacters;
+  final bool obsecure;
   final Widget? suffixIcon, prefix;
   final String? hintText, labelText;
   final String? initialValue;
@@ -32,6 +34,7 @@ class MyInput extends StatelessWidget {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.9,
       child: TextFormField(
+        obscureText: obsecure,
         inputFormatters: [
           new LengthLimitingTextInputFormatter(limitCharacters),
         ],

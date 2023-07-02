@@ -4,6 +4,9 @@ class MyTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         "ar": {
+          "userName": "أسم المستخدم",
+          "password": "كلمة المرور",
+          "enteryourusername": "الرجاء إدخال أسم المستخدم",
           "SearchOrder": "ترتيب البحث",
           "pickAddress": "اختر العنوان",
           "instagramLink": "انستغرام",
@@ -323,6 +326,9 @@ class MyTranslations extends Translations {
           "Filed": "فشل",
         },
         "en": {
+          "userName": "User Name",
+          "password": "Password",
+          "enteryourusername": "Enter your username",
           "SearchOrder": "Search Order",
 
           "Location": "Location",
@@ -435,7 +441,7 @@ class MyTranslations extends Translations {
           "addcomplainsuccessfully": "Complain added successfully",
           "Loginby": "Login by",
           "MobileNo": "Mobile No",
-          "clickingAgree": "by clicking login I am agree with",
+          "clickingAgree": "by clicking login I am agree with ",
           "terms&conditions": "terms & conditions",
           "Signin": "Sign in",
           "Entermobile": "Enter your mobile number",
