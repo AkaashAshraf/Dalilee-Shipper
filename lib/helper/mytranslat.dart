@@ -22,6 +22,9 @@ class MyTranslations extends Translations {
           "call_attempts": "محاولة الاتصال",
           "call_driver": "الإتصال بالمندوب",
           "call_customer": "الإتصال بالعميل",
+          "call_branch": "الاتصال بالفرع",
+          "whatsapp_branch": "واتساب الفرع",
+
           "whatsapp_customer": "واتساب العميل",
           "whatsapp_driver": "واتساب المندوب",
 
@@ -343,6 +346,9 @@ class MyTranslations extends Translations {
           "enter_otp_to_verify": "Enter OTP to Create Enquiry",
           "verify": "Verify",
           "call_driver": "Call Driver",
+          "call_branch": "Call Branch",
+          "whatsapp_branch": "Whatsapp Branch",
+
           "call_customer": "Call Customer",
           "whatsapp_customer": "Whatsapp Customer",
           "whatsapp_driver": "Whatsapp Driver",

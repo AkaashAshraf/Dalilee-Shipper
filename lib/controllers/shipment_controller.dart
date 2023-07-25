@@ -43,8 +43,11 @@ class ShipmentViewModel extends GetxController {
   List<NameWithIcon> callList = [
     NameWithIcon(icon: Icons.call, name: 'call_driver'.tr),
     NameWithIcon(icon: Icons.call, name: 'call_customer'.tr),
+    NameWithIcon(icon: Icons.call, name: 'call_branch'.tr),
+
     NameWithIcon(icon: Icons.whatsapp_outlined, name: 'whatsapp_driver'.tr),
     NameWithIcon(icon: Icons.whatsapp_outlined, name: 'whatsapp_customer'.tr),
+    NameWithIcon(icon: Icons.whatsapp_outlined, name: 'whatsapp_branch'.tr),
     // NameWithIcon(icon: Icons.content_copy_outlined, name: 'CopyNumber'.tr),
   ];
   List<NameWithIcon> menuList = [
@@ -52,7 +55,8 @@ class ShipmentViewModel extends GetxController {
     NameWithIcon(icon: Icons.picture_as_pdf_outlined, name: 'DownloadBill'.tr),
   ];
 
-  callAlert(context, number, {required String driverContact}) {
+  callAlert(context, number,
+      {required String driverContact, required String lastBranchContact}) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -84,12 +88,15 @@ class ShipmentViewModel extends GetxController {
                         case 1:
                           makePhoneCall(number);
                           break;
+                        case 2:
+                          makePhoneCall(lastBranchContact);
+                          break;
 
                         // case 2:
                         //   _textMe("$number");
                         //   break;
 
-                        case 2:
+                        case 3:
                           launchWhatsapp(driverContact);
                           break;
                         // case 4:
@@ -99,8 +106,11 @@ class ShipmentViewModel extends GetxController {
                         //         colorText: whiteColor);
                         //   });
                         //   break;
-                        case 3:
+                        case 4:
                           launchWhatsapp(number);
+                          break;
+                        case 5:
+                          launchWhatsapp(lastBranchContact);
                           break;
                       }
                       Get.back();

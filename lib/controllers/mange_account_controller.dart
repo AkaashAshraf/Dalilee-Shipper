@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/server/finance_api.dart';
-import 'package:dalile_customer/model/bank_model.dart';
 import 'package:dalile_customer/model/crm/bank_accounts.dart';
+import 'package:dalile_customer/model/crm/banks.dart';
 import 'package:dalile_customer/view/widget/custom_button.dart';
 import 'package:dalile_customer/view/widget/custom_form_filed.dart';
 import 'package:dalile_customer/view/widget/custom_popup.dart';
@@ -24,7 +22,7 @@ class ManageAccountController extends GetxController {
 
   var isLoading = false.obs;
 
-  var bankListData = <BankListModel>[].obs;
+  var bankListData = <BanksReponse>[].obs;
   var accountData = <Accounts>[].obs;
   void fetchManageAccountData() async {
     try {

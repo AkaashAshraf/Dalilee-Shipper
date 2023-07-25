@@ -7,6 +7,7 @@ import 'package:dalile_customer/model/bank_model.dart';
 import 'package:dalile_customer/model/close_finance_model.dart';
 import 'package:dalile_customer/model/crm/account_enquiries.dart';
 import 'package:dalile_customer/model/crm/bank_accounts.dart';
+import 'package:dalile_customer/model/crm/banks.dart';
 import 'package:dalile_customer/model/crm/general_response.dart';
 import 'package:dalile_customer/model/finance_open_model.dart';
 import 'package:dalile_customer/model/shaheen_aws/shipment_listing.dart';
@@ -395,27 +396,13 @@ abstract class FinanceApi {
     return null;
   }
 
-  static Future<List<BankListModel>?> fetchBankListData() async {
-    Set<Map<String, Object>> bankList = {
-      {"name": "Bank Muscat", "id": 1},
-      {"name": "NBO", "id": 2},
-      {"name": "Nizwa Bank", "id": 3},
-      {"name": "Bank Dhofar", "id": 4},
-      {"name": "Alizz Islamic Bank", "id": 5},
-      {"name": "Oman Arab Bank", "id": 6},
-      {"name": "Al-AhliBank", "id": 7},
-      {"name": "Bank Sohar", "id": 8},
-      {"name": "Other", "id": 9},
-      {"name": "UAE - Abu Dhabi Islamic Bank", "id": 10},
-      {"name": "UAE - Abu Dhabi Commercial Bank", "id": 11},
-      {"name": "UAE - Dubai Islamic Bank", "id": 12},
-      {"name": "UAE - Emirates NBD", "id": 13},
-      {"name": "UAE - First Abu Dhabi Bank", "id": 14},
-      {"name": "UAE - Sharjah Islamic Bank", "id": 15},
-    };
-    List<BankListModel> data = bankListModelFromJson(bankList);
-
-    return data;
+  static Future<List<BanksReponse>> fetchBankListData() async {
+    var response = await getWithUrl(crmBaseUrl + "/banks/list");
+    if (response.statusCode == 200) {
+      var res = banksReponseFromJson(response?.body);
+      return res;
+    }
+    return [];
   }
 
   static Future<Crmgenralresponse> addEnquiryData({
@@ -439,7 +426,6 @@ abstract class FinanceApi {
     dynamic tokenLo = resLogin['data']["access_token"] ?? '';
 
     var _url = crmBaseUrl + '/create/account/Enquiry';
-    // "https://shaheen-test2.dalilee.om/api/inquiry/customre-inquiry/create";
 
     try {
       var response = await http.post(Uri.parse(_url), headers: {

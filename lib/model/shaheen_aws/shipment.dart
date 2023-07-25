@@ -1,45 +1,46 @@
+import 'package:dalile_customer/model/shaheen_aws/branch.dart';
 import 'package:dalile_customer/model/shaheen_aws/order_activity.dart';
 import 'package:dalile_customer/model/shaheen_aws/order_problem.dart';
 import 'package:dalile_customer/model/shaheen_aws/problem_category.dart';
 
 class Shipment {
-  Shipment({
-    this.rId = 0,
-    this.orderId = "",
-    this.refId = 0,
-    this.cop,
-    this.customerNo = "",
-    this.customerName = "",
-    this.cc,
-    this.orderStatusName = "",
-    this.orderStatusKey = "",
-    this.pickupImage = "",
-    this.orderImage = "",
-    this.undeliverImage = "",
-    this.undeliverImage2 = "",
-    this.undeliverImage3 = "",
-    this.weight = "",
-    this.shippingPrice,
-    this.cod,
-    this.wilayaName = "",
-    this.areaName = "",
-    this.addedByStore = 0,
-    this.storeId = 0,
-    this.orderProblem,
-    this.createdAt = "",
-    this.updatedAt = "",
-    this.trackingId = 0,
-    this.deliveryAttempts = "",
-    this.callAttempts = "",
-    this.driverMobile = "",
-    this.driverName = "",
-    this.ccCurrency = "OMR",
-    this.codCurrency = "OMR",
-    this.currency = "OMR",
-    this.shippingCurrency = "OMR",
-    this.isOpen = false,
-    required this.orderActivities,
-  });
+  Shipment(
+      {this.rId = 0,
+      this.orderId = "",
+      this.refId = 0,
+      this.cop,
+      this.customerNo = "",
+      this.customerName = "",
+      this.cc,
+      this.orderStatusName = "",
+      this.orderStatusKey = "",
+      this.pickupImage = "",
+      this.orderImage = "",
+      this.undeliverImage = "",
+      this.undeliverImage2 = "",
+      this.undeliverImage3 = "",
+      this.weight = "",
+      this.shippingPrice,
+      this.cod,
+      this.wilayaName = "",
+      this.areaName = "",
+      this.addedByStore = 0,
+      this.storeId = 0,
+      this.orderProblem,
+      this.createdAt = "",
+      this.updatedAt = "",
+      this.trackingId = 0,
+      this.deliveryAttempts = "",
+      this.callAttempts = "",
+      this.driverMobile = "",
+      this.driverName = "",
+      this.ccCurrency = "OMR",
+      this.codCurrency = "OMR",
+      this.currency = "OMR",
+      this.shippingCurrency = "OMR",
+      this.isOpen = false,
+      required this.orderActivities,
+      this.lastReceiverBranch});
 
   int rId;
   String orderId;
@@ -74,6 +75,7 @@ class Shipment {
   String updatedAt;
   int trackingId;
   List<OrderActivity?> orderActivities;
+  LastReceiverBranch? lastReceiverBranch;
 
   factory Shipment.fromJson(Map<String, dynamic> json) => Shipment(
         rId: json["r_id"] ?? 0,
@@ -117,6 +119,9 @@ class Shipment {
                 ? []
                 : List<OrderActivity?>.from(json["order_activities"]!
                     .map((x) => OrderActivity.fromJson(x))),
+        lastReceiverBranch: json["last_receiver_branch"] == null
+            ? null
+            : LastReceiverBranch.fromJson(json["last_receiver_branch"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -149,5 +154,6 @@ class Shipment {
         "tracking_id": trackingId,
         "order_activities":
             List<dynamic>.from(orderActivities.map((x) => x!.toJson())),
+        "last_receiver_branch": lastReceiverBranch?.toJson(),
       };
 }

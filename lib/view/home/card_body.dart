@@ -118,7 +118,7 @@ class CardBody extends StatelessWidget {
                         onTap: () {
                           Get.put(ShipmentViewModel()).callAlert(
                               context, number ?? "",
-                              driverContact: "");
+                              driverContact: "", lastBranchContact: "");
                         },
                         child: Icon(
                           Icons.call_outlined,
