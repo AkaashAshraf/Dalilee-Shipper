@@ -117,18 +117,33 @@ class _ColusedViewState extends State<ColusedView> {
                                     '${widget.c.closeData[i].closingDate}'),
                                 _buildRowText('totalOrderDeliver'.tr,
                                     '${widget.c.closeData[i].totalOrders}'),
+                                // _buildRowText(
+                                //     'COD'.tr,
+                                //     helperController.getCurrencyInFormat(
+                                //         widget.c.closeData[i].cod)),
+                                // _buildRowText(
+                                //     'ShippingCost'.tr,
+                                //     helperController.getCurrencyInFormat(
+                                //         widget.c.closeData[i].shipping)),
+                                // _buildRowText(
+                                //     'CC'.tr,
+                                //     helperController.getCurrencyInFormat(
+                                //         widget.c.closeData[i].cc)),
                                 _buildRowText(
                                     'COD'.tr,
-                                    helperController.getCurrencyInFormat(
-                                        widget.c.closeData[i].cod)),
+                                    widget.c.closeData[i].cod.toString() +
+                                        " " +
+                                        widget.c.closeData[i].currency),
                                 _buildRowText(
                                     'ShippingCost'.tr,
-                                    helperController.getCurrencyInFormat(
-                                        widget.c.closeData[i].shipping)),
+                                    widget.c.closeData[i].shipping.toString() +
+                                        " " +
+                                        widget.c.closeData[i].currency),
                                 _buildRowText(
                                     'CC'.tr,
-                                    helperController.getCurrencyInFormat(
-                                        widget.c.closeData[i].cc)),
+                                    widget.c.closeData[i].cc.toString() +
+                                        " " +
+                                        widget.c.closeData[i].currency),
                                 Padding(
                                   padding: const EdgeInsets.all(3),
                                   child: Row(
@@ -142,11 +157,11 @@ class _ColusedViewState extends State<ColusedView> {
                                         size: 14,
                                       ),
                                       CustomText(
-                                        text: helperController
-                                            .getCurrencyInFormat(widget
-                                                .c
-                                                .closeData[i]
-                                                .amountTransferred),
+                                        text: widget.c.closeData[i]
+                                                .amountTransferred
+                                                .toString() +
+                                            " " +
+                                            widget.c.closeData[i].currency,
                                         fontWeight: FontWeight.w500,
                                         color: primaryColor,
                                         size: 14,

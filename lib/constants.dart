@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 bool isTesEnvironment = false;
 double omrToAedRate = 9.47;
-const int iosVersionLocal = 15; //25/july/2023 //dynamic banks list from crm
-const int androidVersionLocal = 15; //25/july/2023 //dynamic banks list from crm
+const int iosVersionLocal =
+    15; //25/july/2023 //dynamic banks list from crm + currency in invoice is dynamic now
+const int androidVersionLocal =
+    15; //25/july/2023 //dynamic banks list from crm + currency in invoice is dynamic now
 Color primaryColor = Color(isTesEnvironment ? 0xFF0D7297 : 0xFF00A1E1);
 
 const whiteColor = Color(0xFFFFFFFF);

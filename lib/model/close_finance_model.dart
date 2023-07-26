@@ -62,6 +62,7 @@ class ClosingRequest {
     this.cc = 0,
     this.amountTransferred = 0,
     this.createdAt = "",
+    this.currency = "",
   });
 
   int? id;
@@ -72,6 +73,7 @@ class ClosingRequest {
   dynamic cc;
   dynamic amountTransferred;
   String? createdAt;
+  String currency;
 
   factory ClosingRequest.fromJson(Map<String, dynamic> json) => ClosingRequest(
         id: json["id"] ?? 0,
@@ -82,6 +84,7 @@ class ClosingRequest {
         cc: json["cc"] ?? 0,
         amountTransferred: json["amount_transferred"] ?? 0,
         createdAt: json["created_at"] ?? "",
+        currency: json["currency"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -91,6 +94,7 @@ class ClosingRequest {
         "shipping": shipping,
         "total_orders": totalOrders,
         "cc": cc,
+        "currency": currency,
         "amount_transferred": amountTransferred,
         "created_at": createdAt,
       };
