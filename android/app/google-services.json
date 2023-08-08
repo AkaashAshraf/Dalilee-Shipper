@@ -14,7 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "137303662313-n9mv7dldkj8ho4hitevt2bk2dgccpann.apps.googleusercontent.com",
+          "client_id": "137303662313-eqrl7iotb2fvjl2un1bqvvrqi54v16n8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,14 +27,14 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "137303662313-n9mv7dldkj8ho4hitevt2bk2dgccpann.apps.googleusercontent.com",
+              "client_id": "137303662313-eqrl7iotb2fvjl2un1bqvvrqi54v16n8.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "137303662313-3b3aal5vhk9jq007gvatiodtfjn47c53.apps.googleusercontent.com",
+              "client_id": "137303662313-2hj66md1t9r6loi2oucvogun1e1s6prq.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "thiqatech.shaheen.tamexpress"
+                "bundle_id": "thiqatech.dalilee.attendance"
               }
             }
           ]
@@ -50,7 +50,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "137303662313-n9mv7dldkj8ho4hitevt2bk2dgccpann.apps.googleusercontent.com",
+          "client_id": "137303662313-eqrl7iotb2fvjl2un1bqvvrqi54v16n8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -63,14 +63,14 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "137303662313-n9mv7dldkj8ho4hitevt2bk2dgccpann.apps.googleusercontent.com",
+              "client_id": "137303662313-eqrl7iotb2fvjl2un1bqvvrqi54v16n8.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "137303662313-3b3aal5vhk9jq007gvatiodtfjn47c53.apps.googleusercontent.com",
+              "client_id": "137303662313-2hj66md1t9r6loi2oucvogun1e1s6prq.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "thiqatech.shaheen.tamexpress"
+                "bundle_id": "thiqatech.dalilee.attendance"
               }
             }
           ]
@@ -79,14 +79,14 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:137303662313:android:56c1948e4aeac6fdcf1a78",
+        "mobilesdk_app_id": "1:137303662313:android:176d8bb07c15d8c6cf1a78",
         "android_client_info": {
-          "package_name": "thiqatech.tam.shipper_app"
+          "package_name": "thiqatech.dalilee.ams_attendance"
         }
       },
       "oauth_client": [
         {
-          "client_id": "137303662313-n9mv7dldkj8ho4hitevt2bk2dgccpann.apps.googleusercontent.com",
+          "client_id": "137303662313-eqrl7iotb2fvjl2un1bqvvrqi54v16n8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -99,14 +99,50 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "137303662313-n9mv7dldkj8ho4hitevt2bk2dgccpann.apps.googleusercontent.com",
+              "client_id": "137303662313-eqrl7iotb2fvjl2un1bqvvrqi54v16n8.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "137303662313-3b3aal5vhk9jq007gvatiodtfjn47c53.apps.googleusercontent.com",
+              "client_id": "137303662313-2hj66md1t9r6loi2oucvogun1e1s6prq.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "thiqatech.shaheen.tamexpress"
+                "bundle_id": "thiqatech.dalilee.attendance"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:137303662313:android:78f5992d21ceee1acf1a78",
+        "android_client_info": {
+          "package_name": "thiqatech.tam.shipper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "137303662313-eqrl7iotb2fvjl2un1bqvvrqi54v16n8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdz5v35qn-Yu7xyYAUBOWxGhRwcevQbfA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "137303662313-eqrl7iotb2fvjl2un1bqvvrqi54v16n8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "137303662313-2hj66md1t9r6loi2oucvogun1e1s6prq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "thiqatech.dalilee.attendance"
               }
             }
           ]
