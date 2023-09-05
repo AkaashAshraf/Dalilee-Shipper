@@ -1,4 +1,4 @@
-package thiqatech.tam.shipper
+package thiqatech.tam.shipper_app
 
 import io.flutter.embedding.android.FlutterActivity
 

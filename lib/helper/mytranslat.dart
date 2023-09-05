@@ -56,7 +56,7 @@ class MyTranslations extends Translations {
           "deliveredImage": "تسليم الصورة",
           "undeliverImage": "لم يتم تسليم الصورة",
           "aed": "درهم",
-          "omr": "عمان ريال",
+          "omr": "ريال البحرين",
           "Address": "عنوان:",
           "WhatsappNo": "رقم هاتف الواتساب",
           "soon_available": "هذه الميزه ستتوفر قريبا",
@@ -369,7 +369,7 @@ class MyTranslations extends Translations {
           "undeliverImage": "Undelivered Image",
 
           "aed": "AED",
-          "omr": "OMR",
+          "omr": "BHR",
           "Address": "Address:",
           "WhatsappNo": "Whatsapp Number",
           "soon_available": "This feature will available soon",
