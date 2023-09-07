@@ -4,6 +4,18 @@ class MyTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         "ar": {
+          "RequestExchangeOrder": "طلب إستبدال الشحنة",
+          "order": "طلب",
+
+          "info": "معلومة",
+          "areYouSureYouWantToCreateExchangeRequest":
+              "هل انت متاكد بانك تريد عمل طلب استرجاع لهذه الشحنة",
+          "actionConfirmation": "تاكيد الطلب",
+          "exchnageOrderInfoMessage0": "طلب استبدال يعني :",
+          "exchnageOrderInfoMessage1":
+              "انت تريد من شركة دليلي استلام هذه الشحنة الموصله",
+          "exchnageOrderInfoMessage2":
+              "من العميل واسترجاعها الى التاجر سيكون هناك رسوم لاستخدام هذه الخدمة",
           "userName": "أسم المستخدم",
           "password": "كلمة المرور",
           "enteryourusername": "الرجاء إدخال أسم المستخدم",
@@ -329,6 +341,12 @@ class MyTranslations extends Translations {
           "Filed": "فشل",
         },
         "en": {
+          "RequestExchangeOrder": "Request Exchange Order",
+          "info": "Info",
+          "areYouSureYouWantToCreateExchangeRequest":
+              "Are you sure you want to create exchange request for",
+          "actionConfirmation": "Action Confirmation",
+          "order": "order",
           "userName": "User Name",
           "password": "Password",
           "enteryourusername": "Enter your username",
@@ -525,7 +543,6 @@ class MyTranslations extends Translations {
           "Weight": "Weight",
           "Shipping": "Shipping",
           "Phone": "Phone",
-          "Location": "Location",
           "Pick": "Pick",
           "Muhafaza": "Muhafaza",
           "SelectMuhafaza": "Select Muhafaza",
@@ -653,6 +670,11 @@ class MyTranslations extends Translations {
           "WhatsAppMessage": "WhatsApp",
           "SMS": "SMS",
           "Copyphonenumber": 'Copy phone number',
-        },
+          "exchnageOrderInfoMessage0": "Request exchange Means:",
+          "exchnageOrderInfoMessage1":
+              "You want Dalilee Company to collect your this delivered",
+          "exchnageOrderInfoMessage2":
+              "  shipment from customer and return it to you Make sure that there is charge for using this server"
+        }
       };
 }

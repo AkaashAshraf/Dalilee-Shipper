@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 bool isTesEnvironment = false;
 double omrToAedRate = 9.47;
-const int iosVersionLocal =
-    15; //25/july/2023 //dynamic banks list from crm + currency in invoice is dynamic now
-const int androidVersionLocal =
-    15; //25/july/2023 //dynamic banks list from crm + currency in invoice is dynamic now
+const int iosVersionLocal = 16; //07/september/2023 //exchange pickup
+const int androidVersionLocal = 16; //07/september/2023 //exchange pickup
 Color primaryColor = Color(isTesEnvironment ? 0xFF0D7297 : 0xFF00A1E1);
 
 const whiteColor = Color(0xFFFFFFFF);
@@ -21,7 +19,7 @@ const cardColor = Color(0xFFF6F6F6);
 // String domain = "https://shaheen-oman.dalilee.om"; // live
 
 String domain = isTesEnvironment
-    ? "https://staging.shaheenom.com"
+    ? "https://stgshom.amaanom.com"
     : "https://shaheenom.com"; //
 
 String base_url = "$domain/api"; // live

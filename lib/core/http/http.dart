@@ -83,9 +83,10 @@ Future<dynamic> post(String url, dynamic body, {bool withAuth = true}) async {
       // 'Content-Type': 'application/json; charset=UTF-8',
       "Authorization": "Bearer $token"
     });
+    inspect(response);
     // return _url;
     // print(response.body);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 422) {
       return response;
     }
     //  else if (response.statusCode == 401 && withAuth) {
@@ -95,7 +96,7 @@ Future<dynamic> post(String url, dynamic body, {bool withAuth = true}) async {
     //   Get.deleteAll();
     //   Get.offAll(() => LoginView());
     //   return null;
-    // } 
+    // }
     else {
       return null;
     }

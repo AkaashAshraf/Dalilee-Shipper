@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 
+import 'package:dalile_customer/components/popups/exchange_confirmation_modal.dart';
+import 'package:dalile_customer/components/popups/show_info_message_modal.dart';
 import 'package:dalile_customer/constants.dart';
+import 'package:dalile_customer/controllers/exchange_controller.dart';
 import 'package:dalile_customer/core/server/finance_api.dart';
 import 'package:dalile_customer/core/server/shipments.dart';
 import 'package:dalile_customer/controllers/complain_controller.dart';
@@ -25,7 +28,7 @@ class ShipmentViewModel extends GetxController {
   bool isOpen = false;
   RxBool inLoadMore = false.obs;
   RxBool outLoadMore = false.obs;
-
+  var exchangeController = Get.put(ExchangeController());
   RxInt total_in = 0.obs;
   RxInt total_out = 0.obs;
 
@@ -53,6 +56,7 @@ class ShipmentViewModel extends GetxController {
   List<NameWithIcon> menuList = [
     NameWithIcon(icon: Icons.info_outlined, name: 'GenerateTicket'.tr),
     NameWithIcon(icon: Icons.picture_as_pdf_outlined, name: 'DownloadBill'.tr),
+    NameWithIcon(icon: Icons.question_mark, name: 'RequestExchangeOrder'.tr),
   ];
 
   callAlert(context, number,
@@ -168,9 +172,23 @@ class ShipmentViewModel extends GetxController {
                           menuList[index].name,
                           style: const TextStyle(color: Colors.black),
                         ),
-                        trailing: Icon(
-                          menuList[index].icon,
-                          color: Colors.black,
+                        trailing: GestureDetector(
+                          onTap: () {
+                            if (index == 2) {
+                              showInfoMessage(context,
+                                      message: "exchnageOrderInfoMessage0".tr,
+                                      message2: "exchnageOrderInfoMessage1".tr +
+                                          " ( " +
+                                          orderN +
+                                          " )" +
+                                          "exchnageOrderInfoMessage2".tr)
+                                  .show();
+                            }
+                          },
+                          child: Icon(
+                            menuList[index].icon,
+                            color: Colors.black,
+                          ),
                         ),
                         onTap: () async {
                           DownloadController controller =
@@ -195,7 +213,18 @@ class ShipmentViewModel extends GetxController {
                               break;
                             case 2:
                               try {
-                                controller.startDownloadingImage(pickupImage);
+                                exchangeOrderModal(context,
+                                        title: "actionConfirmation".tr,
+                                        message:
+                                            "areYouSureYouWantToCreateExchangeRequest"
+                                                    .tr +
+                                                " " +
+                                                orderN +
+                                                " " +
+                                                "ordre".tr,
+                                        orderNo: orderN)
+                                    .show();
+                                // controller.startDownloadingImage(pickupImage);
                               } catch (r) {}
                               break;
                             case 3:
