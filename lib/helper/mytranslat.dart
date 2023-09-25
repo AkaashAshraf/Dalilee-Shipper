@@ -369,7 +369,7 @@ class MyTranslations extends Translations {
           "undeliverImage": "Undelivered Image",
 
           "aed": "AED",
-          "omr": "BHR",
+          "omr": "BHD",
           "Address": "Address:",
           "WhatsappNo": "Whatsapp Number",
           "soon_available": "This feature will available soon",

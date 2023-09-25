@@ -24,7 +24,7 @@
 <!--     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />-->
     <application android:usesCleartextTraffic="true"
         android:label="Tam Shipper"
-        android:icon="@mipmap/ic_launcher_orignal">
+        android:icon="@mipmap/ic_launcher_tam_new">
 
         <activity
             android:name="thiqatech.tam.shipper_app.MainActivity"
