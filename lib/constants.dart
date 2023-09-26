@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 // const primaryColor = Colors.green;
 bool isTesEnvironment = false;
 double omrToAedRate = 9.47;
-const int iosVersionLocal = 11; //14/june/2023   download ref orders
-const int androidVersionLocal = 11; //14/june/2023   download ref orders
-
+const int iosVersionLocal = 16; //26/Sep/2023  force update because of shipper app version
+const int androidVersionLocal =  16; //26/Sep/2023  force update because of shipper app version
 Color primaryColor = Color(isTesEnvironment ? 0xFF76529c : 0xFF00A1E1);
 
 const whiteColor = Color(0xFFFFFFFF);
