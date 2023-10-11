@@ -77,7 +77,10 @@ class LoginAPi {
     var url =
         Uri.parse(isUserNAme ? "$like/login-with-username" : "$like/login");
 
-    String? fcmToken = await FirebaseMessaging.instance.getToken();
+    String? fcmToken = "";
+    try {
+      fcmToken = await FirebaseMessaging.instance.getToken();
+    } catch (e) {}
 
     // print("fcm:$token");
     var data = {

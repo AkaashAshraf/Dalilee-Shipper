@@ -101,7 +101,7 @@ class LoginController extends GetxController {
           email: emailAddress.value,
           isUserNAme: isLoginWithUserName.value == 0 ? false : true,
           mobile: mobile.value);
-      // inspect(data);
+      inspect(data);
       if (data != null) {
         if (data["success"] == "ok" || data["success"] == "OK") {
           Get.offAll(() => ControllerView());
@@ -111,6 +111,9 @@ class LoginController extends GetxController {
           Get.snackbar('Failed'.tr, LoginAPi.mass);
         }
       }
+    } catch (r) {
+      inspect(r);
+      inspect("uuuuuu");
     } finally {
       isLoading(false);
     }
