@@ -1,4 +1,4 @@
-package thiqatech.dalilee.shipper_app
+package thiqatech.tam_oman.shipper_app
 
 import io.flutter.embedding.android.FlutterActivity
 

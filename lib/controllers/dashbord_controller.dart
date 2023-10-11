@@ -426,7 +426,7 @@ class DashbordController extends GetxController {
                 child: ElevatedButton(
                     onPressed: () {
                       LaunchReview.launch(
-                          androidAppId: "thiqatech.dalilee.shipper_app",
+                          androidAppId: "thiqatech.tam_oman.shipper_app",
                           iOSAppId: "1633078775");
                       // Navigator.pop(context);
                     },

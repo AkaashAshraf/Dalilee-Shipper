@@ -1,5 +1,6 @@
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/controllers/pickup_controller.dart';
+import 'package:dalile_customer/view/tam-oman-special/items/pickup_item.dart';
 import 'package:dalile_customer/view/widget/all_pickup_body.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:dalile_customer/view/widget/empty.dart';
@@ -82,19 +83,8 @@ class _AllListPickupState extends State<AllListPickup> {
                           const SizedBox(height: 16),
                       itemCount: controllerClass.allPickup.length,
                       itemBuilder: (context, i) {
-                        return AllPickupBody(
-                          cod: controllerClass.allPickup[i]!.cop ?? 0,
-                          name: controllerClass.allPickup[i]!.driverName ?? "",
-                          qty: controllerClass.allPickup[i]!.totalOrders ?? "0",
-                          date: controllerClass.allPickup[i]!.collectionDate ??
-                              "dd-mm-yyyy",
-                          id: controllerClass.allPickup[i]!.id ?? '',
-                          onPressed: () {
-                            controllerClass.makePhoneCall(
-                                "${controllerClass.allPickup[i]!.driverMobile ?? ""}");
-                          },
-                          status: controllerClass.allPickup[i]!.status ?? '',
-                        );
+                        return PickUpItem(
+                            refernce: controllerClass.allPickup[i]!);
                       },
                     ),
                   ),

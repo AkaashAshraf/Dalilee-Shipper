@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="thiqatech.dalilee.shipper_app">
+    package="thiqatech.tam_oman.shipper_app">
 
 <!--    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
 <!--    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />-->
@@ -21,11 +21,11 @@
 <!-- 	 <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />-->
 <!--     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />-->
     <application android:usesCleartextTraffic="true"
-        android:label="Dalilee Shipper"
+        android:label="TAM Oman Shipper"
         android:icon="@mipmap/ic_launcher_orignal">
 
         <activity
-            android:name="thiqatech.dalilee.shipper_app.MainActivity"
+            android:name="thiqatech.tam_oman.shipper_app.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"

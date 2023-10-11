@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   try {
     await Firebase.initializeApp();
     FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(

@@ -3,8 +3,9 @@ import 'dart:developer';
 
 import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/core/server/pickup_api.dart';
-import 'package:dalile_customer/model/Pickup/PickupModel.dart';
 import 'package:dalile_customer/model/Pickup/fetch_auto_pickup_status.dart';
+import 'package:dalile_customer/model/Pickup/reference.dart';
+import 'package:dalile_customer/model/all_pickup_model.dart';
 import 'package:dalile_customer/model/muhafaza_model.dart';
 import 'package:dalile_customer/model/pickup_deatils.dart';
 import 'package:dalile_customer/model/region_model.dart';
