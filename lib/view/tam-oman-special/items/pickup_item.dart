@@ -39,143 +39,160 @@ class PickUpItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: 'Ref'.tr + ' : id',
-                  color: primaryColor,
+                  text: 'Ref'.tr + ' : ${refernce.id}',
+                  color: Colors.black,
                   size: Get.locale.toString() == "ar" ? 13 : 16,
                   fontWeight: FontWeight.w600,
                 ),
-                InkWell(
-                  onTap: () {
-                    // Get.put(PickupController()).fetcPickupDetailsData(
-                    //     collectionID: id.toString(), isRefresh: true);
-                    // Get.to(() => PickupDetails(
-                    //       ref: "$id",
-                    //       date: "$date",
-                    //     ));
-                  },
-                  child: Image.asset(
-                    'assets/images/visbilty.png',
-                    width: 22,
-                    height: 22,
-                  ),
+                CustomText(
+                  text: refernce.status ?? "",
+                  color:
+                      refernce.status == "Pending" ? Colors.red : primaryColor,
+                  size: Get.locale.toString() == "ar" ? 13 : 16,
+                  fontWeight: FontWeight.w600,
                 ),
+
+                // InkWell(
+                //   onTap: () {
+                //     // Get.put(PickupController()).fetcPickupDetailsData(
+                //     //     collectionID: id.toString(), isRefresh: true);
+                //     // Get.to(() => PickupDetails(
+                //     //       ref: "$id",
+                //     //       date: "$date",
+                //     //     ));
+                //   },
+                //   child: Image.asset(
+                //     'assets/images/visbilty.png',
+                //     width: 22,
+                //     height: 22,
+                //   ),
+                // ),
               ],
             ),
           ),
           const Divider(
-            thickness: 3,
+            thickness: 1,
             indent: 0,
             endIndent: 0,
+          ).paddingAll(10),
+          _buildRowText(
+              title: "Date",
+              value: refernce.collectionDate ?? "",
+              width: MediaQuery.of(context).size.width),
+          _buildRowText(
+              title: "Driver Name",
+              value: refernce.driverName ?? "",
+              width: MediaQuery.of(context).size.width),
+          _buildRowText(
+              title: "Quantity",
+              value: refernce.totalOrders.toString(),
+              width: MediaQuery.of(context).size.width),
+          _buildRowText(
+              title: "COP",
+              value: refernce.cop!.toStringAsFixed(3) + " " + "omr".tr,
+              width: MediaQuery.of(context).size.width),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.43,
+                child: localButton(
+                    onClick: () {},
+                    title: "Call",
+                    icon: Icon(
+                      Icons.call,
+                      color: primaryColor,
+                      size: 20,
+                    )),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.43,
+                child: localButton(
+                    onClick: () {},
+                    dark: true,
+                    title: "Whatsapp",
+                    icon: Icon(
+                      Icons.whatsapp,
+                      color: Colors.white,
+                      size: 20,
+                    )),
+              ),
+            ],
+          ).paddingAll(10),
+          SizedBox(
+            height: 5,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15.0, right: 15, top: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildRowText('Date'.tr + ' : date', 'Driver'.tr + ' : name',
-                    MediaQuery.of(context).size.width),
-                _buildRowText(
-                    'COP'.tr +
-                        ' : ${helperController.getCurrencyInFormat("0")}',
-                    'Quantity'.tr + ' : qty',
-                    MediaQuery.of(context).size.width),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-                left: 15.0, right: 15, top: 10, bottom: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    CustomText(
-                      text: "status".tr + " : ",
-                      fontWeight: FontWeight.w400,
-                      color: text1Color,
-                      size: Get.locale.toString() == "ar" ? 10 : 12,
-                      alignment: Alignment.centerLeft,
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Container(
-                      height: 30,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        gradient: LinearGradient(
-                          colors: [primaryColor, primaryColor.withOpacity(0.5)],
-                          stops: const [0, 2],
-                          end: Alignment.bottomCenter,
-                          begin: Alignment.topCenter,
-                        ),
-                      ),
-                      //alignment: Alignment.center,
-                      child: Center(
-                        child: CustomText(
-                          text: "status",
-                          color: whiteColor,
-                          size: Get.locale.toString() == "ar" ? 10 : 12,
-
-                          alignment: Alignment.center,
-
-                          // onPressed: () {},
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: 40,
-                  child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(
-                          width: 1.5,
-                          color: primaryColor,
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: Image.asset(
-                        'assets/images/call.png',
-                      )),
-                )
-              ],
-            ),
-          )
         ],
+      ).paddingOnly(top: 10),
+    );
+  }
+
+  InkWell localButton(
+      {required dynamic onClick,
+      required String title,
+      Widget? icon,
+      bool dark = false}) {
+    return InkWell(
+      onTap: onClick,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          gradient: LinearGradient(
+            colors: dark
+                ? [primaryColor, primaryColor]
+                : [bgColorDark, bgColorDark],
+            stops: const [0, 2],
+            end: Alignment.bottomCenter,
+            begin: Alignment.topCenter,
+          ),
+        ),
+        //alignment: Alignment.center,
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon ?? Container(),
+              CustomText(
+                text: title,
+                color: dark ? whiteColor : primaryColor,
+                size: Get.locale.toString() == "ar" ? 12 : 14,
+                fontWeight: FontWeight.w700,
+                alignment: Alignment.center,
+
+                // onPressed: () {},
+              ).paddingSymmetric(vertical: 10, horizontal: 20),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Column _buildRowText(String title, String subTilte, double width) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: width * 0.4,
-          child: CustomText(
-            text: title,
-            fontWeight: FontWeight.w400,
-            color: text1Color,
-            size: Get.locale.toString() == "ar" ? 10 : 13,
+  Widget _buildRowText(
+      {required String title, required String value, required double width}) {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            child: CustomText(
+              text: title,
+              fontWeight: FontWeight.w400,
+              color: text1Color,
+              size: Get.locale.toString() == "ar" ? 10 : 13,
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 15,
-        ),
-        SizedBox(
-          width: width * 0.4,
-          child: CustomText(
-            text: subTilte,
-            fontWeight: FontWeight.w400,
-            color: text1Color,
-            size: Get.locale.toString() == "ar" ? 10 : 13,
+          SizedBox(
+            child: CustomText(
+              text: value,
+              fontWeight: FontWeight.w800,
+              color: text1Color,
+              size: Get.locale.toString() == "ar" ? 10 : 13,
+            ),
           ),
-        ),
-      ],
+        ],
+      ).paddingSymmetric(horizontal: 15, vertical: 5),
     );
   }
 }

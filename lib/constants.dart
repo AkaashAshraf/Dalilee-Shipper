@@ -4,12 +4,14 @@ bool isTesEnvironment = false;
 double omrToAedRate = 9.47;
 const int iosVersionLocal = 16; //07/september/2023 //exchange pickup
 const int androidVersionLocal = 16; //07/september/2023 //exchange pickup
-Color primaryColor = Color(isTesEnvironment ? 0xFF0D7297 : 0xFF038C8A);
+Color primaryColor = Color(isTesEnvironment ? 0xFF0D7297 : 0xFF7272CF);
 
 const whiteColor = Color(0xFFFFFFFF);
 const bgColor = Color(0xFFF8F8F8);
+const bgColorDark = Color.fromARGB(255, 236, 236, 236);
+
 const text1Color = Color(0xFF61656A);
-Color textBlueColor = Color(isTesEnvironment ? 0xFF0D7297 : 0xFF00A1E1);
+Color textBlueColor = Color(isTesEnvironment ? 0xFF0D7297 : 0xFF7272CF);
 const textRedColor = Color(0xFFD32F2F);
 const cardColor = Color(0xFFF6F6F6);
 

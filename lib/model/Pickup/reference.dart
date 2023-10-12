@@ -12,7 +12,7 @@ class Reference {
   });
 
   int? id;
-  dynamic cop;
+  double? cop;
   String? location;
   dynamic totalOrders;
   String? collectionDate;
@@ -23,7 +23,7 @@ class Reference {
 
   factory Reference.fromJson(Map<String, dynamic> json) => Reference(
         id: json["id"] == null ? null : json["id"],
-        cop: json["cop"] == null ? null : json["cop"],
+        cop: double.tryParse(json["cop"].toString()) ?? 0,
         location: json["location"] == null ? null : json["location"],
         totalOrders: json["total_orders"] == null ? 0 : json["total_orders"],
         collectionDate:
