@@ -23,7 +23,7 @@
 <!-- 	 <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />-->
 <!--     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />-->
     <application android:usesCleartextTraffic="true"
-        android:label="Tam Shipper"
+        android:label="TAM Shipper"
         android:icon="@mipmap/ic_launcher_tam_new">
 
         <activity

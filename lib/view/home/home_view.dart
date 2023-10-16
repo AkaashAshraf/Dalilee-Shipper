@@ -7,6 +7,7 @@ import 'package:dalile_customer/view/home/finaince_dashboard.dart';
 import 'package:dalile_customer/view/home/main_dash.dart';
 import 'package:dalile_customer/view/home/notifications/notifications_list.dart';
 import 'package:dalile_customer/view/home/search/search_screen.dart';
+import 'package:dalile_customer/view/menu/dispatcher/AddOrder.dart';
 import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -131,6 +132,17 @@ class HomeView extends StatelessWidget {
                   exportModal(context, 'csv').show();
                 },
               ),
+              SpeedDialChild(
+                child: Icon(
+                  Icons.add,
+                  color: primaryColor,
+                ),
+                label: 'AddOrder'.tr,
+                labelStyle: TextStyle(color: primaryColor),
+                onTap: () {
+                  Get.to(AddOrder());
+                },
+              ),
             ]), //
         body: DefaultTabController(
           length: 2,
@@ -171,14 +183,8 @@ class HomeView extends StatelessWidget {
               borderRadius: BorderRadius.circular(30)),
           gradient: SweepGradient(
             colors: [
-              primaryColor.withOpacity(0.75),
-              primaryColor.withOpacity(0.85),
-              primaryColor.withOpacity(0.9),
               primaryColor,
               primaryColor,
-              primaryColor.withOpacity(0.9),
-              primaryColor.withOpacity(0.85),
-              primaryColor.withOpacity(0.75),
             ],
           ),
         ),

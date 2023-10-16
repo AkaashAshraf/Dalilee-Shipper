@@ -118,12 +118,12 @@ class HomeViewModel extends GetxController {
                                 //   _screenMenu = const CalculateView();
                                 //   update();
                                 // }),
-                                buildMenu(Icons.add_box_outlined, "AddOrder".tr,
-                                    context, () {
-                                  // Get.snackbar('soon_available'.tr, " ",
-                                  //     colorText: Colors.orange);
-                                  Get.to(AddOrder());
-                                }),
+                                // buildMenu(Icons.add_box_outlined, "AddOrder".tr,
+                                //     context, () {
+                                //   // Get.snackbar('soon_available'.tr, " ",
+                                //   //     colorText: Colors.orange);
+                                //   Get.to(AddOrder());
+                                // }),
 
                                 buildMenu(Icons.my_library_books_outlined,
                                     "myOrders".tr, context, () {

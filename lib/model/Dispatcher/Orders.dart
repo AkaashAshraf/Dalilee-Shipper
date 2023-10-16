@@ -37,11 +37,14 @@ class Order {
       this.name: "",
       this.cod: "",
       this.cc: "0",
+      this.latitude: "",
+      this.longitude: "0",
       this.willayaLabel: "",
       this.regionLabel: "",
       this.willayaID: 0,
       this.regionID: 0,
       this.address: "",
+      this.locationName: "",
       this.checkValidtion: false});
 
   int id;
@@ -51,6 +54,10 @@ class Order {
   String name;
   String cod;
   String cc;
+  String latitude;
+  String longitude;
+  String locationName;
+
   int willayaID;
   String willayaLabel;
 
@@ -66,6 +73,8 @@ class Order {
         name: json["name"] == null ? null : json["name"],
         cod: json["cod"] == null ? null : json["cod"],
         cc: json["cc"] == null ? null : json["cc"],
+        latitude: json["latitude"] ?? "",
+        longitude: json["longitude"] ?? "",
         willayaID: json["willayaID"] == null ? 0 : json["willaya"],
         regionID: json["regionID"] == null ? 0 : json["region"],
         regionLabel: json["regionLabel"] == null ? 0 : json["regionLabel"],

@@ -43,6 +43,26 @@ class DispatcherController extends GetxController {
     willayas.value = data?.data.wilayaOMs ?? [];
   }
 
+  updatePickupLocationOfOrder(
+      {required String latitude,
+      required String longitude,
+      required String loctaionName,
+      required int index}) {
+    List<Order> tempData = [];
+    for (var i = 0; i < addList.length; i++) {
+      if (index == i) {
+        var order = addList[i];
+        order.locationName = loctaionName;
+        order.latitude = latitude;
+        order.longitude = longitude;
+        tempData.add(order);
+      } else {
+        tempData.add(addList[i]);
+      }
+    }
+    addList(tempData);
+  }
+
   handleAddOrders(BuildContext context) async {
     try {
       loading(true);
@@ -54,7 +74,10 @@ class DispatcherController extends GetxController {
           "cod": addList[i].cod.toString(),
           "address": addList[i].address,
           "wilaya_id": addList[i].willayaID.toString(),
-          "area_id": addList[i].regionID.toString()
+          "area_id": addList[i].regionID.toString(),
+          "pickup_address": addList[i].locationName,
+          "pickup_coordinates":
+              addList[i].latitude + "," + addList[i].longitude,
         });
       }
       var res = await postWithJsonBody(

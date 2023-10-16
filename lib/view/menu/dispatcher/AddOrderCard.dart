@@ -1,9 +1,9 @@
 import 'package:dalile_customer/components/inputs/text_input.dart';
-import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/controllers/dispatcher_controller.dart';
 import 'package:dalile_customer/model/Dispatcher/Orders.dart';
+import 'package:dalile_customer/model/Dispatcher/components/map_picker_input_add_order.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 
 // import 'user_model.dart';
@@ -59,12 +59,12 @@ class AddOrderCard extends StatelessWidget {
                                   onTextChange: (val) {
                                     controller.addList[index].phone = val;
                                   },
-                                  label: "Contact *",
+                                  label: "contact".tr,
                                   validator: (_value) {
                                     if ((_value == "" || _value == null) &&
                                         controller
                                             .addList[index].checkValidtion)
-                                      return "required";
+                                      return "required".tr;
                                     else
                                       return null;
                                   },
@@ -76,12 +76,12 @@ class AddOrderCard extends StatelessWidget {
                                   onTextChange: (val) {
                                     controller.addList[index].name = val;
                                   },
-                                  label: "Name *",
+                                  label: "Name".tr,
                                   validator: (_value) {
                                     if ((_value == "" || _value == null) &&
                                         controller
                                             .addList[index].checkValidtion)
-                                      return "required";
+                                      return "required".tr;
                                     else
                                       return null;
                                   },
@@ -103,13 +103,13 @@ class AddOrderCard extends StatelessWidget {
                                     onTextChange: (val) {
                                       controller.addList[index].cod = val;
                                     },
-                                    label: "COD:",
+                                    label: "COD".tr,
                                     keyboardType: TextInputType.number,
                                     validator: (_value) {
                                       if ((_value == "" || _value == null) &&
                                           controller
                                               .addList[index].checkValidtion)
-                                        return "required";
+                                        return "required".tr;
                                       else
                                         return null;
                                     },
@@ -120,7 +120,7 @@ class AddOrderCard extends StatelessWidget {
                                 height: 45,
                                 width: MediaQuery.of(context).size.width * 0.32,
                                 child: DropdownSearch<String>(
-                                  label: "Willaya *",
+                                  label: "Wilaya".tr,
 
                                   showSearchBox: true,
                                   // showClearButton: true,
@@ -157,8 +157,9 @@ class AddOrderCard extends StatelessWidget {
 
                                   validator: (String? i) {
                                     if (i == "" &&
-                                        controller.addList[index]
-                                            .checkValidtion) return 'required';
+                                        controller
+                                            .addList[index].checkValidtion)
+                                      return 'required'.tr;
                                     // else if (i >= 5) return 'value should be < 5';
                                     return null;
                                   },
@@ -171,12 +172,13 @@ class AddOrderCard extends StatelessWidget {
                                 // height: 45,
                                 width: MediaQuery.of(context).size.width * 0.32,
                                 child: DropdownSearch<String>(
-                                  label: "Region *",
+                                  label: "Region".tr,
                                   autoValidateMode: AutovalidateMode.always,
                                   validator: (String? i) {
                                     if (i == "" &&
-                                        controller.addList[index]
-                                            .checkValidtion) return 'required';
+                                        controller
+                                            .addList[index].checkValidtion)
+                                      return 'required'.tr;
                                   },
                                   showSearchBox: true,
                                   showAsSuffixIcons: true,
@@ -263,13 +265,15 @@ class AddOrderCard extends StatelessWidget {
                                   onTextChange: (val) {
                                     controller.addList[index].address = val;
                                   },
-                                  label: "Address",
+                                  label: "Address".tr,
                                   initialValue: order.address)),
                         ],
                       ),
                       SizedBox(
                         height: 15,
                       ),
+                      LocationPickerInputForAddOrder(
+                          title: "choosePickupLocation".tr, index: index)
                     ],
                   ),
                 ),
@@ -336,36 +340,4 @@ class DropDownListTemplate {
   }
 
   DropDownListTemplate({this.id: 0, required this.label});
-}
-
-Widget _customDropDownExampleMultiSelection(
-    BuildContext context, List<DropDownListTemplate?> selectedItems) {
-  if (selectedItems.isEmpty) {
-    return ListTile(
-      contentPadding: EdgeInsets.all(0),
-      leading: CircleAvatar(),
-      title: Text("No item selected"),
-    );
-  }
-
-  return Wrap(
-    children: selectedItems.map((e) {
-      return Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Container(
-          child: ListTile(
-            contentPadding: EdgeInsets.all(0),
-            // leading: CircleAvatar(
-            //     // this does not work - throws 404 error
-            //     // backgroundImage: NetworkImage(item.avatar ?? ''),
-            //     ),
-            // title: Text(e?.label ?? ''),
-            // subtitle: Text(
-            //   e?.label.toString() ?? '',
-            // ),
-          ),
-        ),
-      );
-    }).toList(),
-  );
 }

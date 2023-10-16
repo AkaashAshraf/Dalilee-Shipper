@@ -107,14 +107,9 @@ class ShipmentView extends StatelessWidget {
               borderRadius: BorderRadius.circular(30)),
           gradient: SweepGradient(
             colors: [
-              primaryColor.withOpacity(0.75),
-              primaryColor.withOpacity(0.85),
-              primaryColor.withOpacity(0.9),
               primaryColor,
               primaryColor,
-              primaryColor.withOpacity(0.9),
-              primaryColor.withOpacity(0.85),
-              primaryColor.withOpacity(0.75),
+              primaryColor,
             ],
           ),
         ),
