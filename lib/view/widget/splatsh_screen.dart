@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dalile_customer/config/text_sizes.dart';
 import 'package:dalile_customer/core/server/auth.dart';
 import 'package:dalile_customer/view/home/notifications/notifications_list.dart';
 import 'package:dalile_customer/view/home/search/search_screen.dart';
@@ -28,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
     player.setLooping(false);
     player.initialize();
     player.play().then((value) => {
-          Timer(const Duration(milliseconds: 5000), () {
+          Timer(const Duration(milliseconds: 1500), () {
             Get.offAll(status ? ControllerView() : LoginView());
             setupInteractedMessage();
           })
@@ -89,7 +90,14 @@ class _SplashScreenState extends State<SplashScreen> {
     // print(status.toString());
 
     return Container(
-      child: VideoPlayer(player),
-    );
+        color: Colors.white,
+        child: Container(
+            child: Image.asset(
+          'assets/images/logo.png',
+          fit: BoxFit.contain,
+        ).paddingAll(50))
+
+        //  VideoPlayer(player),
+        );
   }
 }

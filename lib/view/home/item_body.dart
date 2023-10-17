@@ -4,9 +4,15 @@ import 'package:flutter/material.dart';
 
 class MainCardBodyView extends StatelessWidget {
   MainCardBodyView(
-      {Key? key, required this.controller, this.onUplod, required this.title})
+      {Key? key,
+      required this.controller,
+      this.onUplod,
+      required this.title,
+      this.color = Colors.white})
       : super(key: key);
   final String title;
+  final Color color;
+
   final Widget controller;
   final void Function()? onUplod;
 
@@ -29,11 +35,11 @@ class MainCardBodyView extends StatelessWidget {
     return AppBar(
       elevation: 0,
       toolbarHeight: 70,
-      backgroundColor: primaryColor,
-      foregroundColor: whiteColor,
+      backgroundColor: color,
+      foregroundColor: Colors.black,
       title: CustomText(
           text: title,
-          color: whiteColor,
+          color: Colors.black,
           size: 18,
           fontWeight: FontWeight.w500,
           alignment: Alignment.center),

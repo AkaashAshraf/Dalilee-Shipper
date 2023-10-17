@@ -270,8 +270,9 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
         body: Container(
           padding: EdgeInsets.only(top: 20),
           decoration: const BoxDecoration(
-              color: bgColor,
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
+            color: bgColor,
+            // borderRadius: BorderRadius.only(topLeft: Radius.circular(50))
+          ),
           child: GetX<FinanceListingController>(builder: (controller) {
             return Column(
               children: [
@@ -500,11 +501,11 @@ class _FinanceDasboradListingState extends State<FinanceDasboradListing> {
     return AppBar(
       elevation: 0,
       toolbarHeight: MediaQuery.of(context).size.height * 0.08,
-      backgroundColor: primaryColor,
-      foregroundColor: whiteColor,
+      backgroundColor: whiteColor,
+      foregroundColor: Colors.black,
       title: CustomText(
           text: widget.title + ' ($subTitle)',
-          color: whiteColor,
+          color: Colors.black,
           size: 18,
           fontWeight: FontWeight.w500,
           alignment: Alignment.center),

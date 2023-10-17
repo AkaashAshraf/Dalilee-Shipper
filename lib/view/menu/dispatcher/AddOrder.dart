@@ -77,10 +77,11 @@ class _AddOrder extends State<AddOrder> {
         floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
         body: GetX<DispatcherController>(builder: (controller) {
           return Container(
-            padding: EdgeInsets.only(top: 20),
+            // padding: EdgeInsets.only(top: 20),
             decoration: const BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
+              color: bgColor,
+              // borderRadius: BorderRadius.only(topLeft: Radius.circular(50))
+            ),
             child: Stack(
               children: [
                 Padding(

@@ -67,9 +67,11 @@ class _EditProfileState extends State<EditProfile> {
             Container(
               height: double.infinity,
               decoration: const BoxDecoration(
-                  color: bgColor,
-                  borderRadius:
-                      BorderRadius.only(topLeft: Radius.circular(50))),
+                color: bgColor,
+                // borderRadius:
+                //     BorderRadius.only(topLeft: Radius.circular(50)
+                //     )
+              ),
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
               alignment: Alignment.topCenter,
               child: SingleChildScrollView(

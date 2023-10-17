@@ -9,14 +9,13 @@ class WaiteImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SpinKitPumpingHeart(
-        itemBuilder: (BuildContext context, int index) {
-          return Image.asset(
-            'assets/images/dalilee.png',
-            height: 50,
-            width: 50,
-          );
-        },
+      child: Container(
+        height: 45,
+        child: LoadingIndicator(
+          indicatorType: Indicator.lineSpinFadeLoader,
+          colors: [primaryColor],
+          strokeWidth: 1,
+        ),
       ),
     );
   }

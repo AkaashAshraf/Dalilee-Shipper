@@ -4,7 +4,6 @@ import 'package:dalile_customer/view/home/search/search_screen.dart';
 import 'package:dalile_customer/view/shipments/in_view.dart';
 import 'package:dalile_customer/view/shipments/out_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
 import 'package:get/get.dart';
 
 class ShipmentView extends StatelessWidget {
@@ -16,7 +15,8 @@ class ShipmentView extends StatelessWidget {
       backgroundColor: bgColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: primaryColor,
+        backgroundColor: whiteColor,
+        foregroundColor: Colors.black,
         title: Text("SHIPMENTS".tr),
         leading: GestureDetector(
           onTap: () {
@@ -26,7 +26,7 @@ class ShipmentView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Icon(
               Icons.search,
-              color: Colors.white,
+              color: Colors.black,
             ),
           ),
         ),
@@ -71,9 +71,9 @@ class ShipmentView extends StatelessWidget {
         child: NestedScrollView(
           headerSliverBuilder: (context, headerSliverBuilder) => [
             SliverAppBar(
-              toolbarHeight: 10,
+              toolbarHeight: 5,
               elevation: 0,
-              backgroundColor: whiteColor,
+              backgroundColor: dashboardTabsBackgroudColor,
               bottom: _tabBarIndicatorShape(),
             ),
           ],
@@ -107,14 +107,8 @@ class ShipmentView extends StatelessWidget {
               borderRadius: BorderRadius.circular(30)),
           gradient: SweepGradient(
             colors: [
-              primaryColor.withOpacity(0.75),
-              primaryColor.withOpacity(0.85),
-              primaryColor.withOpacity(0.9),
               primaryColor,
               primaryColor,
-              primaryColor.withOpacity(0.9),
-              primaryColor.withOpacity(0.85),
-              primaryColor.withOpacity(0.75),
             ],
           ),
         ),

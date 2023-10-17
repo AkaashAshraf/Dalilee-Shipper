@@ -1,5 +1,4 @@
 import 'package:dalile_customer/components/popups/ImagesViewModal.dart';
-import 'package:dalile_customer/config/text_sizes.dart';
 import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/controllers/dispatcher_controller.dart';
 import 'package:dalile_customer/controllers/complain_controller.dart';
@@ -13,12 +12,10 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../components/popups/ProblemViewModalNewLog.dart';
 
-// ignore: must_be_immutable
 class CardBody extends StatelessWidget {
   CardBody(
       {Key? key,
@@ -336,54 +333,87 @@ class CardBody extends StatelessWidget {
             indent: 0,
             endIndent: 0,
           ),
-          textRow(context, title: "Ref".tr, value: ref.toString()),
-          textRow(context, title: "PhoneNo".tr, value: shipment.customerNo),
-          textRow(context,
-              title: "Call Attempts".tr,
-              value: shipment.callAttempts.toString()),
-          textRow(context,
-              title: "Delivery Attempts".tr,
-              value: shipment.deliveryAttempts.toString()),
-          textRow(context,
-              title: "COD".tr,
-              value: '${shipment.cod.toString()} ${shipment.codCurrency}'),
-          textRow(context, title: "Date".tr, value: '${shipment.createdAt} '),
-          textRow(context, title: "Address".tr, value: "$willaya $area"),
-          // if (shipment.customerNo.isNotEmpty)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.43,
-                child: localButton(
-                    onClick: () async {
-                      await launchUrl(
-                          Uri.parse("tel://${shipment.customerNo}"));
-                    },
-                    title: "Call",
-                    icon: Icon(
-                      Icons.call,
-                      color: primaryColor,
-                      size: 20,
-                    )),
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 15.0, right: 15, top: 10, bottom: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildRowText('Ref'.tr + ' : $ref', 'Phone'.tr + ' : $number',
+                    context: context),
+                _buildRowText(
+                    'COD'.tr +
+                        ' : ${shipment.cod.toString()} ${shipment.codCurrency}',
+                    'Date'.tr + ' : ${shipment.createdAt} ',
+                    context: context),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 15.0, right: 15, top: 10, bottom: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  child: CustomText(
+                    maxLines: 1,
+                    size: Get.locale.toString() == "ar" ? 10 : 12,
+                    text: "${"call_attempts".tr} : ${shipment.callAttempts}",
+                    fontWeight: FontWeight.w400,
+                    color: text1Color,
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.42,
+                  child: CustomText(
+                    maxLines: 1,
+                    size: Get.locale.toString() == "ar" ? 10 : 12,
+                    text:
+                        "${"delivery_attempts".tr} : ${shipment.deliveryAttempts}",
+                    fontWeight: FontWeight.w400,
+                    color: text1Color,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          // if (willaya != "")
+          Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15, top: 0),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: CustomText(
+                    size: Get.locale.toString() == "ar" ? 12 : 12,
+                    text: "Address".tr + "  $willaya $area",
+                    fontWeight: FontWeight.w400,
+                    color: text1Color,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (customer_name != "")
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0, right: 10, top: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Spacer(
+                    flex: 2,
+                  ),
+                ],
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.43,
-                child: localButton(
-                    onClick: () async {
-                      await launchUrl(Uri.parse(
-                          "whatsapp://send?phone=${shipment.customerNo}&text="));
-                    },
-                    dark: true,
-                    title: "Whatsapp",
-                    icon: Icon(
-                      Icons.whatsapp,
-                      color: Colors.white,
-                      size: 20,
-                    )),
-              ),
-            ],
-          ).paddingAll(10),
+            ),
+          const SizedBox(
+            height: 5,
+          ),
           _rowWithnameline(
               title: shipment.orderStatusKey == "F" ||
                       shipment.orderStatusKey == "intransit" ||
@@ -459,34 +489,6 @@ class CardBody extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Widget textRow(BuildContext context,
-      {required String title, required String value}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-            width: screenWidth(context) * 0.3,
-            child: CustomText(
-              text: title,
-              fontWeight: FontWeight.w500,
-              size: 13,
-              color: Colors.grey,
-            )),
-        SizedBox(
-            width: screenWidth(context) * 0.3,
-            child: CustomText(
-              text: value,
-              size: 15,
-              direction: Get.locale.toString() == "ar"
-                  ? TextDirection.ltr
-                  : TextDirection.rtl,
-              color: Colors.black,
-              fontWeight: FontWeight.w600,
-            ))
-      ],
-    ).paddingSymmetric(horizontal: 12, vertical: 4);
   }
 
   Widget _buildPayment(BuildContext context) {
@@ -657,45 +659,36 @@ class CardBody extends StatelessWidget {
     );
   }
 
-  InkWell localButton(
-      {required dynamic onClick,
-      required String title,
-      Widget? icon,
-      bool dark = false}) {
-    return InkWell(
-      onTap: onClick,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          gradient: LinearGradient(
-            colors: dark
-                ? [primaryColor, primaryColor]
-                : [bgColorDark, bgColorDark],
-            stops: const [0, 2],
-            end: Alignment.bottomCenter,
-            begin: Alignment.topCenter,
+  Widget _buildRowText(String title, String subTilte,
+      {required BuildContext context}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width * 0.4,
+          child: CustomText(
+            maxLines: 1,
+            size: Get.locale.toString() == "ar" ? 10 : 12,
+            text: title,
+            fontWeight: FontWeight.w400,
+            color: text1Color,
           ),
         ),
-        //alignment: Alignment.center,
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              icon ?? Container(),
-              CustomText(
-                text: title,
-                color: dark ? whiteColor : primaryColor,
-                size: Get.locale.toString() == "ar" ? 12 : 14,
-                fontWeight: FontWeight.w700,
-                alignment: Alignment.center,
-
-                // onPressed: () {},
-              ).paddingSymmetric(vertical: 10, horizontal: 20),
-            ],
+        const SizedBox(
+          height: 15,
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.42,
+          child: CustomText(
+            // direction: TextDirection.ltr,
+            maxLines: 1,
+            text: subTilte,
+            size: Get.locale.toString() == "ar" ? 10 : 12,
+            fontWeight: FontWeight.w400,
+            color: text1Color,
           ),
         ),
-      ),
+      ],
     );
   }
 }

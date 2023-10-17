@@ -35,8 +35,9 @@ class ProfileView extends StatelessWidget {
       ),
       body: Container(
         decoration: const BoxDecoration(
-            color: bgColor,
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
+          color: bgColor,
+          // borderRadius: BorderRadius.only(topLeft: Radius.circular(50))
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

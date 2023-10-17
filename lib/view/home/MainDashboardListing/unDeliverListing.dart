@@ -83,11 +83,11 @@ class _UndeliverListing extends State<UndeliverListing> {
     return AppBar(
       elevation: 0,
       toolbarHeight: 70,
-      backgroundColor: primaryColor,
-      foregroundColor: whiteColor,
+      backgroundColor: whiteColor,
+      foregroundColor: Colors.black,
       title: CustomText(
           text: "Un-DeliveredShipments".tr + " ($subTitle)",
-          color: whiteColor,
+          color: Colors.black,
           size: 18,
           fontWeight: FontWeight.w500,
           alignment: Alignment.center),
@@ -99,13 +99,14 @@ class _UndeliverListing extends State<UndeliverListing> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: primaryColor,
+        backgroundColor: whiteColor,
         appBar: _buildAppBar(),
         body: Container(
           padding: EdgeInsets.only(top: 0),
           decoration: const BoxDecoration(
-              color: bgColor,
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
+            color: bgColor,
+            // borderRadius: BorderRadius.only(topLeft: Radius.circular(50))
+          ),
           child: GetX<DashbordController>(builder: (controller) {
             return Container(
               height: MediaQuery.of(context).size.height,

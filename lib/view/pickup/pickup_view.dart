@@ -310,7 +310,8 @@ class PickupView extends StatelessWidget {
           ]),
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: primaryColor,
+        backgroundColor: whiteColor,
+        foregroundColor: Colors.black,
         title: Text("PICKUP".tr),
         centerTitle: true,
       ),
@@ -321,7 +322,7 @@ class PickupView extends StatelessWidget {
             SliverAppBar(
               toolbarHeight: 10,
               elevation: 0,
-              backgroundColor: whiteColor,
+              backgroundColor: dashboardTabsBackgroudColor,
               bottom: _tabBarIndicatorShape(),
             ),
           ],

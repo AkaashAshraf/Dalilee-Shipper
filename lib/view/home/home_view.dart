@@ -21,11 +21,11 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: primaryColor,
+        backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
           toolbarHeight: 70,
-          backgroundColor: primaryColor,
+          backgroundColor: Colors.transparent,
           foregroundColor: whiteColor,
           leading: GestureDetector(
             onTap: () {
@@ -35,7 +35,7 @@ class HomeView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Icon(
                 Icons.search,
-                color: Colors.white,
+                color: primaryColor,
               ),
             ),
           ),
@@ -50,7 +50,8 @@ class HomeView extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Stack(
                       children: <Widget>[
-                        new Icon(Icons.notifications, size: 25),
+                        new Icon(Icons.notifications,
+                            color: primaryColor, size: 25),
                         new Positioned(
                           right: 0,
                           child: controller.unreadNotification.value == 0
@@ -87,7 +88,8 @@ class HomeView extends StatelessWidget {
           ],
           title: CustomText(
             text: 'DASHBOARD'.tr,
-            color: whiteColor,
+            fontWeight: FontWeight.w600,
+            color: primaryColor,
             size: 18,
             alignment: Alignment.center,
           ),
@@ -99,7 +101,8 @@ class HomeView extends StatelessWidget {
         floatingActionButton: SpeedDial(
             animatedIcon: AnimatedIcons.menu_close,
             elevation: 5,
-            backgroundColor: primaryColor,
+            foregroundColor: primaryColor,
+            backgroundColor: Colors.white,
             overlayOpacity: 0.1,
             direction: SpeedDialDirection.up,
             children: [
@@ -139,7 +142,7 @@ class HomeView extends StatelessWidget {
               SliverAppBar(
                 toolbarHeight: 10,
                 elevation: 0,
-                backgroundColor: whiteColor,
+                backgroundColor: dashboardTabsBackgroudColor,
                 bottom: _tabBarIndicatorShape(),
               ),
             ],
@@ -170,16 +173,7 @@ class HomeView extends StatelessWidget {
               side: BorderSide(color: primaryColor),
               borderRadius: BorderRadius.circular(30)),
           gradient: SweepGradient(
-            colors: [
-              primaryColor.withOpacity(0.75),
-              primaryColor.withOpacity(0.85),
-              primaryColor.withOpacity(0.9),
-              primaryColor,
-              primaryColor,
-              primaryColor.withOpacity(0.9),
-              primaryColor.withOpacity(0.85),
-              primaryColor.withOpacity(0.75),
-            ],
+            colors: [primaryColor, primaryColor],
           ),
         ),
       );

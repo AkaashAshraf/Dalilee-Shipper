@@ -138,8 +138,9 @@ class _MyOrders extends State<MyOrders> {
         body: Container(
           padding: EdgeInsets.only(top: 0),
           decoration: const BoxDecoration(
-              color: bgColor,
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
+            color: bgColor,
+            // borderRadius: BorderRadius.only(topLeft: Radius.circular(50))
+          ),
           child: GetX<DispatcherController>(builder: (controller) {
             return Container(
               height: MediaQuery.of(context).size.height,

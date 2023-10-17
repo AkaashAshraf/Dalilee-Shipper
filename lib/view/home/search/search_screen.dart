@@ -78,8 +78,9 @@ class _UndeliverListing extends State<SearchScreen> {
         body: Container(
             padding: EdgeInsets.only(top: 0),
             decoration: const BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
+              color: bgColor,
+              // borderRadius: BorderRadius.only(topLeft: Radius.circular(50))
+            ),
             child: Column(
               children: [
                 Padding(
