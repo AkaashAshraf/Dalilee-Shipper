@@ -67,7 +67,7 @@ class _LoginViewState extends State<LoginView> {
                       height: 80,
                     ),
                     Image.asset(
-                      "assets/images/dalilees.png",
+                      "assets/images/logo.png",
                       fit: BoxFit.contain,
                       height: 220,
                       width: 220,

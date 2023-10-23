@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-bool isTesEnvironment = false;
+bool isTesEnvironment = true;
 double omrToAedRate = 9.47;
 const int iosVersionLocal = 16; //07/september/2023 //exchange pickup
 const int androidVersionLocal = 16; //07/september/2023 //exchange pickup
