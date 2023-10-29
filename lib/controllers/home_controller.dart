@@ -262,14 +262,18 @@ class HomeViewModel extends GetxController {
         update();
         break;
       case 1:
-        _screen = PickupView();
+        _screen = AddOrder();
         update();
         break;
       case 2:
-        _screen = const ShipmentView();
+        _screen = PickupView();
         update();
         break;
       case 3:
+        _screen = const ShipmentView();
+        update();
+        break;
+      case 4:
         update();
         buildProdAlrt(context);
         break;

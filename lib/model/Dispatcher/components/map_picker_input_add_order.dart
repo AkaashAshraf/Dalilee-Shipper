@@ -30,7 +30,7 @@ class _LocationPickerInputForAddOrderState
     final double width = MediaQuery.of(context).size.width;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: GetX<DispatcherController>(builder: (controller) {
         return GestureDetector(
           onTap: () {
@@ -50,10 +50,10 @@ class _LocationPickerInputForAddOrderState
                           ? Colors.red
                           : Colors.grey,
                       width: 0.8),
-                  borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                  borderRadius: const BorderRadius.all(Radius.circular(5.0)),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 15.0, top: 5, right: 15),
+                  padding: const EdgeInsets.only(left: 10.0, top: 5, right: 10),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [

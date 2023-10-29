@@ -2,6 +2,7 @@ import 'package:dalile_customer/components/inputs/text_input.dart';
 import 'package:dalile_customer/controllers/dispatcher_controller.dart';
 import 'package:dalile_customer/model/Dispatcher/Orders.dart';
 import 'package:dalile_customer/model/Dispatcher/components/map_picker_input_add_order.dart';
+import 'package:dalile_customer/view/widget/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -50,236 +51,337 @@ class AddOrderCard extends StatelessWidget {
                       bottom: 20),
                   child: Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              width: MediaQuery.of(context).size.width * 0.43,
-                              child: textInputCustom(
-                                  onTextChange: (val) {
-                                    controller.addList[index].phone = val;
-                                  },
-                                  label: "contact".tr,
-                                  validator: (_value) {
-                                    if ((_value == "" || _value == null) &&
-                                        controller
-                                            .addList[index].checkValidtion)
-                                      return "required".tr;
-                                    else
-                                      return null;
-                                  },
-                                  autovalidateMode: AutovalidateMode.always,
-                                  initialValue: order.phone)),
-                          Container(
-                              width: MediaQuery.of(context).size.width * 0.43,
-                              child: textInputCustom(
-                                  onTextChange: (val) {
-                                    controller.addList[index].name = val;
-                                  },
-                                  label: "Name".tr,
-                                  validator: (_value) {
-                                    if ((_value == "" || _value == null) &&
-                                        controller
-                                            .addList[index].checkValidtion)
-                                      return "required".tr;
-                                    else
-                                      return null;
-                                  },
-                                  autovalidateMode: AutovalidateMode.always,
-                                  initialValue: order.name)),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      GetX<DispatcherController>(builder: (controller) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          // crossAxisAlignment: CrossAxisAlignment.baseline,
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                              color: Colors.grey, // Set border color
+                              width: 1), // Set border width
+                          borderRadius: BorderRadius.all(Radius.circular(
+                              10.0)), // Set rounded corner radius
+                        ),
+                        child: Column(
                           children: [
+                            Row(
+                              children: [
+                                CustomText(
+                                  text: "Pickup Info".tr,
+                                  fontWeight: FontWeight.w600,
+                                  size: 15,
+                                ),
+                              ],
+                            ).paddingOnly(bottom: 10),
+                            LocationPickerInputForAddOrder(
+                                title: "choosePickupLocation".tr, index: index),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.43,
+                                    child: textInputCustom(
+                                        onTextChange: (val) {
+                                          controller.addList[index].roadNumber =
+                                              val;
+                                        },
+                                        label: "Road Number".tr,
+                                        // validator: (_value) {
+                                        //   if ((_value == "" ||
+                                        //           _value == null) &&
+                                        //       controller.addList[index]
+                                        //           .checkValidtion)
+                                        //     return "".tr;
+                                        //   else
+                                        //     return null;
+                                        // },
+                                        autovalidateMode:
+                                            AutovalidateMode.always,
+                                        initialValue: order.roadNumber)),
+                                Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.43,
+                                    child: textInputCustom(
+                                        onTextChange: (val) {
+                                          controller
+                                              .addList[index].blockNumber = val;
+                                        },
+                                        label: "Block Number".tr,
+                                        // validator: (_value) {
+                                        //   if ((_value == "" ||
+                                        //           _value == null) &&
+                                        //       controller.addList[index]
+                                        //           .checkValidtion)
+                                        //     return "".tr;
+                                        //   else
+                                        //     return null;
+                                        // },
+                                        autovalidateMode:
+                                            AutovalidateMode.always,
+                                        initialValue: order.blockNumber)),
+                              ],
+                            ),
                             Container(
-                                width: MediaQuery.of(context).size.width * 0.19,
+                                width: MediaQuery.of(context).size.width * 0.9,
                                 child: textInputCustom(
                                     onTextChange: (val) {
-                                      controller.addList[index].cod = val;
+                                      controller.addList[index].flatNumber =
+                                          val;
                                     },
-                                    label: "COD".tr,
-                                    keyboardType: TextInputType.number,
-                                    validator: (_value) {
-                                      if ((_value == "" || _value == null) &&
-                                          controller
-                                              .addList[index].checkValidtion)
-                                        return "required".tr;
-                                      else
-                                        return null;
-                                    },
+                                    label: "Flat Number".tr,
+                                    // validator: (_value) {
+                                    //   if ((_value == "" || _value == null) &&
+                                    //       controller
+                                    //           .addList[index].checkValidtion)
+                                    //     return "".tr;
+                                    //   else
+                                    //     return null;
+                                    // },
                                     autovalidateMode: AutovalidateMode.always,
-                                    initialValue: order.cod)),
-
-                            Container(
-                                height: 45,
-                                width: MediaQuery.of(context).size.width * 0.32,
-                                child: DropdownSearch<String>(
-                                  label: "Wilaya".tr,
-
-                                  showSearchBox: true,
-                                  // showClearButton: true,
-                                  showAsSuffixIcons: true,
-                                  showSelectedItems: true,
-
-                                  items: controller.willayas.map((element) {
-                                    return element.name;
-                                  }).toList(),
-                                  onChanged: (_value) {
-                                    final List<Order> list = [];
-                                    Order object;
-                                    final willaya = controller.willayas
-                                        .where((item) => item.name == _value)
-                                        .first;
-                                    // print(r.id);
-
-                                    for (int i = 0;
-                                        i < controller.addList.length;
-                                        i++) {
-                                      object = controller.addList[i];
-
-                                      if (index == i) {
-                                        object.willayaLabel = _value ?? "";
-                                        object.willayaID = willaya.id;
-                                        object.regionLabel = "";
-                                        object.regionID = 0;
-                                      }
-                                      list.add(object);
-                                    }
-                                    controller.addList.value = list;
-                                  },
-                                  autoValidateMode: AutovalidateMode.always,
-
-                                  validator: (String? i) {
-                                    if (i == "" &&
-                                        controller
-                                            .addList[index].checkValidtion)
-                                      return 'required'.tr;
-                                    // else if (i >= 5) return 'value should be < 5';
-                                    return null;
-                                  },
-                                  selectedItem: controller
-                                      .addList[index].willayaLabel
-                                      .toString(),
-                                )),
-
-                            Container(
-                                // height: 45,
-                                width: MediaQuery.of(context).size.width * 0.32,
-                                child: DropdownSearch<String>(
-                                  label: "Region".tr,
-                                  autoValidateMode: AutovalidateMode.always,
-                                  validator: (String? i) {
-                                    if (i == "" &&
-                                        controller
-                                            .addList[index].checkValidtion)
-                                      return 'required'.tr;
-                                  },
-                                  showSearchBox: true,
-                                  showAsSuffixIcons: true,
-                                  showSelectedItems: true,
-                                  items: controller.regions
-                                      .where((element) =>
-                                          element.wilayaId ==
-                                          controller.addList[index].willayaID)
-                                      .map((element) {
-                                    return element.name!;
-                                  }).toList(),
-                                  onChanged: (_value) {
-                                    final List<Order> list = [];
-                                    Order object;
-                                    final region = controller.regions
-                                        .where((item) => item.name == _value)
-                                        .first;
-                                    // print(r.id);
-
-                                    for (int i = 0;
-                                        i < controller.addList.length;
-                                        i++) {
-                                      object = controller.addList[i];
-
-                                      if (index == i) {
-                                        object.regionLabel = _value ?? "";
-                                        object.regionID = region.id ?? 0;
-                                      }
-                                      list.add(object);
-                                    }
-                                    controller.addList.value = list;
-                                  },
-                                  selectedItem:
-                                      controller.addList[index].regionLabel,
-                                )
-                                // dropdownBuilder: ((context, lis) =>
-                                //     Text(lis.id.toString())),
-                                // showClearButton: true,
-                                // popupProps: PopupPropsMultiSelection.menu(
-                                //     showSelectedItems: true,
-                                //     disabledItemFn: (String s) => s.startsWith('I'),
-                                // ),
-                                // onChanged: (){},
-                                // selectedItem:  ,
-                                )
-                            //  _cutomDropDown(
-                            //         list: controller.regions
-                            //             .where((element) =>
-                            //                 element.wilayaId ==
-                            //                 controller.addList[index].willaya)
-                            //             .map((element) {
-                            //           return DropDownListTemplate(
-                            //               label: element.name ?? "",
-                            //               id: element.id ?? 0);
-                            //         }).toList(),
-                            //         onSelect: (selection) {
-                            //           final List<Order> list = [];
-                            //           Order object;
-                            //           for (int i = 0;
-                            //               i < controller.addList.length;
-                            //               i++) {
-                            //             object = controller.addList[index];
-
-                            //             if (index == i) {
-                            //               object.region = selection.id;
-                            //             }
-                            //             list.add(object);
-                            //           }
-                            //           controller.addList.value = list;
-                            //         },
-                            //         hint: "Region")),
+                                    initialValue: order.flatNumber)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                    child: textInputCustom(
+                                        maxLines: 3,
+                                        onTextChange: (val) {
+                                          controller.addList[index].pickupNote =
+                                              val;
+                                        },
+                                        label: "Pickup Note".tr,
+                                        initialValue: order.pickupNote)),
+                              ],
+                            ),
                           ],
-                        );
-                      }),
-                      SizedBox(
-                        height: 15,
+                        ).paddingSymmetric(vertical: 10, horizontal: 5),
+                      ).paddingOnly(bottom: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                              color: Colors.grey, // Set border color
+                              width: 1), // Set border width
+                          borderRadius: BorderRadius.all(Radius.circular(
+                              10.0)), // Set rounded corner radius
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                CustomText(
+                                  text: "Delivery Info".tr,
+                                  fontWeight: FontWeight.w600,
+                                  size: 15,
+                                ),
+                              ],
+                            ).paddingOnly(bottom: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.43,
+                                    child: textInputCustom(
+                                        onTextChange: (val) {
+                                          controller.addList[index].phone = val;
+                                        },
+                                        label: "contact".tr,
+                                        validator: (_value) {
+                                          if ((_value == "" ||
+                                                  _value == null) &&
+                                              controller.addList[index]
+                                                  .checkValidtion)
+                                            return "required".tr;
+                                          else
+                                            return null;
+                                        },
+                                        autovalidateMode:
+                                            AutovalidateMode.always,
+                                        initialValue: order.phone)),
+                                Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.43,
+                                    child: textInputCustom(
+                                        onTextChange: (val) {
+                                          controller.addList[index].name = val;
+                                        },
+                                        label: "Name".tr,
+                                        validator: (_value) {
+                                          if ((_value == "" ||
+                                                  _value == null) &&
+                                              controller.addList[index]
+                                                  .checkValidtion)
+                                            return "required".tr;
+                                          else
+                                            return null;
+                                        },
+                                        autovalidateMode:
+                                            AutovalidateMode.always,
+                                        initialValue: order.name)),
+                              ],
+                            ),
+                            GetX<DispatcherController>(builder: (controller) {
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                // crossAxisAlignment: CrossAxisAlignment.baseline,
+                                children: [
+                                  Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.19,
+                                      child: textInputCustom(
+                                          onTextChange: (val) {
+                                            controller.addList[index].cod = val;
+                                          },
+                                          label: "COD".tr,
+                                          keyboardType: TextInputType.number,
+                                          validator: (_value) {
+                                            if ((_value == "" ||
+                                                    _value == null) &&
+                                                controller.addList[index]
+                                                    .checkValidtion)
+                                              return "required".tr;
+                                            else
+                                              return null;
+                                          },
+                                          autovalidateMode:
+                                              AutovalidateMode.always,
+                                          initialValue: order.cod)),
+                                  Container(
+                                      height: 45,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.32,
+                                      child: DropdownSearch<String>(
+                                        label: "Wilaya".tr,
+
+                                        showSearchBox: true,
+                                        // showClearButton: true,
+                                        showAsSuffixIcons: true,
+                                        showSelectedItems: true,
+
+                                        items:
+                                            controller.willayas.map((element) {
+                                          return element.name;
+                                        }).toList(),
+                                        onChanged: (_value) {
+                                          final List<Order> list = [];
+                                          Order object;
+                                          final willaya = controller.willayas
+                                              .where(
+                                                  (item) => item.name == _value)
+                                              .first;
+                                          // print(r.id);
+
+                                          for (int i = 0;
+                                              i < controller.addList.length;
+                                              i++) {
+                                            object = controller.addList[i];
+
+                                            if (index == i) {
+                                              object.willayaLabel =
+                                                  _value ?? "";
+                                              object.willayaID = willaya.id;
+                                              object.regionLabel = "";
+                                              object.regionID = 0;
+                                            }
+                                            list.add(object);
+                                          }
+                                          controller.addList.value = list;
+                                        },
+                                        autoValidateMode:
+                                            AutovalidateMode.always,
+
+                                        validator: (String? i) {
+                                          if (i == "" &&
+                                              controller.addList[index]
+                                                  .checkValidtion)
+                                            return 'required'.tr;
+                                          // else if (i >= 5) return 'value should be < 5';
+                                          return null;
+                                        },
+                                        selectedItem: controller
+                                            .addList[index].willayaLabel
+                                            .toString(),
+                                      )),
+                                  Container(
+                                      // height: 45,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.32,
+                                      child: DropdownSearch<String>(
+                                        label: "Region".tr,
+                                        autoValidateMode:
+                                            AutovalidateMode.always,
+                                        validator: (String? i) {
+                                          if (i == "" &&
+                                              controller.addList[index]
+                                                  .checkValidtion)
+                                            return 'required'.tr;
+                                        },
+                                        showSearchBox: true,
+                                        showAsSuffixIcons: true,
+                                        showSelectedItems: true,
+                                        items: controller.regions
+                                            .where((element) =>
+                                                element.wilayaId ==
+                                                controller
+                                                    .addList[index].willayaID)
+                                            .map((element) {
+                                          return element.name!;
+                                        }).toList(),
+                                        onChanged: (_value) {
+                                          final List<Order> list = [];
+                                          Order object;
+                                          final region = controller.regions
+                                              .where(
+                                                  (item) => item.name == _value)
+                                              .first;
+
+                                          for (int i = 0;
+                                              i < controller.addList.length;
+                                              i++) {
+                                            object = controller.addList[i];
+
+                                            if (index == i) {
+                                              object.regionLabel = _value ?? "";
+                                              object.regionID = region.id ?? 0;
+                                            }
+                                            list.add(object);
+                                          }
+                                          controller.addList.value = list;
+                                        },
+                                        selectedItem: controller
+                                            .addList[index].regionLabel,
+                                      ))
+                                ],
+                              );
+                            }),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                    child: textInputCustom(
+                                        maxLines: 4,
+                                        onTextChange: (val) {
+                                          controller.addList[index].address =
+                                              val;
+                                        },
+                                        label: "Address".tr,
+                                        initialValue: order.address)),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                          ],
+                        ).paddingSymmetric(vertical: 10, horizontal: 5),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                              child: textInputCustom(
-                                  maxLines: 4,
-                                  onTextChange: (val) {
-                                    controller.addList[index].address = val;
-                                  },
-                                  label: "Address".tr,
-                                  initialValue: order.address)),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      LocationPickerInputForAddOrder(
-                          title: "choosePickupLocation".tr, index: index)
                     ],
                   ),
                 ),
               ],
             ),
-            if (index == controller.addList.length - 1)
+            if (controller.addList.length > 1 &&
+                index == controller.addList.length - 1)
               Positioned(
                   right: -5,
                   top: -5,

@@ -4,6 +4,12 @@ class MyTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         "ar": {
+          "Road Number": "رقم الشارع",
+          "Pickup Info": "بيانات الاستلام",
+          "Block Number": "رقم البلوك",
+          "Flat Number": "رقم الشقة",
+          "Pickup Note": "ملاحظة الاستلام",
+          "Delivery Info": "يانات التوصيل",
           "contact": "رقم الاتصال",
           "choosePickupLocation": "اختر موقع الالتقاط",
           "resend_otp": "إعادة إرسال OTP",
@@ -316,6 +322,12 @@ class MyTranslations extends Translations {
           "Filed": "فشل",
         },
         "en": {
+          "Road Number": "Road Number",
+          "Pickup Info": "Pickup Info",
+          "Block Number": "Block Number",
+          "Flat Number": "Flat Number",
+          "Pickup Note": "Pickup Note",
+          "Delivery Info": "Delivery Info",
           "contact": "contact",
           "choosePickupLocation": "Choose Pickup Location",
           "resend_otp": "Resend OTP",

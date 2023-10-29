@@ -72,7 +72,7 @@ class _AddOrder extends State<AddOrder> {
                 backgroundColor: primaryColor,
                 elevation: 8,
                 splashColor: Colors.grey,
-              )
+              ).paddingOnly(bottom: 80)
             : null,
         floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
         body: GetX<DispatcherController>(builder: (controller) {
@@ -81,68 +81,50 @@ class _AddOrder extends State<AddOrder> {
             decoration: const BoxDecoration(
                 color: bgColor,
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
-            child: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 10.0, right: 10, top: 10, bottom: 50),
-                  child: ListView.separated(
-                    itemCount: controller.addList.length,
-                    itemBuilder: (context, i) => AddOrderCard(
-                      controller: controller,
-                      order: controller.addList[i],
-                      onCancelClick: () {
-                        // print(controller.addList[i].name);
-                        // final List<Order> tempArr = [];
-                        // Order? deletedIndex;
-                        // for (var index = 0;
-                        //     index < controller.addList.length;
-                        //     index++) {
-                        //   if (index != controller.addList.length - 1)
-                        //     tempArr.add(controller.addList[index]);
-                        //   else
-                        //     deletedIndex = controller.addList[index];
-                        // }
-                        // // print(deletedIndex?.name);
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 10.0, right: 10, top: 10, bottom: 0),
+              child: Column(
+                children: [
+                  Expanded(
+                    // height: MediaQuery.of(context).size.height * 0.75,
+                    // width: MediaQuery.of(context).size.width,
+                    child: ListView.separated(
+                      itemCount: controller.addList.length,
+                      itemBuilder: (context, i) => AddOrderCard(
+                        controller: controller,
+                        order: controller.addList[i],
+                        onCancelClick: () {
+                          controller.addList
+                              .removeAt(controller.addList.length - 1);
 
-                        // controller.addList.value = tempArr;
-                        controller.addList
-                            .removeAt(controller.addList.length - 1);
-                        if (controller.addList.length == 0) {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        }
-                        // Navigator.pop(context);
-                      },
-                      index: i,
+                          // Navigator.pop(context);
+                        },
+                        index: i,
+                      ),
+                      separatorBuilder: (context, i) =>
+                          const SizedBox(height: 15),
                     ),
-                    separatorBuilder: (context, i) =>
-                        const SizedBox(height: 15),
                   ),
-                ),
-                if (controller.loading.value == false)
-                  Positioned(
-                    right: 80,
-                    bottom: 0,
-                    left: 80,
-                    child: Align(
-                      alignment: Alignment.center,
+                  if (controller.loading.value == false &&
+                      controller.addList.isNotEmpty)
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
                       child: CustomButtom(
                         text: 'Add'.tr,
                         onPressed: () async {
                           final isValid = await _checkValidtion();
-                          if (isValid) controller.handleAddOrders(context);
+                          if (isValid) {
+                            await controller.handleAddOrders(context);
+                          }
                           // print(checkValidation);
                           // Get.back();
                         },
                       ),
-                    ),
-                  ),
-                if (controller.loading.value == true)
-                  Positioned.fill(
-                      child: Align(
-                          alignment: Alignment.center, child: WaiteImage())),
-              ],
+                    ).paddingOnly(bottom: 30, left: 30, right: 30),
+                  if (controller.loading.value == true) WaiteImage(),
+                ],
+              ),
             ),
           );
         }));

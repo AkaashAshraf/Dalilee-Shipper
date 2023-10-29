@@ -18,6 +18,19 @@ class ControllerView extends StatelessWidget {
                 disableDefaultTabController: true,
                 items: [
                   buildItem('assets/images/Vector.png'),
+                  buildItem(
+                    'assets/images/tobedelivered.png',
+                    activeIcon: Icon(
+                      Icons.add,
+                      color: primaryColor,
+                      size: 25,
+                    ),
+                    nonActiveIcon: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 25,
+                    ),
+                  ),
                   buildItem('assets/images/icon-park-outline_delivery.png'),
                   buildItem('assets/images/carbon_delivery-parcel.png'),
                   buildItem('assets/images/ll.png'),
@@ -34,19 +47,22 @@ class ControllerView extends StatelessWidget {
         });
   }
 
-  TabItem<dynamic> buildItem(String image) {
+  TabItem<dynamic> buildItem(String image,
+      {Icon? nonActiveIcon, Icon? activeIcon}) {
     return TabItem(
       activeIcon: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Image.asset(
-          image,
-          color: primaryColor,
-        ),
+        child: activeIcon ??
+            Image.asset(
+              image,
+              color: primaryColor,
+            ),
       ),
-      icon: Image.asset(
-        image,
-        color: whiteColor,
-      ),
+      icon: nonActiveIcon ??
+          Image.asset(
+            image,
+            color: whiteColor,
+          ),
     );
   }
 }

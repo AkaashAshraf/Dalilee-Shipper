@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/core/server/pickup_api.dart';
@@ -65,6 +67,8 @@ class DispatcherController extends GetxController {
 
   handleAddOrders(BuildContext context) async {
     try {
+      // inspect(addList);
+      // return;
       loading(true);
       var arrToUpload = [];
       for (int i = 0; i < addList.length; i++) {
@@ -76,6 +80,10 @@ class DispatcherController extends GetxController {
           "wilaya_id": addList[i].willayaID.toString(),
           "area_id": addList[i].regionID.toString(),
           "pickup_address": addList[i].locationName,
+          "road_number": addList[i].roadNumber,
+          "block_number": addList[i].blockNumber,
+          "flat_number": addList[i].flatNumber,
+          "pickup_note": addList[i].pickupNote,
           "pickup_coordinates":
               addList[i].latitude + "," + addList[i].longitude,
         });
@@ -85,16 +93,13 @@ class DispatcherController extends GetxController {
       if (res != null) {
         var response = addOrderResponseFromJson(res.body);
         Get.snackbar('Successfull', response.message ?? "");
-        // fetchMyOrders();
-        Navigator.pop(context);
-        Navigator.pop(context);
-        fetchMyOrders();
-        Get.to(MyOrders());
 
-        // print(response.message);
+        fetchMyOrders();
+        addList([]);
+        Get.to(MyOrders());
       }
     } catch (e) {
-      Get.snackbar('Successfull', e.toString());
+      Get.snackbar('Error', e.toString());
     } finally {
       loading(false);
     }

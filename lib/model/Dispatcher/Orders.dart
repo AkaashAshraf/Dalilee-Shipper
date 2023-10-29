@@ -35,6 +35,10 @@ class Order {
       this.rid: 0,
       this.phone: "",
       this.name: "",
+      this.roadNumber: "",
+      this.pickupNote: "",
+      this.flatNumber: "",
+      this.blockNumber: "",
       this.cod: "",
       this.cc: "0",
       this.latitude: "",
@@ -57,6 +61,10 @@ class Order {
   String latitude;
   String longitude;
   String locationName;
+  String roadNumber;
+  String blockNumber;
+  String flatNumber;
+  String pickupNote;
 
   int willayaID;
   String willayaLabel;
@@ -75,6 +83,10 @@ class Order {
         cc: json["cc"] == null ? null : json["cc"],
         latitude: json["latitude"] ?? "",
         longitude: json["longitude"] ?? "",
+        roadNumber: json["road_number"] ?? "",
+        flatNumber: json["block_number"] ?? "",
+        blockNumber: json["flat_number"] ?? "",
+        pickupNote: json["pickup_note"] ?? "",
         willayaID: json["willayaID"] == null ? 0 : json["willaya"],
         regionID: json["regionID"] == null ? 0 : json["region"],
         regionLabel: json["regionLabel"] == null ? 0 : json["regionLabel"],
