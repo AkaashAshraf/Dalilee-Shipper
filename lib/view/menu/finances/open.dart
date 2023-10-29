@@ -68,12 +68,16 @@ class OpendedView extends StatelessWidget {
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20),
                           ),
-                          child: Image.asset(
-                            'assets/images/Groupbody.png',
-                            width: MediaQuery.of(context).size.width,
+                          child: Container(
                             height: 90,
-                            fit: BoxFit.fill,
+                            color: primaryColor,
                           ),
+                          //  Image.asset(
+                          //   'assets/images/Groupbody.png',
+                          //   width: MediaQuery.of(context).size.width,
+                          //   height: 90,
+                          //   fit: BoxFit.fill,
+                          // ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(20.0),
