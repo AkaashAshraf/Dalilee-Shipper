@@ -26,8 +26,8 @@ const dashboardTabsBackgroudColor = Color.fromARGB(255, 232, 241, 243);
 // String domain = "https://shaheen-oman.dalilee.om"; // live
 
 String domain = isTesEnvironment
-    ? "https://stgshom.amaanom.com"
-    : "https://shaheenom.com"; //
+    ? "https://tamoman.shaheenom.com"
+    : "https://tamoman.shaheenom.com"; //
 
 String base_url = "$domain/api"; // live
 String terms_url = "$domain/terms"; // live
