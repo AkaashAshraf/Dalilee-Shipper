@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dalile_customer/config/text_sizes.dart';
 import 'package:dalile_customer/core/server/auth.dart';
+import 'package:dalile_customer/navigation/bottom_navigation.dart';
 import 'package:dalile_customer/view/home/notifications/notifications_list.dart';
 import 'package:dalile_customer/view/home/search/search_screen.dart';
 import 'package:dalile_customer/view/login/login_view.dart';
@@ -30,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
     player.initialize();
     player.play().then((value) => {
           Timer(const Duration(milliseconds: 1500), () {
-            Get.offAll(status ? ControllerView() : LoginView());
+            Get.offAll(status ? BottomNavigationScreen() : LoginView());
             setupInteractedMessage();
           })
         });

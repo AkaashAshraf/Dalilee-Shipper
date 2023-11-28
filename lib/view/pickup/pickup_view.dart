@@ -312,7 +312,10 @@ class PickupView extends StatelessWidget {
         elevation: 0,
         backgroundColor: whiteColor,
         foregroundColor: Colors.black,
-        title: Text("PICKUP".tr),
+        title: Text(
+          "PICKUP".tr,
+          style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       body: DefaultTabController(

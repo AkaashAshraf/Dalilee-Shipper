@@ -17,7 +17,10 @@ class ShipmentView extends StatelessWidget {
         elevation: 0,
         backgroundColor: whiteColor,
         foregroundColor: Colors.black,
-        title: Text("SHIPMENTS".tr),
+        title: Text(
+          "SHIPMENTS".tr,
+          style: TextStyle(color: primaryColor),
+        ),
         leading: GestureDetector(
           onTap: () {
             Get.to(SearchScreen());
@@ -26,7 +29,7 @@ class ShipmentView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Icon(
               Icons.search,
-              color: Colors.black,
+              color: primaryColor,
             ),
           ),
         ),
@@ -43,8 +46,6 @@ class ShipmentView extends StatelessWidget {
                       duration: Duration(milliseconds: 150),
                       curve: Curves.easeInCirc,
                     );
-
-                    print(data.isSDown.toString());
                   },
                   child: Container(
                     height: 40,

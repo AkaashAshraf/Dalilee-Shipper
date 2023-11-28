@@ -18,13 +18,13 @@ class FinanceView extends GetWidget<FinanceController> {
       child: Scaffold(
         backgroundColor: bgColor,
         appBar: AppBar(
-          backgroundColor: primaryColor,
+          backgroundColor: Colors.white,
           title: CustomText(
             text: 'Finance'.tr.toUpperCase(),
-            color: whiteColor,
+            color: primaryColor,
             alignment: Alignment.center,
             size: 18,
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.bold,
           ),
           centerTitle: true,
           elevation: 0,
@@ -34,7 +34,7 @@ class FinanceView extends GetWidget<FinanceController> {
             SliverAppBar(
               toolbarHeight: 8,
               elevation: 0,
-              backgroundColor: whiteColor,
+              backgroundColor: dashboardTabsBackgroudColor,
               bottom: _tabBarIndicatorShape(),
             ),
           ],

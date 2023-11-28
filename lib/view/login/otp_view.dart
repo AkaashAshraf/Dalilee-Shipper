@@ -45,7 +45,7 @@ class _OTPViewState extends State<OTPView> {
               height: 50,
             ),
             Image.asset(
-              "assets/images/dalilees.png",
+              "assets/images/logo.png",
               fit: BoxFit.contain,
               height: MediaQuery.of(context).size.height * 0.3,
               width: MediaQuery.of(context).size.width * 0.5,

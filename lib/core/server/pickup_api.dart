@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dalile_customer/components/popups/ask_for_tommorrow_pickup.dart';
 import 'package:dalile_customer/constants.dart';
@@ -104,7 +105,7 @@ class PickupApi {
             Get.put(PickupController()).isAutoDailyPickup.value ? "1" : "0"
         // "is_cron_active": "${time != "" ? 1 : 0}"
       });
-
+      inspect(response);
       // log(response.toString());
       if (response.statusCode == 200) {
         var res = createPickFromJson(response.body);

@@ -189,7 +189,7 @@ class _GMapState extends State<GMap> {
           children: [
             MapPicker(
               iconWidget: Image.asset(
-                "assets/images/dalilee1.png",
+                "assets/images/map.png",
                 height: 40,
               ),
               mapPickerController: mapPickerController,

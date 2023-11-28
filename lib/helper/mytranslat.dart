@@ -470,7 +470,7 @@ class MyTranslations extends Translations {
           "Signin": "Sign in",
           "Entermobile": "Enter your mobile number",
           "Enteryouremail": "Enter your email",
-          "WELCOMETODALILEE": "WELCOME TO TAM OMAN",
+          "WELCOMETODALILEE": "WELCOME TO URGENT DELIVERY",
           "Entertheverification": "Enter the verification code",
           "Wehavesent":
               "We have sent a 4 digit verification code.\nPlease enter the verification code below",
