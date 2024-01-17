@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-bool isTesEnvironment = true;
+bool isTesEnvironment = false;
 double omrToAedRate = 9.47;
 const int iosVersionLocal = 16; //07/september/2023 //exchange pickup
 const int androidVersionLocal = 16; //07/september/2023 //exchange pickup
@@ -29,7 +29,7 @@ const dashboardTabsBackgroudColor = Color.fromARGB(255, 232, 241, 243);
 
 String domain = isTesEnvironment
     ? "https://tamoman.shaheenom.com"
-    : "https://tamoman.shaheenom.com"; //
+    : "https://urgent.shaheenom.com"; //
 
 String base_url = "$domain/api"; // live
 String terms_url = "$domain/terms"; // live
