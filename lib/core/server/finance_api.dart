@@ -70,7 +70,7 @@ abstract class FinanceApi {
     dynamic tokenLo = resLogin['data']["access_token"] ?? '';
 
     String _url = "$crmBaseUrl/accounts/my_list";
-
+    inspect(_url);
     try {
       final prefs = await SharedPreferences.getInstance();
       String storeCode = prefs.getString('store_code') ?? '';
@@ -83,9 +83,11 @@ abstract class FinanceApi {
           "Authorization": "Bearer $tokenLo",
         },
       );
+      inspect({
+        // {"trader_id": storeCode, "phone": mobile}
+      });
       if (response.statusCode == 200) {
         var data = bankaccountsFromJson(response.body);
-        inspect(data);
 
         return data;
       } else {
@@ -509,7 +511,7 @@ abstract class FinanceApi {
     String mobile = (resLogin['data']["store"]["country_code"] ?? "") +
         (resLogin['data']["store"]["mobile"] ?? "");
     var _url = crmBaseUrl + '/shipper/send-otp/$mobile/$storeId';
-    print(_url);
+    // print(_url);
     try {
       // return false;
       var response = await http.post(Uri.parse(_url), headers: {
