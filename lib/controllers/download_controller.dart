@@ -4,7 +4,7 @@ import 'package:dalile_customer/constants.dart';
 import 'package:dalile_customer/core/http/FromDalilee.dart';
 import 'package:dalile_customer/core/http/http.dart';
 import 'package:dalile_customer/model/export_model.dart';
-import 'package:image_downloader/image_downloader.dart';
+// import 'package:image_downloader/image_downloader.dart';
 import 'package:dalile_customer/components/popups/downloadProgressBarNew.dart';
 import 'package:dio/dio.dart';
 import 'package:external_path/external_path.dart';
@@ -57,10 +57,10 @@ class DownloadController extends GetxController {
       // Get.snackbar('Downloading Image', "Image is downloading",
       //     backgroundColor: primaryColor.withOpacity(0.9));
       isDownloading(true);
-      var imageId = await ImageDownloader.downloadImage(url);
-      if (imageId == null) {
-        return;
-      }
+      // var imageId = await ImageDownloader.downloadImage(url);
+      // if (imageId == null) {
+      //   return;
+      // }
       // var path = await ImageDownloader.findPath(imageId);
       // OpenFile.open(path);
 

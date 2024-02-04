@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 bool isTesEnvironment = false;
 double omrToAedRate = 9.47;
-const int iosVersionLocal = 16; //07/september/2023 //exchange pickup
-const int androidVersionLocal = 16; //07/september/2023 //exchange pickup
+const int iosVersionLocal = 1; //04/feb/2023 //first push
+const int androidVersionLocal = 1; //04/feb/2023 //first push
 Color primaryColor = Color(isTesEnvironment ? 0xFF5aad9d : 0xFF5aad9d);
 
 const whiteColor = Color(0xFFFFFFFF);
