@@ -189,7 +189,7 @@ Widget buildMenu(IconData icon, String text, context, void Function()? onTap) {
             borderRadius: BorderRadius.circular(5),
             color: primaryColor,
           ),
-          margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
           height: MediaQuery.of(context).size.width / 7,
           width: MediaQuery.of(context).size.width / 7,
           child: Icon(icon, color: whiteColor, size: 30),

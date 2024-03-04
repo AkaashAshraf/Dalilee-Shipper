@@ -12,11 +12,11 @@ if (flutterRoot == null) {
 }
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-     flutterVersionCode = '44'
+     flutterVersionCode = '45'
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 
-    flutterVersionName = '1.0.1'
+    flutterVersionName = '1.0.2'
 
 
 apply plugin: 'com.android.application'
